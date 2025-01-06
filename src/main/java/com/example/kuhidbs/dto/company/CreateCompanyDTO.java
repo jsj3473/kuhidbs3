@@ -1,94 +1,52 @@
-package com.example.kuhidbs.entity;
+package com.example.kuhidbs.dto.company;
 
-import jakarta.persistence.*;
 import java.math.BigInteger;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
-@Entity
-@Table(name = "company")
-public class Company {
+public class CreateCompanyDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "company_id", nullable = false)
-    private Integer companyId;
-
-    @Column(name = "company_name", length = 100, nullable = false)
     private String companyName;
-
-    @Column(name = "address", columnDefinition = "TEXT")
     private String address;
-
-    @Column(name = "business_id", length = 20, unique = true)
     private String businessId;
-
-    @Column(name = "corporate_id", length = 20, unique = true)
     private String corporateId;
-
-    @Column(name = "ceo_name", length = 50)
     private String ceoName;
-
-    @Column(name = "industry_code", length = 50)
     private String industryCode;
-
-    @Temporal(TemporalType.DATE)
-    @Column(name = "established_date")
     private Date establishedDate;
-
-    @Column(name = "industry", length = 50)
     private String industry;
-
-    @Column(name = "business_item", columnDefinition = "TEXT")
     private String businessItem;
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "founder_carrer_type", length = 20)
-    private FounderCarrerType founderCarrerType; // 수정된 변수명
-
-    @Enumerated(EnumType.STRING)
-    @Column(name = "founder_univ_type", length = 20)
-    private FounderUnivType founderUnivType; // 수정된 변수명
-
-
-
-    @ElementCollection
-    @CollectionTable(name = "company_certifications", joinColumns = @JoinColumn(name = "company_id"))
-    @Column(name = "certification_type")
-    private Set<String> certifications = new HashSet<>();
-
-
-    @Column(name = "capital", precision = 19, scale = 0)
+    private String founderCarrerType; // Enum 대신 문자열로 받음
+    private String founderUnivType;  // Enum 대신 문자열로 받음
+    private Set<String> certifications; // 중복 선택 가능한 문자열 Set
     private BigInteger capital;
-
-    @Column(name = "face_value", precision = 19, scale = 0)
     private BigInteger faceValue;
-
-    @Column(name = "investment_stage", length = 50)
     private String investmentStage;
-
-    @Column(name = "enterprise_value", length = 50)
     private String enterpriseValue;
-
-    @Column(name = "four_insurance_members", nullable = true)
     private Integer fourInsuranceMembers;
 
-    // Enum 클래스 정의
-    public enum FounderCarrerType {
-        교원창업, 교우창업, 학생창업, 기타 // 실제 타입에 따라 수정
-    }
-    public enum FounderUnivType {
-        고려대, 비고려대, 기타 // 실제 타입에 따라 수정
-    }
-
     // Getters and Setters
-    public Integer getCompanyId() {
-        return companyId;
-    }
 
-    public void setCompanyId(Integer companyId) {
-        this.companyId = companyId;
+    @Override
+    public String toString() {
+        return "CreateCompanyDTO{" +
+                "companyName='" + companyName + '\'' +
+                ", address='" + address + '\'' +
+                ", businessId='" + businessId + '\'' +
+                ", corporateId='" + corporateId + '\'' +
+                ", ceoName='" + ceoName + '\'' +
+                ", industryCode='" + industryCode + '\'' +
+                ", establishedDate=" + establishedDate +
+                ", industry='" + industry + '\'' +
+                ", businessItem='" + businessItem + '\'' +
+                ", founderCarrerType='" + founderCarrerType + '\'' +
+                ", founderUnivType='" + founderUnivType + '\'' +
+                ", certifications=" + certifications +
+                ", capital=" + capital +
+                ", faceValue=" + faceValue +
+                ", investmentStage='" + investmentStage + '\'' +
+                ", enterpriseValue='" + enterpriseValue + '\'' +
+                ", fourInsuranceMembers=" + fourInsuranceMembers +
+                '}';
     }
 
     public String getCompanyName() {
@@ -131,6 +89,10 @@ public class Company {
         this.ceoName = ceoName;
     }
 
+    public CreateCompanyDTO(String address) {
+        this.address = address;
+    }
+
     public String getIndustryCode() {
         return industryCode;
     }
@@ -163,19 +125,19 @@ public class Company {
         this.businessItem = businessItem;
     }
 
-    public FounderCarrerType getFounderCarrerType() {
+    public String getFounderCarrerType() {
         return founderCarrerType;
     }
 
-    public void setFounderCarrerType(FounderCarrerType founderCarrerType) {
+    public void setFounderCarrerType(String founderCarrerType) {
         this.founderCarrerType = founderCarrerType;
     }
 
-    public FounderUnivType getFounderUnivType() {
+    public String getFounderUnivType() {
         return founderUnivType;
     }
 
-    public void setFounderUnivType(FounderUnivType founderUnivType) {
+    public void setFounderUnivType(String founderUnivType) {
         this.founderUnivType = founderUnivType;
     }
 
@@ -183,17 +145,9 @@ public class Company {
         return certifications;
     }
 
-
     public void setCertifications(Set<String> certifications) {
-        Set<String> validCertifications = Set.of("연구소기업", "초기창업기업", "벤처기업");
-        for (String certification : certifications) {
-            if (!validCertifications.contains(certification)) {
-                throw new IllegalArgumentException("Invalid certification type: " + certification);
-            }
-        }
         this.certifications = certifications;
     }
-
 
     public BigInteger getCapital() {
         return capital;
