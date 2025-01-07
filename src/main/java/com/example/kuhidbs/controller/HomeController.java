@@ -1,0 +1,20 @@
+package com.example.kuhidbs.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+@Controller
+public class HomeController {
+
+    @GetMapping("/main")
+    public String mainPage(Model model) {
+        model.addAttribute("message", "Welcome to KUH IDBS!");
+        return "main";
+    }
+
+    @GetMapping("/")
+    public String login(Model model) {
+        return "login";
+    }
+}
