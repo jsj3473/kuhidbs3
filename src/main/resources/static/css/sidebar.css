@@ -1,0 +1,123 @@
+/* 아코디언 슬라이드*/
+/* 전체 슬라이드 바 스타일 */
+.sidebar {
+    background-color: #4E0719; /* 슬라이드 바 배경색 */
+    color: #ffffff; /* 텍스트 색상 */
+    border-right: 1px solid #dee2e6;
+    overflow-y: auto;
+    resize: horizontal;
+    overflow: auto;
+    min-width: 200px;
+    max-width: 250px;
+    width: 20%; /* 기본 너비 */
+}
+
+/* 아코디언 스타일 덮어쓰기 */
+.accordion-button {
+    display: flex; /* Flexbox 활성화 */
+    justify-content: space-between; /* 텍스트와 아이콘 간격 자동 조정 */
+    align-items: center; /* 수직 정렬 */
+    position: relative;
+
+    background-color: #4E0719 !important; /* 버튼 배경색 */
+    color: #ffffff !important; /* 버튼 텍스트 색상 */
+    border: none; /* 기본 테두리 제거 */
+}
+
+.accordion-button:focus {
+    box-shadow: none !important; /* 포커스 테두리 제거 */
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: #4E0719 !important; /* 확장된 상태의 버튼 배경색 */
+    color: #ffffff !important; /* 확장된 상태의 버튼 텍스트 색상 */
+}
+
+.accordion-body {
+    background-color: #3D0514 !important; /* 아코디언 본문 배경색 */
+    color: #ffffff !important; /* 아코디언 본문 텍스트 색상 */
+}
+
+:root {
+    --bs-accordion-btn-icon: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-chevron-down" viewBox="0 0 16 16"%3E%3Cpath fill-rule="evenodd" d="M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z"/%3E%3C/svg%3E');
+    --bs-accordion-btn-active-icon: url('data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="white" class="bi bi-chevron-up" viewBox="0 0 16 16"%3E%3Cpath fill-rule="evenodd" d="M1.646 10.354a.5.5 0 0 1 .708 0L8 5.707l5.646 4.647a.5.5 0 0 1 .708-.708l-6-6a.5.5 0 0 1-.708 0l-6 6a.5.5 0 0 1 0 .708z"/%3E%3C/svg%3E');
+}
+
+/* 기본 상태 도형 */
+.accordion-button::after {
+    content: ""; /* Before에 내용 추가 */
+    display: none;
+    flex-shrink: 0;
+    width: var(--bs-accordion-btn-icon-width, 1rem); /* 기본 너비 */
+    height: var(--bs-accordion-btn-icon-width, 1rem); /* 기본 높이 */
+    margin-left: auto;
+    background-image: var(--bs-accordion-btn-icon); /* 기본 아이콘 (▼) */
+    background-repeat: no-repeat;
+    background-size: var(--bs-accordion-btn-icon-width, 1rem);
+    transition: var(--bs-accordion-btn-icon-transition, transform 0.3s ease);
+}
+
+/* 확장된 상태 도형 */
+.accordion-button:not(.collapsed)::after {
+    background-image: var(--bs-accordion-btn-active-icon); /* 확장된 아이콘 (▲) */
+    transform: var(--bs-accordion-btn-icon-transform, rotate(180deg));
+}
+
+
+
+.accordion-button::before {
+    content: ""; /* Before에 내용 추가 */
+    display: inline-block;
+    background-image: url('/images/arrow.png'); /* 업로드된 이미지 경로 */
+    background-size: cover; /* 이미지를 영역에 맞게 채움 */
+    width: 20px; /* 이미지 너비 */
+    height: 10px; /* 이미지 높이 */
+    transform: rotate(180deg); /* 기본 상태: 위쪽 화살표 */
+    transition: transform 0.3s ease; /* 회전 애니메이션 */
+    position: absolute; /* 위치 고정 */
+    right: 15px; /* 텍스트 오른쪽에 배치 */
+}
+.accordion-button:not(.collapsed)::before {
+    transform: rotate(0deg); /* 확장된 상태: 아래쪽 화살표 */
+}
+
+/* 링크 스타일 */
+.sidebar a {
+    color: #ffffff; /* 링크 기본 색상 */
+    text-decoration: none;
+}
+
+.sidebar a:hover {
+    color: #ffffff; /* 링크 호버 색상 */
+    font-weight: bold; /* 볼드체로 설정 */
+    /*text-decoration: underline;*/
+}
+
+.sidebar-logo {
+    display: flex; /* Flexbox 활성화 */
+    align-items: center; /* 수직 중앙 정렬 */
+    text-align: center;
+    justify-content: flex-start; /* 왼쪽 정렬 */
+    padding: 20px; /* 여백 설정 */
+    border-bottom: 1px solid #dee2e6; /* 로고와 메뉴 구분선 */
+}
+
+.logo-img {
+    width: 30px; /* 이미지 크기 */
+    height: auto; /* 비율 유지 */
+    margin-right: 10px; /* 이미지와 텍스트 간격 */
+}
+
+.logo-text {
+    font-size: 27px; /* 텍스트 크기 */
+    font-weight: bold;
+    color: #ffffff; /* 로고 텍스트 색상 */
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+}
+.resizer {
+    width: 5px;
+    cursor: ew-resize;
+    background-color: #4E0719; /* 슬라이드 바 경계선 색상 */
+    position: absolute;
+    height: 100%;
+}

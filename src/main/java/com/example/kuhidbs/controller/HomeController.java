@@ -10,11 +10,18 @@ public class HomeController {
     @GetMapping("/main")
     public String mainPage(Model model) {
         model.addAttribute("message", "Welcome to KUH IDBS!");
-        return "main";
+        return "main"; // main.html
     }
 
     @GetMapping("/")
     public String login(Model model) {
-        return "login";
+        return "login"; // login.html
+    }
+
+    @GetMapping("/userManage")
+    public String userManagePage(Model model) {
+        // 필요한 데이터가 있다면 model에 추가
+        model.addAttribute("pageTitle", "사원 관리");
+        return "userManage"; // userManage.html
     }
 }

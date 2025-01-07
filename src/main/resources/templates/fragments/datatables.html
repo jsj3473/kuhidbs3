@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="datatables-head">
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/2.4.1/css/buttons.dataTables.min.css">
+    <!-- Custom DataTables CSS -->
+    <link rel="stylesheet" th:href="@{/css/datatables-custom.css}">
+</head>
+<body th:fragment="datatables-body">
+<!-- DataTables JS -->
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/dataTables.buttons.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.html5.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/2.4.1/js/buttons.print.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // DataTables 초기화
+        $('.datatable').DataTable({
+            dom: 'Bfrtip', // 버튼 UI 활성화
+            buttons: ['copy', 'csv', 'excel', 'print'], // 버튼 옵션
+            language: {
+                search: "검색:",
+                lengthMenu: "페이지당 _MENU_ 개 보기",
+                info: "총 _TOTAL_ 개 중 _START_ - _END_ 표시",
+                paginate: {
+                    next: "다음",
+                    previous: "이전"
+                }
+            }
+        });
+
+        // 행 클릭 시 단일 선택 색상 처리
+        $('.datatable tbody').on('click', 'tr', function () {
+            $('.datatable tbody tr').removeClass('selected'); // 모든 행 색상 초기화
+            $(this).addClass('selected'); // 클릭된 행에만 색상 적용
+        });
+    });
+</script>
+</body>
+</html>

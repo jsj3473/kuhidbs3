@@ -1,237 +1,137 @@
 package com.example.kuhidbs.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @Table(name = "company")
+@Getter
+@Setter
+@NoArgsConstructor
 public class Company {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "company_id", nullable = false)
-    private Integer companyId;
+    private Integer companyId; // 고유 ID (AUTO_INCREMENT)
 
     @Column(name = "company_name", length = 100, nullable = false)
-    private String companyName;
+    private String companyName; // 회사명
 
     @Column(name = "address", columnDefinition = "TEXT")
-    private String address;
+    private String address; // 기업주소
 
     @Column(name = "business_id", length = 20, unique = true)
-    private String businessId;
+    private String businessId; // 사업자등록번호
 
     @Column(name = "corporate_id", length = 20, unique = true)
-    private String corporateId;
+    private String corporateId; // 법인등록번호
 
     @Column(name = "ceo_name", length = 50)
-    private String ceoName;
+    private String ceoName; // 대표자
 
     @Column(name = "industry_code", length = 50)
-    private String industryCode;
+    private String industryCode; // 표준산업분류코드
 
     @Temporal(TemporalType.DATE)
     @Column(name = "established_date")
-    private Date establishedDate;
+    private Date establishedDate; // 설립일자
 
     @Column(name = "industry", length = 50)
-    private String industry;
+    private String industry; // 기술분야
 
     @Column(name = "business_item", columnDefinition = "TEXT")
-    private String businessItem;
+    private String businessItem; // 사업아이템
 
     @Enumerated(EnumType.STRING)
     @Column(name = "founder_carrer_type", length = 20)
-    private FounderCarrerType founderCarrerType; // 수정된 변수명
+    private FounderCarrerType founderCarrerType; // 창업형태-소속
 
     @Enumerated(EnumType.STRING)
     @Column(name = "founder_univ_type", length = 20)
-    private FounderUnivType founderUnivType; // 수정된 변수명
+    private FounderUnivType founderUnivType; // 창업형태-설립자
 
-
-
-    @ElementCollection
-    @CollectionTable(name = "company_certifications", joinColumns = @JoinColumn(name = "company_id"))
-    @Column(name = "certification_type")
-    private Set<String> certifications = new HashSet<>();
-
+    @Enumerated(EnumType.STRING)
+    @Column(name = "certification_type", length = 20)
+    private CertificationType certificationType; // 인증기업분류
 
     @Column(name = "capital", precision = 19, scale = 0)
-    private BigInteger capital;
+    private BigInteger capital; // 설립자본금
 
     @Column(name = "face_value", precision = 19, scale = 0)
-    private BigInteger faceValue;
+    private BigInteger faceValue; // 액면가
 
     @Column(name = "investment_stage", length = 50)
-    private String investmentStage;
+    private String investmentStage; // 투자단계
 
-    @Column(name = "enterprise_value", length = 50)
-    private String enterpriseValue;
+    @Column(name = "four_insurance_members")
+    private Integer fourInsuranceMembers; // 4대보험가입자수
 
-    @Column(name = "four_insurance_members", nullable = true)
-    private Integer fourInsuranceMembers;
+    @Column(name = "current_company_value", precision = 19, scale = 2)
+    private BigDecimal currentCompanyValue; // 현재기업가치
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "investment_date")
+    private Date investmentDate; // 투자일자
+
+    @Column(name = "investment_funding", length = 100)
+    private String investmentFunding; // 투자재원
+
+    @Column(name = "investment_method", length = 50)
+    private String investmentMethod; // 투자방법
+
+    @Column(name = "investment_price", precision = 19, scale = 2)
+    private BigDecimal investmentPrice; // 투자금액
+
+    @Column(name = "initial_investment_share", precision = 5, scale = 2)
+    private BigDecimal initialInvestmentShare; // 최초투자지분율
+
+    @Column(name = "investment_product", columnDefinition = "TEXT")
+    private String investmentProduct; // 투자상품
+
+    @Column(name = "acquisition_cost", precision = 19, scale = 2)
+    private BigDecimal acquisitionCost; // 인수주식수
+
+    @Column(name = "tips_support", length = 50)
+    private String tipsSupport; // TIPS 여부
+
+    @Column(name = "listing_market", length = 50)
+    private String listingMarket; // 상장시장
+
+    @Temporal(TemporalType.DATE)
+    @Column(name = "listing_date")
+    private Date listingDate; // 상장일자
+
+    @ElementCollection
+    @CollectionTable(name = "company_explorers", joinColumns = @JoinColumn(name = "company_id"))
+    @Column(name = "explorer_name")
+    private List<String> explorers; // 발굴자 (여러 명 가능)
+
+    @ElementCollection
+    @CollectionTable(name = "company_reviewers", joinColumns = @JoinColumn(name = "company_id"))
+    @Column(name = "reviewer_name")
+    private List<String> reviewers; // 심사자 (여러 명 가능)
+
+    @Column(name = "post_manager", length = 50)
+    private String postManager; // 사후관리자
 
     // Enum 클래스 정의
     public enum FounderCarrerType {
-        교원창업, 교우창업, 학생창업, 기타 // 실제 타입에 따라 수정
+        교원창업, 교우창업, 학생창업, 기타
     }
+
     public enum FounderUnivType {
-        고려대, 비고려대, 기타 // 실제 타입에 따라 수정
+        고려대, 비고려대, 기타
     }
 
-    // Getters and Setters
-    public Integer getCompanyId() {
-        return companyId;
-    }
-
-    public void setCompanyId(Integer companyId) {
-        this.companyId = companyId;
-    }
-
-    public String getCompanyName() {
-        return companyName;
-    }
-
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getBusinessId() {
-        return businessId;
-    }
-
-    public void setBusinessId(String businessId) {
-        this.businessId = businessId;
-    }
-
-    public String getCorporateId() {
-        return corporateId;
-    }
-
-    public void setCorporateId(String corporateId) {
-        this.corporateId = corporateId;
-    }
-
-    public String getCeoName() {
-        return ceoName;
-    }
-
-    public void setCeoName(String ceoName) {
-        this.ceoName = ceoName;
-    }
-
-    public String getIndustryCode() {
-        return industryCode;
-    }
-
-    public void setIndustryCode(String industryCode) {
-        this.industryCode = industryCode;
-    }
-
-    public Date getEstablishedDate() {
-        return establishedDate;
-    }
-
-    public void setEstablishedDate(Date establishedDate) {
-        this.establishedDate = establishedDate;
-    }
-
-    public String getIndustry() {
-        return industry;
-    }
-
-    public void setIndustry(String industry) {
-        this.industry = industry;
-    }
-
-    public String getBusinessItem() {
-        return businessItem;
-    }
-
-    public void setBusinessItem(String businessItem) {
-        this.businessItem = businessItem;
-    }
-
-    public FounderCarrerType getFounderCarrerType() {
-        return founderCarrerType;
-    }
-
-    public void setFounderCarrerType(FounderCarrerType founderCarrerType) {
-        this.founderCarrerType = founderCarrerType;
-    }
-
-    public FounderUnivType getFounderUnivType() {
-        return founderUnivType;
-    }
-
-    public void setFounderUnivType(FounderUnivType founderUnivType) {
-        this.founderUnivType = founderUnivType;
-    }
-
-    public Set<String> getCertifications() {
-        return certifications;
-    }
-
-
-    public void setCertifications(Set<String> certifications) {
-        Set<String> validCertifications = Set.of("연구소기업", "초기창업기업", "벤처기업");
-        for (String certification : certifications) {
-            if (!validCertifications.contains(certification)) {
-                throw new IllegalArgumentException("Invalid certification type: " + certification);
-            }
-        }
-        this.certifications = certifications;
-    }
-
-
-    public BigInteger getCapital() {
-        return capital;
-    }
-
-    public void setCapital(BigInteger capital) {
-        this.capital = capital;
-    }
-
-    public BigInteger getFaceValue() {
-        return faceValue;
-    }
-
-    public void setFaceValue(BigInteger faceValue) {
-        this.faceValue = faceValue;
-    }
-
-    public String getInvestmentStage() {
-        return investmentStage;
-    }
-
-    public void setInvestmentStage(String investmentStage) {
-        this.investmentStage = investmentStage;
-    }
-
-    public String getEnterpriseValue() {
-        return enterpriseValue;
-    }
-
-    public void setEnterpriseValue(String enterpriseValue) {
-        this.enterpriseValue = enterpriseValue;
-    }
-
-    public Integer getFourInsuranceMembers() {
-        return fourInsuranceMembers;
-    }
-
-    public void setFourInsuranceMembers(Integer fourInsuranceMembers) {
-        this.fourInsuranceMembers = fourInsuranceMembers;
+    public enum CertificationType {
+        연구소기업, 초기창업기업, 벤처기업, 기타
     }
 }
