@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title}">기업 신규등록</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            height: 100vh;
+        }
+
+        .main {
+            flex-grow: 1; /* 메인 영역 전체 너비 차지 */
+            display: flex;
+            flex-direction: column; /* 세로 정렬 */
+            width: 100%; /* 네비게이션 바와 동일한 너비 */
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+            overflow: auto;
+            width: 100%; /* 좌측 뭉침 방지 */
+        }
+        .table-bordered th {
+            background-color: #f8f9fa; /* 아주 연한 회색 (#f8f9fa는 Bootstrap 기본 색상 중 하나) */
+            color: #000; /* 텍스트 색상을 검정으로 설정 */
+        }
+        .table-bordered th, .table-bordered td {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        /* 선택된 행의 배경색 스타일 */
+        .highlight {
+            background-color: #307CF9;
+            color: white; /* 선택된 행의 텍스트 색상 */
+        }
+        .btn-group {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+    </style>
+</head>
+
+<body>
+<div th:replace="fragments/sidebar :: sidebar"></div>
+<div class="main">
+    <div th:replace="fragments/navbar :: navbar"></div>
+
+    <div class="main-content">
+        <div class="container">
+            <form th:action="@{/api/companies}" method="post">
+                <!-- 기업정보 -->
+                <h4>1. 기업정보</h4>
+                <table class="table table-bordered">
+                    <tbody>
+                    <tr>
+                        <th>회사명</th>
+                        <td><input type="text" class="form-control" name="companyName" required></td>
+                        <th>창업형태</th>
+                        <td>
+                            <div class="d-flex align-items-center">
+                                <select class="form-select me-3" name="founderCarrerType" style="width: auto;">
+                                    <option value="교수창업">교수창업</option>
+                                    <option value="학생창업">학생창업</option>
+                                    <option value="교원창업">교원창업</option>
+                                </select>
+                                <div class="form-check">
+                                    <input type="hidden" name="isEarlyStageStartup" value="false">
+                                    <input type="checkbox" class="form-check-input" id="isEarlyStageStartup" name="isEarlyStageStartup" value="true">
+                                    <label for="isEarlyStageStartup" class="form-check-label">초기창업</label>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>대표자</th>
+                        <td><input type="text" class="form-control" name="ceoName"></td>
+                        <th>창업대학</th>
+                        <td>
+                            <select class="form-select" name="founderUnivType">
+                                <option value="고려대">고려대</option>
+                                <option value="비고려대">비고려대</option>
+                                <option value="기타">기타</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>설립일자</th>
+                        <td><input type="date" class="form-control" name="establishedDate"></td>
+                        <th>인증기업구분</th>
+                        <td>
+                            <select class="form-select" name="certificationType">
+                                <option value="벤처기업">벤처기업</option>
+                                <option value="이노비즈">이노비즈</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>법인등록번호</th>
+                        <td><input type="text" class="form-control" name="corporateId"></td>
+                        <th>사업아이템</th>
+                        <td><input type="text" class="form-control" name="businessItem"></td>
+                    </tr>
+                    <tr>
+                        <th>사업자등록번호</th>
+                        <td><input type="text" class="form-control" name="businessId"></td>
+                        <th>기업주소</th>
+                        <td><input type="text" class="form-control" name="address"></td>
+                    </tr>
+                    <tr>
+                        <th>기술분야</th>
+                        <td><input type="text" class="form-control" name="industry"></td>
+                        <th>표준산업분류코드</th>
+                        <td><input type="text" class="form-control" name="industryCode"></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <h4 style="margin-top: 30px;" >2. 투자정보</h4>
+                <table class="table table-bordered">
+                    <tbody>
+                    <tr>
+                        <th>투자일자</th>
+                        <td style="width: 23%;"><input type="date" class="form-control" name="investmentDate"></td>
+                        <th>투자재원</th>
+                        <td colspan="3">
+                            <select class="form-select" name="investmentFunding">
+                                <option value="대학창업2호">대학창업2호</option>
+                                <option value="기타재원">기타재원</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>투자방법</th>
+                        <td>
+                            <select class="form-select" name="investmentMethod">
+                                <option value="현금">지분</option>
+                                <option value="현물">현물</option>
+                            </select>
+                        </td>
+                        <th>투자금액</th>
+                        <td>
+                            <input type="text" class="form-control" name="cashInvestmentPrice" placeholder="현금">
+                            <input type="text" class="form-control mt-2" name="nonCashInvestmentPrice" placeholder="현물">
+                        </td>
+                        <th>총계</th>
+                        <td><input type="text" class="form-control" name="totalAcquisitionAmount" readonly></td>
+                    </tr>
+                    <tr>
+                        <th>인수지분율</th>
+                        <td><input type="text" class="form-control" name="initialInvestmentShare"></td>
+                        <!--
+                        <th>지분율 유지기간</th>
+                        <td colspan="3">
+                            <div class="d-flex align-items-center">
+                                <input type="date" class="form-control me-2" name="shareStartDate" style="width: 45%;">
+                                ~
+                                <input type="date" class="form-control ms-2" name="shareEndDate" style="width: 45%;">
+                            </div>
+                        </td>
+                        -->
+                    </tr>
+                    <tr>
+                        <th>투자상품</th>
+                        <td>
+                            <select class="form-select" name="investmentProduct">
+                                <option value="RCPS">RCPS</option>
+                                <option value="주식">주식</option>
+                            </select>
+                        </td>
+                        <th>투자단가</th>
+                        <td>
+                            <input type="text" class="form-control" name="cashInvestmentUnit" placeholder="현금">
+                            <input type="text" class="form-control mt-2" name="nonCashInvestmentUnit" placeholder="현물">
+                        </td>
+                        <th>총계</th>
+                        <td><input type="text" class="form-control" name="totalInvestmentUnit" readonly></td>
+                    </tr>
+                    <tr>
+                        <th>액면가</th>
+                        <td><input type="text" class="form-control" name="faceValue"></td>
+                        <th>설립자본금</th>
+                        <td><input type="text" class="form-control" name="capital" placeholder="설립자본금"></td>
+                        <th>인수주식수</th>
+                        <td><input type="text" class="form-control" name="acquisitionCost"></td>
+                    </tr>
+                    <tr>
+                        <th>투자밸류</th>
+                        <td><input type="text" class="form-control" name="investmentValue"></td>
+                        <th>투자단계</th>
+                        <td><input type="text" class="form-control" name="investmentStage" placeholder="투자단계"></td>
+                        <th>TIPS</th>
+                        <td>
+                            <div class="form-check form-check-inline">
+                                <input type="radio" class="form-check-input" id="tipsYes" name="tipsSupport" value="true">
+                                <label class="form-check-label" for="tipsYes">Y</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input type="radio" class="form-check-input" id="tipsNo" name="tipsSupport" value="false">
+                                <label class="form-check-label" for="tipsNo">N</label>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <th>상장 여부</th>
+                        <td>
+                            <div class="form-check form-check-inline">
+                                <input type="radio" class="form-check-input" id="listedYes" name="isListed" value="true">
+                                <label class="form-check-label" for="listedYes">Y</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input type="radio" class="form-check-input" id="listedNo" name="isListed" value="false">
+                                <label class="form-check-label" for="listedNo">N</label>
+                            </div>
+                        </td>
+                        <th>상장시장</th>
+                        <td>
+                            <select class="form-select" name="listingMarket">
+                                <option value="코스피">코스피</option>
+                                <option value="코스닥">코스닥</option>
+                                <option value="나스닥">나스닥</option>
+                            </select>
+                        </td>
+                        <th>상장일자</th>
+                        <td><input type="date" class="form-control" name="listingDate"></td>
+                    </tr>
+                    <tr>
+                        <th rowspan="3">투자 포인트</th>
+                        <td colspan="5"><input type="text" class="form-control" name="investmentPoint1"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="5"><input type="text" class="form-control" name="investmentPoint2"></td>
+                    </tr>
+                    <tr>
+                        <td colspan="5"><input type="text" class="form-control" name="investmentPoint3"></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="text-end">
+                    <button type="submit" class="btn btn-primary">등록</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS -->
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/common.js}"></script>
+</body>
+</html>
+
+

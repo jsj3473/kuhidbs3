@@ -151,8 +151,8 @@
     <p class="title">KUH IDBS</p>
 
     <!-- 입력 필드 -->
-    <div class="input-section">
-        <form th:action="@{/login}" method="post">
+    <form th:action="@{/login}" method="post">
+        <div class="input-section">
             <div class="mb-3">
                 <input type="text" class="form-control" id="username" name="username" placeholder="사원번호를 입력하세요." required>
             </div>
@@ -160,11 +160,11 @@
                 <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호를 입력하세요." required>
             </div>
             <a href="#" class="password-change" data-bs-toggle="modal" data-bs-target="#passwordModal">비밀번호 변경</a>
-        </form>
-    </div>
+        </div>
+        <!-- 로그인 버튼 -->
+        <button type="submit" class="btn login-button">로그인</button>
+    </form>
 
-    <!-- 로그인 버튼 -->
-    <button type="submit" class="btn login-button">로그인</button>
 </div>
 
 <!-- 비밀번호 변경 모달 -->

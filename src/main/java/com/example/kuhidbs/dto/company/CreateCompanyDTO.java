@@ -1,6 +1,7 @@
 package com.example.kuhidbs.dto.company;
 
 import com.example.kuhidbs.entity.Company;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -8,6 +9,8 @@ import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -23,68 +26,91 @@ public class CreateCompanyDTO {
     private String corporateId; // 법인등록번호
     private String ceoName; // 대표자
     private String industryCode; // 표준산업분류코드
-    private Date establishedDate; // 설립일자
+    private String establishedDate; // 설립일자
     private String industry; // 기술분야
     private String businessItem; // 사업아이템
     private String founderCarrerType; // 창업형태-소속 (Enum 대신 문자열로 받음)
     private String founderUnivType; // 창업형태-설립자 (Enum 대신 문자열로 받음)
     private String certificationType; // 인증기업분류 (Enum 대신 문자열로 받음)
     private BigInteger capital; // 설립자본금
+    private Boolean isEarlyStageStartup; // 초기창업기업 여부
     private BigInteger faceValue; // 액면가
     private String investmentStage; // 투자단계
-    private Integer fourInsuranceMembers; // 4대보험가입자수
-    private BigDecimal currentCompanyValue; // 현재기업가치
-    private Date investmentDate; // 투자일자
+    private BigInteger investmentValue; // 투자밸류
+    private String investmentDate; // 투자일자
     private String investmentFunding; // 투자재원
     private String investmentMethod; // 투자방법
-    private BigDecimal investmentPrice; // 투자금액
+    private BigInteger cashInvestmentPrice; // 투자금액-현금
+    private BigInteger nonCashInvestmentPrice; // 투자금액-현물
+    private BigInteger cashInvestmentUnit; //투자단가-현금
+    private BigInteger nonCashInvestmentUnit; //투자단가-현물
     private BigDecimal initialInvestmentShare; // 최초투자지분율
     private String investmentProduct; // 투자상품
-    private BigDecimal acquisitionCost; // 인수주식수
+    private BigInteger acquisitionCost; // 인수주식수
     private String tipsSupport; // TIPS 여부
+    private Boolean isListed; //상장여부
     private String listingMarket; // 상장시장
-    private Date listingDate; // 상장일자
-    private List<String> explorers; // 발굴자 (여러 명 가능)
-    private List<String> reviewers; // 심사자 (여러 명 가능)
-    private String postManager; // 사후관리자
+    private String listingDate; // 상장일자
+    private String investmentPoint1; // 투자포인트1
+    private String investmentPoint2; // 투자포인트2
+    private String investmentPoint3; // 투자포인트3
 
-    // toEntity 메소드 추가
+    private static final ThreadLocal<SimpleDateFormat> dateFormat =
+            ThreadLocal.withInitial(() -> new SimpleDateFormat("yyyy-MM-dd"));
+
+
+    private Date parseDate(String date) {
+        try {
+            return date != null ? dateFormat.get().parse(date) : null;
+        } catch (ParseException e) {
+            throw new RuntimeException("Invalid date format in CreateCompanyDTO", e);
+        }
+    }
+
     public Company toEntity() {
         Company company = new Company();
+
         company.setCompanyName(this.companyName);
         company.setAddress(this.address);
         company.setBusinessId(this.businessId);
         company.setCorporateId(this.corporateId);
         company.setCeoName(this.ceoName);
         company.setIndustryCode(this.industryCode);
-        company.setEstablishedDate(this.establishedDate);
         company.setIndustry(this.industry);
         company.setBusinessItem(this.businessItem);
+        company.setFounderCarrerType(this.founderCarrerType);
+        company.setFounderUnivType(this.founderUnivType);
+        company.setCertificationType(this.certificationType);
 
-        // Enum 변환
-        company.setFounderCarrerType(Company.FounderCarrerType.valueOf(this.founderCarrerType));
-        company.setFounderUnivType(Company.FounderUnivType.valueOf(this.founderUnivType));
-        company.setCertificationType(Company.CertificationType.valueOf(this.certificationType));
+        // Date 변환
+        company.setEstablishedDate(parseDate(this.establishedDate));
+        company.setInvestmentDate(parseDate(this.investmentDate));
+        company.setListingDate(parseDate(this.listingDate));
 
+        // 기타 필드
         company.setCapital(this.capital);
+        company.setIsEarlyStageStartup(this.isEarlyStageStartup);
         company.setFaceValue(this.faceValue);
         company.setInvestmentStage(this.investmentStage);
-        company.setFourInsuranceMembers(this.fourInsuranceMembers);
-        company.setCurrentCompanyValue(this.currentCompanyValue);
-        company.setInvestmentDate(this.investmentDate);
+        company.setInvestmentValue(this.investmentValue);
         company.setInvestmentFunding(this.investmentFunding);
         company.setInvestmentMethod(this.investmentMethod);
-        company.setInvestmentPrice(this.investmentPrice);
+        company.setCashInvestmentPrice(this.cashInvestmentPrice);
+        company.setNonCashInvestmentPrice(this.nonCashInvestmentPrice);
+        company.setCashInvestmentUnit(this.cashInvestmentUnit);
+        company.setNonCashInvestmentUnit(this.nonCashInvestmentUnit);
         company.setInitialInvestmentShare(this.initialInvestmentShare);
         company.setInvestmentProduct(this.investmentProduct);
         company.setAcquisitionCost(this.acquisitionCost);
         company.setTipsSupport(this.tipsSupport);
+        company.setIsListed(this.isListed);
         company.setListingMarket(this.listingMarket);
-        company.setListingDate(this.listingDate);
-        company.setExplorers(this.explorers);
-        company.setReviewers(this.reviewers);
-        company.setPostManager(this.postManager);
+        company.setInvestmentPoint1(this.investmentPoint1);
+        company.setInvestmentPoint2(this.investmentPoint2);
+        company.setInvestmentPoint3(this.investmentPoint3);
 
         return company;
     }
+
+
 }

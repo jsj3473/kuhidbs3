@@ -28,10 +28,10 @@ public class Company {
     @Column(name = "address", columnDefinition = "TEXT")
     private String address; // 기업주소
 
-    @Column(name = "business_id", length = 20, unique = true)
+    @Column(name = "business_id", length = 20)
     private String businessId; // 사업자등록번호
 
-    @Column(name = "corporate_id", length = 20, unique = true)
+    @Column(name = "corporate_id", length = 20)
     private String corporateId; // 법인등록번호
 
     @Column(name = "ceo_name", length = 50)
@@ -50,17 +50,17 @@ public class Company {
     @Column(name = "business_item", columnDefinition = "TEXT")
     private String businessItem; // 사업아이템
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "founder_carrer_type", length = 20)
-    private FounderCarrerType founderCarrerType; // 창업형태-소속
+    private String founderCarrerType; // 창업형태-소속
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "founder_univ_type", length = 20)
-    private FounderUnivType founderUnivType; // 창업형태-설립자
+    private String founderUnivType; // 창업형태-설립자
 
-    @Enumerated(EnumType.STRING)
     @Column(name = "certification_type", length = 20)
-    private CertificationType certificationType; // 인증기업분류
+    private String certificationType; // 인증기업구분
+
+    @Column(name = "is_early_stage_startup")
+    private Boolean isEarlyStageStartup = false; // 초기창업기업 여부
 
     @Column(name = "capital", precision = 19, scale = 0)
     private BigInteger capital; // 설립자본금
@@ -71,11 +71,8 @@ public class Company {
     @Column(name = "investment_stage", length = 50)
     private String investmentStage; // 투자단계
 
-    @Column(name = "four_insurance_members")
-    private Integer fourInsuranceMembers; // 4대보험가입자수
-
-    @Column(name = "current_company_value", precision = 19, scale = 2)
-    private BigDecimal currentCompanyValue; // 현재기업가치
+    @Column(name = "investment_value", precision = 19, scale = 2)
+    private BigInteger investmentValue; // 투자밸류
 
     @Temporal(TemporalType.DATE)
     @Column(name = "investment_date")
@@ -87,8 +84,17 @@ public class Company {
     @Column(name = "investment_method", length = 50)
     private String investmentMethod; // 투자방법
 
-    @Column(name = "investment_price", precision = 19, scale = 2)
-    private BigDecimal investmentPrice; // 투자금액
+    @Column(name = "cash_investment_price", precision = 19, scale = 2)
+    private BigInteger cashInvestmentPrice; // 투자금액-현금
+
+    @Column(name = "non_cash_investment_price", precision = 19, scale = 2)
+    private BigInteger nonCashInvestmentPrice; // 투자금액-현물
+
+    @Column(name = "cash_investment_unit")
+    private BigInteger cashInvestmentUnit; //투자단가-현금
+
+    @Column(name = "non_cash_investment_unit")
+    private BigInteger nonCashInvestmentUnit; //투자단가-현물
 
     @Column(name = "initial_investment_share", precision = 5, scale = 2)
     private BigDecimal initialInvestmentShare; // 최초투자지분율
@@ -96,42 +102,38 @@ public class Company {
     @Column(name = "investment_product", columnDefinition = "TEXT")
     private String investmentProduct; // 투자상품
 
-    @Column(name = "acquisition_cost", precision = 19, scale = 2)
-    private BigDecimal acquisitionCost; // 인수주식수
+    @Column(name = "acquisition_cost")
+    private BigInteger acquisitionCost; // 인수주식수
 
     @Column(name = "tips_support", length = 50)
     private String tipsSupport; // TIPS 여부
 
+    @Column(name = "is_listed")
+    private Boolean isListed = false; //상장여부
+
     @Column(name = "listing_market", length = 50)
     private String listingMarket; // 상장시장
+
+    @Column(name = "investment_point1", length = 300)
+    private String investmentPoint1; // 투자포인트1
+
+    @Column(name = "investment_point2", length = 300)
+    private String investmentPoint2; // 투자포인트2
+
+    @Column(name = "investment_point3", length = 300)
+    private String investmentPoint3; // 투자포인트3
 
     @Temporal(TemporalType.DATE)
     @Column(name = "listing_date")
     private Date listingDate; // 상장일자
 
-    @ElementCollection
-    @CollectionTable(name = "company_explorers", joinColumns = @JoinColumn(name = "company_id"))
-    @Column(name = "explorer_name")
-    private List<String> explorers; // 발굴자 (여러 명 가능)
-
-    @ElementCollection
-    @CollectionTable(name = "company_reviewers", joinColumns = @JoinColumn(name = "company_id"))
-    @Column(name = "reviewer_name")
-    private List<String> reviewers; // 심사자 (여러 명 가능)
-
-    @Column(name = "post_manager", length = 50)
-    private String postManager; // 사후관리자
-
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(nullable = false, updatable = false)
+    private Date createdAt;
     // Enum 클래스 정의
-    public enum FounderCarrerType {
-        교원창업, 교우창업, 학생창업, 기타
-    }
 
-    public enum FounderUnivType {
-        고려대, 비고려대, 기타
-    }
-
-    public enum CertificationType {
-        연구소기업, 초기창업기업, 벤처기업, 기타
+    @PrePersist
+    protected void onCreate() {
+        this.createdAt = new Date(); // 현재 시간 자동 설정
     }
 }

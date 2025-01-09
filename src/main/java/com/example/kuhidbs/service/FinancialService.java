@@ -8,6 +8,8 @@ import com.example.kuhidbs.repository.FinancialRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class FinancialService {
 
@@ -29,5 +31,10 @@ public class FinancialService {
         // DTO → Entity 변환 및 저장
         Financial financial = createFinancialDTO.toEntity(company);
         financialRepository.save(financial);
+    }
+
+    // Get all financial records
+    public List<Financial> getAllFinancials() {
+        return financialRepository.findAll();
     }
 }

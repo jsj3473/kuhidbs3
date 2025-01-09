@@ -10,13 +10,13 @@
 <body>
 <nav class="navbar navbar-dark bg-dark" th:fragment="navbar">
     <div class="container-fluid">
-        <!-- 로고 텍스트 -->
-        <span class="navbar-brand mb-0 h1">메인 페이지</span>
+        <!-- 동적 타이틀 -->
+        <span class="navbar-brand mb-0 h1" th:text="${title}">메인 페이지</span>
 
         <!-- 우측 콘텐츠 -->
         <div class="d-flex align-items-center">
             <div class="employee-info text-white me-3">
-                <div>000000 김영진</div>
+                <div th:text="${empId} + ' ' + ${empName}">000000 김영진</div>
             </div>
             <img src="/images/EmpImg.png" alt="사원 사진" class="emp-img me-3">
             <button class="btn btn-outline-light btn-sm" id="logoutButton" onclick="confirmLogout()">로그아웃</button>

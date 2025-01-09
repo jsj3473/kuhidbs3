@@ -7,6 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/financial")
 public class FinancialController {
@@ -23,5 +25,12 @@ public class FinancialController {
     public ResponseEntity<String> createFinancial(@RequestBody CreateFinancialDTO createFinancialDTO) {
         financialService.createFinancial(createFinancialDTO);
         return ResponseEntity.ok("Financial data created successfully.");
+    }
+
+    // Get all financial records
+    @GetMapping
+    public ResponseEntity<List<Financial>> getAllFinancials() {
+        List<Financial> financials = financialService.getAllFinancials();
+        return ResponseEntity.ok(financials);
     }
 }
