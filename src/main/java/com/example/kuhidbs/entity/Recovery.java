@@ -1,5 +1,6 @@
 package com.example.kuhidbs.entity;
 
+import com.example.kuhidbs.entity.company.Company;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,5 +1,6 @@
-package com.example.kuhidbs.entity;
+package com.example.kuhidbs.entity.company;
 
+import com.example.kuhidbs.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,7 +11,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Contact {
+public class Contact extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

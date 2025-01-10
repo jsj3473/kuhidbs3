@@ -1,9 +1,9 @@
 package com.example.kuhidbs.service;
 
 import com.example.kuhidbs.dto.financial.CreateFinancialDTO;
-import com.example.kuhidbs.entity.Company;
+import com.example.kuhidbs.entity.company.Company;
 import com.example.kuhidbs.entity.Financial;
-import com.example.kuhidbs.repository.CompanyRepository;
+import com.example.kuhidbs.repository.company.CompanyRepository;
 import com.example.kuhidbs.repository.FinancialRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

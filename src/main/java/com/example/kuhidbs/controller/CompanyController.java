@@ -1,14 +1,13 @@
 package com.example.kuhidbs.controller;
 
+
 import com.example.kuhidbs.dto.company.CreateCompanyDTO;
-import com.example.kuhidbs.entity.Company;
-import com.example.kuhidbs.service.CompanyService;
+import com.example.kuhidbs.entity.company.Company;
+import com.example.kuhidbs.service.company.CompanyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/companies")
@@ -27,11 +26,8 @@ public class CompanyController {
         return ResponseEntity.status(HttpStatus.CREATED).body(createdCompany);
     }    // Show all companies
 
-    @GetMapping
-    public ResponseEntity<List<Company>> showAllCompanies() {
-        List<Company> companies = companyService.getAllCompanies();
-        return ResponseEntity.ok(companies);
-    }
+
+
 
 
 }

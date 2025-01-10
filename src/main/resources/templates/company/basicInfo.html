@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>기본정보</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            height: 100vh;
+        }
+
+        .main {
+            flex-grow: 1; /* 메인 영역 전체 너비 차지 */
+            display: flex;
+            flex-direction: column; /* 세로 정렬 */
+            width: 100%; /* 네비게이션 바와 동일한 너비 */
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+            overflow: auto;
+            width: 100%; /* 좌측 뭉침 방지 */
+        }
+
+
+        .action-buttons {
+            display: inline-flex;
+            gap: 10px;
+            margin-left: 20px;
+        }
+
+        .table-container {
+            display: flex;
+            justify-content: space-between;
+            gap: 20px; /* 테이블 간 간격 */
+        }
+
+        .table-wrapper {
+            flex: 1;
+            min-width: 0;
+        }
+        .table-bordered th {
+            background-color: #f8f9fa; /* 아주 연한 회색 (#f8f9fa는 Bootstrap 기본 색상 중 하나) */
+            color: #000; /* 텍스트 색상을 검정으로 설정 */
+        }
+        .table-bordered th, .table-bordered td {
+            vertical-align: middle;
+            text-align: center;
+        }
+         select.form-control {
+             min-width: 150px; /* 최소 너비 설정 */
+             width: auto; /* 내용에 따라 자동 조정 */
+         }
+
+        h2 {
+            margin-top: 10px;
+            margin-bottom: 25px;
+        }
+        h5 {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+
+<div class="main">
+
+    <div class="main-content">
+        <div class="container">
+            <h2>기본정보 등록</h2>
+            <div class="table-container">
+                <!-- 발굴자 테이블 -->
+                <div class="table-wrapper">
+                    <h5>
+                        발굴자
+                        <span class="action-buttons">
+                    <button type="button" class="btn btn-sm" id="addExplorerRow">행 추가</button>
+                    <button type="button" class="btn btn-sm" id="removeExplorerRow">행 삭제</button>
+                </span>
+                    </h5>
+                    <table class="table table-bordered" id="explorerTable">
+                        <thead>
+                        <tr>
+                            <th>이름</th>
+                            <th>기여도</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><input type="text" class="form-control" name="explorers[0].name" placeholder="이름"></td>
+                            <td><input type="number" class="form-control" name="explorers[0].share" placeholder="기여도"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- 심사자 테이블 -->
+                <div class="table-wrapper">
+                    <h5>
+                        심사자
+                        <span class="action-buttons">
+                    <button type="button" class="btn btn-sm" id="addReviewerRow">행 추가</button>
+                    <button type="button" class="btn btn-sm" id="removeReviewerRow">행 삭제</button>
+                </span>
+                    </h5>
+                    <table class="table table-bordered" id="reviewerTable">
+                        <thead>
+                        <tr>
+                            <th>이름</th>
+                            <th>기여도</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><input type="text" class="form-control" name="reviewers[0].name" placeholder="이름"></td>
+                            <td><input type="number" class="form-control" name="reviewers[0].share" placeholder="기여도"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="table-wrapper">
+                <h5 class="mt-4">
+                    사후관리자
+                    <span class="action-buttons">
+                <button type="button" class="btn btn-sm" id="addPostManagerRow">행 추가</button>
+                <button type="button" class="btn btn-sm" id="removePostManagerRow">행 삭제</button>
+            </span>
+                </h5>
+                <table class="table table-bordered" id="postManagerTable">
+                    <thead>
+                    <tr>
+                        <th>등록일자</th>
+                        <th>이름</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td><input type="date" class="form-control" name="postManagers[0].date"></td>
+                        <td><input type="text" class="form-control" name="postManagers[0].name" placeholder="이름"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="text-end">
+                <button type="button" class="btn btn-primary" id="saveParticipantButton">저장</button>
+            </div>
+        </div>
+
+        <div class="container mt-4">
+            <div class="table-container">
+                <div class="table-wrapper">
+                    <h5>
+                        실무자
+                        <span class="action-buttons">
+                    <button type="button" class="btn btn-sm" id="addRow">행 추가</button>
+                    <button type="button" class="btn btn-sm" id="removeRow">행 삭제</button>
+                </span>
+                    </h5>
+                    <table class="table table-bordered" id="roleTable">
+                        <thead>
+                        <tr>
+                            <th>이름</th>
+                            <th>직책</th>
+                            <th>이메일</th>
+                            <th>전화번호</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td><input type="text" class="form-control" name="roles[0].name" placeholder="이름"></td>
+                            <td>
+                                <select class="form-control" name="roles[0].position">
+                                    <option value="대표자">대표자</option>
+                                    <option value="실무자">실무자</option>
+                                </select>
+                            </td>
+                            <td><input type="email" class="form-control" name="roles[0].email" placeholder="이메일"></td>
+                            <td><input type="text" class="form-control" name="roles[0].phoneNumber" placeholder="전화번호"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="text-end">
+                <button type="submit" class="btn btn-primary" id="saveButton">저장</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const tables = ["explorerTable", "reviewerTable", "postManagerTable", "roleTable"];
+        let lastSelectedTable = null; // 마지막으로 선택된 테이블 ID
+
+        // 행 클릭 이벤트 추가
+        tables.forEach((tableId) => {
+            const table = document.getElementById(tableId);
+
+            table.addEventListener("click", (event) => {
+                if (event.target.tagName === "TD" || event.target.tagName === "INPUT" || event.target.tagName === "SELECT") {
+                    // 이전 테이블의 선택된 행 색상 해제
+                    if (lastSelectedTable && lastSelectedTable !== tableId) {
+                        const lastTable = document.getElementById(lastSelectedTable);
+                        [...lastTable.rows].forEach(row => row.classList.remove("table-primary"));
+                    }
+
+                    // 현재 행 색상 설정
+                    [...table.rows].forEach(row => row.classList.remove("table-primary"));
+                    event.target.closest("tr").classList.add("table-primary");
+
+                    // 현재 테이블을 마지막 선택된 테이블로 설정
+                    lastSelectedTable = tableId;
+                }
+            });
+        });
+
+        // 행 추가 및 삭제 함수
+        function addRow(tableId, defaultValues = []) {
+            const tableBody = document.querySelector(`#${tableId} tbody`);
+            const rowIndex = tableBody.rows.length;
+            const newRow = tableBody.insertRow();
+
+            defaultValues.forEach((value, index) => {
+                const cell = newRow.insertCell(index);
+                if (value.type === "text" || value.type === "number" || value.type === "date" || value.type === "email") {
+                    cell.innerHTML = `<input type="${value.type}" class="form-control" name="${value.name}[${rowIndex}].${value.key}" placeholder="${value.placeholder || ''}">`;
+                } else if (value.type === "select") {
+                    const options = value.options.map(opt => `<option value="${opt}">${opt}</option>`).join('');
+                    cell.innerHTML = `<select class="form-control" name="${value.name}[${rowIndex}].${value.key}">${options}</select>`;
+                }
+            });
+        }
+
+        function removeSelectedRow(tableId) {
+            const table = document.getElementById(tableId);
+            const selectedRow = table.querySelector(".table-primary");
+            if (selectedRow) {
+                selectedRow.remove();
+            } else {
+                alert("삭제할 행을 선택하세요.");
+            }
+        }
+
+        // 각 테이블에 행 추가/삭제 버튼 이벤트 연결
+        document.getElementById("addExplorerRow").addEventListener("click", () => addRow("explorerTable", [
+            { type: "text", name: "explorers", key: "name", placeholder: "이름" },
+            { type: "number", name: "explorers", key: "share", placeholder: "기여도" }
+        ]));
+
+        document.getElementById("removeExplorerRow").addEventListener("click", () => removeSelectedRow("explorerTable"));
+
+        document.getElementById("addReviewerRow").addEventListener("click", () => addRow("reviewerTable", [
+            { type: "text", name: "reviewers", key: "name", placeholder: "이름" },
+            { type: "number", name: "reviewers", key: "share", placeholder: "기여도" }
+        ]));
+
+        document.getElementById("removeReviewerRow").addEventListener("click", () => removeSelectedRow("reviewerTable"));
+
+        document.getElementById("addPostManagerRow").addEventListener("click", () => addRow("postManagerTable", [
+            { type: "date", name: "postManagers", key: "date" },
+            { type: "text", name: "postManagers", key: "name", placeholder: "이름" }
+        ]));
+
+        document.getElementById("removePostManagerRow").addEventListener("click", () => removeSelectedRow("postManagerTable"));
+
+        document.getElementById("addRow").addEventListener("click", () => addRow("roleTable", [
+            { type: "text", name: "roles", key: "name", placeholder: "이름" },
+            { type: "select", name: "roles", key: "position", options: ["대표자", "실무자"] },
+            { type: "email", name: "roles", key: "email", placeholder: "이메일" },
+            { type: "text", name: "roles", key: "phoneNumber", placeholder: "전화번호" }
+        ]));
+
+        document.getElementById("removeRow").addEventListener("click", () => removeSelectedRow("roleTable"));
+
+
+
+        /*저장*/
+        // 심사역 관리 데이터 수집 및 전송
+        document.getElementById("saveParticipantButton").addEventListener("click", function () {
+            const companyId = 2; // 고정값
+            const participantData = [];
+
+            // 발굴자 데이터 수집
+            const explorerRows = document.querySelectorAll("#explorerTable tbody tr");
+            explorerRows.forEach((row, index) => {
+                const name = row.querySelector(`[name="explorers[${index}].name"]`).value;
+                const share = parseFloat(row.querySelector(`[name="explorers[${index}].share"]`).value || 0);
+                participantData.push({
+                    companyId,
+                    name,
+                    share,
+                    type: "EXPLORER",
+                    appointmentDate: new Date().toISOString().split("T")[0] // 오늘 날짜
+                });
+            });
+
+            // 심사자 데이터 수집
+            const reviewerRows = document.querySelectorAll("#reviewerTable tbody tr");
+            reviewerRows.forEach((row, index) => {
+                const name = row.querySelector(`[name="reviewers[${index}].name"]`).value;
+                const share = parseFloat(row.querySelector(`[name="reviewers[${index}].share"]`).value || 0);
+                participantData.push({
+                    companyId,
+                    name,
+                    share,
+                    type: "REVIEWER",
+                    appointmentDate: new Date().toISOString().split("T")[0] // 오늘 날짜
+                });
+            });
+
+            // 사후관리자 데이터 수집
+            const managerRows = document.querySelectorAll("#postManagerTable tbody tr");
+            managerRows.forEach((row, index) => {
+                const name = row.querySelector(`[name="postManagers[${index}].name"]`).value;
+                const date = row.querySelector(`[name="postManagers[${index}].date"]`).value;
+                participantData.push({
+                    companyId,
+                    name,
+                    share: 0, // 기여도 없음
+                    type: "MANAGER",
+                    appointmentDate: date || new Date().toISOString().split("T")[0]
+                });
+            });
+
+            console.log("심사역 관리 데이터:", JSON.stringify(participantData, null, 2));
+            // 여기에 AJAX 또는 Fetch로 서버에 데이터 전송 추가 가능
+        });
+
+        // 실무자 관리 데이터 수집 및 전송
+        document.getElementById("saveButton").addEventListener("click", function () {
+            const companyId = 1; // 고정값
+            const roleData = [];
+
+            const roleRows = document.querySelectorAll("#roleTable tbody tr");
+            roleRows.forEach((row, index) => {
+                const name = row.querySelector(`[name="roles[${index}].name"]`).value;
+                const position = row.querySelector(`[name="roles[${index}].position"]`).value;
+                const email = row.querySelector(`[name="roles[${index}].email"]`).value;
+                const phoneNumber = row.querySelector(`[name="roles[${index}].phoneNumber"]`).value;
+
+                roleData.push({
+                    companyId,
+                    name,
+                    position,
+                    email,
+                    phoneNumber
+                });
+            });
+
+            console.log("실무자 관리 데이터:", JSON.stringify(roleData, null, 2));
+            // 여기에 AJAX 또는 Fetch로 서버에 데이터 전송 추가 가능
+        });
+
+
+
+
+
+    });
+</script>
+
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

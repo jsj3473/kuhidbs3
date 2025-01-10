@@ -13,8 +13,9 @@ import java.math.BigInteger;
 @Setter
 @ToString
 @NoArgsConstructor
-public class CreateCompanyDTO {
+public class ReadCompanyDTO {
 
+    private Integer companyId;
     private String companyName; // 회사명
     private String address; // 기업주소
     private String businessId; // 사업자등록번호
@@ -39,6 +40,7 @@ public class CreateCompanyDTO {
     private BigInteger nonCashInvestmentPrice; // 투자금액-현물
     private BigInteger cashInvestmentUnit; //투자단가-현금
     private BigInteger nonCashInvestmentUnit; //투자단가-현물
+    private BigDecimal initialInvestmentShare; // 최초투자지분율
     private String investmentProduct; // 투자상품
     private BigInteger acquisitionCost; // 인수주식수
     private String tipsSupport; // TIPS 여부
@@ -80,6 +82,7 @@ public class CreateCompanyDTO {
         company.setNonCashInvestmentPrice(this.nonCashInvestmentPrice);
         company.setCashInvestmentUnit(this.cashInvestmentUnit);
         company.setNonCashInvestmentUnit(this.nonCashInvestmentUnit);
+        company.setInitialInvestmentShare(this.initialInvestmentShare);
         company.setInvestmentProduct(this.investmentProduct);
         company.setAcquisitionCost(this.acquisitionCost);
         company.setTipsSupport(this.tipsSupport);

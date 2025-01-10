@@ -1,6 +1,6 @@
 package com.example.kuhidbs.dto.followup;
 
-import com.example.kuhidbs.entity.Company;
+import com.example.kuhidbs.entity.company.Company;
 import com.example.kuhidbs.entity.Followup;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

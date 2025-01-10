@@ -1,6 +1,6 @@
 package com.example.kuhidbs.dto.financial;
 
-import com.example.kuhidbs.entity.Company;
+import com.example.kuhidbs.entity.company.Company;
 import com.example.kuhidbs.entity.Financial;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

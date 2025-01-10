@@ -1,21 +1,24 @@
-package com.example.kuhidbs.entity;
+package com.example.kuhidbs.entity.company;
 
+import com.example.kuhidbs.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.LocalDate;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Table(name = "company")
 @Getter
 @Setter
 @NoArgsConstructor
-public class Company {
+@ToString
+public class Company extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -40,9 +43,8 @@ public class Company {
     @Column(name = "industry_code", length = 50)
     private String industryCode; // 표준산업분류코드
 
-    @Temporal(TemporalType.DATE)
     @Column(name = "established_date")
-    private Date establishedDate; // 설립일자
+    private String establishedDate; // 설립일자
 
     @Column(name = "industry", length = 50)
     private String industry; // 기술분야
@@ -74,9 +76,8 @@ public class Company {
     @Column(name = "investment_value", precision = 19, scale = 2)
     private BigInteger investmentValue; // 투자밸류
 
-    @Temporal(TemporalType.DATE)
     @Column(name = "investment_date")
-    private Date investmentDate; // 투자일자
+    private String investmentDate; // 투자일자
 
     @Column(name = "investment_funding", length = 100)
     private String investmentFunding; // 투자재원
@@ -123,17 +124,6 @@ public class Company {
     @Column(name = "investment_point3", length = 300)
     private String investmentPoint3; // 투자포인트3
 
-    @Temporal(TemporalType.DATE)
     @Column(name = "listing_date")
-    private Date listingDate; // 상장일자
-
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = false, updatable = false)
-    private Date createdAt;
-    // Enum 클래스 정의
-
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = new Date(); // 현재 시간 자동 설정
-    }
+    private String listingDate; // 상장일자
 }

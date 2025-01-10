@@ -1,7 +1,7 @@
-package com.example.kuhidbs.dto.contact;
+package com.example.kuhidbs.dto.company;
 
-import com.example.kuhidbs.entity.Company;
-import com.example.kuhidbs.entity.Contact;
+import com.example.kuhidbs.entity.company.Company;
+import com.example.kuhidbs.entity.company.Contact;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-public class CreateContactDTO {
+public class ContactDTO {
 
     private Integer companyId; // 회사 ID
     private String name; // 이름

@@ -11,6 +11,7 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/sidebar.css}">
     <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
     <style>
         body {
             margin: 0;
@@ -127,7 +128,7 @@
                 const rowData = rowToRetire.find('td').map(function () {
                     return $(this).text();
                 }).get();
-                alert("퇴직 처리 대상: " + rowData[2] + " (" + rowData[3] + ")");
+                alert("퇴직 처리 대상: " + rowData[1] + " (" + rowData[2] + ")");
                 // 퇴직 처리 로직 추가
             } else {
                 alert("퇴직 처리할 행을 선택하세요.");

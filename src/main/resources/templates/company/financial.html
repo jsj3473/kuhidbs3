@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>재무 및 인력상황</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            height: 100vh;
+        }
+
+        .main {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+            overflow: auto;
+            width: 100%;
+        }
+
+        .table-wrapper {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .table-bordered th {
+            background-color: #f8f9fa;
+            color: #000;
+        }
+
+        .table-bordered th, .table-bordered td {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        select.form-control {
+            width: auto; /* 내용에 따라 자동 조정 */
+        }
+
+        h2 {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .table-primary {
+            background-color: #cce5ff !important;
+        }
+
+    </style>
+</head>
+<body>
+<div class="main">
+    <div class="main-content">
+        <div class="container">
+            <div class="table-wrapper">
+                <h2>
+                    재무 및 인력상황
+                    <div class="action-buttons">
+                        <button type="button" class="btn btn-sm" id="addFinancialRow">행 추가</button>
+                        <button type="button" class="btn btn-sm" id="removeFinancialRow">행 삭제</button>
+                    </div>
+                </h2>
+                <table class="table table-bordered" id="financialTable">
+                    <thead>
+                    <tr>
+                        <th>회계연도</th>
+                        <th>매출액</th>
+                        <th>영업이익</th>
+                        <th>유동자산</th>
+                        <th>유동부채</th>
+                        <th>자본총계</th>
+                        <th>임직원 수</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <div class="d-flex">
+                                <input type="text" class="form-control" name="financials[0].fiscalYear" placeholder="회계연도">
+                                <select class="form-control ms-2" name="financials[0].fiscalHalf">
+                                    <option value="상반기">상반기</option>
+                                    <option value="하반기">하반기</option>
+                                </select>
+                            </div>
+                        </td>
+                        <td><input type="text" class="form-control number-format" name="financials[0].revenue" placeholder="매출액"></td>
+                        <td><input type="text" class="form-control number-format" name="financials[0].operatingProfit" placeholder="영업이익"></td>
+                        <td><input type="text" class="form-control number-format" name="financials[0].currentAssets" placeholder="유동자산"></td>
+                        <td><input type="text" class="form-control number-format" name="financials[0].currentLiabilities" placeholder="유동부채"></td>
+                        <td><input type="text" class="form-control number-format" name="financials[0].totalEquity" placeholder="자본총계"></td>
+                        <td><input type="number" class="form-control" name="financials[0].employeeCount" placeholder="임직원 수"></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="text-end">
+                    <button type="submit" class="btn btn-primary" id="saveButton">저장</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const table = document.getElementById("financialTable");
+
+        // 선택된 행 저장용 변수
+        let selectedRow = null;
+
+        // 테이블 행 클릭 이벤트
+        table.addEventListener("click", function (event) {
+            const row = event.target.closest("tr");
+            if (row && row.parentElement.tagName === "TBODY") {
+                // 기존 강조 제거
+                [...table.querySelectorAll("tbody tr")].forEach(r => r.classList.remove("table-primary"));
+
+                // 현재 행 강조
+                row.classList.add("table-primary");
+
+                // 선택된 행 저장
+                selectedRow = row;
+            }
+        });
+
+        // 행 추가
+        document.getElementById("addFinancialRow").addEventListener("click", () => {
+            const tbody = table.querySelector("tbody");
+            const rowIndex = tbody.rows.length;
+            const newRow = tbody.insertRow();
+
+            newRow.innerHTML = `
+                <td>
+                    <div class="d-flex">
+                        <input type="text" class="form-control" name="financials[${rowIndex}].fiscalYear" placeholder="회계연도">
+                        <select class="form-control ms-2" name="financials[${rowIndex}].fiscalHalf">
+                            <option value="상반기">상반기</option>
+                            <option value="하반기">하반기</option>
+                        </select>
+                    </div>
+                </td>
+                <td><input type="text" class="form-control number-format" name="financials[${rowIndex}].revenue" placeholder="매출액"></td>
+                <td><input type="text" class="form-control number-format" name="financials[${rowIndex}].operatingProfit" placeholder="영업이익"></td>
+                <td><input type="text" class="form-control number-format" name="financials[${rowIndex}].currentAssets" placeholder="유동자산"></td>
+                <td><input type="text" class="form-control number-format" name="financials[${rowIndex}].currentLiabilities" placeholder="유동부채"></td>
+                <td><input type="text" class="form-control number-format" name="financials[${rowIndex}].totalEquity" placeholder="자본총계"></td>
+                <td><input type="text" class="form-control" name="financials[${rowIndex}].employeeCount" placeholder="임직원 수"></td>
+            `;
+        });
+
+        // 행 삭제
+        document.getElementById("removeFinancialRow").addEventListener("click", () => {
+            if (selectedRow) {
+                selectedRow.remove();
+                selectedRow = null; // 선택 초기화
+            } else {
+                alert("삭제할 행을 선택하세요.");
+            }
+        });
+
+        // 천단위 콤마 추가 및 제거
+        table.addEventListener("input", function (event) {
+            if (event.target.classList.contains("number-format")) {
+                const input = event.target;
+                // 숫자만 남기기
+                const value = input.value.replace(/,/g, "");
+                if (!isNaN(value) && value !== "") {
+                    input.value = parseInt(value).toLocaleString("en-US");
+                }
+            }
+        });
+    });
+</script>
+
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

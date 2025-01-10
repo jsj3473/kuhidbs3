@@ -1,6 +1,6 @@
-package com.example.kuhidbs.repository;
+package com.example.kuhidbs.repository.company;
 
-import com.example.kuhidbs.entity.Company;
+import com.example.kuhidbs.entity.company.Company;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${title}">기업 정보관리</title>
+
+    <link rel="stylesheet" th:href="@{/css/datatables-custom.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            height: 100vh;
+        }
+
+        .main {
+            flex-grow: 1; /* 메인 영역 전체 너비 차지 */
+            display: flex;
+            flex-direction: column; /* 세로 정렬 */
+            width: 100%; /* 네비게이션 바와 동일한 너비 */
+            overflow: hidden; /* 넘침 방지 */
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+            overflow: auto;
+            width: 100%; /* 좌측 뭉침 방지 */
+        }
+
+        table {
+            width: 100%;
+            table-layout: auto; /* 자동 너비 배분 */
+        }
+
+        thead th {
+            white-space: nowrap; /* 헤더 텍스트 줄바꿈 방지 */
+        }
+
+        tbody td {
+            white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+            overflow: hidden; /* 넘치는 텍스트 숨김 */
+            text-overflow: ellipsis; /* 넘치는 텍스트를 ...으로 표시 */
+        }
+
+        .button-container {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .button-container button {
+            min-width: 100px;
+        }
+    </style>
+    <div th:replace="fragments/datatables.html :: datatables-head"></div>
+</head>
+
+<body>
+<div th:replace="fragments/sidebar :: sidebar"></div>
+
+<div class="main">
+
+    <div th:replace="fragments/navbar :: navbar"></div>
+
+    <div class="main-content">
+        <div class="table-container">
+            <table id="companyInfoTable" class="datatable table-hover">
+                <thead>
+                <tr>
+                    <th>No</th>
+                    <th>회사명</th>
+                    <th>기업주소</th>
+                    <th>사업자등록번호</th>
+                    <th>법인등록번호</th>
+                    <th>대표자</th>
+                    <th>표준산업분류코드</th>
+                    <th>설립일자</th>
+                    <th>기술분야</th>
+                    <th>사업아이템</th>
+                    <th>창업형태-소속</th>
+                    <th>창업형태-설립자</th>
+                    <th>인증기업분류</th>
+                    <th>설립자본금</th>
+                    <th>액면가</th>
+                    <th>투자단계</th>
+                    <th>현재기업가치</th>
+                    <th>투자일자</th>
+                    <th>투자재원</th>
+                    <th>투자방법</th>
+                    <th>투자금액</th>
+                    <th>최초투자지분율</th>
+                    <th>투자상품</th>
+                    <th>인수주식수</th>
+                    <th>TIPS 여부</th>
+                    <th>상장시장</th>
+                    <th>상장일자</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- Thymeleaf template -->
+                <tr th:each="company : ${companies}">
+                    <td th:text="${company.companyId}"></td>
+                    <td th:text="${company.companyName}"></td>
+                    <td th:text="${company.address}"></td>
+                    <td th:text="${company.businessId}"></td>
+                    <td th:text="${company.corporateId}"></td>
+                    <td th:text="${company.ceoName}"></td>
+                    <td th:text="${company.industryCode}"></td>
+                    <td th:text="${company.establishedDate}"></td>
+                    <td th:text="${company.industry}"></td>
+                    <td th:text="${company.businessItem}"></td>
+                    <td th:text="${company.founderCarrerType}"></td>
+                    <td th:text="${company.founderUnivType}"></td>
+                    <td th:text="${company.certificationType}"></td>
+                    <td th:text="${company.capital}"></td>
+                    <td th:text="${company.faceValue}"></td>
+                    <td th:text="${company.investmentStage}"></td>
+                    <td th:text="${company.investmentValue}"></td>
+                    <td th:text="${company.investmentDate}"></td>
+                    <td th:text="${company.investmentFunding}"></td>
+                    <td th:text="${company.investmentMethod}"></td>
+                    <td th:text="${company.cashInvestmentPrice}"></td>
+                    <td th:text="${company.initialInvestmentShare}"></td>
+                    <td th:text="${company.investmentProduct}"></td>
+                    <td th:text="${company.acquisitionCost}"></td>
+                    <td th:text="${company.tipsSupport}"></td>
+                    <td th:text="${company.listingMarket}"></td>
+                    <td th:text="${company.listingDate}"></td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+        <div class="button-container">
+            <button id="basicInfoButton" class="btn btn-dark">기본정보</button>
+            <button id="followUpInvestmentButton" class="btn btn-dark">후속투자</button>
+            <button id="financialStatementsButton" class="btn btn-dark">재무제표</button>
+            <button id="recoveryPerformanceButton" class="btn btn-dark">회수성과</button>
+            <button id="tipsButton" class="btn btn-dark">TIPS</button>
+            <button id="shareholderRegisterButton" class="btn btn-dark">주주명부</button>
+        </div>
+    </div>
+
+</div>
+
+
+
+<div th:replace="fragments/datatables.html :: datatables-body"></div>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script th:src="@{/js/common.js}"></script>
+<script>
+    let selectedRowData = null;
+
+    document.addEventListener("DOMContentLoaded", function () {
+        const table = document.getElementById("companyInfoTable");
+
+        // 테이블 행 클릭 이벤트 추가
+        table.addEventListener("click", function (event) {
+            const row = event.target.closest("tr");
+            if (row && row.parentElement.tagName === "TBODY") {
+                // 선택된 행 강조
+                [...table.querySelectorAll("tbody tr")].forEach(r => r.classList.remove("table-primary"));
+                row.classList.add("table-primary");
+
+                // 행 데이터 저장
+                selectedRowData = [...row.children].map(td => td.textContent);
+                document.getElementById("basicInfoButton").disabled = false; // 버튼 활성화
+            }
+        });// 기본정보 버튼 클릭 이벤트
+        document.getElementById("basicInfoButton").addEventListener("click", function () {
+            if (selectedRowData) {
+                const companyId = selectedRowData[0]; // No 열을 기준으로 회사 ID 추출
+                const popupUrl = `/company/basicInfo/${companyId}`; // 팝업 URL
+                window.open(popupUrl, "CompanyBasicInfo", "width=1000,height=600");
+            } else {
+                alert("행을 먼저 선택하세요.");
+            }
+        });
+
+        // 후속투자 버튼 클릭 이벤트
+        document.getElementById("followUpInvestmentButton").addEventListener("click", function () {
+            if (selectedRowData) {
+                const companyId = selectedRowData[0]; // No 열을 기준으로 회사 ID 추출
+                const popupUrl = `/company/followup/${companyId}`; // 팝업 URL
+                window.open(popupUrl, "FollowUpInvestment", "width=1200,height=800,scrollbars=yes,resizable=yes");
+            } else {
+                alert("행을 먼저 선택하세요.");
+            }
+        });
+
+        // 재무제표 버튼 클릭 이벤트
+        document.getElementById("financialStatementsButton").addEventListener("click", function () {
+            if (selectedRowData) {
+                const companyId = selectedRowData[0]; // No 열을 기준으로 회사 ID 추출
+                const popupUrl = `/company/financial/${companyId}`; // 팝업 URL
+                window.open(popupUrl, "FinancialStatements", "width=1200,height=800,scrollbars=yes,resizable=yes");
+            } else {
+                alert("행을 먼저 선택하세요.");
+            }
+        });
+    });
+</script>
+</body>
+</html>

@@ -21,7 +21,10 @@ $(document).ready(function () {
 
         // DataTables 초기화
         $('.datatable').DataTable({
-            dom: 'Bfrtip', // 버튼 UI 활성화
+            dom: "<'row'<'col-sm-12'tr>>" + // 테이블만 상단
+                "<'row'<'col-md-6 text-start'f><'col-md-6 text-end'B>>" + // 검색바와 버튼을 하단 배치
+                "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+            // dom: 'Bfrtip', // 버튼 UI 활성화
             scrollX: true, // 가로 스크롤 활성화
             scrollY: '400px', // 세로 스크롤 높이 설정
             scrollCollapse: true, // 내용이 적으면 스크롤 제거
@@ -37,6 +40,24 @@ $(document).ready(function () {
                 { targets: 4, width: '20%' } // 등록일자
             ],
             fixedColumns: true, // 열 너비 고정
+            fixedColumns: true, // 열 너비 고정
+            buttons: [
+                {
+                    extend: 'copy',
+                    className: 'btn btn-secondary btn-sm',
+                    text: 'Copy'
+                },
+                {
+                    extend: 'excel',
+                    className: 'btn btn-secondary btn-sm',
+                    text: 'Excel'
+                }//,
+                // {
+                //     extend: 'print',
+                //     className: 'btn btn-secondary btn-sm',
+                //     text: 'Print'
+                // }
+            ],
             language: {
                 search: "검색:",
                 lengthMenu: "페이지당 _MENU_ 개 보기",

@@ -1,9 +1,7 @@
 package com.example.kuhidbs.service;
 
-import com.example.kuhidbs.dto.followup.CreateFollowupDTO;
-import com.example.kuhidbs.entity.Company;
 import com.example.kuhidbs.entity.Followup;
-import com.example.kuhidbs.repository.CompanyRepository;
+import com.example.kuhidbs.repository.company.CompanyRepository;
 import com.example.kuhidbs.repository.FollowupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

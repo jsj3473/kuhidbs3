@@ -1,6 +1,6 @@
 package com.example.kuhidbs.dto.recovery;
 
-import com.example.kuhidbs.entity.Company;
+import com.example.kuhidbs.entity.company.Company;
 import com.example.kuhidbs.entity.Recovery;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

@@ -1,9 +1,9 @@
 package com.example.kuhidbs.controller;
 
 import com.example.kuhidbs.dto.recovery.CreateRecoveryDTO;
-import com.example.kuhidbs.entity.Company;
+import com.example.kuhidbs.entity.company.Company;
 import com.example.kuhidbs.entity.Recovery;
-import com.example.kuhidbs.service.CompanyService;
+import com.example.kuhidbs.service.company.CompanyService;
 import com.example.kuhidbs.service.RecoveryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
