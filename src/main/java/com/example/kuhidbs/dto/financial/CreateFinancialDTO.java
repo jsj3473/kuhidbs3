@@ -15,6 +15,7 @@ public class CreateFinancialDTO {
 
     private Integer companyId; // 회사 ID
     private Integer financialYear; // 연도
+    private String financialHalfYear; //반기
     private BigInteger revenue; // 매출액
     private BigInteger operatingProfit; // 영업이익
     private BigInteger netIncome; // 당기순이익
@@ -37,6 +38,7 @@ public class CreateFinancialDTO {
         Financial financial = new Financial();
         financial.setCompany(company);
         financial.setFinancialYear(this.financialYear);
+        financial.setFinancialHalfYear(this.financialHalfYear);
         financial.setRevenue(this.revenue);
         financial.setOperatingProfit(this.operatingProfit);
         financial.setNetIncome(this.netIncome);

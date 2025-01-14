@@ -177,7 +177,7 @@
                 investmentInstitution: row.querySelector(`[name="investments[${index}].investmentInstitution"]`).value,
                 fundName: row.querySelector(`[name="investments[${index}].fundName"]`).value,
                 investmentMethod: row.querySelector(`[name="investments[${index}].investmentMethod"]`).value,
-                investmentDate: row.querySelector(`[name="investments[${index}].investmentDate"]`).value,
+                investmentDate: new Date(row.querySelector(`[name="investments[${index}].investmentDate"]`).value), // Date 변환
                 acquisitionAmount: row.querySelector(`[name="investments[${index}].acquisitionAmount"]`).value,
                 acquisitionRatio: row.querySelector(`[name="investments[${index}].acquisitionRatio"]`).value,
                 investmentUnitPrice: row.querySelector(`[name="investments[${index}].investmentUnitPrice"]`).value,
@@ -186,6 +186,9 @@
 
             console.log("후속 투자 데이터:", JSON.stringify(data, null, 2));
         });
+
+
+
     });
 </script>
 

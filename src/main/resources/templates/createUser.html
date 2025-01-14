@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>사용자 등록</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+        }
+
+        .container {
+            width: 400px;
+            margin: 0 auto;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #f9f9f9;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        select.form-control-select {
+            width: 100%; /* 내용과 관계없이 넉넉하게 전체 너비 */
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        .btn-primary {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h2>사용자 등록</h2>
+    <div>
+        <div class="form-group">
+            <label for="id">사번</label>
+            <input type="text" id="id" name="id" class="form-control" placeholder="사번을 입력하세요">
+        </div>
+        <div class="form-group">
+            <label for="name">이름</label>
+            <input type="text" id="name" name="name" class="form-control" placeholder="이름을 입력하세요">
+        </div>
+        <div class="form-group">
+            <label for="role">권한</label>
+            <select id="role" name="role" class="form-control-select">
+                <option value="관리자">관리자</option>
+                <option value="사용자">사용자</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="password">초기 비밀번호</label>
+            <input type="password" id="password" name="password" class="form-control" placeholder="비밀번호를 입력하세요">
+        </div>
+        <div class="form-group">
+            <label for="registeredBy">등록자 사번</label>
+            <input type="text" id="registeredBy" name="registeredBy" class="form-control" placeholder="등록자 사번을 입력하세요">
+        </div>
+        <button class="btn btn-primary" id="saveUserButton">저장</button>
+    </div>
+</div>
+
+<script>
+    document.getElementById("saveUserButton").addEventListener("click", () => {
+        const userData = {
+            id: document.getElementById("id").value,
+            name: document.getElementById("name").value,
+            password: document.getElementById("password").value,
+            registeredBy: document.getElementById("registeredBy").value,
+            role: document.getElementById("role").value,
+        };
+
+        console.log("등록 데이터:", JSON.stringify(userData, null, 2));
+
+        // 서버로 데이터 전송
+        fetch("/api/users", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(userData),
+        })
+            .then((response) => {
+                if (response.ok) {
+                    alert("사용자 등록이 완료되었습니다!");
+                    window.close(); // 팝업 닫기
+                } else {
+                    alert("등록에 실패했습니다.");
+                }
+            })
+            .catch((error) => {
+                console.error("에러 발생:", error);
+                alert("등록 중 에러가 발생했습니다.");
+            });
+    });
+</script>
+
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

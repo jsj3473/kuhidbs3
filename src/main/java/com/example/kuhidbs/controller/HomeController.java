@@ -4,6 +4,8 @@ import com.example.kuhidbs.dto.company.ContactDTO;
 import com.example.kuhidbs.dto.company.CreateCompanyDTO;
 import com.example.kuhidbs.dto.company.ReadCompanyDTO;
 import com.example.kuhidbs.dto.company.ReviewerDTO;
+import com.example.kuhidbs.dto.user.UserDTO;
+import com.example.kuhidbs.service.UserService;
 import com.example.kuhidbs.service.company.CompanyService;
 import com.example.kuhidbs.service.company.ContactService;
 import com.example.kuhidbs.service.company.ReviewerService;
@@ -26,6 +28,8 @@ public class HomeController {
     private ReviewerService reviewerService;
     @Autowired
     private ContactService contactService;
+    @Autowired
+    private UserService userService;
 
     // 공통 데이터 설정
     @ModelAttribute
@@ -43,6 +47,11 @@ public class HomeController {
     public String loginSubmit() {
         return "redirect:/main";
     }
+    // 사용자 등록 팝업
+    @GetMapping("/login/createUser")
+    public String createUserPage() {
+        return "login/createUser"; // createUser.html
+    }
 
     @GetMapping("/main")
     public String mainPage(Model model) {
@@ -55,6 +64,8 @@ public class HomeController {
     public String userManagePage(Model model) {
         model.addAttribute("pageTitle", "사원 관리");
         model.addAttribute("title", "사용자관리");
+        List<UserDTO> userDTOList = userService.getAllUsers();
+        model.addAttribute("users", userDTOList);
         return "userManage"; // userManage.html
     }
     @GetMapping("/companyAdd")

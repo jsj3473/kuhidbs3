@@ -27,6 +27,9 @@ public class Financial {
     @Column(name = "financial_year", nullable = false)
     private Integer financialYear ; // 연도
 
+    @Column(name = "financial_half_year", nullable = false)
+    private String financialHalfYear ; // 반기
+
     @Column(name = "revenue", nullable = false)
     private BigInteger revenue; // 매출액
 
@@ -60,3 +63,5 @@ public class Financial {
     @Column(name = "overall_evaluation", columnDefinition = "TEXT")
     private String overallEvaluation; // 종합평가
 }
+
+

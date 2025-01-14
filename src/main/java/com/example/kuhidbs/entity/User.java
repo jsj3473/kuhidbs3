@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Entity
 @Table(name = "users")
-public class User {
+public class User extends BaseEntity {
 
     @Id
     @Column(name = "id", nullable = false, unique = true)
@@ -21,9 +21,6 @@ public class User {
 
     @Column(name = "password", nullable = false)
     private String password; // 비밀번호 (암호화된 값)
-
-    @Column(name = "registration_date", nullable = false)
-    private LocalDate registrationDate = LocalDate.now(); // 기본값 설정
 
     @Column(name = "registered_by")
     private String registeredBy; // 등록자 사번

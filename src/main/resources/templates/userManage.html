@@ -59,35 +59,27 @@
             <thead>
             <tr>
 <!--                <th><input type="checkbox" id="selectAll"></th> &lt;!&ndash; 체크박스 헤더 &ndash;&gt;-->
-                <th>No</th>
                 <th>사원번호</th>
                 <th>성명</th>
-                <th>관리자 여부</th>
+                <th>권한</th>
+                <th>등록자 사번</th>
                 <th>등록일자</th>
             </tr>
             </thead>
             <tbody>
-            <tr>
+            <tr th:each="user : ${users}">
 <!--                <td><input type="checkbox" class="rowCheckbox"></td>-->
-                <td>1</td>
-                <td>1001</td>
-                <td>김영진</td>
-                <td>예</td>
-                <td>2025-01-01</td>
-            </tr>
-            <tr>
-<!--                <td><input type="checkbox" class="rowCheckbox"></td>-->
-                <td>2</td>
-                <td>1002</td>
-                <td>박민수</td>
-                <td>아니요</td>
-                <td>2025-01-02</td>
+                <td th:text="${user.Id}"></td>
+                <td th:text="${user.name}"></td>
+                <td th:text="${user.role}"></td>
+                <td th:text="${user.registeredBy}"></td>
+                <td th:text="${user.createdAt}"></td>
             </tr>
             </tbody>
         </table>
         <!-- 버튼 영역 -->
         <div class="button-container">
-            <button id="resetButton" class="btn btn-dark">초기화</button>
+            <button id="resetButton" class="btn btn-dark">비밀번호 초기화</button>
             <button id="retireButton" class="btn btn-dark">퇴직처리</button>
         </div>
     </div>

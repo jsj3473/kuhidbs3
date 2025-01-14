@@ -1,13 +1,16 @@
 package com.example.kuhidbs.service;
 
 import com.example.kuhidbs.dto.user.UpdatePasswordDTO;
+import com.example.kuhidbs.dto.user.UserDTO;
 import com.example.kuhidbs.entity.User;
 import com.example.kuhidbs.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class UserService {
@@ -59,5 +62,25 @@ public class UserService {
         userRepository.save(user); // 변경 사항 저장
 
         return "비밀번호가 변경되었습니다";
+    }
+
+
+    // isEmployed가 true인 모든 유저 가져오기
+    public List<UserDTO> getAllUsers() {
+        List<User> users = userRepository.findByIsEmployedTrue();
+        return users.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
+    }
+
+    // Entity -> DTO 변환 메서드
+    private UserDTO convertToDTO(User user) {
+        return new UserDTO(
+                user.getId(),
+                user.getName(),
+                user.getRole(),
+                user.getRegisteredBy(),
+                user.getCreatedAt()
+        );
     }
 }
