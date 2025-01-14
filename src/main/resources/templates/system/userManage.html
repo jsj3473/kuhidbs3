@@ -79,6 +79,7 @@
         </table>
         <!-- 버튼 영역 -->
         <div class="button-container">
+            <button id="createButton" class="btn btn-dark">사용자 생성</button>
             <button id="resetButton" class="btn btn-dark">비밀번호 초기화</button>
             <button id="retireButton" class="btn btn-dark">퇴직처리</button>
         </div>
@@ -93,6 +94,11 @@
 <script th:src="@{/js/common.js}"></script>
 <script>
     $(document).ready(function () {
+        // 사용자 생성 버튼 클릭 이벤트
+        document.getElementById("createButton").addEventListener("click", function () {
+            const popupUrl = "/system/createUser"; // 팝업 URL
+            window.open(popupUrl, "CreateUser", "width=450,height=540,scrollbars=yes,resizable=no");
+        });
         // 초기화 버튼 클릭 이벤트
         $('#resetButton').on('click', function () {
             const firstSelectedRow = $('.datatable tbody tr.selected').first();

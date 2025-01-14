@@ -34,7 +34,7 @@ public class HomeController {
     @Autowired
     private UserService userService;
 
-    //공통 데이터 설절
+    //공통 데이터 설정
     @ModelAttribute
     public void addCommonAttributes(Model model, HttpSession session) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
@@ -44,6 +44,7 @@ public class HomeController {
         }
     }
 
+    //로그인
     @GetMapping("/login")
     public String login(Model model) {
         return "login"; // login.html
@@ -64,6 +65,7 @@ public class HomeController {
         return "main"; // main.html
     }
 
+    //사용자 관리페이지
     @GetMapping("system/userManage")
     public String userManagePage(Model model) {
         model.addAttribute("pageTitle", "사원 관리");
@@ -72,12 +74,13 @@ public class HomeController {
         model.addAttribute("users", userDTOList);
         return "system/userManage"; // userManage.html
     }
+    // 기업 신규등록 페이지
     @GetMapping("/companyAdd")
     public String companyAddPage(Model model) {
         model.addAttribute("title", "기업 신규등록");
         return "companyAdd"; // companyAdd.html
     }
-
+    // 기업 정보관리 페이지
     @GetMapping("/companyManage")
     public String companyManagePage(Model model) {
         // CompanyService를 사용하여 데이터 조회
@@ -88,6 +91,7 @@ public class HomeController {
 
         return "companyManage"; // companyManage.html로 이동
     }
+    // 기본정보 팝업(실무자, 심사역)
     @GetMapping("/company/basicInfo/{id}")
     public String showBasicInfo(@PathVariable("id") int id, Model model) {
         model.addAttribute("companyId", id);
@@ -97,7 +101,7 @@ public class HomeController {
         model.addAttribute("contacts", contactDTOList);
         return "company/basicInfo"; // basicInfo.html
     }
-
+    // 후속관리 팝업
     @GetMapping("/company/followup/{id}")
     public String showFollowupPage(@PathVariable("id") Long id, Model model) {
         model.addAttribute("companyId", id);
