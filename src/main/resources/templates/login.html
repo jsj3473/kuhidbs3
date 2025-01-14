@@ -151,10 +151,10 @@
     <p class="title">KUH IDBS</p>
 
     <!-- 입력 필드 -->
-    <form th:action="@{/login}" method="post">
+    <form th:action="@{/api/users/login}" method="post">
         <div class="input-section">
             <div class="mb-3">
-                <input type="text" class="form-control" id="username" name="username" placeholder="사원번호를 입력하세요." required>
+                <input type="text" class="form-control" id="id" name="id" placeholder="사원번호를 입력하세요." required>
             </div>
             <div class="mb-3">
                 <input type="password" class="form-control" id="password" name="password" placeholder="비밀번호를 입력하세요." required>

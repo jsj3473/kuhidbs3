@@ -1,9 +1,11 @@
 package com.example.kuhidbs.service;
 
+import com.example.kuhidbs.dto.user.LoginDTO;
 import com.example.kuhidbs.dto.user.UpdatePasswordDTO;
 import com.example.kuhidbs.dto.user.UserDTO;
 import com.example.kuhidbs.entity.User;
 import com.example.kuhidbs.repository.UserRepository;
+import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,15 +18,18 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final HttpSession session;
 
-    @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, HttpSession session) {
         this.userRepository = userRepository;
+        this.session = session;
     }
 
-    public void createUser(User user) {
+    public String createUser(User user) {
         // DB에 저장
         userRepository.save(user);
+
+        return "사용자가 생성되었습니다.";
     }
 
     @Transactional
@@ -39,7 +44,7 @@ public class UserService {
     public void resetPassword(String id) {
         // 사용자 조회
         User user = userRepository.findById(id).get(); // 사용자 조회
-        user.setPassword("1111"); // 비밀번호 초기화
+        user.setPassword("1"); // 비밀번호 초기화
         userRepository.save(user); // 변경 사항 저장
     }
 
@@ -82,5 +87,25 @@ public class UserService {
                 user.getRegisteredBy(),
                 user.getCreatedAt()
         );
+    }
+
+    public String login(LoginDTO loginDTO) {
+        // DB에서 유저 검색
+        User user = userRepository.findById(loginDTO.getId())
+                .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + loginDTO.getId()));
+
+        // 비밀번호 검증 (여기서는 평문 비교. 실제로는 암호화 필요)
+        if (!user.getPassword().equals(loginDTO.getPassword())) {
+            throw new IllegalArgumentException("Invalid password.");
+        }
+
+        // 세션에 사용자 정보 저장
+        session.setAttribute("loggedInUser", user);
+
+        // 세션에 저장된 사용자 정보 로그 출력
+        System.out.println("Session set with loggedInUser: " + session.getAttribute("loggedInUser"));
+
+        // 로그인 성공 시 메시지 반환 (JWT 토큰 생성 가능)
+        return "Login successful for user ID: " + user.getId();
     }
 }

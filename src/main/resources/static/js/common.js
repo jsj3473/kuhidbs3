@@ -2,9 +2,11 @@
 function confirmLogout() {
     const confirmResult = confirm("로그아웃하시겠습니까?");
     if (confirmResult) {
-        window.location.href = "http://localhost:8080/";
+        // 서버의 /logout 경로로 이동
+        window.location.href = "http://localhost:8080/api/users/logout";
     }
 }
+
 
 
 
@@ -21,10 +23,10 @@ $(document).ready(function () {
 
         // DataTables 초기화
         $('.datatable').DataTable({
-            dom: "<'row'<'col-sm-12'tr>>" + // 테이블만 상단
-                "<'row'<'col-md-6 text-start'f><'col-md-6 text-end'B>>" + // 검색바와 버튼을 하단 배치
-                "<'row'<'col-sm-5'i><'col-sm-7'p>>",
-            // dom: 'Bfrtip', // 버튼 UI 활성화
+            // dom: "<'row'<'col-sm-12'tr>>" + // 테이블만 상단
+            //     "<'row'<'col-md-6 text-start'f><'col-md-6 text-end'B>>" + // 검색바와 버튼을 하단 배치
+            //     "<'row'<'col-sm-5'i><'col-sm-7'p>>",
+            dom: 'Bfrtip', // 버튼 UI 활성화
             scrollX: true, // 가로 스크롤 활성화
             scrollY: '400px', // 세로 스크롤 높이 설정
             scrollCollapse: true, // 내용이 적으면 스크롤 제거
@@ -45,12 +47,12 @@ $(document).ready(function () {
                 {
                     extend: 'copy',
                     className: 'btn btn-secondary btn-sm',
-                    text: 'Copy'
+                    text: '복사'
                 },
                 {
                     extend: 'excel',
                     className: 'btn btn-secondary btn-sm',
-                    text: 'Excel'
+                    text: '엑셀다운로드'
                 }//,
                 // {
                 //     extend: 'print',
