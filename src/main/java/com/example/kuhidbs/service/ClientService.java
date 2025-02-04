@@ -4,10 +4,9 @@ import com.example.kuhidbs.dto.CCmpInfDTO;
 import com.example.kuhidbs.entity.Client;
 import com.example.kuhidbs.entity.Company;
 import com.example.kuhidbs.repository.ClientRepository;
-import com.example.kuhidbs.repository.CmpRepository;
+import com.example.kuhidbs.repository.CompanyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import java.util.UUID;
 
 
 @Service
@@ -16,7 +15,7 @@ public class ClientService {
     @Autowired
     private ClientRepository clientRepository;
     @Autowired
-    private CmpRepository companyRepository;
+    private CompanyRepository companyRepository;
 
     public void saveClient(CCmpInfDTO CCmpInfDTO) {
 

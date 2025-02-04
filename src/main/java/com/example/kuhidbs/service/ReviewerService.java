@@ -2,15 +2,12 @@ package com.example.kuhidbs.service;
 
 import com.example.kuhidbs.dto.*;
 import com.example.kuhidbs.entity.*;
-import com.example.kuhidbs.entity.*;
-import com.example.kuhidbs.repository.CmpRepository;
+import com.example.kuhidbs.repository.CompanyRepository;
 import com.example.kuhidbs.repository.ReviewerRepository;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ReviewerService {
@@ -18,7 +15,7 @@ public class ReviewerService {
     @Autowired
     private ReviewerRepository reviewerRepository;
     @Autowired
-    private CmpRepository companyRepository;
+    private CompanyRepository companyRepository;
 
     public void saveReviewers(CCmpInfDTO CCmpInfDTO) {
 
@@ -53,7 +50,7 @@ public class ReviewerService {
 
     // Reviewer 데이터 생성
     @Transactional
-    public void createReviewerForCRwrDTO(CRwrDTO dto) {
+    public Reviewer createReviewerForCRwrDTO(CRwrDTO dto) {
         // 회사 조회 (외래키 확인)
         Company company = companyRepository.findById(dto.getCompanyId())
                 .orElseThrow(() -> new EntityNotFoundException("Company not found"));
@@ -67,6 +64,14 @@ public class ReviewerService {
                 .changeReason(dto.getChangeReason())
                 .build();
 
-        reviewerRepository.save(reviewer);
+        return reviewerRepository.save(reviewer);
+    }
+
+
+    @Transactional(readOnly = true)
+    public String getLatestManagerByType(String companyId, String managerType) {
+        return reviewerRepository.findTopByCompany_CompanyIdAndManagerTypeOrderByChangeIdDesc(companyId, managerType)
+                .map(Reviewer::getManager)
+                .orElse(null); // 값이 없으면 null 반환
     }
 }

@@ -2,6 +2,13 @@ package com.example.kuhidbs.repository;
 
 import com.example.kuhidbs.entity.Reviewer;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public interface ReviewerRepository extends JpaRepository<Reviewer, Integer> {
+import java.util.Optional;
+
+@Repository
+public interface ReviewerRepository extends JpaRepository<Reviewer, Long> {
+
+    // 최신 발굴자 가져오기
+    Optional<Reviewer> findTopByCompany_CompanyIdAndManagerTypeOrderByChangeIdDesc(String companyId, String managerType);
 }

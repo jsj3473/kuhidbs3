@@ -85,9 +85,6 @@ public class Company extends BaseEntity {
     @Column(name = "INV_POINT_3", length = 1000)
     private String investmentPoint3;
 
-    @Column(name = "EVAL_EMP", length = 100)
-    private String evaluationEmployee;
-
     @Column(name = "PUB_TEC", length = 100)
     private String publicTechnologyTransfer;
 

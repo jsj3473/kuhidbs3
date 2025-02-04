@@ -1,12 +1,14 @@
 package com.example.kuhidbs.service;
 
-import com.example.kuhidbs.dto.CIvtDTO;
+import com.example.kuhidbs.dto.*;
 import com.example.kuhidbs.entity.Account;
 import com.example.kuhidbs.entity.Company;
 import com.example.kuhidbs.entity.Investment;
 import com.example.kuhidbs.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import java.util.Optional;
 
 @Service
 public class InvestmentService {
@@ -15,7 +17,7 @@ public class InvestmentService {
     private InvestmentRepository investmentRepository;
 
     @Autowired
-    private CmpRepository companyRepository;
+    private CompanyRepository companyRepository;
 
     @Autowired
     private AccountRepository accountRepository;
@@ -45,6 +47,28 @@ public class InvestmentService {
         return savedInvestment;
     }
 
+    @Transactional(readOnly = true)
+    public RIvtDTO getInvestmentByCompanyId(String companyId) {
+        Optional<Investment> investmentOpt = investmentRepository.findByCompany_CompanyId(companyId);
+
+        return investmentOpt.map(investment -> RIvtDTO.builder()
+                .investmentDate(investment.getInvestmentDate()) // LocalDate → String 변환 필요 시 .toString() 추가
+                .investmentProduct(investment.getInvestmentProduct())
+                .fundId(investment.getFundId())
+                .investmentSumPrice(investment.getInvestmentSumPrice())
+                .investmentUnitPrice(investment.getInvestmentUnitPrice())
+                .shareCount(investment.getShareCount())
+                .equityRate(investment.getEquityRate())
+                .totalShares(investment.getTotalShares())
+                .investmentValue(investment.getInvestmentValue())
+                .tangibleInvestment(investment.getTangibleInvestment())
+                .investmentEmployee(investment.getInvestmentEmployee())
+                .investmentState(investment.getInvestmentState())
+                .investmentStep(investment.getInvestmentStep())
+                .investmentMemo(investment.getInvestmentMemo())
+                .build()).orElse(null);
+
+    }
 
     /**
      * CIvtDTO를 Investment 엔터티로 변환하는 메서드.

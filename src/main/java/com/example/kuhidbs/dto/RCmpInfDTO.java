@@ -1,16 +1,15 @@
 package com.example.kuhidbs.dto;
+import lombok.*;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import java.util.List;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CCmpInfDTO {
 
+public class RCmpInfDTO {
     private String companyId;
 
     private String companyName;
@@ -45,11 +44,11 @@ public class CCmpInfDTO {
 
     private String earlyStartupType;
 
-    private String kuhSubsidiary;
+    private String kuhSubsidiary; //kuh 자회사
 
-    private String investmentSector;
+    private String investmentSector; //biz sector 구분
 
-    private String dueDiligence;
+    private String dueDiligence; //투자기업실사
 
     private String mainProducts;
 
@@ -58,6 +57,8 @@ public class CCmpInfDTO {
     private String investmentPoint2;
 
     private String investmentPoint3;
+
+    private String evaluationEmployee;
 
     private String publicTechnologyTransfer;
 
@@ -70,25 +71,14 @@ public class CCmpInfDTO {
     private String companyPostalCode;
 
 
-    //재무제표
-    private Integer financialYear;
+    // 최근 2개의 재무제표 정보
+    private List<RFncDTO> recentFinancials;
 
-    private Integer financialHalf;
+    //kuh 투자내역
+    private RIvtDTO rivtDTO;
 
-    private Integer revenue;
-
-    private Integer operatingProfit;
-
-    private Integer netIncome;
-
-    private Integer totalAssets;
-
-    private Integer totalCapital;
-
-    private Integer totalDebt;
-
-    //발굴자,심사자,사후관리담당자
-
+    //주주명부
+    private RShrDTO shrDTO;
     //발굴자
     private String manager1;
     //심사자
@@ -101,4 +91,10 @@ public class CCmpInfDTO {
     private String phoneNumber;
     private String email;
     private String name;
+
+    //사후관리 표시 manage테이블에서 가져옴
+    private RMngDTO rmngDTO;
+
+    //후속투자 테이블에서 가져온 가장 최신의 기업가치
+    private Long currentCompanyValue;
 }

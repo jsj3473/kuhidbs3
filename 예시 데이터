@@ -1,4 +1,4 @@
-// ccmpinfcto
+// ccmpinfcto createCompany
 {
   "companyId": "2024_001",
   "companyName": "영진개발",
@@ -24,7 +24,6 @@
   "investmentPoint1": "Strong Team",
   "investmentPoint2": "Growing Market",
   "investmentPoint3": "Innovative Product",
-  "evaluationEmployee": "Manager Lee",
   "publicTechnologyTransfer": "Yes",
   "smeStatus": "Yes",
   "listingDate": "2023-09-01",
@@ -49,7 +48,7 @@
   "email": "contact@example.com",
   "name": "성채경"
 }
-civtdto
+civtdto createInvestment
 {
   "fundId": "대창1호",
   "companyId": "2024_001",
@@ -67,7 +66,7 @@ civtdto
   "investmentState": "B",
   "investmentMemo": "Investment focused on expanding AI research and development."
 }
-cfoldto
+cfoldto createFollowup
 {
   "companyId": "2024_001",
   "followupStartDate": "2025-01-20",
@@ -80,17 +79,7 @@ cfoldto
   "followupInvestmentValue": 2000000000,
   "followupStep": "Series B"
 }
-cstucup
-{
-  "investmentId": 1,
-  "recoveryDate": "2025-01-29",
-  "recoveryCount": 1000,
-  "recoveryUnitPrice": 50000,
-  "equityRate": 15.75,
-  "fundReturn": 75000000,
-  "kuhReturn": 15000000
-}
-cshrup
+cshrup createStcup
 {
   "investmentId": 1,
   "shareUpdateDate": "2025-01-29",
@@ -99,6 +88,125 @@ cshrup
   "shareUpdateReason": "시장 변동",
   "shareUpdateAction": "주식 재조정"
 }
+{
+  "investmentId": 1,
+  "shareUpdateDate": "2025-01-29",
+  "shareUnitValue": 2000,
+  "shareUpdateType": "복원",
+  "shareUpdateReason": "시장 변동",
+  "shareUpdateAction": "주식 재조정"
+}
+cstcup  createStcup
+  {
+    "investmentId": 1,
+    "recoveryDate": "2024-02-05",
+    "recoveryCount": 10000,
+    "recoveryUnitPrice": 5000,
+    "equityRate": 15.75,
+    "fundReturn": 200000000,
+    "kuhReturn": 50000000
+  }
+  {
+    "investmentId": 1,
+    "recoveryDate": "2024-02-06",
+    "recoveryCount": 8000,
+    "recoveryUnitPrice": 5200,
+    "equityRate": 12.50,
+    "fundReturn": 150000000,
+    "kuhReturn": 40000000
+  }
+  {
+    "investmentId": 1,
+    "recoveryDate": "2024-01-15",
+    "recoveryCount": 12000,
+    "recoveryUnitPrice": 4800,
+    "equityRate": 18.20,
+    "fundReturn": 250000000,
+    "kuhReturn": 60000000
+  }
+ccomdto  createCombine
+{
+  "investmentId": 1,
+  "investmentCompanyName": "ABC Capital",
+  "investmentStartDate": "2024-02-05",
+  "investmentUnitPrice": 5000,
+  "investmentSumPrice": 500000000,
+  "investmentProduct": "Growth Fund",
+  "equityRate": 12.75,
+  "comment": "장기 성장 기대",
+  "investmentStep": "Series A",
+  "shareCount": 100000
+}
 
+cshrdto createShareholder
+{
+  "companyId": "2024_001",
+  "shareholderName1": "홍길동",
+  "shareholderCount1": 50000,
+  "shareholderName2": "김철수",
+  "shareholderCount2": 30000,
+  "shareholderName3": "이영희",
+  "shareholderCount3": 20000,
+  "shareholderName4": "박지성",
+  "shareholderCount4": 15000,
+  "shareholderName5": "손흥민",
+  "shareholderCount5": 10000,
+  "shareholderName6": "정우성",
+  "shareholderCount6": 8000,
+  "shareholderName7": "한지민",
+  "shareholderCount7": 5000,
+  "shareholderName8": "유재석",
+  "shareholderCount8": 3000
+}
+
+cfncdto createFinancial
+{
+  "companyId": "2024_001",
+  "financialYear": 2024,
+  "financialHalf": 1,
+  "revenue": 5000000,
+  "operatingProfit": 1500000,
+  "netIncome": 1000000,
+  "totalAssets": 20000000,
+  "totalCapital": 8000000,
+  "capital": 5000000,
+  "employeeCount": 120,
+  "totalDebt": 5000000
+}
+
+createManage
+
+{
+  "companyId": "2024_001",
+  "evalGrade": "A+",
+  "businessProgress1": "신규 제품 개발 완료",
+  "businessProgress2": "시장 테스트 진행 중",
+  "businessProgress3": "전략적 제휴 체결",
+  "businessProgress4": "국내외 투자 유치 성공",
+  "businessProgress5": "고객 기반 확대 중",
+  "managementStatus1": "재무 안정성 확보",
+  "managementStatus2": "리스크 관리 강화",
+  "exitPlan": "IPO 예정",
+  "exitEstimation": "2026년 상반기 예상"
+}
+
+createReviewer
+{
+  "companyId": "2024_001",
+  "comment": "경영진 변경으로 인한 평가 조정",
+  "managerType": "사후관리자",
+  "manager": "김철수",
+  "changeReason": "재무 성과 개선 필요"
+}
+
+
+
+
+createBouns
+{
+  "investmentId": 1,
+  "changedShareCount": 50000,
+  "unitPrice": 4000
+}
 
 

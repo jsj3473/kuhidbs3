@@ -4,10 +4,11 @@ import com.example.kuhidbs.dto.*;
 import com.example.kuhidbs.entity.*;
 import com.example.kuhidbs.repository.*;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Optional;
 
 @Service
 public class ManageService {
@@ -16,7 +17,7 @@ public class ManageService {
     private ManageRepository manageRepository;
 
     @Autowired
-    private CmpRepository companyRepository;
+    private CompanyRepository companyRepository;
 
     // 사후관리 정보 생성
     @Transactional
@@ -41,5 +42,23 @@ public class ManageService {
                 .build();
 
         return manageRepository.save(manage);
+    }
+
+    @Transactional(readOnly = true)
+    public RMngDTO getManageByCompanyId(String companyId) {
+        Optional<Manage> manageOpt = manageRepository.findByCompany_CompanyId(companyId);
+
+        return manageOpt.map(manage -> RMngDTO.builder()
+                .evalGrade(manage.getEvalGrade())
+                .businessProgress1(manage.getBusinessProgress1())
+                .businessProgress2(manage.getBusinessProgress2())
+                .businessProgress3(manage.getBusinessProgress3())
+                .businessProgress4(manage.getBusinessProgress4())
+                .businessProgress5(manage.getBusinessProgress5())
+                .managementStatus1(manage.getManagementStatus1())
+                .managementStatus2(manage.getManagementStatus2())
+                .exitPlan(manage.getExitPlan())
+                .exitEstimation(manage.getExitEstimation())
+                .build()).orElse(null);
     }
 }

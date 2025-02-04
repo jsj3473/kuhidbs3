@@ -16,8 +16,8 @@ public class ShareUpdate extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // AUTO_INCREMENT 방식
-    @Column(name = "SHRUP_ID", length = 100, nullable = false)
-    private String shareUpdateId; // 감액 복원 고유 번호
+    @Column(name = "SHRUP_ID", nullable = false)
+    private Long shareUpdateId; // 감액 복원 고유 번호
 
     @ManyToOne
     @JoinColumn(name = "INV_ID", nullable = false)

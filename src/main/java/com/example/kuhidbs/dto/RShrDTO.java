@@ -7,8 +7,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CShrDTO {
-    private String companyId; // 회사 고유번호 (CMP_ID)
+public class RShrDTO {
 
     // 주주 및 주식 수 정보
     private String shareholderName1; // 주주명칭1

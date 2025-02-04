@@ -1,13 +1,16 @@
 package com.example.kuhidbs.service;
 
-import com.example.kuhidbs.dto.CCmpInfDTO;
-import com.example.kuhidbs.dto.CFncDTO;
+import com.example.kuhidbs.dto.*;
 import com.example.kuhidbs.entity.Company;
 import com.example.kuhidbs.entity.Financial;
-import com.example.kuhidbs.repository.CmpRepository;
+import com.example.kuhidbs.repository.CompanyRepository;
 import com.example.kuhidbs.repository.FinancialRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class FinancialService {
@@ -16,7 +19,7 @@ public class FinancialService {
     private FinancialRepository financialRepository;
 
     @Autowired
-    private CmpRepository companyRepository;
+    private CompanyRepository companyRepository;
 
 
     public void saveFinancial(CCmpInfDTO CCmpInfDTO) {
@@ -61,5 +64,25 @@ public class FinancialService {
                 .build();
 
         return financialRepository.save(financial);
+    }
+
+    @Transactional(readOnly = true)
+    public List<RFncDTO> getRecentFinancialsByCompanyId(String companyId) {
+        return financialRepository
+                .findTop2ByCompany_CompanyIdOrderByFinancialYearDescFinancialHalfDesc(companyId)
+                .stream()
+                .map(financial -> RFncDTO.builder()
+                        .financialYear(financial.getFinancialYear())
+                        .financialHalf(financial.getFinancialHalf())
+                        .revenue(financial.getRevenue())
+                        .operatingProfit(financial.getOperatingProfit())
+                        .netIncome(financial.getNetIncome())
+                        .totalAssets(financial.getTotalAssets())
+                        .totalCapital(financial.getTotalCapital())
+                        .capital(financial.getCapital())
+                        .employeeCount(financial.getEmployeeCount())
+                        .totalDebt(financial.getTotalDebt())
+                        .build())
+                .collect(Collectors.toList());
     }
 }

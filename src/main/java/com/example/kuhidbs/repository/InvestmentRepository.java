@@ -4,6 +4,8 @@ import com.example.kuhidbs.entity.Investment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 /**
  * IvtRepository
  *
@@ -15,4 +17,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface InvestmentRepository extends JpaRepository<Investment, Long> {
     // JpaRepository의 기본 메서드를 사용 (findAll, findById, save 등)
+
+
+    Optional<Investment> findByCompany_CompanyId(String companyId);
 }

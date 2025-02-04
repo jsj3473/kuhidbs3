@@ -6,6 +6,7 @@ import com.example.kuhidbs.entity.Followup;
 import com.example.kuhidbs.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class FollowupService {
@@ -14,7 +15,7 @@ public class FollowupService {
     private FollowupRepository followupRepository;
 
     @Autowired
-    private CmpRepository companyRepository;
+    private CompanyRepository companyRepository;
 
     /**
      * 후속 투자 정보를 저장.
@@ -27,6 +28,12 @@ public class FollowupService {
         return followupRepository.save(followup);
     }
 
+    @Transactional(readOnly = true)
+    public Long getCurrentCompanyValue(String companyId) {
+        return followupRepository.findTopByCompany_CompanyIdOrderByFollowupStartDateDesc(companyId)
+                .map(Followup::getFollowupInvestmentValue)
+                .orElse(null); // 최신 투자 밸류가 없으면 null 반환
+    }
     /**
      * CFolDTO를 Followup 엔터티로 변환하는 메서드.
      *

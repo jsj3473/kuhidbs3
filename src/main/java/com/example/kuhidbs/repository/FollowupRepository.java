@@ -4,6 +4,8 @@ import com.example.kuhidbs.entity.Followup;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 /**
  * FollowupRepository
  *
@@ -14,5 +16,6 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 public interface FollowupRepository extends JpaRepository<Followup, Long> {
-    // JpaRepository의 기본 메서드를 사용 (findAll, findById, save 등)
+    // 특정 회사의 가장 최신 투자 밸류 조회 (followupStartDate 기준 내림차순)
+    Optional<Followup> findTopByCompany_CompanyIdOrderByFollowupStartDateDesc(String companyId);
 }

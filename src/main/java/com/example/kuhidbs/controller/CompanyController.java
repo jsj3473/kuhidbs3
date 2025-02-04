@@ -45,6 +45,9 @@ public class CompanyController {
     @Autowired
     private ManageService manageService;
 
+    @Autowired
+    private BonusService bonusService;
+
     @PostMapping("/createCompany")
     public ResponseEntity<Void> createCompany(@RequestBody CCmpInfDTO CCmpInfDTO) {
 
@@ -83,6 +86,7 @@ public class CompanyController {
         return ResponseEntity.ok(savedFollowup);
     }
 
+
     /**
      * 감액/복원 데이터 생성
      */
@@ -91,13 +95,13 @@ public class CompanyController {
         ShareUpdate createdShrup = shrupService.saveShrup(shrupDTO);
         return ResponseEntity.ok(createdShrup);
     }
-
     //회수 생성
     @PostMapping("/createStcup")
     public ResponseEntity<Recovery> createRecovery(@RequestBody CStcupDTO stcupDTO) {
         Recovery savedRecovery = recoveryService.saveRecovery(stcupDTO);
         return ResponseEntity.ok(savedRecovery);
     }
+
 
     // 동반투자 생성
     @PostMapping("/createCombine")
@@ -129,8 +133,23 @@ public class CompanyController {
 
     // Reviewer 데이터 생성 API
     @PostMapping("/createReviewer")
-    public ResponseEntity<Void> createReviewer(@RequestBody CRwrDTO dto) {
-        reviewerService.createReviewerForCRwrDTO(dto);
+    public ResponseEntity<Reviewer> createReviewer(@RequestBody CRwrDTO dto) {
+        Reviewer createdReviewer = reviewerService.createReviewerForCRwrDTO(dto);
+        return ResponseEntity.ok(createdReviewer);
+    }
+
+    // 무상증자 생성 API
+    @PostMapping("/createBouns")
+    public ResponseEntity<Void> createBonus(@RequestBody CBonusDTO dto) {
+        bonusService.createBonus(dto);
         return ResponseEntity.ok().build();
+    }
+
+
+    // 회사 기본 정보 조회 API
+    @GetMapping("/{companyId}")
+    public ResponseEntity<RCmpInfDTO> getCompanyInfo(@PathVariable String companyId) {
+        RCmpInfDTO companyInfo = cmpService.getCompanyInfo(companyId);
+        return ResponseEntity.ok(companyInfo);
     }
 }

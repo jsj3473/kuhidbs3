@@ -1,11 +1,12 @@
 package com.example.kuhidbs.service;
 
-import com.example.kuhidbs.dto.CShrDTO;
+import com.example.kuhidbs.dto.*;
 import com.example.kuhidbs.entity.*;
 import com.example.kuhidbs.entity.Company;
 import com.example.kuhidbs.repository.*;
 import com.example.kuhidbs.repository.ShareholderRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -13,15 +14,15 @@ import java.util.Optional;
 public class ShareholderService {
 
     private final ShareholderRepository shareholderRepository;
-    private final CmpRepository cmpRepository;
+    private final CompanyRepository companyRepository;
 
-    public ShareholderService(ShareholderRepository shareholderRepository, CmpRepository cmpRepository) {
+    public ShareholderService(ShareholderRepository shareholderRepository, CompanyRepository companyRepository) {
         this.shareholderRepository = shareholderRepository;
-        this.cmpRepository = cmpRepository;
+        this.companyRepository = companyRepository;
     }
 
     public Shareholder createShareholder(CShrDTO shareholderDTO) {
-        Optional<Company> company = cmpRepository.findById(shareholderDTO.getCompanyId());
+        Optional<Company> company = companyRepository.findById(shareholderDTO.getCompanyId());
 
         if (company.isEmpty()) {
             throw new IllegalArgumentException("Company not found with ID: " + shareholderDTO.getCompanyId());
@@ -48,5 +49,38 @@ public class ShareholderService {
                 .build();
 
         return shareholderRepository.save(shareholder);
+    }
+
+    @Transactional(readOnly = true)
+    public RShrDTO getShareholderByCompanyId(String companyId) {
+        Optional<Shareholder> shareholderOpt = shareholderRepository.findByCompany_CompanyId(companyId);
+
+        return shareholderOpt.map(shareholder -> RShrDTO.builder()
+                .shareholderName1(shareholder.getShareholderName1())
+                .shareholderCount1(shareholder.getShareholderCount1())
+                .shareholderRate1(shareholder.getShareholderRate1())
+                .shareholderName2(shareholder.getShareholderName2())
+                .shareholderCount2(shareholder.getShareholderCount2())
+                .shareholderRate2(shareholder.getShareholderRate2())
+                .shareholderName3(shareholder.getShareholderName3())
+                .shareholderCount3(shareholder.getShareholderCount3())
+                .shareholderRate3(shareholder.getShareholderRate3())
+                .shareholderName4(shareholder.getShareholderName4())
+                .shareholderCount4(shareholder.getShareholderCount4())
+                .shareholderRate4(shareholder.getShareholderRate4())
+                .shareholderName5(shareholder.getShareholderName5())
+                .shareholderCount5(shareholder.getShareholderCount5())
+                .shareholderRate5(shareholder.getShareholderRate5())
+                .shareholderName6(shareholder.getShareholderName6())
+                .shareholderCount6(shareholder.getShareholderCount6())
+                .shareholderRate6(shareholder.getShareholderRate6())
+                .shareholderName7(shareholder.getShareholderName7())
+                .shareholderCount7(shareholder.getShareholderCount7())
+                .shareholderRate7(shareholder.getShareholderRate7())
+                .shareholderName8(shareholder.getShareholderName8())
+                .shareholderCount8(shareholder.getShareholderCount8())
+                .shareholderRate8(shareholder.getShareholderRate8())
+                .totalShareCount(shareholder.getTotalShareCount())
+                .build()).orElse(null);
     }
 }
