@@ -25,7 +25,7 @@ public class User extends BaseEntity {
     @Column(name = "registered_by")
     private String registeredBy; // 등록자 사번
 
-    @Column(name = "role", nullable = false, length = 50)
+    @Column(name = "role", nullable = false, length = 100)
     private String role; // 권한 (e.g., admin, user 등)
 
     @Column(name = "is_employed", nullable = false)

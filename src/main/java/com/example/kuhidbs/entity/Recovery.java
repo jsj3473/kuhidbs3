@@ -1,53 +1,45 @@
 package com.example.kuhidbs.entity;
 
-import com.example.kuhidbs.entity.company.Company;
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.Date;
 
 @Entity
-@Table(name = "recovery")
-@Getter
-@Setter
+@Table(name = "KUH_STCUP_TBL")
+@Data
 @NoArgsConstructor
-public class Recovery {
+@AllArgsConstructor
+@Builder
+public class Recovery extends BaseEntity{
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "recovery_id", nullable = false)
-    private Integer recoveryId; // 회수 고유 ID
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // AUTO_INCREMENT 방식
+    @Column(name = "STCUP_ID", nullable = false)
+    private Long recoveryId; // 회수 고유 번호 (PK)
 
     @ManyToOne
-    @JoinColumn(name = "company_id", nullable = false)
-    private Company company; // 회사 (Company 테이블과 ManyToOne 관계)
+    @JoinColumn(name = "INV_ID", nullable = false)
+    private Investment investment; // 투자 고유 번호 (FK)
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "recovery_date", nullable = false)
-    private Date recoveryDate; // 회수 일자
+    @Column(name = "STCUP_DT", nullable = false)
+    private String recoveryDate; // 일자
 
-    @Column(name = "recovery_unit_price", nullable = false)
-    private Integer recoveryUnitPrice; // 회수 단가
+    @Column(name = "STCUP_CNT", nullable = false)
+    private Long recoveryCount; // 매각 수량
 
-    @Column(name = "investment_method", length = 50, nullable = false)
-    private String investmentMethod; // 회수 방법
+    @Column(name = "STCUP_UNIT_PRICE")
+    private Long recoveryUnitPrice; // 매각 단가
 
-    @Column(name = "recovery_amount", nullable = false)
-    private BigInteger recoveryAmount; // 회수 수익금
+    @Column(name = "STCUP_EQT_RATE", precision = 5, scale = 2)
+    private BigDecimal recoveryEquityRate; // 지분율
 
-    @Column(name = "recovery_ratio", precision = 5, scale = 2, nullable = false)
-    private BigDecimal recoveryRatio; // 회수 지분율
+    @Column(name = "STCUP_FUND_RTN")
+    private Long fundReturn; // 펀드 수익
 
-    @Column(name = "recovery_income", nullable = false)
-    private BigInteger recoveryIncome; // 회수 수입금
-
-    @Column(name = "remaining_investment", nullable = false)
-    private BigInteger remainingInvestment; // 투자 잔액
-
-    @Column(name = "investment_reduction", nullable = false)
-    private BigInteger investmentReduction; // 투자 감액
+    @Column(name = "STCUP_KUH_RTN")
+    private Long kuhReturn; // KUH 수익
 }

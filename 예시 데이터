@@ -1,0 +1,104 @@
+// ccmpinfcto
+{
+  "companyId": "2024_001",
+  "companyName": "영진개발",
+  "establishmentDate": "2000-05-15",
+  "ceoName": "정상진",
+  "companyAddress": "서울시 성북구 고려대로",
+  "businessRegistrationNumber": "1234567890",
+  "corporateRegistrationNumber": "987654321",
+  "industryCode": "IND123",
+  "capital": 50000000,
+  "parValue": 1000,
+  "employeeCount": 250,
+  "startupType": "Technology",
+  "regionalCompany": "Yes",
+  "kuhStartup": "No",
+  "ventureRecognition": "Yes",
+  "researchRecognition": "No",
+  "earlyStartupType": "Seed",
+  "kuhSubsidiary": "No",
+  "investmentSector": "Artificial Intelligence",
+  "dueDiligence": "Completed",
+  "mainProducts": "AI Software, Cloud Services",
+  "investmentPoint1": "Strong Team",
+  "investmentPoint2": "Growing Market",
+  "investmentPoint3": "Innovative Product",
+  "evaluationEmployee": "Manager Lee",
+  "publicTechnologyTransfer": "Yes",
+  "smeStatus": "Yes",
+  "listingDate": "2023-09-01",
+  "listingStatus": "Listed",
+  "companyPostalCode": "12345",
+
+  "financialYear": 2023,
+  "financialHalf": 1,
+  "revenue": 100000000,
+  "operatingProfit": 15000000,
+  "netIncome": 12000000,
+  "totalAssets": 500000000,
+  "totalCapital": 300000000,
+  "totalDebt": 200000000,
+
+  "manager1": "유지숙",
+  "manager2": "오윤석",
+  "manager3": "김주원",
+
+  "positionType": "CTO",
+  "phoneNumber": "010-1234-5678",
+  "email": "contact@example.com",
+  "name": "성채경"
+}
+civtdto
+{
+  "fundId": "대창1호",
+  "companyId": "2024_001",
+  "investmentProduct": "Preferred Stock",
+  "investmentSumPrice": 1000000000,
+  "shareCount": 100000,
+  "investmentUnitPrice": 10000,
+  "equityRate": 15.50,
+  "investmentValue": 6500000000,
+  "tangibleInvestment": "Machinery",
+  "investmentStep": "Series A",
+  "investmentDate": "2025-01-15",
+  "investmentEmployee": "John Doe",
+  "totalShares": 500000,
+  "investmentState": "B",
+  "investmentMemo": "Investment focused on expanding AI research and development."
+}
+cfoldto
+{
+  "companyId": "2024_001",
+  "followupStartDate": "2025-01-20",
+  "followupCompanyName": "Future Ventures",
+  "followupProduct": "Common Stock",
+  "followupSumPrice": 500000000,
+  "followupShareCount": 50000,
+  "followupUnitPrice": 10000,
+  "followupEquityRate": 10.25,
+  "followupInvestmentValue": 2000000000,
+  "followupStep": "Series B"
+}
+cstucup
+{
+  "investmentId": 1,
+  "recoveryDate": "2025-01-29",
+  "recoveryCount": 1000,
+  "recoveryUnitPrice": 50000,
+  "equityRate": 15.75,
+  "fundReturn": 75000000,
+  "kuhReturn": 15000000
+}
+cshrup
+{
+  "investmentId": 1,
+  "shareUpdateDate": "2025-01-29",
+  "shareUnitValue": 0,
+  "shareUpdateType": "감액",
+  "shareUpdateReason": "시장 변동",
+  "shareUpdateAction": "주식 재조정"
+}
+
+
+

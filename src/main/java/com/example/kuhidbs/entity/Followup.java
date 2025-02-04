@@ -1,54 +1,56 @@
 package com.example.kuhidbs.entity;
 
-import com.example.kuhidbs.entity.company.Company;
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
-@Table(name = "followup_investment")
-@Getter
-@Setter
+@Table(name = "KUH_FOL_TBL")
+@Data
 @NoArgsConstructor
-public class Followup {
+@AllArgsConstructor
+@Builder
+public class Followup extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "follow_investment_id", nullable = false)
-    private Integer followInvestmentId; // 후속투자고유ID (AUTO_INCREMENT)
+    @Column(name = "FOL_ID", length = 100, nullable = false)
+    private Long followupId; // 후속 투자 고유 번호
 
     @ManyToOne
-    @JoinColumn(name = "company_id", nullable = false)
-    private Company company; // 고유 ID (Company와 연관 관계)
+    @JoinColumn(name = "CMP_ID", nullable = false)
+    private Company company;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "investment_date", nullable = false)
-    private Date investmentDate; // 투자일자
+    @Column(name = "FOL_STRT_DT")
+    private String followupStartDate; // 투자 일자
 
-    @Column(name = "investment_institution", length = 100, nullable = false)
-    private String investmentInstitution; // 투자기관
+    @Column(name = "FOL_CMP_NM", length = 100)
+    private String followupCompanyName; // 투자 기관
 
-    @Column(name = "fund_name", length = 100)
-    private String fundName; // 펀드명
+    @Column(name = "FOL_PRDT")
+    private String followupProduct; // 투자 상품 (ENUM)
 
-    @Column(name = "investment_method", length = 50)
-    private String investmentMethod; // 투자방법
+    @Column(name = "FOL_SUM_PRICE")
+    private Long followupSumPrice; // 투자 금액
 
-    @Column(name = "investment_unit_price", precision = 19, scale = 0, nullable = false)
-    private BigInteger investmentUnitPrice; // 투자단가
+    @Column(name = "FOL_SHR_CNT")
+    private Long followupShareCount; // 주식 수량
 
-    @Column(name = "acquisition_amount", precision = 19, scale = 0, nullable = false)
-    private BigInteger acquisitionAmount; // 투자금액
+    @Column(name = "FOL_UNIT_PRICE")
+    private Long followupUnitPrice; // 투자 단가
 
-    @Column(name = "acquisition_ratio", precision = 5, scale = 2, nullable = false)
-    private BigDecimal acquisitionRatio; // 인수지분율
+    @Column(name = "FOL_EQT_RATE", precision = 5, scale = 2)
+    private BigDecimal followupEquityRate; // 지분율
 
-    @Column(name = "enterprise_value_at_time", precision = 19, scale = 0)
-    private BigInteger enterpriseValueAtTime; // 투자 당시 기업 가치
+    @Column(name = "FOL_INV_VAL")
+    private Long followupInvestmentValue; // 투자 밸류
+
+    @Column(name = "FOL_STEP")
+    private String followupStep; // 투자 단계 (ENUM)
 
 }

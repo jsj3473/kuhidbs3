@@ -1,67 +1,55 @@
 package com.example.kuhidbs.entity;
 
-import com.example.kuhidbs.entity.company.Company;
 import jakarta.persistence.*;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-import java.math.BigInteger;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 
 @Entity
-@Table(name = "financial")
-@Getter
-@Setter
+@Table(name = "KUH_FNC_TBL")
+@Data
 @NoArgsConstructor
-public class Financial {
+@AllArgsConstructor
+@Builder
+public class Financial extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "finance_id", nullable = false)
-    private Integer financeId; // 재무 및 인력 현황 고유 ID
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 증가 (Auto Increment)
+    @Column(name = "FNC_ID", nullable = false)
+    private Long financialStatementId;
 
     @ManyToOne
-    @JoinColumn(name = "company_id", nullable = false)
-    private Company company; // 회사 ID (외래키)
+    @JoinColumn(name = "CMP_ID", nullable = false)
+    private Company company;
 
-    @Column(name = "financial_year", nullable = false)
-    private Integer financialYear ; // 연도
+    @Column(name = "FNC_YEAR")
+    private Integer financialYear;
 
-    @Column(name = "financial_half_year", nullable = false)
-    private String financialHalfYear ; // 반기
+    @Column(name = "FNC_HALF")
+    private Integer financialHalf;
 
-    @Column(name = "revenue", nullable = false)
-    private BigInteger revenue; // 매출액
+    @Column(name = "REVENUE")
+    private Integer revenue;
 
-    @Column(name = "operating_profit", nullable = false)
-    private BigInteger operatingProfit; // 영업이익
+    @Column(name = "OPER_PROFIT")
+    private Integer operatingProfit;
 
-    @Column(name = "net_income", nullable = false)
-    private BigInteger netIncome; // 당기순이익
+    @Column(name = "NET_INCOME")
+    private Integer netIncome;
 
-    @Column(name = "current_assets", nullable = false)
-    private BigInteger currentAssets; // 자산총계
+    @Column(name = "TOT_AST")
+    private Integer totalAssets;
 
-    @Column(name = "current_liabilities", nullable = false)
-    private BigInteger currentLiabilities; // 부채총계
+    @Column(name = "TOT_CAPITAL")
+    private Integer totalCapital;
 
-    @Column(name = "total_equity", nullable = false)
-    private BigInteger totalEquity; // 자본총계
+    @Column(name = "CAPITAL")
+    private Integer capital;
 
-    @Column(name = "capital", nullable = false)
-    private BigInteger capital; // 자본금
+    @Column(name = "EMP_CNT")
+    private Integer employeeCount;
 
-    @Column(name = "employees", nullable = false)
-    private Integer employees; // 임직원 수
-
-    @Column(name = "foreign_patents", nullable = false)
-    private Integer foreignPatents; // 해외특허 보유 건수
-
-    @Column(name = "equity_value", nullable = false)
-    private BigInteger equityValue; // 당사 보유 지분가치
-
-    @Column(name = "overall_evaluation", columnDefinition = "TEXT")
-    private String overallEvaluation; // 종합평가
+    @Column(name = "DEBT_CAPITAL")
+    private Integer totalDebt;
 }
-
-

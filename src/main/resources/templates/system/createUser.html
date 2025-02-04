@@ -91,10 +91,7 @@
                 <label for="password">초기 비밀번호</label>
                 <input type="password" id="password" name="password" class="form-control" placeholder="비밀번호를 입력하세요">
             </div>
-            <div class="form-group">
-                <label for="registeredBy">등록자 사번</label>
-                <input type="text" id="registeredBy" name="registeredBy" class="form-control" placeholder="등록자 사번을 입력하세요">
-            </div>
+            <input type="hidden" id="registeredBy" name="registeredBy" th:value="${empId}">
             <button type="submit" class="btn btn-primary" id="saveUserButton">저장</button>
         </div>
     </form>

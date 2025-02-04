@@ -27,12 +27,11 @@ public class UserController {
 
     @PostMapping
     public String  createUser(@ModelAttribute CreateUserDTO createUserDTO) {
+        System.out.println("DTO 값: " + createUserDTO);
         // DTO를 엔티티로 변환
         User user = createUserDTO.toEntity();
         // 엔티티를 서비스로 전달
         return userService.createUser(user);
-
-
     }
 
     //퇴직 처리

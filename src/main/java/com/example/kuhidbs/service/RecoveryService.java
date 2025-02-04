@@ -1,26 +1,56 @@
 package com.example.kuhidbs.service;
 
-import com.example.kuhidbs.entity.Recovery;
-import com.example.kuhidbs.repository.RecoveryRepository;
+import com.example.kuhidbs.dto.*;
+import com.example.kuhidbs.entity.*;
+import com.example.kuhidbs.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class RecoveryService {
 
-    private final RecoveryRepository recoveryRepository;
-
     @Autowired
-    public RecoveryService(RecoveryRepository recoveryRepository) {
-        this.recoveryRepository = recoveryRepository;
+    private RecoveryRepository recoveryRepository;
+    @Autowired
+    private InvestmentRepository investmentRepository;
+    @Autowired
+    private AccountRepository accountRepository;
+
+    public Recovery saveRecovery(CStcupDTO stcupDTO) {
+        // Investment 객체 조회
+        Investment investment = investmentRepository.findById(stcupDTO.getInvestmentId())
+                .orElseThrow(() -> new IllegalArgumentException("Investment not found with ID: " + stcupDTO.getInvestmentId()));
+
+        // Recovery 엔터티 생성 및 설정
+        Recovery recovery = Recovery.builder()
+                .investment(investment) // ManyToOne 관계 설정
+                .recoveryDate(stcupDTO.getRecoveryDate())
+                .recoveryCount(stcupDTO.getRecoveryCount())
+                .recoveryUnitPrice(stcupDTO.getRecoveryUnitPrice())
+                .recoveryEquityRate(stcupDTO.getEquityRate())
+                .fundReturn(stcupDTO.getFundReturn())
+                .kuhReturn(stcupDTO.getKuhReturn())
+                .build();
+
+        Recovery savedRecovery = recoveryRepository.save(recovery);
+
+        // 최신 계좌 데이터 조회
+        Account latestAccount = accountRepository.findTop1ByInvestmentInvestmentIdOrderByAccountIdDesc(stcupDTO.getInvestmentId());
+        // 일부 컬럼 수정
+        Account updatedAccount = Account.builder()
+                .investment(latestAccount.getInvestment()) // 기존 투자 엔터티 유지
+                .unitPrice(latestAccount.getUnitPrice()) // 기존 주당 가치 유지
+                .heldShareCount(latestAccount.getHeldShareCount() - stcupDTO.getRecoveryCount()) // 기존 보유주식수 - 매각주식수
+                .totalPrincipal(latestAccount.getTotalPrincipal() - stcupDTO.getRecoveryCount()*latestAccount.getUnitPrice())
+                .functionType("회수") // 실행 함수 업데이트()
+                .kuhEquityRate(latestAccount.getKuhEquityRate()) // 기존 KUH 지분율 유지
+                .build();
+
+        accountRepository.save(updatedAccount);
+        return savedRecovery;
     }
 
-    /**
-     * 회수 정보 생성
-     *
-     * @param recovery 저장할 회수 정보 엔터티
-     */
-    public void createRecovery(Recovery recovery) {
-        recoveryRepository.save(recovery);
-    }
+
 }
