@@ -1,9 +1,8 @@
 package com.example.kuhidbs.entity;
 
+import com.example.kuhidbs.entity.company.Company;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.time.LocalDate;
 
 @Entity
 @Table(name = "KUH_TIPS_TBL") // 테이블 이름 지정

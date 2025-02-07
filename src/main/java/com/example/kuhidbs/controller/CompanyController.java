@@ -1,11 +1,22 @@
 package com.example.kuhidbs.controller;
 
-import com.example.kuhidbs.dto.*;
+import com.example.kuhidbs.dto.company.*;
+import com.example.kuhidbs.dto.company.kuh투자.*;
+import com.example.kuhidbs.dto.company.기본정보.*;
+import com.example.kuhidbs.dto.company.동반.*;
+import com.example.kuhidbs.dto.company.사후관리.*;
+import com.example.kuhidbs.dto.company.재무.*;
+import com.example.kuhidbs.dto.company.주주명부.*;
+import com.example.kuhidbs.dto.company.팁스.*;
+import com.example.kuhidbs.dto.company.후속투자.*;
 import com.example.kuhidbs.entity.*;
-import com.example.kuhidbs.service.*;
+import com.example.kuhidbs.entity.company.*;
+import com.example.kuhidbs.service.company.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @RestController
@@ -13,7 +24,7 @@ import org.springframework.web.bind.annotation.*;
 public class CompanyController {
 
     @Autowired
-    private CmpService cmpService;
+    private CompanyService companyService;
 
     @Autowired
     private FinancialService financialService;
@@ -48,11 +59,14 @@ public class CompanyController {
     @Autowired
     private BonusService bonusService;
 
+    @Autowired
+    private TipsService tipsService;
+
     @PostMapping("/createCompany")
     public ResponseEntity<Void> createCompany(@RequestBody CCmpInfDTO CCmpInfDTO) {
 
         // 1. 회사 정보 저장 (Company 테이블)
-        cmpService.saveCompany(CCmpInfDTO);
+        companyService.saveCompany(CCmpInfDTO);
 
         // 2. 재무 정보 저장 (Financial 테이블)
         financialService.saveFinancial(CCmpInfDTO);
@@ -145,11 +159,36 @@ public class CompanyController {
         return ResponseEntity.ok().build();
     }
 
+    // Reviewer 데이터 생성 API
+    @PostMapping("/createTIPS")
+    public ResponseEntity<TIPS> createTIPS(@RequestBody CTIPSDTO dto) {
+        TIPS createdTIPS = tipsService.createTIPS(dto);
+        return ResponseEntity.ok(createdTIPS);
+    }
+
+    //후속투자 정보 조회 api
+    @GetMapping("/followup/{companyId}")
+    public List<RFolDTO> getFollowupByCompanyId(@PathVariable String companyId) {
+        return followupService.getFollowupByCompanyId(companyId);
+    }
 
     // 회사 기본 정보 조회 API
-    @GetMapping("/{companyId}")
+    @GetMapping("/info/{companyId}")
     public ResponseEntity<RCmpInfDTO> getCompanyInfo(@PathVariable String companyId) {
-        RCmpInfDTO companyInfo = cmpService.getCompanyInfo(companyId);
+        RCmpInfDTO companyInfo = companyService.getCompanyInfo(companyId);
         return ResponseEntity.ok(companyInfo);
+    }
+
+    //팁스 정보 조회 api
+    @GetMapping("/tips/{companyId}")
+    public List<RTIPSDTO> getTipsByCompanyId(@PathVariable String companyId) {
+        return tipsService.getTipsByCompanyId(companyId);
+    }
+
+    // 팁스 정보 수정 API
+    @PutMapping("/updateTIPS")
+    public ResponseEntity<String> updateTips(@RequestBody UTIPSDTO dto) {
+        tipsService.updateTips(dto);
+        return ResponseEntity.ok("TIPS 정보가 업데이트되었습니다.");
     }
 }

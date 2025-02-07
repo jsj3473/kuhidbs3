@@ -3,7 +3,7 @@ package com.example.kuhidbs.controller;
 import com.example.kuhidbs.dto.user.UserDTO;
 import com.example.kuhidbs.entity.User;
 import com.example.kuhidbs.service.UserService;
-import com.example.kuhidbs.service.CmpService;
+import com.example.kuhidbs.service.company.CompanyService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,7 +18,7 @@ import java.util.List;
 public class HomeController {
 
     @Autowired
-    private CmpService cmpService;
+    private CompanyService companyService;
     @Autowired
     private UserService userService;
 

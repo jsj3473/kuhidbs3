@@ -199,6 +199,36 @@ createReviewer
   "changeReason": "재무 성과 개선 필요"
 }
 
+createTIPS
+{
+    "companyId": "2024_001",
+    "tipsComment": "정부 지원 사업 선정됨",
+    "tipsSelectionDate": "2024-01-10",
+    "tipsSelectionType": "창업성장",
+    "executionStartDate": "2024-02-01",
+    "executionEndDate": "2025-01-31",
+    "selectionYesNo": "Y",
+    "tipsManagementEndDate": "2026-01-31",
+    "successYesNo": "Y",
+    "followTips": "성실실패",
+    "kips": "후속투자"
+}
+
+updateTIPS
+{
+    "tipsId": 1,
+    "tipsSelectionType": "창업성장",
+    "selectionYesNo": "Y",
+    "tipsSelectionDate": "2024-01-10",
+    "executionStartDate": "2024-02-01",
+    "executionEndDate": "2025-01-31",
+    "successYesNo": "Y",
+    "kips": "매출 10억",
+    "tipsComment": "정부 지원 사업 선정됨",
+    "tipsManagementEndDate": "2026-01-31",
+    "followTips": "Y"
+}
+
 
 
 
