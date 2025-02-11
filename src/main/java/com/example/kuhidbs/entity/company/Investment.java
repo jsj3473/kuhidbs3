@@ -62,10 +62,4 @@ public class Investment extends BaseEntity {
 
     @Column(name = "TOT_SHR")
     private Long totalShares; // 발행 주식 수
-
-    @Column(name = "INV_STATE", length = 100)
-    private String investmentState; // 투자 상태
-
-    @Column(name = "INV_MEMO", length = 1000)
-    private String investmentMemo; // 기타 메모
 }

@@ -66,9 +66,7 @@ public class InvestmentService {
                 .investmentValue(investment.getInvestmentValue())
                 .tangibleInvestment(investment.getTangibleInvestment())
                 .investmentEmployee(investment.getInvestmentEmployee())
-                .investmentState(investment.getInvestmentState())
                 .investmentStep(investment.getInvestmentStep())
-                .investmentMemo(investment.getInvestmentMemo())
                 .build()).orElse(null);
 
     }
@@ -94,8 +92,6 @@ public class InvestmentService {
                 .investmentDate(dto.getInvestmentDate()) // 투자 일자
                 .investmentEmployee(dto.getInvestmentEmployee()) // 투자 담당자
                 .totalShares(dto.getTotalShares()) // 발행 주식 수
-                .investmentState(dto.getInvestmentState()) // 투자 상태
-                .investmentMemo(dto.getInvestmentMemo()) // 기타 메모
                 .build();
     }
 

@@ -62,6 +62,9 @@ public class CompanyController {
     @Autowired
     private TipsService tipsService;
 
+    @Autowired
+    private StatusService statusService;
+
     @PostMapping("/createCompany")
     public ResponseEntity<Void> createCompany(@RequestBody CCmpInfDTO CCmpInfDTO) {
 
@@ -85,6 +88,13 @@ public class CompanyController {
     public ResponseEntity<?> createInvestment(@RequestBody CIvtDTO cIvtDTO) {
         // InvestmentDto를 받아 InvestmentService에 전달
         Investment savedInvestment = investmentService.saveInvestment(cIvtDTO);
+
+        Status status = statusService.createStatusFirst(
+                cIvtDTO.getCompanyId(),
+                cIvtDTO.getInvestmentState(),
+                cIvtDTO.getInvestmentMemo()
+        );
+
         return ResponseEntity.ok(savedInvestment); // 저장된 Investment 반환
     }
 
