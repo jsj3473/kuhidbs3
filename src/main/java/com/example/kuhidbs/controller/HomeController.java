@@ -82,6 +82,13 @@ public class HomeController {
         return "companyAdd/kuhInvestment"; // kuhInvestment.html
     }
 
+    // KUH 투자정보 팝업
+    @GetMapping("/companyAdd/followupInvestment/{id}")
+    public String followupInvestment(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("companyId", id);
+        return "companyAdd/followupInvestment"; // kuhInvestment.html
+    }
+
     // 재무 및 인력상황
     @GetMapping("/company/financial/{id}")
     public String financialInfo(@PathVariable("id") Long id, Model model) {
