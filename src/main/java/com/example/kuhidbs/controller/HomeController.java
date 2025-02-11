@@ -32,6 +32,12 @@ public class HomeController {
         }
     }
 
+    // 기본 URL ("/") 요청 시 로그인 페이지로 리다이렉트
+    @GetMapping("/")
+    public String redirectToLogin() {
+        return "redirect:/login"; // 로그인 페이지로 리다이렉트
+    }
+
     //로그인
     @GetMapping("/login")
     public String login(Model model) {
@@ -69,7 +75,12 @@ public class HomeController {
         return "companyAdd"; // companyAdd.html
     }
 
-
+    // KUH 투자정보 팝업
+    @GetMapping("/companyAdd/kuhInvestment/{id}")
+    public String kuhInvestment(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("companyId", id);
+        return "companyAdd/kuhInvestment"; // kuhInvestment.html
+    }
 
     // 재무 및 인력상황
     @GetMapping("/company/financial/{id}")

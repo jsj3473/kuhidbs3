@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>KUH 투자정보 입력</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script>
+        function removeDefaultOptions() {
+            document.querySelectorAll("select").forEach(select => {
+                if (select.value === "") {
+                    select.removeAttribute("name");
+                }
+            });
+        }
+    </script>
+</head>
+<body class="container mt-4">
+<h2 class="mb-4">KUH 투자정보 입력</h2>
+
+<form th:action="@{/companyAdd/kuhInvestment}" method="post" onsubmit="removeDefaultOptions()">
+    <input type="hidden" name="companyId" th:value="${companyId}">
+    <input type="hidden" name="investmentDate" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
+    <input type="hidden" name="investmentEmployee" th:value="${loggedInUser}">
+
+    <div class="mb-3"><label class="form-label">1. 투자 재원</label>
+        <select class="form-control" name="fundId">
+            <option value="">선택하세요</option>
+            <option value="고유계정">고유계정</option>
+            <option value="대학창업 1호">대학창업 1호</option>
+            <option value="대학창업 2호">대학창업 2호</option>
+            <option value="대학창업 3호">대학창업 3호</option>
+            <option value="공공기술 1호">공공기술 1호</option>
+            <option value="글로벌혁신 1호">글로벌혁신 1호</option>
+            <option value="딥사이언스 1호">딥사이언스 1호</option>
+            <option value="포스코기술 1호">포스코기술 1호</option>
+            <option value="미래ESV 1호">미래ESV 1호</option>
+        </select>
+    </div>
+
+    <div class="mb-3"><label class="form-label">2. 투자 상품</label>
+        <select class="form-control" name="investmentProduct">
+            <option value="">선택하세요</option>
+            <option value="CS">보통주(CS)</option>
+            <option value="RCPS">상환전환우선주(RCPS)</option>
+            <option value="CPS">전환우선주(CPS)</option>
+            <option value="CB">전환사채(CB)</option>
+            <option value="BW">신주인수권부사채(BW)</option>
+            <option value="EB">교환사채(EB)</option>
+            <option value="CN">컨버터블노트(CN)</option>
+            <option value="SAFE">세이프(SAFE)</option>
+        </select>
+    </div>
+
+    <div class="mb-3"><label class="form-label">3. 투자 단가 (단위: 원)</label>
+        <input type="number" class="form-control" name="investmentUnitPrice">
+    </div>
+
+    <div class="mb-3"><label class="form-label">4. 주식 수량 (단위: 주)</label>
+        <input type="number" class="form-control" name="shareCount">
+    </div>
+
+    <div class="mb-3"><label class="form-label">5. 투자 금액 (단위: 원)</label>
+        <input type="number" class="form-control" name="investmentSumPrice">
+    </div>
+
+    <div class="mb-3"><label class="form-label">6. 발행 주식 수 (단위: 주)</label>
+        <input type="number" class="form-control" name="totalShares">
+    </div>
+
+    <div class="mb-3"><label class="form-label">7. 지분율 (단위: %)</label>
+        <input type="text" class="form-control" name="equityRate" readonly>
+    </div>
+
+    <div class="mb-3"><label class="form-label">8. 투자 밸류 (단위: 억원)</label>
+        <input type="number" class="form-control" name="investmentValue">
+    </div>
+
+    <div class="mb-3"><label class="form-label">9. 투자 단계</label>
+        <select class="form-control" name="investmentStep">
+            <option value="">선택하세요</option>
+            <option value="Seed">Seed</option>
+            <option value="Pre-A">Pre-A</option>
+            <option value="Series A">Series A</option>
+            <option value="Series B">Series B</option>
+            <option value="Series C">Series C</option>
+        </select>
+    </div>
+
+    <div class="mb-3"><label class="form-label">10. 현물 투자</label>
+        <select class="form-control" name="tangibleInvestment">
+            <option value="">선택하세요</option>
+            <option value="현금투자">현금투자</option>
+            <option value="현물투자">현물투자</option>
+            <option value="현금, 현물투자">현금, 현물투자</option>
+        </select>
+    </div>
+
+    <div class="mb-3"><label class="form-label">11. 투자 상태</label>
+        <select class="form-control" name="investmentState">
+            <option value="">선택하세요</option>
+            <option value="정상투자 A">정상투자 A</option>
+            <option value="정상투자 B">정상투자 B</option>
+            <option value="요주의 C">요주의 C</option>
+            <option value="주의 D">주의 D</option>
+        </select>
+    </div>
+
+    <div class="mb-3"><label class="form-label">12. 기타 메모</label>
+        <textarea class="form-control" name="investmentMemo" rows="3"></textarea>
+    </div>
+
+    <div class="mt-4">
+        <button type="submit" class="btn btn-primary">저장</button>
+    </div>
+</form>
+</body>
+</html>
