@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>재무 및 인력상황</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            height: 100vh;
+        }
+
+        .main {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .main-content {
+            flex-grow: 1;
+            padding: 20px;
+            overflow: auto;
+            width: 100%;
+        }
+
+        .table-wrapper {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .table-bordered th {
+            background-color: #f8f9fa;
+            color: #000;
+        }
+
+        .table-bordered th, .table-bordered td {
+            vertical-align: middle;
+            text-align: center;
+        }
+
+        #additionalInfoTable th, #additionalInfoTable td {
+            vertical-align: middle;
+            text-align: center;
+            width: 33.33%; /* 각 셀의 너비를 동일하게 설정 */
+        }
+
+        select.form-control-select {
+            width: 100%; /* 내용과 관계없이 넉넉하게 전체 너비 */
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        h2 {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .table-primary {
+            background-color: #cce5ff !important;
+        }
+
+    </style>
+</head>
+<body>
+<div class="main">
+    <div class="main-content">
+        <div class="container">
+            <!-- 재무 테이블 -->
+            <div class="table-wrapper">
+                <h2>
+                    재무 및 인력상황
+                    <div class="action-buttons">
+                        <button type="button" class="btn btn-sm" id="addFinancialRow">행 추가</button>
+                        <button type="button" class="btn btn-sm" id="removeFinancialRow">행 삭제</button>
+                    </div>
+                </h2>
+                <table class="table table-bordered" id="financialTable">
+                    <thead>
+                    <tr>
+                        <th>회계연도</th>
+                        <th>매출액</th>
+                        <th>영업이익</th>
+                        <th>당기순이익</th>
+                        <th>유동자산</th>
+                        <th>유동부채</th>
+                        <th>자본총계</th>
+                        <th>임직원 수</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <div class="d-flex">
+                                <input type="text" class="form-control" name="financials[0].fiscalYear" placeholder="회계연도">
+                                <select class="form-control ms-2" name="financials[0].fiscalHalf">
+                                    <option value="상반기">상반기</option>
+                                    <option value="하반기">하반기</option>
+                                </select>
+                            </div>
+                        </td>
+                        <td><input type="text" class="form-control number-format" name="financials[0].revenue" placeholder="매출액"></td>
+                        <td><input type="text" class="form-control number-format" name="financials[0].operatingProfit" placeholder="영업이익"></td>
+                        <td><input type="text" class="form-control number-format" name="financials[0].netIncome" placeholder="당기순이익"></td>
+                        <td><input type="text" class="form-control number-format" name="financials[0].currentAssets" placeholder="유동자산"></td>
+                        <td><input type="text" class="form-control number-format" name="financials[0].currentLiabilities" placeholder="유동부채"></td>
+                        <td><input type="text" class="form-control number-format" name="financials[0].totalEquity" placeholder="자본총계"></td>
+                        <td><input type="number" class="form-control" name="financials[0].employeeCount" placeholder="임직원 수"></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- 추가 정보 테이블 -->
+            <div class="table-wrapper mt-4">
+                <h2>추가 정보</h2>
+                <table id="additionalInfoTable" class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <th>해외특허 보유건수</th>
+                        <th>당사보유 지분가치</th>
+                        <th>종합평가</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td><input type="number" class="form-control" name="additionalInfo.foreignPatents" placeholder="해외특허 보유 건수"></td>
+                        <td><input type="text" class="form-control number-format" name="additionalInfo.equityValue" placeholder="당사 보유 지분가치"></td>
+                        <td>
+                            <select class="form-control" name="additionalInfo.overallEvaluation">
+                                <option value="A" selected>A: 집중지원</option>
+                                <option value="B">B: 정상</option>
+                                <option value="C">C: 요주의</option>
+                                <option value="D">D: Default</option>
+                            </select>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="text-end">
+                    <button type="submit" class="btn btn-primary" id="saveButton">저장</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const table = document.getElementById("financialTable");
+
+        // 선택된 행 저장용 변수
+        let selectedRow = null;
+
+        // 테이블 행 클릭 이벤트
+        table.addEventListener("click", function (event) {
+            const row = event.target.closest("tr");
+            if (row && row.parentElement.tagName === "TBODY") {
+                // 기존 강조 제거
+                [...table.querySelectorAll("tbody tr")].forEach(r => r.classList.remove("table-primary"));
+
+                // 현재 행 강조
+                row.classList.add("table-primary");
+
+                // 선택된 행 저장
+                selectedRow = row;
+            }
+        });
+
+        // 행 추가
+        document.getElementById("addFinancialRow").addEventListener("click", () => {
+            const tbody = table.querySelector("tbody");
+            const rowIndex = tbody.rows.length;
+            const newRow = tbody.insertRow();
+
+            newRow.innerHTML = `
+                <td>
+                    <div class="d-flex">
+                        <input type="text" class="form-control" name="financials[${rowIndex}].fiscalYear" placeholder="회계연도">
+                        <select class="form-control ms-2" name="financials[${rowIndex}].fiscalHalf">
+                            <option value="상반기">상반기</option>
+                            <option value="하반기">하반기</option>
+                        </select>
+                    </div>
+                </td>
+                <td><input type="text" class="form-control number-format" name="financials[${rowIndex}].revenue" placeholder="매출액"></td>
+                <td><input type="text" class="form-control number-format" name="financials[${rowIndex}].operatingProfit" placeholder="영업이익"></td>
+                <td><input type="text" class="form-control number-format" name="financials[${rowIndex}].netIncome" placeholder="당기순이익"></td>
+                <td><input type="text" class="form-control number-format" name="financials[${rowIndex}].currentAssets" placeholder="유동자산"></td>
+                <td><input type="text" class="form-control number-format" name="financials[${rowIndex}].currentLiabilities" placeholder="유동부채"></td>
+                <td><input type="text" class="form-control number-format" name="financials[${rowIndex}].totalEquity" placeholder="자본총계"></td>
+                <td><input type="text" class="form-control" name="financials[${rowIndex}].employeeCount" placeholder="임직원 수"></td>
+            `;
+        });
+
+        // 행 삭제
+        document.getElementById("removeFinancialRow").addEventListener("click", () => {
+            if (selectedRow) {
+                selectedRow.remove();
+                selectedRow = null; // 선택 초기화
+            } else {
+                alert("삭제할 행을 선택하세요.");
+            }
+        });
+
+        // 천단위 콤마 추가 및 제거
+        table.addEventListener("input", function (event) {
+            if (event.target.classList.contains("number-format")) {
+                const input = event.target;
+                const value = input.value.replace(/,/g, "");
+                if (!isNaN(value) && value !== "") {
+                    input.value = parseInt(value).toLocaleString("en-US");
+                }
+            }
+        });
+
+        // 저장 버튼 클릭 이벤트
+        document.getElementById("saveButton").addEventListener("click", () => {
+            const financialRows = table.querySelectorAll("tbody tr");
+            const financialData = Array.from(financialRows).map((row, index) => ({
+                companyId: 1, // 고정값 예시
+                financialYear: parseInt(row.querySelector(`[name="financials[${index}].fiscalYear"]`).value) || null,
+                fiscalHalf: row.querySelector(`[name="financials[${index}].fiscalHalf"]`).value,
+                revenue: parseBigInt(row.querySelector(`[name="financials[${index}].revenue"]`).value),
+                operatingProfit: parseBigInt(row.querySelector(`[name="financials[${index}].operatingProfit"]`).value),
+                netIncome: parseBigInt(row.querySelector(`[name="financials[${index}].netIncome"]`).value),
+                currentAssets: parseBigInt(row.querySelector(`[name="financials[${index}].currentAssets"]`).value),
+                currentLiabilities: parseBigInt(row.querySelector(`[name="financials[${index}].currentLiabilities"]`).value),
+                totalEquity: parseBigInt(row.querySelector(`[name="financials[${index}].totalEquity"]`).value),
+                employeeCount: parseInt(row.querySelector(`[name="financials[${index}].employeeCount"]`).value) || null,
+            }));
+
+            const additionalInfo = {
+                foreignPatents: parseInt(document.querySelector(`[name="additionalInfo.foreignPatents"]`).value) || 0,
+                equityValue: parseBigInt(document.querySelector(`[name="additionalInfo.equityValue"]`).value),
+                overallEvaluation: document.querySelector(`[name="additionalInfo.overallEvaluation"]`).value,
+            };
+
+            console.log("Financial Data:", JSON.stringify(financialData, bigIntReplacer, 2));
+            console.log("Additional Info:", JSON.stringify(additionalInfo, bigIntReplacer, 2));
+
+            // 서버로 데이터 전송
+            fetch("/api/financials", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ financialData, additionalInfo }, bigIntReplacer),
+            })
+                .then((response) => {
+                    if (response.ok) {
+                        alert("저장이 완료되었습니다!");
+                    } else {
+                        alert("저장에 실패했습니다.");
+                    }
+                })
+                .catch((error) => {
+                    console.error("에러 발생:", error);
+                    alert("저장 중 에러가 발생했습니다.");
+                });
+        });
+
+        // 천단위 콤마 제거 후 숫자 변환
+        function parseBigInt(value) {
+            const sanitizedValue = value.replace(/,/g, "").trim();
+            return sanitizedValue ? BigInt(sanitizedValue) : null;
+        }
+
+        // BigInt를 문자열로 변환하는 replacer 함수
+        function bigIntReplacer(key, value) {
+            return typeof value === "bigint" ? value.toString() : value;
+        }
+    });
+</script>
+
+
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

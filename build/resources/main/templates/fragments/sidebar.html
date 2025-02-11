@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>슬라이드바</title>
+
+</head>
+<body>
+<div class="sidebar" th:fragment="sidebar">
+    <a href="/main"> <!-- 메인 페이지로 이동하는 링크 추가 -->
+        <div class="sidebar-logo">
+            <img src="/images/KuLogo.png" alt="프로그램 로고" class="logo-img" />
+            <h1 class="logo-text">KUH IDBS</h1>
+        </div>
+    </a>
+    <div class="accordion accordion-flush" id="accordionFlushExample">
+        <!-- 기업관리 -->
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                    기업관리
+                </button>
+            </h2>
+            <div id="flush-collapseOne" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                    <nav class="nav flex-column">
+                        <a class="nav-link active" aria-current="page" href="/companyAdd">기업 신규등록</a>
+                        <a class="nav-link" href="/companyManage">기업 정보관리</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <!-- 펀드관리 -->
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseTwo" aria-expanded="false" aria-controls="flush-collapseTwo">
+                    펀드관리
+                </button>
+            </h2>
+            <div id="flush-collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                    <nav class="nav flex-column">
+                        <a class="nav-link" href="#">조합정보 등록</a>
+                        <a class="nav-link" href="#">조합 자산현황</a>
+                        <a class="nav-link" href="#">투자자산총괄표</a>
+                        <a class="nav-link" href="#">투자금 실사현황</a>
+                        <a class="nav-link" href="#">고용인력 변동현황</a>
+                        <a class="nav-link" href="#">투자기업 세부현황</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <!-- 투자관리 -->
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseThree" aria-expanded="false" aria-controls="flush-collapseThree">
+                    투자관리
+                </button>
+            </h2>
+            <div id="flush-collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                    <nav class="nav flex-column">
+                        <a class="nav-link" href="#">투자현황 조회</a>
+                        <a class="nav-link" href="#">운용성과 조회</a>
+                        <a class="nav-link" href="#">재무상태 조회</a>
+                        <a class="nav-link" href="#">기업가치 요약</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+        <!-- 시스템관리 -->
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseFour" aria-expanded="false" aria-controls="flush-collapseFour">
+                    시스템관리
+                </button>
+            </h2>
+            <div id="flush-collapseFour" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+                <div class="accordion-body">
+                    <nav class="nav flex-column">
+                        <a class="nav-link" href="/system/userManage">사용자관리</a>
+                        <a class="nav-link" href="#">공통코드관리</a>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

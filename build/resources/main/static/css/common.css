@@ -1,0 +1,7 @@
+.dataTables_wrapper .dataTables_filter {
+    margin-top: 20px; /* 검색바 위쪽 여백 */
+}
+
+.dataTables_wrapper .dt-buttons {
+    margin-top: 20px; /* 버튼 위쪽 여백 */
+}

@@ -1,0 +1,13 @@
+/* 선택된 행의 배경색 - 연노랑 */
+.selected {
+    background-color: #FFFACD !important; /* Lemon Chiffon */
+}
+/* DataTables의 페이징 버튼 숨기기 */
+.paginate_button {
+    display: none !important;
+}
+
+/* 현재 페이지 스타일도 숨김 */
+.paginate_button.current {
+    display: none !important;
+}
