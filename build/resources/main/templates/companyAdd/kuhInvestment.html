@@ -14,17 +14,33 @@
         }
 
         function submitFirstForm() {
-            let formData = new FormData(document.getElementById("firstForm")); // 1번 폼 데이터 가져오기
+            let form = document.getElementById("firstForm");
+
+            if (!form) {
+                alert("폼을 찾을 수 없습니다.");
+                return;
+            }
+
+            // 폼 데이터를 JSON 형식으로 변환
+            let formData = new FormData(form);
+            let jsonData = {};
+
+            formData.forEach((value, key) => {
+                jsonData[key] = value;
+            });
 
             fetch("/api/companies/createInvestment", {
                 method: "POST",
-                body: formData
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(jsonData) // JSON 형식으로 변환
             })
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error("저장 실패");
+                        throw new Error("저장 실패: " + response.status);
                     }
-                    return response.json();
+                    return response.json(); // JSON 응답 처리
                 })
                 .then(data => {
                     alert("저장이 완료되었습니다!");
@@ -32,30 +48,50 @@
                 })
                 .catch(error => {
                     alert("저장 중 오류 발생: " + error.message);
-                    document.getElementById("secondForm").style.display = "block"; // 2번 폼 표시(임시, 삭제 필요)
                 });
         }
 
-        function submitSecondForm() {
-            let formData = new FormData(document.getElementById("secondForm")); // 2번 폼 데이터 가져오기
 
-            fetch("/api/companies//createShareholder", {
+
+        function submitSecondForm() {
+            let form = document.getElementById("secondForm");
+
+            if (!form) {
+                alert("폼을 찾을 수 없습니다.");
+                return;
+            }
+
+            // 폼 데이터를 JSON 형식으로 변환
+            let formData = new FormData(form);
+            let jsonData = {};
+
+            formData.forEach((value, key) => {
+                jsonData[key] = value;
+            });
+
+            console.log("전송할 데이터:", jsonData); // 디버깅용
+
+            fetch("/api/companies/createShareholder", {
                 method: "POST",
-                body: formData
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(jsonData) // JSON 형식으로 변환하여 전송
             })
                 .then(response => {
                     if (!response.ok) {
-                        throw new Error("주주 정보 저장 실패");
+                        throw new Error("저장 실패: " + response.status);
                     }
                     return response.json();
                 })
                 .then(data => {
-                    alert("주주 정보가 저장되었습니다!");
+                    alert("저장이 완료되었습니다!");
                 })
                 .catch(error => {
                     alert("저장 중 오류 발생: " + error.message);
                 });
         }
+
 
         function updateEquityRate() {
             let totalShares = parseFloat(document.getElementById("totalShareCount").value) || 1; // 총 발행 주식 수
@@ -86,14 +122,13 @@
 <body class="container mt-4">
 <h2 class="mb-4">KUH 투자정보 입력</h2>
 
-<form th:action="@{/companyAdd/kuhInvestment}" method="post" onsubmit="removeDefaultOptions()">
+<form  id="firstForm" th:action="@{/companyAdd/kuhInvestment}" method="post" onsubmit="removeDefaultOptions()">
     <input type="hidden" name="companyId" th:value="${companyId}">
-    <input type="hidden" name="investmentDate" th:value="${#dates.format(#dates.createNow(), 'yyyy-MM-dd')}">
-    <input type="hidden" name="investmentEmployee" th:value="${loggedInUser}">
+    <!-- <input type="hidden" name="investmentEmployee" th:value="${loggedInUser}">  -->
 
     <div class="mb-3"><label class="form-label">1. 투자 재원</label>
         <select class="form-control" name="fundId">
-            <option value="">선택하세요</option>
+            <option disabled>선택하세요</option>
             <option value="고유계정">고유계정</option>
             <option value="대학창업 1호">대학창업 1호</option>
             <option value="대학창업 2호">대학창업 2호</option>
@@ -108,7 +143,7 @@
 
     <div class="mb-3"><label class="form-label">2. 투자 상품</label>
         <select class="form-control" name="investmentProduct">
-            <option value="">선택하세요</option>
+            <option disabled>선택하세요</option>
             <option value="CS">보통주(CS)</option>
             <option value="RCPS">상환전환우선주(RCPS)</option>
             <option value="CPS">전환우선주(CPS)</option>
@@ -167,7 +202,7 @@
     <div class="mb-3"><label class="form-label">11. 투자 상태</label>
         <select class="form-control" name="investmentState">
             <option value="">선택하세요</option>
-            <option value="정상투자 A">정상투자 A</option>
+            <option value="정상투자 A" selected>정상투자 A</option>
             <option value="정상투자 B">정상투자 B</option>
             <option value="요주의 C">요주의 C</option>
             <option value="주의 D">주의 D</option>
@@ -178,11 +213,20 @@
         <textarea class="form-control" name="investmentMemo" rows="3"></textarea>
     </div>
 
+    <div class="mb-3"><label class="form-label">13. 투자 날짜</label>
+        <input type="date" class="form-control" name="investmentDate">
+    </div>
+
+    <div class="mb-3"><label class="form-label">14. 투자 담당자</label>
+        <input type="text" class="form-control" name="investmentEmployee">
+    </div>
+
     <div class="mt-4">
         <button type="button" class="btn btn-primary" onclick="submitFirstForm()">저장</button>
     </div>
 </form>
-<form id="secondForm" th:action="@{/companyAdd/shareholderUpdate}" method="post" style="display: none;">
+<form id="secondForm" th:action="@{/companyAdd/shareholderUpdate}" method="post" style="display: block;">
+    <input type="hidden" name="companyId" th:value="${companyId}">
     <h4 class="mb-3">주주구성 입력</h4>
     <table class="table table-bordered text-center">
         <tbody>
@@ -217,14 +261,14 @@
             <td><input type="number" class="form-control" id="totalShareCount" name="totalShareCount" readonly></td>
         </tr>
         <tr>
-            <td><input type="text" class="form-control" id="shareholderRate1" readonly></td>
-            <td><input type="text" class="form-control" id="shareholderRate2" readonly></td>
-            <td><input type="text" class="form-control" id="shareholderRate3" readonly></td>
-            <td><input type="text" class="form-control" id="shareholderRate4" readonly></td>
-            <td><input type="text" class="form-control" id="shareholderRate5" readonly></td>
-            <td><input type="text" class="form-control" id="shareholderRate6" readonly></td>
-            <td><input type="text" class="form-control" id="shareholderRate7" readonly></td>
-            <td><input type="text" class="form-control" id="shareholderRate8" readonly></td>
+            <td><input type="text" class="form-control" id="shareholderRate1" name="shareholderRate1" readonly></td>
+            <td><input type="text" class="form-control" id="shareholderRate2" name="shareholderRate2" readonly></td>
+            <td><input type="text" class="form-control" id="shareholderRate3" name="shareholderRate3" readonly></td>
+            <td><input type="text" class="form-control" id="shareholderRate4" name="shareholderRate4" readonly></td>
+            <td><input type="text" class="form-control" id="shareholderRate5" name="shareholderRate5" readonly></td>
+            <td><input type="text" class="form-control" id="shareholderRate6" name="shareholderRate6" readonly></td>
+            <td><input type="text" class="form-control" id="shareholderRate7" name="shareholderRate7" readonly></td>
+            <td><input type="text" class="form-control" id="shareholderRate8" name="shareholderRate8" readonly></td>
             <td><input type="text" class="form-control" id="totalEquityRate" readonly></td>
         </tr>
         </tbody>

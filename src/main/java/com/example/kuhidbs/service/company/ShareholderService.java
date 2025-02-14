@@ -33,21 +33,39 @@ public class ShareholderService {
                 .company(company.get())
                 .shareholderName1(shareholderDTO.getShareholderName1())
                 .shareholderCount1(shareholderDTO.getShareholderCount1())
+                .shareholderRate1(shareholderDTO.getShareholderRate1()) // ✅ 추가됨
+
                 .shareholderName2(shareholderDTO.getShareholderName2())
                 .shareholderCount2(shareholderDTO.getShareholderCount2())
+                .shareholderRate2(shareholderDTO.getShareholderRate2()) // ✅ 추가됨
+
                 .shareholderName3(shareholderDTO.getShareholderName3())
                 .shareholderCount3(shareholderDTO.getShareholderCount3())
+                .shareholderRate3(shareholderDTO.getShareholderRate3()) // ✅ 추가됨
+
                 .shareholderName4(shareholderDTO.getShareholderName4())
                 .shareholderCount4(shareholderDTO.getShareholderCount4())
+                .shareholderRate4(shareholderDTO.getShareholderRate4()) // ✅ 추가됨
+
                 .shareholderName5(shareholderDTO.getShareholderName5())
                 .shareholderCount5(shareholderDTO.getShareholderCount5())
+                .shareholderRate5(shareholderDTO.getShareholderRate5()) // ✅ 추가됨
+
                 .shareholderName6(shareholderDTO.getShareholderName6())
                 .shareholderCount6(shareholderDTO.getShareholderCount6())
+                .shareholderRate6(shareholderDTO.getShareholderRate6()) // ✅ 추가됨
+
                 .shareholderName7(shareholderDTO.getShareholderName7())
                 .shareholderCount7(shareholderDTO.getShareholderCount7())
+                .shareholderRate7(shareholderDTO.getShareholderRate7()) // ✅ 추가됨
+
                 .shareholderName8(shareholderDTO.getShareholderName8())
                 .shareholderCount8(shareholderDTO.getShareholderCount8())
+                .shareholderRate8(shareholderDTO.getShareholderRate8()) // ✅ 추가됨
+
+                .totalShareCount(shareholderDTO.getTotalShareCount()) // ✅ 총 발행 주식 수 추가
                 .build();
+
 
         return shareholderRepository.save(shareholder);
     }
