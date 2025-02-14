@@ -117,6 +117,31 @@ public class HomeController {
         return "companyAdd/combine"; // companion.html
     }
 
+    // 기업 전체조회 페이지
+    @GetMapping("/info/{id}")
+    public String info(@PathVariable("id") String id, Model model) {
+        System.out.println("📢 info() 호출 - companyId: " + id);
+        model.addAttribute("companyId", id);
+        return "info"; // info.html
+    }
+
+//지
+//    @GetMapping("/companyRead/{id}")
+//    public String companyRead(@PathVariable("id") String id, Model model) {
+//        System.out.println("📢 companyRead() 호출 - companyId: " + id);
+//        model.addAttribute("companyId", id);
+//        return "companyRead"; // info.html
+//    }
+//
+
+
+
+
+
+
+
+
+
     // 재무 및 인력상황
     @GetMapping("/company/financial/{id}")
     public String financialInfo(@PathVariable("id") Long id, Model model) {

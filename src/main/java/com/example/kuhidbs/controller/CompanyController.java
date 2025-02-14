@@ -70,7 +70,7 @@ public class CompanyController {
     private StatusService statusService;
 
     @PostMapping("/createCompany")
-    public ResponseEntity<Void> createCompany(@RequestBody CCmpInfDTO CCmpInfDTO) {
+    public ResponseEntity<Void> createCompany(@ModelAttribute CCmpInfDTO CCmpInfDTO) {
 
         // 1. 회사 정보 저장 (Company 테이블)
         companyService.saveCompany(CCmpInfDTO);
@@ -199,6 +199,15 @@ public class CompanyController {
         RCmpInfDTO companyInfo = companyService.getCompanyInfo(companyId);
         return ResponseEntity.ok(companyInfo);
     }
+//    // 회사 기본 정보 조회 API
+//    @GetMapping("/companyRead/{companyId}")
+//    public ResponseEntity<RCmpInfDTO> getCompanyInfo(@PathVariable String companyId) {
+//        System.out.println("companyId:  " + companyId);
+//        RCmpInfDTO companyInfo = companyService.getCompanyInfo(companyId);
+//        System.out.println("📢 companyService() 호출 - companyInfo: " + companyInfo);
+//        return ResponseEntity.ok(companyInfo);
+//    }
+
 
     //팁스 정보 조회 api
     @GetMapping("/tips/{companyId}")
