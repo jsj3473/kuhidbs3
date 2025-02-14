@@ -1,4 +1,4 @@
-package com.example.kuhidbs.dto.company;
+package com.example.kuhidbs.dto.company.감액환입;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,6 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class CShrupDTO {
+
+    private String companyId; // 회사고유번호
     private Long investmentId; // 투자 고유 번호 (INV_ID)
     private String shareUpdateDate; // 변동 일자
     private Long shareUnitValue; // 주당 가치

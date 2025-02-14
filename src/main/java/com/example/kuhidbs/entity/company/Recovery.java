@@ -23,6 +23,10 @@ public class Recovery extends BaseEntity {
     private Long recoveryId; // 회수 고유 번호 (PK)
 
     @ManyToOne
+    @JoinColumn(name = "CMP_ID", nullable = false)
+    private Company company; // 회사 고유번호 fk
+
+    @ManyToOne
     @JoinColumn(name = "INV_ID", nullable = false)
     private Investment investment; // 투자 고유 번호 (FK)
 

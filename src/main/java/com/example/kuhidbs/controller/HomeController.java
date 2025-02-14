@@ -90,36 +90,32 @@ public class HomeController {
     }
 
     // 투자감액/복원입력 팝업
-    @GetMapping("/companyAdd/shareUp/{id}")
-    public String shareUp(@PathVariable("id") String id, Model model) {
-        model.addAttribute("companyId", id);
+    @GetMapping("/companyAdd/shareUp/{companyId}/{investmentId}")
+    public String shareUp(@PathVariable("companyId") String companyId,
+                          @PathVariable("investmentId") String investmentId, Model model) {
+        model.addAttribute("companyId", companyId);
+        model.addAttribute("investmentId", investmentId);
         return "companyAdd/shareUp"; // shareUp.html
     }
 
     // 무상증자 팝업
-    @GetMapping("/companyAdd/bonus/{id}")
-    public String bonus(@PathVariable("id") String id, Model model) {
-        model.addAttribute("companyId", id);
+    @GetMapping("/companyAdd/bonus/{companyId}/{investmentId}")
+    public String bonus(@PathVariable("companyId") String companyId,
+                        @PathVariable("investmentId") String investmentId,
+                        Model model) {
+        model.addAttribute("companyId", companyId);
+        model.addAttribute("investmentId", investmentId);
         return "companyAdd/bonus"; // bonus.html
     }
 
     // 동반투자 팝업
-    @GetMapping("/companyAdd/combine/{id}")
-    public String combine(@PathVariable("id") String id, Model model) {
-        model.addAttribute("combine", id);
+    @GetMapping("/companyAdd/combine/{companyId}/{investmentId}")
+    public String combine(@PathVariable("companyId") String companyId,
+                          @PathVariable("investmentId") String investmentId, Model model) {
+        model.addAttribute("companyId", companyId);
+        model.addAttribute("investmentId", investmentId);
         return "companyAdd/combine"; // companion.html
     }
-
-
-
-
-
-
-
-
-
-
-
 
     // 재무 및 인력상황
     @GetMapping("/company/financial/{id}")
@@ -128,10 +124,13 @@ public class HomeController {
         return "company/financial"; // financial.html
     }
     // 회수성과 팝업
-    @GetMapping("/company/recovery/{id}")
-    public String recoveryInfo(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("companyId", id);
-        return "company/recovery"; // recovery.html
+    @GetMapping("/company/recovery/{companyId}/{investmentId}")
+    public String recoveryInfo(@PathVariable("companyId") String companyId,
+                               @PathVariable("investmentId") String investmentId, Model model) {
+
+        model.addAttribute("companyId", companyId);
+        model.addAttribute("investmentId", investmentId);
+        return "companyAdd/recovery"; // recovery.html
     }
 
     // TIPS 팝업

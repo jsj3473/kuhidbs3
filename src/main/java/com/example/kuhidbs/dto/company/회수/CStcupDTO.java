@@ -1,4 +1,4 @@
-package com.example.kuhidbs.dto.company;
+package com.example.kuhidbs.dto.company.회수;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,6 +12,8 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Builder
 public class CStcupDTO {
+
+    private String companyId; // 회사 고유 번호
     private Long investmentId; // 투자 고유 번호 (INV_ID)
     private String recoveryDate; // 회수 일자 (STCUP_DT)
     private Long recoveryCount; // 매각 수량 (STCUP_CNT)

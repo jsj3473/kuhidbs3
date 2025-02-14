@@ -1,13 +1,17 @@
 package com.example.kuhidbs.controller;
 
-import com.example.kuhidbs.dto.company.*;
+import com.example.kuhidbs.dto.company.투자상태.CStatusDTO;
 import com.example.kuhidbs.dto.company.kuh투자.*;
+import com.example.kuhidbs.dto.company.감액환입.CShrupDTO;
 import com.example.kuhidbs.dto.company.기본정보.*;
 import com.example.kuhidbs.dto.company.동반.*;
+import com.example.kuhidbs.dto.company.무증.CBonusDTO;
+import com.example.kuhidbs.dto.company.발심사.CRwrDTO;
 import com.example.kuhidbs.dto.company.사후관리.*;
 import com.example.kuhidbs.dto.company.재무.*;
 import com.example.kuhidbs.dto.company.주주명부.*;
 import com.example.kuhidbs.dto.company.팁스.*;
+import com.example.kuhidbs.dto.company.회수.CStcupDTO;
 import com.example.kuhidbs.dto.company.후속투자.*;
 import com.example.kuhidbs.entity.*;
 import com.example.kuhidbs.entity.company.*;
@@ -105,7 +109,7 @@ public class CompanyController {
      * @return 저장된 Followup 객체
      */
     @PostMapping("/createFollowup")
-    public ResponseEntity<Followup> createFollowup(@RequestBody CFolDTO followupDto) {
+    public ResponseEntity<Followup> createFollowup(@ModelAttribute CFolDTO followupDto) {
         Followup savedFollowup = followupService.saveFollowup(followupDto);
         return ResponseEntity.ok(savedFollowup);
     }
@@ -115,13 +119,13 @@ public class CompanyController {
      * 감액/복원 데이터 생성
      */
     @PostMapping("/createShrup")
-    public ResponseEntity<ShareUpdate> createShrup(@RequestBody CShrupDTO shrupDTO) {
+    public ResponseEntity<ShareUpdate> createShrup(@ModelAttribute CShrupDTO shrupDTO) {
         ShareUpdate createdShrup = shrupService.saveShrup(shrupDTO);
         return ResponseEntity.ok(createdShrup);
     }
     //회수 생성
     @PostMapping("/createStcup")
-    public ResponseEntity<Recovery> createRecovery(@RequestBody CStcupDTO stcupDTO) {
+    public ResponseEntity<Recovery> createRecovery(@ModelAttribute CStcupDTO stcupDTO) {
         Recovery savedRecovery = recoveryService.saveRecovery(stcupDTO);
         return ResponseEntity.ok(savedRecovery);
     }
@@ -129,7 +133,7 @@ public class CompanyController {
 
     // 동반투자 생성
     @PostMapping("/createCombine")
-    public ResponseEntity<Combine> createCombine(@RequestBody CComDTO combineDTO) {
+    public ResponseEntity<Combine> createCombine(@ModelAttribute CComDTO combineDTO) {
         Combine savedCombine = combineService.saveCombine(combineDTO);
         return ResponseEntity.ok(savedCombine);
     }
@@ -143,37 +147,44 @@ public class CompanyController {
 
     //재무제표생성
     @PostMapping("/createFinancial")
-    public ResponseEntity<Financial> createFinancialStatement(@RequestBody CFncDTO dto) {
+    public ResponseEntity<Financial> createFinancialStatement(@ModelAttribute CFncDTO dto) {
         Financial createdFinancial = financialService.saveFinancialForCFncDTO(dto);
         return ResponseEntity.ok(createdFinancial);
     }
 
     // 사후관리 정보 생성 API
     @PostMapping("/createManage")
-    public ResponseEntity<Manage> createManage(@RequestBody CMngDTO dto) {
+    public ResponseEntity<Manage> createManage(@ModelAttribute CMngDTO dto) {
         Manage createdManage =  manageService.createManage(dto);
         return ResponseEntity.ok(createdManage);
     }
 
     // Reviewer 데이터 생성 API
     @PostMapping("/createReviewer")
-    public ResponseEntity<Reviewer> createReviewer(@RequestBody CRwrDTO dto) {
+    public ResponseEntity<Reviewer> createReviewer(@ModelAttribute CRwrDTO dto) {
         Reviewer createdReviewer = reviewerService.createReviewerForCRwrDTO(dto);
         return ResponseEntity.ok(createdReviewer);
     }
 
     // 무상증자 생성 API
-    @PostMapping("/createBouns")
-    public ResponseEntity<Void> createBonus(@RequestBody CBonusDTO dto) {
-        bonusService.createBonus(dto);
-        return ResponseEntity.ok().build();
+    @PostMapping("/createBonus")
+    public ResponseEntity<Bonus> createBonus(@ModelAttribute CBonusDTO dto) {
+        Bonus createBonus = bonusService.createBonus(dto);
+        return ResponseEntity.ok(createBonus);
     }
 
-    // Reviewer 데이터 생성 API
+    // tips 데이터 생성 API
     @PostMapping("/createTIPS")
-    public ResponseEntity<TIPS> createTIPS(@RequestBody CTIPSDTO dto) {
+    public ResponseEntity<TIPS> createTIPS(@ModelAttribute CTIPSDTO dto) {
         TIPS createdTIPS = tipsService.createTIPS(dto);
         return ResponseEntity.ok(createdTIPS);
+    }
+
+    // 투자상태 데이터 생성 API
+    @PostMapping("/createStatus")
+    public ResponseEntity<Status> createStatus(@ModelAttribute CStatusDTO dto) {
+        Status createStatus = statusService.createStatus(dto);
+        return ResponseEntity.ok(createStatus);
     }
 
     //후속투자 정보 조회 api

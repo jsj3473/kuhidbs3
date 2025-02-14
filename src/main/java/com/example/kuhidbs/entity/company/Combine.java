@@ -19,6 +19,10 @@ public class Combine {
     private Long combineId; // 동반투자 고유번호
 
     @ManyToOne
+    @JoinColumn(name = "CMP_ID", nullable = false)
+    private Company company; // 회사 고유번호 fk
+
+    @ManyToOne
     @JoinColumn(name = "INV_ID", nullable = false)
     private Investment investment; // 투자 고유번호 (FK)
 

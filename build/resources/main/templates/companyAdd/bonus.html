@@ -6,18 +6,89 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script>
+        function submitSecondForm() {
+            let form = document.getElementById("secondForm");
+
+            if (!form) {
+                alert("폼을 찾을 수 없습니다.");
+                return;
+            }
+
+            // 폼 데이터를 JSON 형식으로 변환
+            let formData = new FormData(form);
+            let jsonData = {};
+
+            formData.forEach((value, key) => {
+                // 숫자로 변환할 값들 (주주 수 & 총 발행 주식 수)
+                if (key.startsWith("shareholderCount") || key === "totalShareCount") {
+                    jsonData[key] = parseInt(value, 10) || 0; // 빈 값이면 0
+                }
+                // % 기호가 포함된 지분율 값 처리
+                else if (key.startsWith("shareholderRate")) {
+                    jsonData[key] = parseFloat(value.replace("%", "").trim()) || 0; // % 제거 후 변환
+                }
+                // 나머지는 그대로 저장
+                else {
+                    jsonData[key] = value;
+                }
+            });
+
+            console.log("전송할 데이터:", jsonData); // 디버깅용
+            fetch("/api/companies/createShareholder", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(jsonData)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("주주 정보 저장 실패");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert("주주 정보가 저장되었습니다!");
+                })
+                .catch(error => {
+                    alert("저장 중 오류 발생: " + error.message);
+                });
+        }
+
+        function updateEquityRate() {
+            let totalShares = parseFloat(document.getElementById("totalShareCount").value) || 1; // 총 발행 주식 수
+            let totalPercentage = 0;
+
+            for (let i = 1; i <= 8; i++) {
+                let shares = parseFloat(document.getElementById("shareholderCount" + i).value) || 0;
+                let rateField = document.getElementById("shareholderRate" + i);
+                let percentage = (shares / totalShares) * 100;
+                rateField.value = percentage.toFixed(2) + "%";
+                totalPercentage += percentage;
+            }
+
+            // 지분율 총합 업데이트
+            document.getElementById("totalEquityRate").value = totalPercentage.toFixed(2) + "%";
+        }
+
+        function updateTotalShares() {
+            let sum = 0;
+            for (let i = 1; i <= 8; i++) {
+                sum += parseFloat(document.getElementById("shareholderCount" + i).value) || 0;
+            }
+            document.getElementById("totalShareCount").value = sum;
+            updateEquityRate();
+        }
+    </script>
 </head>
 <body class="container mt-4">
 <h2 class="mb-4">무상증자 등록</h2>
 
-<form th:action="@{/api/companies/createBouns}" method="post">
+<form th:action="@{/api/companies/createBonus}" method="post">
+    <input type="hidden" name="companyId" th:value="${companyId}">
+    <input type="hidden" name="investmentId" th:value="${investmentId}">
 
-    <div class="row mb-3">
-        <label class="col-sm-3 col-form-label">투자 고유 번호</label>
-        <div class="col-sm-9">
-            <input type="number" name="investmentId" class="form-control" th:value="${investmentId}" required>
-        </div>
-    </div>
 
     <div class="row mb-3">
         <label class="col-sm-3 col-form-label">변경 주식 수</label>
@@ -33,11 +104,68 @@
         </div>
     </div>
 
+    <div class="mb-3"><label class="form-label">무상증자 날짜</label>
+        <input type="date" class="form-control" name="bonusDate">
+    </div>
+
+
     <div class="mt-4">
         <button type="submit" class="btn btn-primary px-5">등록</button>
     </div>
 </form>
-
+<hr>
+<form id="secondForm" method="post" style="display: block;">
+    <input type="hidden" name="companyId" th:value="${companyId}">
+    <h4 class="mb-3">주주구성 입력</h4>
+    <table class="table table-bordered text-center">
+        <tbody>
+        <tr>
+            <td><input type="text" class="form-control" name="shareholderName1" placeholder="주주명"></td>
+            <td><input type="text" class="form-control" name="shareholderName2" placeholder="주주명"></td>
+            <td><input type="text" class="form-control" name="shareholderName3" placeholder="주주명"></td>
+            <td><input type="text" class="form-control" name="shareholderName4" placeholder="주주명"></td>
+            <td><input type="text" class="form-control" name="shareholderName5" placeholder="주주명"></td>
+            <td><input type="text" class="form-control" name="shareholderName6" placeholder="주주명"></td>
+            <td><input type="text" class="form-control" name="shareholderName7" placeholder="주주명"></td>
+            <td><input type="text" class="form-control" name="shareholderName8" placeholder="주주명"></td>
+            <td class="align-middle">발행총주식수</td>
+        </tr>
+        <tr>
+            <td><input type="number" class="form-control" id="shareholderCount1" name="shareholderCount1"
+                       oninput="updateTotalShares()"></td>
+            <td><input type="number" class="form-control" id="shareholderCount2" name="shareholderCount2"
+                       oninput="updateTotalShares()"></td>
+            <td><input type="number" class="form-control" id="shareholderCount3" name="shareholderCount3"
+                       oninput="updateTotalShares()"></td>
+            <td><input type="number" class="form-control" id="shareholderCount4" name="shareholderCount4"
+                       oninput="updateTotalShares()"></td>
+            <td><input type="number" class="form-control" id="shareholderCount5" name="shareholderCount5"
+                       oninput="updateTotalShares()"></td>
+            <td><input type="number" class="form-control" id="shareholderCount6" name="shareholderCount6"
+                       oninput="updateTotalShares()"></td>
+            <td><input type="number" class="form-control" id="shareholderCount7" name="shareholderCount7"
+                       oninput="updateTotalShares()"></td>
+            <td><input type="number" class="form-control" id="shareholderCount8" name="shareholderCount8"
+                       oninput="updateTotalShares()"></td>
+            <td><input type="number" class="form-control" id="totalShareCount" name="totalShareCount" readonly></td>
+        </tr>
+        <tr>
+            <td><input type="text" class="form-control" id="shareholderRate1" name="shareholderRate1" readonly></td>
+            <td><input type="text" class="form-control" id="shareholderRate2" name="shareholderRate2" readonly></td>
+            <td><input type="text" class="form-control" id="shareholderRate3" name="shareholderRate3" readonly></td>
+            <td><input type="text" class="form-control" id="shareholderRate4" name="shareholderRate4" readonly></td>
+            <td><input type="text" class="form-control" id="shareholderRate5" name="shareholderRate5" readonly></td>
+            <td><input type="text" class="form-control" id="shareholderRate6" name="shareholderRate6" readonly></td>
+            <td><input type="text" class="form-control" id="shareholderRate7" name="shareholderRate7" readonly></td>
+            <td><input type="text" class="form-control" id="shareholderRate8" name="shareholderRate8" readonly></td>
+            <td><input type="text" class="form-control" id="totalEquityRate" readonly></td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="mt-4">
+        <button type="button" class="btn btn-primary" onclick="submitSecondForm()">주주 정보 저장</button>
+    </div>
+</form>
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

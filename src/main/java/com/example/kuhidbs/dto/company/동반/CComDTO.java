@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Builder
 public class CComDTO {
+    private String companyId; // 회사 고유 번호
     private Long investmentId; // 투자 고유 번호 (INV_ID)
     private String investmentCompanyName; // 투자 기관 (COM_CMP_NM)
     private String investmentStartDate; // 투자 일자 (COM_STRT_DT)

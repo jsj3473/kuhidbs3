@@ -1,33 +1,36 @@
 package com.example.kuhidbs.service.company;
 
-import com.example.kuhidbs.dto.company.CStcupDTO;
+import com.example.kuhidbs.dto.company.회수.CStcupDTO;
 import com.example.kuhidbs.entity.company.Account;
+import com.example.kuhidbs.entity.company.Company;
 import com.example.kuhidbs.entity.company.Investment;
 import com.example.kuhidbs.entity.company.Recovery;
-import com.example.kuhidbs.repository.company.AccountRepository;
-import com.example.kuhidbs.repository.company.InvestmentRepository;
-import com.example.kuhidbs.repository.company.RecoveryRepository;
+import com.example.kuhidbs.repository.company.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class RecoveryService {
 
-    @Autowired
-    private RecoveryRepository recoveryRepository;
-    @Autowired
-    private InvestmentRepository investmentRepository;
-    @Autowired
-    private AccountRepository accountRepository;
+    private final RecoveryRepository recoveryRepository;
+    private final InvestmentRepository investmentRepository;
+    private final CompanyRepository companyRepository;
+    private final AccountRepository accountRepository;
 
     public Recovery saveRecovery(CStcupDTO stcupDTO) {
         // Investment 객체 조회
         Investment investment = investmentRepository.findById(stcupDTO.getInvestmentId())
                 .orElseThrow(() -> new IllegalArgumentException("Investment not found with ID: " + stcupDTO.getInvestmentId()));
 
+        Company company = companyRepository.findById(stcupDTO.getCompanyId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid company ID: " + stcupDTO.getInvestmentId()));
+
         // Recovery 엔터티 생성 및 설정
         Recovery recovery = Recovery.builder()
                 .investment(investment) // ManyToOne 관계 설정
+                .company(company)
                 .recoveryDate(stcupDTO.getRecoveryDate())
                 .recoveryCount(stcupDTO.getRecoveryCount())
                 .recoveryUnitPrice(stcupDTO.getRecoveryUnitPrice())

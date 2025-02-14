@@ -66,7 +66,18 @@
             let jsonData = {};
 
             formData.forEach((value, key) => {
-                jsonData[key] = value;
+                // 숫자로 변환할 값들 (주주 수 & 총 발행 주식 수)
+                if (key.startsWith("shareholderCount") || key === "totalShareCount") {
+                    jsonData[key] = parseInt(value, 10) || 0; // 빈 값이면 0
+                }
+                // % 기호가 포함된 지분율 값 처리
+                else if (key.startsWith("shareholderRate")) {
+                    jsonData[key] = parseFloat(value.replace("%", "").trim()) || 0; // % 제거 후 변환
+                }
+                // 나머지는 그대로 저장
+                else {
+                    jsonData[key] = value;
+                }
             });
 
             console.log("전송할 데이터:", jsonData); // 디버깅용
@@ -86,6 +97,8 @@
                 })
                 .then(data => {
                     alert("저장이 완료되었습니다!");
+                    document.getElementById("beforeShTitle").style.display = "none";
+                    document.getElementById("afterShTitle").style.display = "block";
                 })
                 .catch(error => {
                     alert("저장 중 오류 발생: " + error.message);
@@ -225,9 +238,10 @@
         <button type="button" class="btn btn-primary" onclick="submitFirstForm()">저장</button>
     </div>
 </form>
-<form id="secondForm" th:action="@{/companyAdd/shareholderUpdate}" method="post" style="display: block;">
+<form id="secondForm" method="post" style="display: none;">
     <input type="hidden" name="companyId" th:value="${companyId}">
-    <h4 class="mb-3">주주구성 입력</h4>
+    <h4 class="mb-3" id="beforeShTitle" style="display: block;">기존주주구성 입력</h4>
+    <h4 class="mb-3" id="afterShTitle" style="display: none;">변경주주구성 입력</h4>
     <table class="table table-bordered text-center">
         <tbody>
         <tr>

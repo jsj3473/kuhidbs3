@@ -21,19 +21,16 @@
 <body>
 <div class="container">
     <h2 class="text-center">감액/복원 입력</h2>
-    <form action="/api/companies/createShrup" method="post">
+    <form th:action=@{/api/companies/createShrup} method="post">
 
+        <input type="hidden" name="companyId" th:value="${companyId}">
+        <input type="hidden" name="investmentId" th:value="${investmentId}">
         <div class="mb-3">
             <label for="shareUpdateType" class="form-label">감액/복원</label>
             <select class="form-select" id="shareUpdateType" name="shareUpdateType" required>
                 <option value="감액">감액</option>
-                <option value="복원">복원</option>
+                <option value="환입">환입</option>
             </select>
-        </div>
-
-        <div class="mb-3">
-            <label for="investmentId" class="form-label">투자 고유 번호</label>
-            <input type="text" class="form-control" id="investmentId" name="investmentId" required>
         </div>
 
         <div class="mb-3">

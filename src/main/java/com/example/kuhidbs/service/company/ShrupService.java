@@ -1,26 +1,26 @@
 package com.example.kuhidbs.service.company;
 
-import com.example.kuhidbs.dto.company.CShrupDTO;
+import com.example.kuhidbs.dto.company.감액환입.CShrupDTO;
 import com.example.kuhidbs.entity.company.Account;
+import com.example.kuhidbs.entity.company.Company;
 import com.example.kuhidbs.entity.company.Investment;
 import com.example.kuhidbs.entity.company.ShareUpdate;
 import com.example.kuhidbs.repository.company.AccountRepository;
+import com.example.kuhidbs.repository.company.CompanyRepository;
 import com.example.kuhidbs.repository.company.InvestmentRepository;
 import com.example.kuhidbs.repository.company.ShrupRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class ShrupService {
 
     private final ShrupRepository shrupRepository;
     private final InvestmentRepository investmentRepository;
     private final AccountRepository accountRepository;
+    private final CompanyRepository companyRepository;
 
-    public ShrupService(ShrupRepository shrupRepository, InvestmentRepository investmentRepository, AccountRepository accountRepository) {
-        this.shrupRepository = shrupRepository;
-        this.investmentRepository = investmentRepository;
-        this.accountRepository = accountRepository;
-    }
 
     /**
      * 감액/복원 데이터 저장
@@ -30,9 +30,13 @@ public class ShrupService {
         Investment investment = investmentRepository.findById(shrupDTO.getInvestmentId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid investment ID: " + shrupDTO.getInvestmentId()));
 
+        Company company = companyRepository.findById(shrupDTO.getCompanyId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid company ID: " + shrupDTO.getCompanyId()));
+
         // DTO를 엔터티로 변환
         ShareUpdate shareUpdate = ShareUpdate.builder()
                 .investment(investment)
+                .company(company)
                 .shareUpdateDate(shrupDTO.getShareUpdateDate())
                 .shareUnitValue(shrupDTO.getShareUnitValue())
                 .shareUpdateType(shrupDTO.getShareUpdateType())
@@ -50,7 +54,7 @@ public class ShrupService {
                 .unitPrice(shrupDTO.getShareUnitValue()) // 새로운 주당 가치로 업데이트
                 .heldShareCount(latestAccount.getHeldShareCount()) // 기존 보유 주식 수 유지
                 .totalPrincipal(shrupDTO.getShareUnitValue()*latestAccount.getHeldShareCount()) // 기존 투자 원금 유지
-                .functionType(shrupDTO.getShareUpdateType()) // 실행 함수 업데이트(감액 or 복원)
+                .functionType(shrupDTO.getShareUpdateType()) // 실행 함수 업데이트(감액 or 환입)
                 .kuhEquityRate(latestAccount.getKuhEquityRate()) // 기존 KUH 지분율 유지
                 .build();
 

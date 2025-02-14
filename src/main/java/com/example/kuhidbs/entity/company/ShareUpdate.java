@@ -21,6 +21,10 @@ public class ShareUpdate extends BaseEntity {
     private Long shareUpdateId; // 감액 복원 고유 번호
 
     @ManyToOne
+    @JoinColumn(name = "CMP_ID", nullable = false)
+    private Company company;
+
+    @ManyToOne
     @JoinColumn(name = "INV_ID", nullable = false)
     private Investment investment; // 투자 고유 번호 (ManyToOne 관계)
 

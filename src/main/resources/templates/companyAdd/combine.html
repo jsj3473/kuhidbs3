@@ -11,13 +11,8 @@
 <h2 class="mb-4">동반투자 등록</h2>
 
 <form th:action="@{/api/companies/createCombine}" method="post">
-
-    <div class="row mb-3">
-        <label class="col-sm-3 col-form-label">투자 고유 번호</label>
-        <div class="col-sm-9">
-            <input type="number" name="investmentId" class="form-control" required>
-        </div>
-    </div>
+    <input type="hidden" name="companyId" th:value="${companyId}">
+    <input type="hidden" name="investmentId" th:value="${investmentId}">
 
     <div class="row mb-3">
         <label class="col-sm-3 col-form-label">투자 기관</label>

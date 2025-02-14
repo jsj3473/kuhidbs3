@@ -1,11 +1,13 @@
 package com.example.kuhidbs.service.company;
 
-import com.example.kuhidbs.dto.company.CBonusDTO;
+import com.example.kuhidbs.dto.company.무증.CBonusDTO;
 import com.example.kuhidbs.entity.company.Account;
 import com.example.kuhidbs.entity.company.Bonus;
+import com.example.kuhidbs.entity.company.Company;
 import com.example.kuhidbs.entity.company.Investment;
 import com.example.kuhidbs.repository.company.AccountRepository;
 import com.example.kuhidbs.repository.company.BonusRepository;
+import com.example.kuhidbs.repository.company.CompanyRepository;
 import com.example.kuhidbs.repository.company.InvestmentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,21 +20,26 @@ public class BonusService {
     private final BonusRepository bonusRepository;
     private final InvestmentRepository investmentRepository;
     private final AccountRepository accountRepository;
+    private final CompanyRepository companyRepository;
 
     // 무상증자 생성
     @Transactional
-    public void createBonus(CBonusDTO dto) {
+    public Bonus createBonus(CBonusDTO dto) {
         // 투자 고유 번호로 Ivt 객체 조회
         Investment investment = investmentRepository.findById(dto.getInvestmentId())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid investment ID: " + dto.getInvestmentId()));
+                .orElseThrow(() -> new IllegalArgumentException("Invalid investment ID: " + dto.getInvestmentId()));        // 투자 고유 번호로 Ivt 객체 조회
+        Company company = companyRepository.findById(dto.getCompanyId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid company ID: " + dto.getInvestmentId()));
         // DTO → Entity 변환 후 저장
         Bonus bonus = Bonus.builder()
+                .company(company)
                 .investment(investment)
+                .bonusDate(dto.getBonusDate())
                 .changedShareCount(dto.getChangedShareCount())
                 .unitPrice(dto.getUnitPrice())
                 .build();
 
-        bonusRepository.save(bonus);
+
 
         // 최신 계좌 데이터 조회
         Account latestAccount = accountRepository.findTop1ByInvestmentInvestmentIdOrderByAccountIdDesc(dto.getInvestmentId());
@@ -48,5 +55,7 @@ public class BonusService {
                 .build();
 
         accountRepository.save(updatedAccount);
+
+        return bonusRepository.save(bonus);
     }
 }
