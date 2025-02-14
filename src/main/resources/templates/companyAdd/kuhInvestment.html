@@ -39,7 +39,7 @@
         function submitSecondForm() {
             let formData = new FormData(document.getElementById("secondForm")); // 2번 폼 데이터 가져오기
 
-            fetch("/api/companies/createShareholder", {
+            fetch("/api/companies//createShareholder", {
                 method: "POST",
                 body: formData
             })
@@ -179,7 +179,7 @@
     </div>
 
     <div class="mt-4">
-        <button type="submit" class="btn btn-primary" onclick="submitFirstForm()">저장</button>
+        <button type="button" class="btn btn-primary" onclick="submitFirstForm()">저장</button>
     </div>
 </form>
 <form id="secondForm" th:action="@{/companyAdd/shareholderUpdate}" method="post" style="display: none;">
@@ -230,7 +230,7 @@
         </tbody>
     </table>
     <div class="mt-4">
-        <button type="button" class="btn btn-primary" onclick="submitSecondForm()">주주 정보 저장</button>
+        <button type="button" class="btn btn-primary" onclick="submitSecondForm()">저장</button>
     </div>
 </form>
 </body>

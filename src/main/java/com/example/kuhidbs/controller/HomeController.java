@@ -82,12 +82,44 @@ public class HomeController {
         return "companyAdd/kuhInvestment"; // kuhInvestment.html
     }
 
-    // KUH 투자정보 팝업
+    // 후속투자 팝업
     @GetMapping("/companyAdd/followupInvestment/{id}")
-    public String followupInvestment(@PathVariable("id") Long id, Model model) {
+    public String followupInvestment(@PathVariable("id") String id, Model model) {
         model.addAttribute("companyId", id);
-        return "companyAdd/followupInvestment"; // kuhInvestment.html
+        return "companyAdd/followupInvestment"; // followupInvestment.html
     }
+
+    // 투자감액/복원입력 팝업
+    @GetMapping("/companyAdd/shareUp/{id}")
+    public String shareUp(@PathVariable("id") String id, Model model) {
+        model.addAttribute("companyId", id);
+        return "companyAdd/shareUp"; // shareUp.html
+    }
+
+    // 무상증자 팝업
+    @GetMapping("/companyAdd/bonus/{id}")
+    public String bonus(@PathVariable("id") String id, Model model) {
+        model.addAttribute("companyId", id);
+        return "companyAdd/bonus"; // bonus.html
+    }
+
+    // 동반투자 팝업
+    @GetMapping("/companyAdd/combine/{id}")
+    public String combine(@PathVariable("id") String id, Model model) {
+        model.addAttribute("combine", id);
+        return "companyAdd/combine"; // companion.html
+    }
+
+
+
+
+
+
+
+
+
+
+
 
     // 재무 및 인력상황
     @GetMapping("/company/financial/{id}")
