@@ -88,7 +88,7 @@ public class CompanyService {
         // 5. 사후관리 정보 조회 (ManageService 호출)
         RMngDTO rmngDTO = manageService.getManageByCompanyId(companyId);
 
-        Optional<Client> clientOpt = clientRepository.findByCompany_CompanyId(companyId);
+        Optional<Client> clientOpt = clientRepository.findTopByCompany_CompanyIdOrderByClientIdDesc(companyId);
         Client client = clientOpt.orElse(null);
 
 

@@ -21,8 +21,8 @@ public class Manage {
     @JoinColumn(name = "CMP_ID", nullable = false)
     private Company company; // 회사 고유번호 (FK)
 
-    @Column(name = "YEAR", nullable = false)
-    private Integer year; // 년도
+    @Column(name = "MNG_YEAR", nullable = false)
+    private Integer manageYear; // 년도
 
     @Column(name = "HALF_YEAR", nullable = false)
     private Integer halfYear; // 반기 (예: "상반기=01", "하반기=02")

@@ -125,7 +125,7 @@ public class CompanyController {
     }
     //회수 생성
     @PostMapping("/createStcup")
-    public ResponseEntity<Recovery> createRecovery(@ModelAttribute CStcupDTO stcupDTO) {
+    public ResponseEntity<Recovery> createRecovery(@RequestBody CStcupDTO stcupDTO) {
         Recovery savedRecovery = recoveryService.saveRecovery(stcupDTO);
         return ResponseEntity.ok(savedRecovery);
     }
@@ -175,14 +175,14 @@ public class CompanyController {
 
     // tips 데이터 생성 API
     @PostMapping("/createTIPS")
-    public ResponseEntity<TIPS> createTIPS(@ModelAttribute CTIPSDTO dto) {
+    public ResponseEntity<TIPS> createTIPS(@RequestBody CTIPSDTO dto) {
         TIPS createdTIPS = tipsService.createTIPS(dto);
         return ResponseEntity.ok(createdTIPS);
     }
 
     // 투자상태 데이터 생성 API
     @PostMapping("/createStatus")
-    public ResponseEntity<Status> createStatus(@ModelAttribute CStatusDTO dto) {
+    public ResponseEntity<Status> createStatus(@RequestBody CStatusDTO dto) {
         Status createStatus = statusService.createStatus(dto);
         return ResponseEntity.ok(createStatus);
     }

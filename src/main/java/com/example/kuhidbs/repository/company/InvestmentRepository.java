@@ -19,5 +19,5 @@ public interface InvestmentRepository extends JpaRepository<Investment, Long> {
     // JpaRepository의 기본 메서드를 사용 (findAll, findById, save 등)
 
 
-    Optional<Investment> findByCompany_CompanyId(String companyId);
+    Optional<Investment> findFirstByCompany_CompanyIdOrderByInvestmentIdDesc(String companyId);
 }

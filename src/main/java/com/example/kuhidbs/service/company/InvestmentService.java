@@ -52,7 +52,7 @@ public class InvestmentService {
 
     @Transactional(readOnly = true)
     public RIvtDTO getInvestmentByCompanyId(String companyId) {
-        Optional<Investment> investmentOpt = investmentRepository.findByCompany_CompanyId(companyId);
+        Optional<Investment> investmentOpt = investmentRepository.findFirstByCompany_CompanyIdOrderByInvestmentIdDesc(companyId);
 
         return investmentOpt.map(investment -> RIvtDTO.builder()
                 .investmentDate(investment.getInvestmentDate()) // LocalDate → String 변환 필요 시 .toString() 추가
