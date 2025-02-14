@@ -153,4 +153,23 @@ public class HomeController {
         model.addAttribute("companyId", id);
         return "company/progress"; // progress.html
     }
+
+    // 투자회수 팝업
+    @GetMapping("/companyAdd/stockUp/{id}")
+    public String stockUp(@PathVariable("id") String id, Model model) {
+        model.addAttribute("stockUp", id);
+        return "companyAdd/stockUp"; // stockUp.html
+    }
+    // 투자상태 팝업
+    @GetMapping("/companyAdd/investmentStatus/{id}")
+    public String investmentStatus(@PathVariable("id") String id, Model model) {
+        model.addAttribute("investmentStatus", id);
+        return "companyAdd/investmentStatus"; // investmentStatus.html
+    }
+    // 팁스현황 팝업
+    @GetMapping("/companyAdd/tips/{id}")
+    public String tips(@PathVariable("id") String id, Model model) {
+        model.addAttribute("tips", id);
+        return "companyAdd/tips"; // tips.html
+    }
 }

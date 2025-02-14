@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>투자 상태 입력</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script>
+        function submitStatusForm() {
+            let formData = {
+                companyId: document.getElementById("companyId").value,
+                status: document.getElementById("status").value,
+                additionalInfo: document.getElementById("additionalInfo").value
+            };
+
+            fetch("/api/companies/createStatus", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(formData)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("저장 실패");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert("저장이 완료되었습니다!");
+                })
+                .catch(error => {
+                    alert("저장 중 오류 발생: " + error.message);
+                });
+        }
+    </script>
+</head>
+<body class="container mt-4">
+
+<h2 class="mb-4">투자 상태 입력</h2>
+
+<!-- 투자 상태 입력 폼 -->
+<form id="statusForm" onsubmit="submitStatusForm(); return false;">
+    <!-- 히든 필드: 회사 ID (연결된 회사) -->
+    <input type="hidden" id="companyId" name="companyId" th:value="${companyId}" />
+
+    <input type="hidden" name="createUser" th:value="${loggedInUser}" />
+    <input type="hidden" name="updateUser" th:value="${loggedInUser}" />
+
+    <div class="mb-3">
+        <label class="form-label">투자 상태</label>
+        <select class="form-control" id="status" name="status" required>
+            <option value="">선택하세요</option>
+            <option value="정상투자 A">정상투자 A</option>
+            <option value="정상투자 B">정상투자 B</option>
+            <option value="요주의 C">요주의 C</option>
+            <option value="주의 D">주의 D</option>
+            <option value="투자종료/주식매각">투자종료/주식매각</option>
+            <option value="투자종료/회사청산">투자종료/회사청산</option>
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">기타 정보</label>
+        <textarea class="form-control" id="additionalInfo" name="additionalInfo" rows="3"></textarea>
+    </div>
+
+    <div class="text-end">
+        <button type="submit" class="btn btn-primary">저장</button>
+    </div>
+
+</form>
+
+</body>
+</html>

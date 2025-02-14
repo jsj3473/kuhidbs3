@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>TIPS 관리</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script>
+        function submitTipsForm() {
+            let formData = {
+                companyId: document.getElementById("companyId").value,
+                tipsSelectionType: document.getElementById("tipsSelectionType").value,
+                selectionYesNo: document.getElementById("selectionYesNo").value,
+                tipsSelectionDate: document.getElementById("tipsSelectionDate").value,
+                executionStartDate: document.getElementById("executionStartDate").value,
+                executionEndDate: document.getElementById("executionEndDate").value,
+                successYesNo: document.getElementById("successYesNo").value,
+                kips: document.getElementById("kips").value,
+                tipsManagementEndDate: document.getElementById("tipsManagementEndDate").value,
+                followTips: document.getElementById("followTips").value,
+                tipsComment: document.getElementById("tipsComment").value,
+                createUser: document.getElementById("createUser").value,
+                updateUser: document.getElementById("updateUser").value
+            };
+
+            fetch("/api/companies/createTips", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(formData)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("저장 실패");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert("TIPS 정보가 저장되었습니다!");
+                })
+                .catch(error => {
+                    alert("저장 중 오류 발생: " + error.message);
+                });
+        }
+    </script>
+</head>
+<body class="container mt-4">
+
+<h2 class="mb-4">TIPS 관리</h2>
+
+<form id="tipsForm" onsubmit="submitTipsForm(); return false;">
+    <!-- 회사 고유번호 및 사용자 정보 -->
+    <input type="hidden" id="companyId" name="companyId" th:value="${companyId}" />
+<!--    <input type="hidden" id="createUser" name="createUser" th:value="${loggedInUser}" />-->
+<!--    <input type="hidden" id="updateUser" name="updateUser" th:value="${loggedInUser}" />-->
+
+    <!-- 팁스 종류 -->
+    <div class="mb-3">
+        <label class="form-label">팁스 종류</label>
+        <select class="form-control" id="tipsSelectionType">
+            <option value="">선택하세요</option>
+            <option value="일반팁스">일반팁스</option>
+            <option value="딥테크팁스">딥테크팁스</option>
+        </select>
+    </div>
+
+    <!-- 선정여부 -->
+    <div class="mb-3">
+        <label class="form-label">선정여부</label>
+        <select class="form-control" id="selectionYesNo">
+            <option value="">선택하세요</option>
+            <option value="선정 성공">선정 성공</option>
+            <option value="선정 실패">선정 실패</option>
+        </select>
+    </div>
+
+    <!-- 선정일자 -->
+    <div class="mb-3">
+        <label class="form-label">선정일자</label>
+        <input type="date" class="form-control" id="tipsSelectionDate" required>
+    </div>
+
+    <!-- 시작일자 -->
+    <div class="mb-3">
+        <label class="form-label">시작일자</label>
+        <input type="date" class="form-control" id="executionStartDate">
+    </div>
+
+    <!-- 종료일자 -->
+    <div class="mb-3">
+        <label class="form-label">종료일자</label>
+        <input type="date" class="form-control" id="executionEndDate">
+    </div>
+
+    <!-- 성공여부 -->
+    <div class="mb-3">
+        <label class="form-label">성공여부</label>
+        <select class="form-control" id="successYesNo">
+            <option value="">선택하세요</option>
+            <option value="성공">성공</option>
+            <option value="실패">실패</option>
+            <option value="사후관리">사후관리</option>
+        </select>
+    </div>
+
+    <!-- 성공정량지표 -->
+    <div class="mb-3">
+        <label class="form-label">성공정량지표</label>
+        <select class="form-control" id="kips">
+            <option value="">선택하세요</option>
+            <option value="후속투자">후속투자</option>
+            <option value="국내매출">국내매출</option>
+            <option value="해외매출">해외매출</option>
+            <option value="고용인력">고용인력</option>
+            <option value="IPO">IPO</option>
+            <option value="M&A">M&A</option>
+        </select>
+    </div>
+
+    <!-- 사후종료일자 -->
+    <div class="mb-3">
+        <label class="form-label">사후종료일자</label>
+        <input type="date" class="form-control" id="tipsManagementEndDate">
+    </div>
+
+    <!-- 사후성공여부 -->
+    <div class="mb-3">
+        <label class="form-label">사후성공여부</label>
+        <select class="form-control" id="followTips">
+            <option value="">선택하세요</option>
+            <option value="성실실패">성실실패</option>
+            <option value="실패">실패</option>
+        </select>
+    </div>
+
+    <!-- 입력내용 -->
+    <div class="mb-3">
+        <label class="form-label">입력내용</label>
+        <textarea class="form-control" id="tipsComment" rows="3"></textarea>
+    </div>
+
+    <!-- 저장 버튼 -->
+    <div class="text-end">
+        <button type="submit" class="btn btn-primary">저장</button>
+    </div>
+</form>
+
+</body>
+</html>
