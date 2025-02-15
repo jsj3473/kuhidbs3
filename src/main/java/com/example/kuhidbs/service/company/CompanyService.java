@@ -81,7 +81,7 @@ public class CompanyService {
         List<RFncDTO> recentFinancials = financialService.getRecentFinancialsByCompanyId(companyId);
 
         // 3. 투자 내역 조회 (InvestmentService 호출)
-        RIvtDTO rivtDTO = investmentService.getInvestmentByCompanyId(companyId);
+        RIvtDTO rivtDTO = investmentService.getInvestmentByCompanyIdRecent(companyId);
 
 
         // 4. 주주명부 조회 (ShareholderService 호출)

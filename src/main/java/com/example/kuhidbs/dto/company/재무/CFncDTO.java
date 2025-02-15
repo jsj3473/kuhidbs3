@@ -11,7 +11,7 @@ public class CFncDTO {
 
     private String companyId; // Company 객체 대신 ID만 포함
     private Integer financialYear;
-    private Integer financialHalf;
+    private String financialHalf;
     private Integer revenue;
     private Integer operatingProfit;
     private Integer netIncome;

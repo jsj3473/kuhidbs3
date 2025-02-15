@@ -10,7 +10,7 @@ import lombok.*;
 public class RFncDTO {
 
     private Integer financialYear;
-    private Integer financialHalf;
+    private String financialHalf;
     private Integer revenue;
     private Integer operatingProfit;
     private Integer netIncome;

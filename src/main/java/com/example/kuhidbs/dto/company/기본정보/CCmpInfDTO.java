@@ -73,7 +73,7 @@ public class CCmpInfDTO {
     //재무제표
     private Integer financialYear;
 
-    private Integer financialHalf;
+    private String financialHalf;
 
     private Integer revenue;
 

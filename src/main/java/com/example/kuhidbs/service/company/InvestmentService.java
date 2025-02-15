@@ -11,7 +11,10 @@ import com.example.kuhidbs.repository.company.InvestmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class InvestmentService {
@@ -51,7 +54,7 @@ public class InvestmentService {
     }
 
     @Transactional(readOnly = true)
-    public RIvtDTO getInvestmentByCompanyId(String companyId) {
+    public RIvtDTO getInvestmentByCompanyIdRecent(String companyId) {
         Optional<Investment> investmentOpt = investmentRepository.findFirstByCompany_CompanyIdOrderByInvestmentIdDesc(companyId);
 
         return investmentOpt.map(investment -> RIvtDTO.builder()
@@ -69,6 +72,28 @@ public class InvestmentService {
                 .investmentStep(investment.getInvestmentStep())
                 .build()).orElse(null);
 
+    }
+
+    @Transactional(readOnly = true)
+    public List<RIvtDTO> getAllInvestmentsByCompanyId(String companyId) {
+        List<Investment> investments = investmentRepository.findByCompany_CompanyId(companyId);
+
+        return investments.stream()
+                .map(investment -> RIvtDTO.builder()
+                        .investmentDate(investment.getInvestmentDate())
+                        .investmentProduct(investment.getInvestmentProduct())
+                        .fundId(investment.getFundId())
+                        .investmentSumPrice(investment.getInvestmentSumPrice())
+                        .investmentUnitPrice(investment.getInvestmentUnitPrice())
+                        .shareCount(investment.getShareCount())
+                        .equityRate(investment.getEquityRate())
+                        .totalShares(investment.getTotalShares())
+                        .investmentValue(investment.getInvestmentValue())
+                        .tangibleInvestment(investment.getTangibleInvestment())
+                        .investmentEmployee(investment.getInvestmentEmployee())
+                        .investmentStep(investment.getInvestmentStep())
+                        .build())
+                .collect(Collectors.toList());
     }
 
     /**

@@ -1,9 +1,11 @@
 package com.example.kuhidbs.controller;
 
+import com.example.kuhidbs.dto.company.kuh투자.RIvtDTO;
 import com.example.kuhidbs.dto.user.UserDTO;
 import com.example.kuhidbs.entity.User;
 import com.example.kuhidbs.service.UserService;
 import com.example.kuhidbs.service.company.CompanyService;
+import com.example.kuhidbs.service.company.InvestmentService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,6 +23,8 @@ public class HomeController {
     private CompanyService companyService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private InvestmentService investmentService;
 
     //공통 데이터 설정
     @ModelAttribute
@@ -125,6 +129,19 @@ public class HomeController {
         return "info"; // info.html
     }
 
+    // 기업별 모든 투자 전체조회 페이지
+    @GetMapping("/showIvtByCmp/{id}")
+    public String showIvtByCmp(@PathVariable("id") String id, Model model) {
+        System.out.println("📢 info() 호출 - companyId: " + id);
+        model.addAttribute("companyId", id);
+        List<RIvtDTO> investments = investmentService.getAllInvestmentsByCompanyId(id);
+
+        model.addAttribute("investments", investments);
+        return "showIvtByCmp"; // info.html
+    }
+
+
+
 //지
 //    @GetMapping("/companyRead/{id}")
 //    public String companyRead(@PathVariable("id") String id, Model model) {
@@ -133,13 +150,6 @@ public class HomeController {
 //        return "companyRead"; // info.html
 //    }
 //
-
-
-
-
-
-
-
 
 
     // 재무 및 인력상황
@@ -173,7 +183,7 @@ public class HomeController {
     }
 
     // 사업진행현황 팝업
-    @GetMapping("/company/progress/{id}")
+    @GetMapping("/compaInvestmentServiceny/progress/{id}")
     public String progressInfo(@PathVariable("id") Long id, Model model) {
         model.addAttribute("companyId", id);
         return "company/progress"; // progress.html

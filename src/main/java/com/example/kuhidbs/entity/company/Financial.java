@@ -28,7 +28,7 @@ public class Financial extends BaseEntity {
     private Integer financialYear;
 
     @Column(name = "FNC_HALF")
-    private Integer financialHalf;
+    private String financialHalf;
 
     @Column(name = "REVENUE")
     private Integer revenue;
