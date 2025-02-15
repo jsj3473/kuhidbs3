@@ -22,11 +22,9 @@ public class RIvtDTO {
     private BigDecimal equityRate; // 지분율
     private Long totalShares; // 발행 주식 수
     private Long investmentValue; // 투자 밸류
+    private String investmentStep; // 투자 단계
     private String tangibleInvestment; // 현물 투자
     private String investmentEmployee; // 투자 담당자
-    private String investmentState; // 투자 상태
-    private String investmentStep; // 투자 단계
-    private String investmentMemo; // 기타 메모
 }
 
 

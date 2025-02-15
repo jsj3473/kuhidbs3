@@ -72,7 +72,7 @@ public class ShareholderService {
 
     @Transactional(readOnly = true)
     public RShrDTO getShareholderByCompanyId(String companyId) {
-        Optional<Shareholder> shareholderOpt = shareholderRepository.findByCompany_CompanyId(companyId);
+        Optional<Shareholder> shareholderOpt = shareholderRepository.findTopByCompany_CompanyIdOrderByShareholderIdDesc(companyId);
 
         return shareholderOpt.map(shareholder -> RShrDTO.builder()
                 .shareholderName1(shareholder.getShareholderName1())

@@ -51,7 +51,7 @@ public class ManageService {
 
     @Transactional(readOnly = true)
     public RMngDTO getManageByCompanyId(String companyId) {
-        Optional<Manage> manageOpt = manageRepository.findByCompany_CompanyId(companyId);
+        Optional<Manage> manageOpt = manageRepository.findTopByCompany_CompanyIdOrderByManageIdDesc(companyId);
 
         return manageOpt.map(manage -> RMngDTO.builder()
                 .evalGrade(manage.getEvalGrade())

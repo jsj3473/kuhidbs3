@@ -1,10 +1,11 @@
 package com.example.kuhidbs.service.company;
 
 import com.example.kuhidbs.dto.company.투자상태.CStatusDTO;
+import com.example.kuhidbs.dto.company.투자상태.RStatusDTO;
 import com.example.kuhidbs.entity.company.Status;
 import com.example.kuhidbs.entity.company.Company;
-import com.example.kuhidbs.repository.company.StatusRepository;
 import com.example.kuhidbs.repository.company.CompanyRepository;
+import com.example.kuhidbs.repository.company.StatusRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -49,5 +50,16 @@ public class StatusService {
                 .build();
         return statusRepository.save(newStatus);
 
+    }
+
+    /**
+     * 특정 회사의 최신 투자 상태 조회
+     */
+    @Transactional(readOnly = true)
+    public RStatusDTO getStatusByCompanyId(String companyId) {
+        Status latestStatus = statusRepository.findTopByCompany_CompanyIdOrderByStatusIdDesc(companyId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 회사의 투자 상태 정보가 존재하지 않습니다. ID: " + companyId));
+
+        return new RStatusDTO(latestStatus.getCompany().getCompanyId(), latestStatus.getStatus(), latestStatus.getAdditionalInfo());
     }
 }

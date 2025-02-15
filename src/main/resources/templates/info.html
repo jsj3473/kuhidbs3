@@ -27,7 +27,7 @@
 
         function updateCompanyInfo(data) {
             document.getElementById("companyId").value = data.companyId || "";
-            document.getElementById("investmentStatus").value = data.investmentStatus || "";
+            document.getElementById("status").value = data.status || "";
             document.getElementById("investmentCompany").value = data.investmentCompany || "";
             document.getElementById("companyName").value = data.companyName || "";
             document.getElementById("establishmentDate").value = data.establishmentDate || "";
@@ -188,7 +188,7 @@
     <div class="card-header">회사 기본 정보</div>
     <div class="card-body">
         <div class="mb-3"><label class="form-label">회사 고유번호</label><input type="text" class="form-control" id="companyId" readonly></div>
-        <div class="mb-3"><label class="form-label">투자 상태</label><input type="text" class="form-control" id="smeStatus" readonly></div>
+        <div class="mb-3"><label class="form-label">투자 상태</label><input type="text" class="form-control" id="status" readonly></div>
         <div class="mb-3"><label class="form-label">투자 회사</label><input type="text" class="form-control" id="investmentCompany" readonly></div>
         <div class="mb-3"><label class="form-label">회사명</label><input type="text" class="form-control" id="companyName" readonly></div>
         <div class="mb-3"><label class="form-label">설립 일자</label><input type="text" class="form-control" id="establishmentDate" readonly></div>

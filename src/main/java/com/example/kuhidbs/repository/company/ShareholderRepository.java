@@ -8,5 +8,6 @@ import java.util.Optional;
 
 @Repository
 public interface ShareholderRepository extends JpaRepository<Shareholder, Long> {
-    Optional<Shareholder> findByCompany_CompanyId(String companyId);
+    Optional<Shareholder> findTopByCompany_CompanyIdOrderByShareholderIdDesc(String companyId);
 }
+

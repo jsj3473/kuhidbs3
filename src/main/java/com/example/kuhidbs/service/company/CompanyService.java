@@ -6,6 +6,7 @@ import com.example.kuhidbs.dto.company.기본정보.RCmpInfDTO;
 import com.example.kuhidbs.dto.company.사후관리.RMngDTO;
 import com.example.kuhidbs.dto.company.재무.RFncDTO;
 import com.example.kuhidbs.dto.company.주주명부.RShrDTO;
+import com.example.kuhidbs.dto.company.투자상태.RStatusDTO;
 import com.example.kuhidbs.entity.company.Company;
 import com.example.kuhidbs.entity.company.Client;
 import com.example.kuhidbs.repository.company.ClientRepository;
@@ -31,6 +32,7 @@ public class CompanyService {
     private final ManageService manageService;
     private final ReviewerService reviewerService;
     private final FollowupService followupService;
+    private final StatusService statusService;
 
     public void saveCompany(CCmpInfDTO CCmpInfDTO) {
 
@@ -99,6 +101,8 @@ public class CompanyService {
 
         Long currentCompanyValue = followupService.getCurrentCompanyValue(companyId);
 
+        //7. 최신 투자상태 받아오기
+        RStatusDTO statusDTO = statusService.getStatusByCompanyId(companyId);
 
         // 7. DTO 생성 및 데이터 매핑
         return RCmpInfDTO.builder()
@@ -157,6 +161,9 @@ public class CompanyService {
 
                 // 최신 투자 밸류
                 .currentCompanyValue(currentCompanyValue)
+
+                //현재 투자상태
+                .currentStatusDTO(statusDTO)
                 .build();
     }
 }

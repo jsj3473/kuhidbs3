@@ -55,7 +55,7 @@ public class InvestmentService {
         Optional<Investment> investmentOpt = investmentRepository.findFirstByCompany_CompanyIdOrderByInvestmentIdDesc(companyId);
 
         return investmentOpt.map(investment -> RIvtDTO.builder()
-                .investmentDate(investment.getInvestmentDate()) // LocalDate → String 변환 필요 시 .toString() 추가
+                .investmentDate(investment.getInvestmentDate())
                 .investmentProduct(investment.getInvestmentProduct())
                 .fundId(investment.getFundId())
                 .investmentSumPrice(investment.getInvestmentSumPrice())

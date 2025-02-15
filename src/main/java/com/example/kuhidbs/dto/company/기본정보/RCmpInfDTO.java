@@ -3,6 +3,7 @@ import com.example.kuhidbs.dto.company.kuh투자.RIvtDTO;
 import com.example.kuhidbs.dto.company.사후관리.RMngDTO;
 import com.example.kuhidbs.dto.company.주주명부.RShrDTO;
 import com.example.kuhidbs.dto.company.재무.RFncDTO;
+import com.example.kuhidbs.dto.company.투자상태.RStatusDTO;
 import lombok.*;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public class RCmpInfDTO {
 
     private String companyName;
 
-    private String establishmentDate;
+    private String establishmentDate; //설립일자
 
     private String ceoName;
 
@@ -66,7 +67,7 @@ public class RCmpInfDTO {
 
     private String publicTechnologyTransfer;
 
-    private String smeStatus;
+    private String smeStatus; //중소기업여부
 
     private String listingDate;
 
@@ -101,4 +102,7 @@ public class RCmpInfDTO {
 
     //후속투자 테이블에서 가져온 가장 최신의 기업가치
     private Long currentCompanyValue;
+
+    //투자상태
+    private RStatusDTO currentStatusDTO;
 }
