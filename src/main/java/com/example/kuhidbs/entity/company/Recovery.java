@@ -39,9 +39,6 @@ public class Recovery extends BaseEntity {
     @Column(name = "STCUP_UNIT_PRICE")
     private Long recoveryUnitPrice; // 매각 단가
 
-    @Column(name = "STCUP_EQT_RATE", precision = 5, scale = 2)
-    private BigDecimal recoveryEquityRate; // 지분율
-
     @Column(name = "STCUP_FUND_RTN")
     private Long fundReturn; // 펀드 수익
 

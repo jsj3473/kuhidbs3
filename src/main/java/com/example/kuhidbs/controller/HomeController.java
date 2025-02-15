@@ -1,13 +1,15 @@
 package com.example.kuhidbs.controller;
 
 import com.example.kuhidbs.dto.company.kuh투자.RIvtDTO;
+import com.example.kuhidbs.dto.company.감액환입.RShrupDTO;
+import com.example.kuhidbs.dto.company.무증.RBonusDTO;
+import com.example.kuhidbs.dto.company.역사.RAccountDTO;
+import com.example.kuhidbs.dto.company.회수.RstcupDTO;
 import com.example.kuhidbs.dto.company.후속투자.RFolDTO;
 import com.example.kuhidbs.dto.user.UserDTO;
 import com.example.kuhidbs.entity.User;
 import com.example.kuhidbs.service.UserService;
-import com.example.kuhidbs.service.company.CompanyService;
-import com.example.kuhidbs.service.company.FollowupService;
-import com.example.kuhidbs.service.company.InvestmentService;
+import com.example.kuhidbs.service.company.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,7 +31,14 @@ public class HomeController {
     private InvestmentService investmentService;
     @Autowired
     private FollowupService followupService;
-
+    @Autowired
+    private ShrupService shrupService;
+    @Autowired
+    private BonusService bonusService;
+    @Autowired
+    private RecoveryService recoveryService;
+    @Autowired
+    private AccountService accountService;
     //공통 데이터 설정
     @ModelAttribute
     public void addCommonAttributes(Model model, HttpSession session) {
@@ -137,7 +146,6 @@ public class HomeController {
     public String showIvtByCmp(@PathVariable("id") String id, Model model) {
         model.addAttribute("companyId", id);
         List<RIvtDTO> investments = investmentService.getAllInvestmentsByCompanyId(id);
-
         model.addAttribute("investments", investments);
         return "showIvtByCmp"; // info.html
     }
@@ -150,6 +158,42 @@ public class HomeController {
 
         model.addAttribute("followups", followups);
         return "showFolByCmp"; // info.html
+    }
+    // 기업별 모든 감액환입 전체조회 페이지
+    @GetMapping("/showShrupByCmp/{id}")
+    public String showShrupByCmp(@PathVariable("id") String id, Model model) {
+        model.addAttribute("companyId", id);
+        List<RShrupDTO> shrupDTOS = shrupService.getAllShrupsByCompanyId(id);
+
+        model.addAttribute("shrupDTOS", shrupDTOS);
+        return "showShrupByCmp"; // info.html
+    }
+    // 기업별 모든 회수 전체조회 페이지
+    @GetMapping("/showRecoveryByCmp/{id}")
+    public String showRecoveryByCmp(@PathVariable("id") String id, Model model) {
+        model.addAttribute("companyId", id);
+        List<RstcupDTO> rstcupDTOS = recoveryService.getAllstcupByCompanyId(id);
+
+        model.addAttribute("rstcupDTOS", rstcupDTOS);
+        return "showRecoveryByCmp"; // info.html
+    }
+    // 기업별 모든 무상증자  전체조회 페이지
+    @GetMapping("/showBonusByCmp/{id}")
+    public String showBonusByCmp(@PathVariable("id") String id, Model model) {
+        model.addAttribute("companyId", id);
+        List<RBonusDTO> rBonusDTOS = bonusService.getAllBonusByCompanyId(id);
+
+        model.addAttribute("rBonusDTOS", rBonusDTOS);
+        return "showBonusByCmp"; // info.html
+    }
+    //투자별 계좌조회
+    @GetMapping("/showAccountByIvt/{id}")
+    public String showBonusByCmp(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("investmentId", id);
+        List<RAccountDTO> rAccountDTOS = accountService.getAllAccountsByInvestmentId(id);
+
+        model.addAttribute("rAccountDTOS", rAccountDTOS);
+        return "showAccountByIvt"; // info.html
     }
 
 

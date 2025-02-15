@@ -1,6 +1,7 @@
 package com.example.kuhidbs.service.company;
 
 import com.example.kuhidbs.dto.company.무증.CBonusDTO;
+import com.example.kuhidbs.dto.company.무증.RBonusDTO;
 import com.example.kuhidbs.entity.company.Account;
 import com.example.kuhidbs.entity.company.Bonus;
 import com.example.kuhidbs.entity.company.Company;
@@ -12,6 +13,9 @@ import com.example.kuhidbs.repository.company.InvestmentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -57,5 +61,21 @@ public class BonusService {
         accountRepository.save(updatedAccount);
 
         return bonusRepository.save(bonus);
+    }
+
+    /**
+     * 특정 기업의 모든 무상증자 내역 조회
+     */
+    @Transactional(readOnly = true)
+    public List<RBonusDTO> getAllBonusByCompanyId(String companyId) {
+        List<Bonus> bonuses = bonusRepository.findByCompany_CompanyId(companyId);
+
+        return bonuses.stream()
+                .map(bonus -> new RBonusDTO(
+                        bonus.getBonusDate(),
+                        bonus.getChangedShareCount(),
+                        bonus.getUnitPrice()
+                ))
+                .collect(Collectors.toList());
     }
 }

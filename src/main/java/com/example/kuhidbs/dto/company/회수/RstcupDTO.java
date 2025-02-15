@@ -6,13 +6,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CStcupDTO {
-
+public class RstcupDTO {
     private String companyId; // 회사 고유 번호
     private Long investmentId; // 투자 고유 번호 (INV_ID)
     private String recoveryDate; // 회수 일자 (STCUP_DT)

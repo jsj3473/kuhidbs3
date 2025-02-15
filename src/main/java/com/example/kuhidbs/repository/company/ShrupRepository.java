@@ -4,6 +4,8 @@ import com.example.kuhidbs.entity.company.ShareUpdate;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * ShrupRepository
  *
@@ -15,4 +17,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ShrupRepository extends JpaRepository<ShareUpdate, Long> {
     // JpaRepository의 기본 메서드 사용 (findAll, findById, save 등)
+    // 특정 기업의 모든 감액/복원 데이터 조회
+    List<ShareUpdate> findByCompany_CompanyId(String companyId);
 }

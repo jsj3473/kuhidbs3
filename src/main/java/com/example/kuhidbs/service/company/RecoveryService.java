@@ -1,6 +1,7 @@
 package com.example.kuhidbs.service.company;
 
 import com.example.kuhidbs.dto.company.회수.CStcupDTO;
+import com.example.kuhidbs.dto.company.회수.RstcupDTO;
 import com.example.kuhidbs.entity.company.Account;
 import com.example.kuhidbs.entity.company.Company;
 import com.example.kuhidbs.entity.company.Investment;
@@ -9,6 +10,10 @@ import com.example.kuhidbs.repository.company.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -34,7 +39,6 @@ public class RecoveryService {
                 .recoveryDate(stcupDTO.getRecoveryDate())
                 .recoveryCount(stcupDTO.getRecoveryCount())
                 .recoveryUnitPrice(stcupDTO.getRecoveryUnitPrice())
-                .recoveryEquityRate(stcupDTO.getEquityRate())
                 .fundReturn(stcupDTO.getFundReturn())
                 .kuhReturn(stcupDTO.getKuhReturn())
                 .build();
@@ -58,4 +62,23 @@ public class RecoveryService {
     }
 
 
+    /**
+     * 특정 기업의 모든 회수 내역 조회
+     */
+    @Transactional(readOnly = true)
+    public List<RstcupDTO> getAllstcupByCompanyId(String companyId) {
+        List<Recovery> recoveries = recoveryRepository.findByCompany_CompanyId(companyId);
+
+        return recoveries.stream()
+                .map(recovery -> new RstcupDTO(
+                        recovery.getCompany().getCompanyId(),
+                        recovery.getInvestment().getInvestmentId(),
+                        recovery.getRecoveryDate(),
+                        recovery.getRecoveryCount(),
+                        recovery.getRecoveryUnitPrice(),
+                        recovery.getFundReturn(),
+                        recovery.getKuhReturn()
+                ))
+                .collect(Collectors.toList());
+    }
 }

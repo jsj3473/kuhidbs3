@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>기업별 회수 내역</title>
+</head>
+<body>
+
+<h2>기업 ID: <span th:text="${companyId}"></span>의 회수 내역</h2>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>투자 고유 번호</th>
+        <th>회수 일자</th>
+        <th>매각 수량</th>
+        <th>매각 단가</th>
+        <th>펀드 수익</th>
+        <th>KUH 수익</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Thymeleaf 반복문을 사용하여 회수 내역 출력 -->
+    <tr th:each="recovery : ${rstcupDTOS}">
+        <td th:text="${recovery.investmentId}"></td>
+        <td th:text="${recovery.recoveryDate}"></td>
+        <td th:text="${recovery.recoveryCount}"></td>
+        <td th:text="${recovery.recoveryUnitPrice}"></td>
+        <td th:text="${recovery.fundReturn}"></td>
+        <td th:text="${recovery.kuhReturn}"></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

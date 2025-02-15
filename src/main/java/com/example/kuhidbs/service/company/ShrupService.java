@@ -1,6 +1,7 @@
 package com.example.kuhidbs.service.company;
 
 import com.example.kuhidbs.dto.company.감액환입.CShrupDTO;
+import com.example.kuhidbs.dto.company.감액환입.RShrupDTO;
 import com.example.kuhidbs.entity.company.Account;
 import com.example.kuhidbs.entity.company.Company;
 import com.example.kuhidbs.entity.company.Investment;
@@ -11,6 +12,10 @@ import com.example.kuhidbs.repository.company.InvestmentRepository;
 import com.example.kuhidbs.repository.company.ShrupRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -61,6 +66,22 @@ public class ShrupService {
         accountRepository.save(updatedAccount);
         return savedShareUpdate;
     }
+    /**
+     * 특정 기업의 모든 감액/복원 데이터 조회
+     */
+    @Transactional(readOnly = true)
+    public List<RShrupDTO> getAllShrupsByCompanyId(String companyId) {
+        List<ShareUpdate> shareUpdates = shrupRepository.findByCompany_CompanyId(companyId);
 
+        return shareUpdates.stream()
+                .map(update -> new RShrupDTO(
+                        update.getShareUpdateDate(),
+                        update.getShareUnitValue(),
+                        update.getShareUpdateType(),
+                        update.getShareUpdateReason(),
+                        update.getShareUpdateAction()
+                ))
+                .collect(Collectors.toList());
+    }
 
 }

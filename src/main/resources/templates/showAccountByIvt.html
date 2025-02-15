@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>투자별 계좌 조회</title>
+</head>
+<body>
+
+<h2>투자 ID: <span th:text="${investmentId}"></span>의 계좌 내역</h2>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>투자 단가</th>
+        <th>보유 주식 수</th>
+        <th>투자 원금</th>
+        <th>실행 함수</th>
+        <th>KUH 지분율</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Thymeleaf 반복문을 사용하여 계좌 내역 출력 -->
+    <tr th:each="account : ${rAccountDTOS}">
+        <td th:text="${account.unitPrice}"></td>
+        <td th:text="${account.heldShareCount}"></td>
+        <td th:text="${account.totalPrincipal}"></td>
+        <td th:text="${account.functionType}"></td>
+        <td th:text="${account.kuhEquityRate}"></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

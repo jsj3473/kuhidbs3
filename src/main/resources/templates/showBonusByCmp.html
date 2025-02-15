@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>기업별 무상증자 내역</title>
+</head>
+<body>
+
+<h2>기업 ID: <span th:text="${companyId}"></span>의 무상증자 내역</h2>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>증자 일자</th>
+        <th>변경된 주식 수량</th>
+        <th>주당 가격</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Thymeleaf 반복문을 사용하여 무상증자 내역 출력 -->
+    <tr th:each="bonus : ${rBonusDTOS}">
+        <td th:text="${bonus.bonusDate}"></td>
+        <td th:text="${bonus.changedShareCount}"></td>
+        <td th:text="${bonus.unitPrice}"></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
