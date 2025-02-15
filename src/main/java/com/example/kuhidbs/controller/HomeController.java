@@ -1,10 +1,12 @@
 package com.example.kuhidbs.controller;
 
 import com.example.kuhidbs.dto.company.kuh투자.RIvtDTO;
+import com.example.kuhidbs.dto.company.후속투자.RFolDTO;
 import com.example.kuhidbs.dto.user.UserDTO;
 import com.example.kuhidbs.entity.User;
 import com.example.kuhidbs.service.UserService;
 import com.example.kuhidbs.service.company.CompanyService;
+import com.example.kuhidbs.service.company.FollowupService;
 import com.example.kuhidbs.service.company.InvestmentService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,8 @@ public class HomeController {
     private UserService userService;
     @Autowired
     private InvestmentService investmentService;
+    @Autowired
+    private FollowupService followupService;
 
     //공통 데이터 설정
     @ModelAttribute
@@ -86,7 +90,7 @@ public class HomeController {
         return "companyAdd/kuhInvestment"; // kuhInvestment.html
     }
 
-    // 후속투자 팝업
+    // 후속투자 생성
     @GetMapping("/companyAdd/followupInvestment/{id}")
     public String followupInvestment(@PathVariable("id") String id, Model model) {
         model.addAttribute("companyId", id);
@@ -124,7 +128,6 @@ public class HomeController {
     // 기업 전체조회 페이지
     @GetMapping("/info/{id}")
     public String info(@PathVariable("id") String id, Model model) {
-        System.out.println("📢 info() 호출 - companyId: " + id);
         model.addAttribute("companyId", id);
         return "info"; // info.html
     }
@@ -132,12 +135,21 @@ public class HomeController {
     // 기업별 모든 투자 전체조회 페이지
     @GetMapping("/showIvtByCmp/{id}")
     public String showIvtByCmp(@PathVariable("id") String id, Model model) {
-        System.out.println("📢 info() 호출 - companyId: " + id);
         model.addAttribute("companyId", id);
         List<RIvtDTO> investments = investmentService.getAllInvestmentsByCompanyId(id);
 
         model.addAttribute("investments", investments);
         return "showIvtByCmp"; // info.html
+    }
+
+    // 기업별 모든 후속투자 전체조회 페이지
+    @GetMapping("/showFolByCmp/{id}")
+    public String showFolByCmp(@PathVariable("id") String id, Model model) {
+        model.addAttribute("companyId", id);
+        List<RFolDTO> followups = followupService.getFollowupByCompanyId(id);
+
+        model.addAttribute("followups", followups);
+        return "showFolByCmp"; // info.html
     }
 
 

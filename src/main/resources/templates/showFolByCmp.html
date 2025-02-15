@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>기업별 후속 투자 내역</title>
+</head>
+<body>
+
+<h2>기업 ID: <span th:text="${companyId}"></span>의 후속 투자 내역</h2>
+
+<table border="1">
+    <thead>
+    <tr>
+        <th>투자 일자</th>
+        <th>투자 기관</th>
+        <th>투자 상품</th>
+        <th>투자 금액</th>
+        <th>주식 수량</th>
+        <th>투자 단가</th>
+        <th>지분율</th>
+        <th>투자 밸류</th>
+        <th>투자 단계</th>
+    </tr>
+    </thead>
+    <tbody>
+    <!-- Thymeleaf 반복문을 사용하여 후속 투자 내역 출력 -->
+    <tr th:each="followup : ${followups}">
+        <td th:text="${followup.followupStartDate}"></td>
+        <td th:text="${followup.followupCompanyName}"></td>
+        <td th:text="${followup.followupProduct}"></td>
+        <td th:text="${followup.followupSumPrice}"></td>
+        <td th:text="${followup.followupShareCount}"></td>
+        <td th:text="${followup.followupUnitPrice}"></td>
+        <td th:text="${followup.followupEquityRate}"></td>
+        <td th:text="${followup.followupInvestmentValue}"></td>
+        <td th:text="${followup.followupStep}"></td>
+    </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
