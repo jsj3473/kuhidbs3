@@ -175,8 +175,19 @@ public class HomeController {
     @GetMapping("/companyAdd/tips/{id}")
     public String tips(@PathVariable("id") String id, Model model) {
         model.addAttribute("companyId", id);
-        return "companyAdd/tips"; // tips.html
+
+        // ✅ 서비스에서 해당 기업의 팁스 데이터를 가져옴
+        RTIPSDTO rTipsDTO = tipsService.getTipsByCompanyId(id);
+
+        // ✅ rTipsDTO가 null이면 "companyUpdate/tips"로 반환
+        if (rTipsDTO == null) {
+            return "companyAdd/tips"; // tips.html
+        }
+
+        model.addAttribute("rTipsDTO", rTipsDTO);
+        return "companyUpdate/tips";
     }
+
     // 재무제표 입력 팝업
     @GetMapping("/companyAdd/financial/{id}")
     public String financial(@PathVariable("id") String id, Model model) {
@@ -255,8 +266,8 @@ public class HomeController {
     @GetMapping("/companyShow/tipsByCmp/{id}")
     public String companyShowTipsByCmp(@PathVariable("id") String id, Model model) {
         model.addAttribute("companyId", id);
-        List<RTIPSDTO> rTipsDTOS = tipsService.getTipsByCompanyId(id);
-        model.addAttribute("rTipsDTOS", rTipsDTOS);
+        RTIPSDTO rTipsDTO = tipsService.getTipsByCompanyId(id);
+        model.addAttribute("rTipsDTO", rTipsDTO);
         return "companyShow/tipsByCmp"; // tipsByCmp.html
     }
     // 기업별 모든 재무제표 전체조회 페이지

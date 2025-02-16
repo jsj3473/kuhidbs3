@@ -202,11 +202,7 @@ public class CompanyController {
         return ResponseEntity.ok(companyInfo);
     }
 
-    //팁스 정보 조회 api
-    @GetMapping("/tips/{companyId}")
-    public List<RTIPSDTO> getTipsByCompanyId(@PathVariable String companyId) {
-        return tipsService.getTipsByCompanyId(companyId);
-    }
+
 
     // 팁스 정보 수정 API
     @PutMapping("/updateTIPS")

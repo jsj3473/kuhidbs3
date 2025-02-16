@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>팁스 현황 입력 및 수정</title>
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script>
+        async function updateTips() {
+            const companyId = document.getElementById("companyId").value;
+            const tipsId = document.getElementById("tipsId").value;
+
+            const data = {
+                tipsId: tipsId,
+                tipsSelectionType: document.getElementById("tipsSelectionType").value,
+                selectionYesNo: document.getElementById("selectionYesNo").value,
+                tipsSelectionDate: document.getElementById("tipsSelectionDate").value,
+                executionStartDate: document.getElementById("executionStartDate").value,
+                executionEndDate: document.getElementById("executionEndDate").value,
+                successYesNo: document.getElementById("successYesNo").value,
+                kips: document.getElementById("kips").value,
+                tipsComment: document.getElementById("tipsComment").value,
+                tipsManagementEndDate: document.getElementById("tipsManagementEndDate").value,
+                followTips: document.getElementById("followTips").value
+            };
+
+            const response = await fetch(`/api/companies/updateTIPS`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                alert("팁스 현황이 성공적으로 수정되었습니다!");
+                window.location.reload();
+            } else {
+                alert("수정에 실패하였습니다. 다시 시도해주세요.");
+            }
+        }
+    </script>
+</head>
+<body class="container mt-4">
+
+<h2 class="mb-4">팁스 현황 입력 및 수정</h2>
+
+<input type="hidden" id="companyId" th:value="${companyId}">
+<input type="hidden" id="tipsId" th:value="${rTipsDTO.tipsId}">
+
+<form class="row g-3">
+    <div class="col-md-6">
+        <label for="tipsSelectionType" class="form-label">팁스 종류 선정종류</label>
+        <input type="text" class="form-control" id="tipsSelectionType" th:value="${rTipsDTO.tipsSelectionType}">
+    </div>
+
+    <div class="col-md-6">
+        <label for="selectionYesNo" class="form-label">선정 여부</label>
+        <select class="form-select" id="selectionYesNo">
+            <option value="Y" th:selected="${rTipsDTO.selectionYesNo == 'Y'}">예</option>
+            <option value="N" th:selected="${rTipsDTO.selectionYesNo == 'N'}">아니오</option>
+        </select>
+    </div>
+
+    <div class="col-md-6">
+        <label for="tipsSelectionDate" class="form-label">선정일자</label>
+        <input type="date" class="form-control" id="tipsSelectionDate" th:value="${rTipsDTO.tipsSelectionDate}">
+    </div>
+
+    <div class="col-md-6">
+        <label for="executionStartDate" class="form-label">수행 시작일</label>
+        <input type="date" class="form-control" id="executionStartDate" th:value="${rTipsDTO.executionStartDate}">
+    </div>
+
+    <div class="col-md-6">
+        <label for="executionEndDate" class="form-label">수행 종료일</label>
+        <input type="date" class="form-control" id="executionEndDate" th:value="${rTipsDTO.executionEndDate}">
+    </div>
+
+    <div class="col-md-6">
+        <label for="successYesNo" class="form-label">성공 여부</label>
+        <select class="form-select" id="successYesNo">
+            <option value="Y" th:selected="${rTipsDTO.successYesNo == 'Y'}">예</option>
+            <option value="N" th:selected="${rTipsDTO.successYesNo == 'N'}">아니오</option>
+        </select>
+    </div>
+
+    <div class="col-md-6">
+        <label for="kips" class="form-label">성공 정량 지표</label>
+        <input type="text" class="form-control" id="kips" th:value="${rTipsDTO.kips}">
+    </div>
+
+    <div class="col-md-6">
+        <label for="tipsComment" class="form-label">입력 내용</label>
+        <textarea class="form-control" id="tipsComment" rows="3" th:text="${rTipsDTO.tipsComment}"></textarea>
+    </div>
+
+    <div class="col-md-6">
+        <label for="tipsManagementEndDate" class="form-label">사후 기간 종료일</label>
+        <input type="date" class="form-control" id="tipsManagementEndDate" th:value="${rTipsDTO.tipsManagementEndDate}">
+    </div>
+
+    <div class="col-md-6">
+        <label for="followTips" class="form-label">사후 성공 여부</label>
+        <select class="form-select" id="followTips">
+            <option value="Y" th:selected="${rTipsDTO.followTips == 'Y'}">예</option>
+            <option value="N" th:selected="${rTipsDTO.followTips == 'N'}">아니오</option>
+        </select>
+    </div>
+
+    <div class="col-12 mt-4">
+        <button type="button" class="btn btn-primary" onclick="updateTips()">저장</button>
+    </div>
+</form>
+
+</body>
+</html>

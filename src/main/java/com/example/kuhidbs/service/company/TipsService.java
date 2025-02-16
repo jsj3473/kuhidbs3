@@ -47,25 +47,33 @@ public class TipsService {
         return tipsRepository.save(tips);
     }
 
-    public List<RTIPSDTO> getTipsByCompanyId(String companyId) {
+    public RTIPSDTO getTipsByCompanyId(String companyId) {
+        // 해당 회사의 TIPS 데이터를 조회
         List<TIPS> tipsList = tipsRepository.findByCompany_CompanyId(companyId);
 
-        return tipsList.stream()
-                .map(tips -> RTIPSDTO.builder()
-                        .tipsId(tips.getTipsId())
-                        .tipsSelectionType(tips.getTipsSelectionType())
-                        .selectionYesNo(tips.getSelectionYesNo())
-                        .tipsSelectionDate(tips.getTipsSelectionDate())
-                        .executionStartDate(tips.getExecutionStartDate())
-                        .executionEndDate(tips.getExecutionEndDate())
-                        .successYesNo(tips.getSuccessYesNo())
-                        .kips(tips.getKips())
-                        .tipsComment(tips.getTipsComment())
-                        .tipsManagementEndDate(tips.getTipsManagementEndDate())
-                        .followTips(tips.getFollowTips())
-                        .build())
-                .collect(Collectors.toList());
+        // 만약 TIPS 데이터가 없으면 null 반환
+        if (tipsList.isEmpty()) {
+            return null;
+        }
+
+        // 가장 최신(첫 번째) 데이터 반환
+        TIPS tips = tipsList.getFirst(); // 또는 원하는 로직을 적용해 특정 데이터 선택
+
+        return RTIPSDTO.builder()
+                .tipsId(tips.getTipsId())
+                .tipsSelectionType(tips.getTipsSelectionType())
+                .selectionYesNo(tips.getSelectionYesNo())
+                .tipsSelectionDate(tips.getTipsSelectionDate())
+                .executionStartDate(tips.getExecutionStartDate())
+                .executionEndDate(tips.getExecutionEndDate())
+                .successYesNo(tips.getSuccessYesNo())
+                .kips(tips.getKips())
+                .tipsComment(tips.getTipsComment())
+                .tipsManagementEndDate(tips.getTipsManagementEndDate())
+                .followTips(tips.getFollowTips())
+                .build();
     }
+
 
     public void updateTips(UTIPSDTO dto) {
         TIPS tips = tipsRepository.findById(dto.getTipsId())
