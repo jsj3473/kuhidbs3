@@ -58,6 +58,7 @@ public class InvestmentService {
         Optional<Investment> investmentOpt = investmentRepository.findFirstByCompany_CompanyIdOrderByInvestmentIdDesc(companyId);
 
         return investmentOpt.map(investment -> RIvtDTO.builder()
+                .investmentId(investment.getInvestmentId())
                 .investmentDate(investment.getInvestmentDate())
                 .investmentProduct(investment.getInvestmentProduct())
                 .fundId(investment.getFundId())
@@ -80,6 +81,7 @@ public class InvestmentService {
 
         return investments.stream()
                 .map(investment -> RIvtDTO.builder()
+                        .investmentId(investment.getInvestmentId())
                         .investmentDate(investment.getInvestmentDate())
                         .investmentProduct(investment.getInvestmentProduct())
                         .fundId(investment.getFundId())
