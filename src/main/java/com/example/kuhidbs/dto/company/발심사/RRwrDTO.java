@@ -7,10 +7,11 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CRwrDTO {
+public class RRwrDTO {
 
-    private String companyId; // Company 객체 대신 ID만 포함
     private String managerType;
     private String manager;
     private String changeReason;
+
+
 }

@@ -19,22 +19,16 @@
 <table class="table table-bordered text-center">
   <thead class="table-light">
   <tr>
-    <th>변경 ID</th>
-    <th>기업명</th>
-    <th>변경 사유</th>
     <th>관리자 유형</th>
     <th>관리자</th>
-    <th>변경 코멘트</th>
+    <th>변경 사유</th>
   </tr>
   </thead>
   <tbody>
-  <tr th:each="reviewer : ${reviewers}">
-    <td th:text="${reviewer.changeId}"></td>
-    <td th:text="${reviewer.company.companyName}"></td>
-    <td th:text="${reviewer.changeReason}"></td>
+  <tr th:each="reviewer : ${rRwrDTOS}">
     <td th:text="${reviewer.managerType}"></td>
     <td th:text="${reviewer.manager}"></td>
-    <td th:text="${reviewer.comment}"></td>
+    <td th:text="${reviewer.changeReason}"></td>
   </tr>
   </tbody>
 </table>

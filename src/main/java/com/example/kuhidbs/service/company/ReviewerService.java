@@ -2,6 +2,7 @@ package com.example.kuhidbs.service.company;
 
 import com.example.kuhidbs.dto.company.기본정보.CCmpInfDTO;
 import com.example.kuhidbs.dto.company.발심사.CRwrDTO;
+import com.example.kuhidbs.dto.company.발심사.RRwrDTO;
 import com.example.kuhidbs.entity.company.Company;
 import com.example.kuhidbs.entity.company.Reviewer;
 import com.example.kuhidbs.repository.company.CompanyRepository;
@@ -10,6 +11,9 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ReviewerService {
@@ -60,7 +64,6 @@ public class ReviewerService {
         // DTO → Entity 변환 후 저장
         Reviewer reviewer = Reviewer.builder()
                 .company(company)
-                .comment(dto.getComment())
                 .managerType(dto.getManagerType())
                 .manager(dto.getManager())
                 .changeReason(dto.getChangeReason())
@@ -75,5 +78,20 @@ public class ReviewerService {
         return reviewerRepository.findTopByCompany_CompanyIdAndManagerTypeOrderByChangeIdDesc(companyId, managerType)
                 .map(Reviewer::getManager)
                 .orElse(null); // 값이 없으면 null 반환
+    }
+
+    @Transactional(readOnly = true)
+    public List<RRwrDTO> getReviewersByCompanyId(String companyId) {
+        // companyId에 해당하는 모든 Reviewer 조회
+        List<Reviewer> reviewers = reviewerRepository.findByCompany_CompanyId(companyId);
+
+        // Entity → DTO 변환 후 리스트 반환
+        return reviewers.stream()
+                .map(reviewer -> new RRwrDTO(
+                        reviewer.getManagerType(),
+                        reviewer.getManager(),
+                        reviewer.getChangeReason()
+                ))
+                .collect(Collectors.toList());
     }
 }

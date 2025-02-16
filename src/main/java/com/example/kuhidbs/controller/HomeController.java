@@ -3,6 +3,7 @@ package com.example.kuhidbs.controller;
 import com.example.kuhidbs.dto.company.kuh투자.RIvtDTO;
 import com.example.kuhidbs.dto.company.감액환입.RShrupDTO;
 import com.example.kuhidbs.dto.company.무증.RBonusDTO;
+import com.example.kuhidbs.dto.company.발심사.RRwrDTO;
 import com.example.kuhidbs.dto.company.사후관리.RMngDTO;
 import com.example.kuhidbs.dto.company.역사.RAccountDTO;
 import com.example.kuhidbs.dto.company.재무.RFncDTO;
@@ -51,6 +52,8 @@ public class HomeController {
     private ManageService manageService;
     @Autowired
     private FinancialService financialService;
+    @Autowired
+    private ReviewerService reviewerService;
 
     //공통 데이터 설정
     @ModelAttribute
@@ -277,12 +280,12 @@ public class HomeController {
     }
 
     // 기업별 모든 사후담당자 전체조회 페이지
-    @GetMapping("/companyShow/managerChangeByCmp/{id}")
+    @GetMapping("/companyShow/reviewerChangeByCmp/{id}")
     public String companyShowManagerChangeByCmp(@PathVariable("id") String id, Model model) {
         model.addAttribute("companyId", id);
-//        RMngDTO rMngDTOS = manageService.getManageByCompanyId(id);
-//        model.addAttribute("rFncDTOS", rFncDTOS);
-        return "companyShow/managerChangeByCmp"; // managerChangeByCmp.html
+        List<RRwrDTO> rRwrDTOS = reviewerService.getReviewersByCompanyId(id);
+        model.addAttribute("rRwrDTOS", rRwrDTOS);
+        return "companyShow/reviewerChangeByCmp"; // reviewerChangeByCmp.html
     }
 
 
