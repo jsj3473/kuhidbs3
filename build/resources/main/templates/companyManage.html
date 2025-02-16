@@ -352,7 +352,7 @@
             }
 
             if (data.rmngDTO) {
-                document.getElementById("managementYear").value = data.rmngDTO.year || "";
+                document.getElementById("managementYear").value = data.rmngDTO.manageYear || "";
                 document.getElementById("evalGrade").value = data.rmngDTO.evalGrade || "";
                 document.getElementById("businessProgress1").value = data.rmngDTO.businessProgress1 || "";
                 document.getElementById("businessProgress2").value = data.rmngDTO.businessProgress2 || "";
@@ -542,8 +542,8 @@
         <a href="#" onclick="openPopup('investmentStatus')">📌 투자상태 입력</a>
         <a href="#" onclick="openPopup('tips')">💡 팁스현황 입력</a>
         <a href="#" onclick="openPopup('financial')">🗂️ 재무제표 입력</a>
-        <a href="#" onclick="openPopup('manage')">📋 사후관리정보 입력</a>
-        <a href="#" onclick="openPopup('managerChange')">👤 사후관리담당 입력</a>
+        <a href="#" onclick="openPopup('manage')" title="투자포인트 및 진행상황">📋 사후관리정보 입력</a>
+        <a href="#" onclick="openPopup('managerChange')">👤 업무담당 입력</a>
     </nav>
 
     <script>

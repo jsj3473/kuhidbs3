@@ -21,10 +21,11 @@
 <body>
 <div class="container">
     <h2 class="text-center">감액/복원 입력</h2>
-    <form th:action= "@{/api/companies/createShrup}" method="post">
 
+    <form id="combineForm">
         <input type="hidden" name="companyId" th:value="${companyId}">
         <input type="hidden" name="investmentId" th:value="${investmentId}">
+
         <div class="mb-3">
             <label for="shareUpdateType" class="form-label">감액/복원</label>
             <select class="form-select" id="shareUpdateType" name="shareUpdateType" required>
@@ -58,6 +59,45 @@
         </div>
     </form>
 </div>
+
+<!-- JavaScript -->
+<script>
+    document.getElementById("combineForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // 기본 제출 방지
+
+        let form = document.getElementById("combineForm");
+        let formData = new FormData(form);
+        let jsonData = {};
+
+        // FormData를 JSON 객체로 변환
+        formData.forEach((value, key) => {
+            jsonData[key] = value;
+        });
+
+        console.log("전송할 데이터:", jsonData); // 디버깅용
+
+        fetch("/api/companies/createShrup", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(jsonData)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("등록 실패");
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert("등록이 완료되었습니다!"); // ✅ 얼럿창 띄우기
+                form.reset(); // 폼 초기화
+            })
+            .catch(error => {
+                alert("오류 발생: " + error.message);
+            });
+    });
+</script>
 
 <!-- Bootstrap JS -->
 <script th:src="@{/js/bootstrap.bundle.min.js}"></script>

@@ -10,8 +10,8 @@ import lombok.*;
 public class CMngDTO {
 
     private String companyId;
-    private Integer year;
-    private Integer halfYear;
+    private Integer manageYear;
+    private Integer halfYear;  // ✅ 추가
     private String evalGrade;
     private String businessProgress1;
     private String businessProgress2;

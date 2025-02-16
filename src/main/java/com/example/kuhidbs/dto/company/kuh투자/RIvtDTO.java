@@ -12,7 +12,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Builder
 public class RIvtDTO {
-    private Long investmentId; // 투자 재원
+    private Long investmentId; // 투자 ID
     private String investmentDate; // 투자 일자
     private String investmentProduct; // 투자 상품
     private String fundId; // 투자 재원

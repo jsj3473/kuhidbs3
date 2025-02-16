@@ -4,6 +4,15 @@
     <meta charset="UTF-8">
     <title>사후관리 입력</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <script>
+        function moveCursorToEnd(input) {
+            setTimeout(() => {
+                input.selectionStart = input.selectionEnd = input.value.length;
+            }, 0);
+        }
+    </script>
+
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             let urlParams = new URLSearchParams(window.location.search);
@@ -17,26 +26,29 @@
 
             document.getElementById("manageForm").addEventListener("submit", function (event) {
                 event.preventDefault(); // 기본 제출 방지
-
                 let formData = {
                     companyId: document.getElementById("companyId")?.value.trim() || "",
+                    manageYear: document.getElementById("manageYear")?.value.trim() || "",
+                    halfYear: document.getElementById("halfYear")?.value.trim() || "",
                     evalGrade: document.getElementById("evalGrade")?.value.trim() || "",
                     businessProgress1: document.getElementById("businessProgress1")?.value.trim() || "",
                     businessProgress2: document.getElementById("businessProgress2")?.value.trim() || "",
                     businessProgress3: document.getElementById("businessProgress3")?.value.trim() || "",
                     managementStatus1: document.getElementById("managementStatus1")?.value.trim() || "",
                     managementStatus2: document.getElementById("managementStatus2")?.value.trim() || "",
-                    exitPlan: document.getElementById("exitPlan")?.value.trim() || "",
+                    managementStatus3: document.getElementById("managementStatus3")?.value.trim() || "",
+                    exitPlan1: document.getElementById("exitPlan1")?.value.trim() || "",
+                    exitPlan2: document.getElementById("exitPlan2")?.value.trim() || "",
                     exitEstimation: document.getElementById("exitEstimation")?.value.trim() || ""
                 };
 
-                // 필수 입력값 확인
-                if (!formData.companyId) {
-                    alert("🚨 회사 ID가 누락되었습니다. 다시 시도해주세요.");
+// 연도와 반기 필수값 체크 추가
+                if (!formData.manageYear) {
+                    alert("🚨 연도를 선택해주세요.");
                     return;
                 }
-                if (!formData.evalGrade) {
-                    alert("🚨 평가 등급을 선택해주세요.");
+                if (!formData.halfYear) {
+                    alert("🚨 반기를 선택해주세요.");
                     return;
                 }
 
@@ -77,6 +89,20 @@
     <!--    <input type="hidden" id="createUser" name="createUser" th:value="${loggedInUser}" />-->
     <!--    <input type="hidden" id="updateUser" name="updateUser" th:value="${loggedInUser}" />-->
 
+    <div class="mb-3">
+        <label class="form-label">연도</label>
+            <input type="text" class="form-control" id="manageYear" placeholder="예: 2023">
+        </select>
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">반기</label>
+        <select class="form-control" id="halfYear">
+            <option value="">선택하세요</option>
+            <option value="1">상반기</option>
+            <option value="2">하반기</option>
+        </select>
+    </div>
 
     <!-- 평가 등급 -->
     <div class="mb-3">
@@ -115,11 +141,21 @@
         <label class="form-label">사후관리 현황 2</label>
         <input type="text" class="form-control" id="managementStatus2">
     </div>
-
-    <!-- Exit 방안 -->
     <div class="mb-3">
-        <label class="form-label">EXIT 방안</label>
-        <input type="text" class="form-control" id="exitPlan">
+        <label class="form-label">사후관리 현황 3</label>
+        <input type="text" class="form-control" id="managementStatus3">
+    </div>
+
+    <!-- Exit 방안 1 -->
+    <div class="mb-3">
+        <label class="form-label">EXIT 방안 1</label>
+        <input type="text" class="form-control" id="exitPlan1" value="(구주매각) " onfocus="moveCursorToEnd(this)">
+    </div>
+
+    <!-- Exit 방안 2 -->
+    <div class="mb-3">
+        <label class="form-label">EXIT 방안 2</label>
+        <input type="text" class="form-control" id="exitPlan2" value="(MNA IPO) " onfocus="moveCursorToEnd(this)">
     </div>
 
     <!-- Exit 예상 -->

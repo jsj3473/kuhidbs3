@@ -9,9 +9,10 @@ import lombok.*;
 @Builder
 public class RMngDTO {
 
+    private String companyId;
+    private Integer manageYear;
+    private Integer halfYear;  // ✅ 추가
     private String evalGrade;
-    private Integer year;
-    private Integer halfYear;
     private String businessProgress1;
     private String businessProgress2;
     private String businessProgress3;

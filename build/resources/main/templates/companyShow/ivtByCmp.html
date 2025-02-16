@@ -4,21 +4,147 @@
     <meta charset="UTF-8">
     <title>기업별 투자 내역 조회</title>
 
-    <!-- ✅ 부트스트랩 기본 스타일만 적용 -->
+    <!-- ✅ 부트스트랩 기본 스타일 적용 -->
     <link rel="stylesheet" th:href="@{/css/common.css}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        /* 우측 상단 탭 스타일 */
+        .investment-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .investment-header h2 {
+            margin: 0;
+            white-space: nowrap;
+        }
+
+        .custom-tabs {
+            display: flex;
+            gap: 10px;
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .custom-tabs li {
+            display: inline-block;
+        }
+
+        .custom-tabs button {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            background-color: #f8f9fa;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        .custom-tabs button:hover {
+            background-color: #e9ecef;
+        }
+    </style>
+
+    <style>
+        /* ✅ 선택된 행에 적용할 스타일 (굵은 글씨체) */
+        .selected-row {
+            font-weight: bold;  /* 글씨체 굵게 */
+        }
+    </style>
+
+    <script>
+        let selectedRow = null;  // ✅ 선택된 행 저장
+        let selectedInvestmentId = null;  // ✅ 선택된 투자 ID 저장
+        let previousBoldCell = null;  // ✅ 이전에 Bold 처리된 셀 저장
+
+        // ✅ 투자 ID 선택 함수
+        function selectInvestment(row) {
+            // 기존 선택된 행이 있다면 이전 ID의 Bold 효과 제거
+            if (previousBoldCell) {
+                previousBoldCell.style.fontWeight = "normal";
+            }
+
+            // 새로 선택한 행의 첫 번째 열 (투자 ID) Bold 처리
+            let firstCell = row.cells[0];
+            firstCell.style.fontWeight = "bold";
+
+            // 선택된 투자 ID 저장
+            selectedRow = row;
+            selectedInvestmentId = firstCell.textContent.trim(); // 공백 제거 후 저장
+            previousBoldCell = firstCell;  // ✅ 이전 선택된 셀 저장
+        }
+
+        function openPopup(type) {
+            let companyId = document.getElementById("companyId").textContent.trim();  // ✅ 올바르게 가져오기
+            if (!companyId || !selectedInvestmentId) {
+                alert("등록할 투자 건을 클릭하세요.");
+                return;
+            }
+
+            let url = '';
+
+            switch (type) {
+                case 'jointInvestment':
+                    url = `/companyAdd/combine/${companyId}/${selectedInvestmentId}`;
+                    break;
+                case 'reduceReturn':
+                    url = `/companyAdd/shareUp/${companyId}/${selectedInvestmentId}`;
+                    break;
+                case 'bonusIssue':
+                    url = `/companyAdd/bonus/${companyId}/${selectedInvestmentId}`;
+                    break;
+                case 'investmentRecovery':
+                    url = `/companyAdd/stockUp/${companyId}/${selectedInvestmentId}`;
+                    break;
+                case 'accountHistory':
+                    url = `/companyShow/accountByIvt/${selectedInvestmentId}`;
+                    break;
+                default:
+                    alert("잘못된 요청입니다.");
+                    return;
+            }
+
+            console.log(`Opening URL: ${url}`);  // ✅ 디버깅 로그 추가
+            window.open(url, "_blank", "width=800,height=600");
+        }
+    </script>
+
+
+
 </head>
 <body class="container mt-4">
 
-<h2 class="mb-4">기업별 투자 내역</h2>
+<div class="investment-header">
+    <h2 class="mb-4">기업별 투자 내역</h2>
+    <!-- ✅ 상단 우측 버튼 탭 -->
+    <ul class="custom-tabs">
+        <li>
+            <button onclick="openPopup('jointInvestment')">공동투자 등록</button>
+        </li>
+        <li>
+            <button onclick="openPopup('reduceReturn')">감액환입 등록</button>
+        </li>
+        <li>
+            <button onclick="openPopup('bonusIssue')">무상증자 등록</button>
+        </li>
+        <li>
+            <button onclick="openPopup('investmentRecovery')">투자회수 등록</button>
+        </li>
+        <li>
+            <button onclick="openPopup('accountHistory')">계좌이력 조회</button>
+        </li>
+    </ul>
+</div>
 
 <!-- 기업 ID 정보 -->
-<p><strong>기업 ID:</strong> <span th:text="${companyId}"></span></p>
+<p><strong>기업 ID:</strong> <span id="companyId" th:text="${companyId}"></span></p>
 
 <!-- ✅ 투자 내역 테이블 -->
 <table class="table table-bordered">
     <thead>
     <tr>
+        <th>투자 ID</th>
         <th>투자 일자</th>
         <th>투자 상품</th>
         <th>투자 재원</th>
@@ -35,9 +161,8 @@
     </thead>
     <tbody>
     <!-- ✅ Thymeleaf 반복문을 사용하여 투자 내역 출력 -->
-    <tr th:each="investment : ${investments}">
-
-        
+    <tr th:each="investment : ${investments}" onclick="selectInvestment(this)" style="cursor: pointer;">
+        <td th:text="${investment.investmentId}"></td>
         <td th:text="${investment.investmentDate}"></td>
         <td th:text="${investment.investmentProduct}"></td>
         <td th:text="${investment.fundId}"></td>
@@ -53,6 +178,5 @@
     </tr>
     </tbody>
 </table>
-
 </body>
 </html>

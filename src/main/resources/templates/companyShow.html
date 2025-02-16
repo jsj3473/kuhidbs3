@@ -78,7 +78,7 @@
             }
 
             if (data.rmngDTO) {
-                document.getElementById("managementYear").value = data.rmngDTO.year || "";
+                document.getElementById("managementYear").value = data.rmngDTO.manageYear || "";
                 document.getElementById("evalGrade").value = data.rmngDTO.evalGrade || "";
                 document.getElementById("businessProgress1").value = data.rmngDTO.businessProgress1 || "";
                 document.getElementById("businessProgress2").value = data.rmngDTO.businessProgress2 || "";
@@ -270,8 +270,8 @@
         <a href="#" onclick="openViewPopup('bonusByCmp')">🎁 무상증자 조회</a>
         <a href="#" onclick="openViewPopup('tipsByCmp')">💡 팁스현황 조회</a>
         <a href="#" onclick="openViewPopup('financialByCmp')">🗂️ 재무제표 조회</a>
-        <a href="#" onclick="openViewPopup('manageByCmp')">📋 사후관리 조회</a>
-        <a href="#" onclick="openViewPopup('reviewerChangeByCmp')">👤 업무담당 조회</a>
+        <a href="#" onclick="openViewPopup('manageByCmp')" title="투자포인트 및 진행상황">📋 사후관리 조회</a>
+        <a href="#" onclick="openViewPopup('reviewerChangeByCmp')">👤 업무이력 조회</a>
     </nav>
 
     <script>

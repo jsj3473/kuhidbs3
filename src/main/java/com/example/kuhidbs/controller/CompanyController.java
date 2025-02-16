@@ -119,7 +119,7 @@ public class CompanyController {
      * 감액/복원 데이터 생성
      */
     @PostMapping("/createShrup")
-    public ResponseEntity<ShareUpdate> createShrup(@ModelAttribute CShrupDTO shrupDTO) {
+    public ResponseEntity<ShareUpdate> createShrup(@RequestBody CShrupDTO shrupDTO) {
         ShareUpdate createdShrup = shrupService.saveShrup(shrupDTO);
         return ResponseEntity.ok(createdShrup);
     }
@@ -156,14 +156,14 @@ public class CompanyController {
 
     // 사후관리 정보 생성 API
     @PostMapping("/createManage")
-    public ResponseEntity<Manage> createManage(@ModelAttribute CMngDTO dto) {
+    public ResponseEntity<Manage> createManage(@RequestBody CMngDTO dto) {
         Manage createdManage =  manageService.createManage(dto);
         return ResponseEntity.ok(createdManage);
     }
 
     // Reviewer 데이터 생성 API
     @PostMapping("/createReviewer")
-    public ResponseEntity<Reviewer> createReviewer(@ModelAttribute CRwrDTO dto) {
+    public ResponseEntity<Reviewer> createReviewer(@RequestBody CRwrDTO dto) {
         Reviewer createdReviewer = reviewerService.createReviewerForCRwrDTO(dto);
         return ResponseEntity.ok(createdReviewer);
     }

@@ -19,32 +19,32 @@
 <table class="table table-bordered text-center">
     <thead class="table-light">
     <tr>
-        <th>회계연도</th>
+        <th>연도</th>
+        <th>반기</th>
         <th>매출액</th>
         <th>영업이익</th>
         <th>당기순이익</th>
         <th>자산총계</th>
-        <th>부채총계</th>
         <th>자본총계</th>
         <th>자본금</th>
-        <th>부채비율</th>
+        <th>고용인력</th> <!-- 강조 표시 -->
     </tr>
     </thead>
     <tbody>
     <tr th:each="financial : ${rFncDTOS}">
-        <td th:text="${financial.financialYear}"></td>
+        <td th:text="${financial.financialYear} + '년'"></td>
         <td th:text="${financial.financialHalf}"></td>
         <td th:text="${#numbers.formatInteger(financial.revenue, 3, 'COMMA')} + ' 원'"></td>
         <td th:text="${#numbers.formatInteger(financial.operatingProfit, 3, 'COMMA')} + ' 원'"></td>
         <td th:text="${#numbers.formatInteger(financial.netIncome, 3, 'COMMA')} + ' 원'"></td>
         <td th:text="${#numbers.formatInteger(financial.totalAssets, 3, 'COMMA')} + ' 원'"></td>
-        <td th:text="${#numbers.formatInteger(financial.totalLiabilities, 3, 'COMMA')} + ' 원'"></td>
-        <td th:text="${#numbers.formatInteger(financial.totalEquity, 3, 'COMMA')} + ' 원'"></td>
+        <td th:text="${#numbers.formatInteger(financial.totalCapital, 3, 'COMMA')} + ' 원'"></td>
         <td th:text="${#numbers.formatInteger(financial.capital, 3, 'COMMA')} + ' 원'"></td>
-        <td th:text="${financial.debtRatio} + ' %'"></td>
+        <td th:text="${#numbers.formatInteger(financial.employeeCount, 3, 'COMMA')} + ' 명'"></td>
     </tr>
     </tbody>
 </table>
+
 
 </body>
 </html>

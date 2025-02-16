@@ -32,7 +32,7 @@ public class ManageService {
         // DTO → Entity 변환 후 저장
         Manage manage = Manage.builder()
                 .company(company)
-                .manageYear(dto.getYear())
+                .manageYear(dto.getManageYear())
                 .halfYear(dto.getHalfYear())
                 .evalGrade(dto.getEvalGrade())
                 .businessProgress1(dto.getBusinessProgress1())
@@ -57,8 +57,9 @@ public class ManageService {
 
         return manageOpt.map(manage -> RMngDTO.builder()
                 .evalGrade(manage.getEvalGrade())
-                .year(manage.getManageYear())
+                .manageYear(manage.getManageYear())
                 .halfYear(manage.getHalfYear())
+                .evalGrade(manage.getEvalGrade())
                 .businessProgress1(manage.getBusinessProgress1())
                 .businessProgress2(manage.getBusinessProgress2())
                 .businessProgress3(manage.getBusinessProgress3())

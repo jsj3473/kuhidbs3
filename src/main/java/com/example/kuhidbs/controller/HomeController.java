@@ -204,7 +204,7 @@ public class HomeController {
     // 사후관리담당자 입력 팝업
     @GetMapping("/companyAdd/managerChange/{id}")
     public String managerChange(@PathVariable("id") String id, Model model) {
-        System.out.println("Received companyId: " + id);  // 로그 출력
+        //System.out.println("Received companyId: " + id);  // 로그 출력
         model.addAttribute("companyId", id);
         return "companyAdd/managerChange"; // managerChange.html
     }
