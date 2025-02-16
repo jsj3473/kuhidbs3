@@ -55,7 +55,6 @@ public class FollowupService {
                         .followupUnitPrice(followup.getFollowupUnitPrice())
                         .followupEquityRate(followup.getFollowupEquityRate())
                         .followupInvestmentValue(followup.getFollowupInvestmentValue())
-                        .followupStep(followup.getFollowupStep())
                         .build())
                 .collect(Collectors.toList());
     }
@@ -80,7 +79,6 @@ public class FollowupService {
                 .followupUnitPrice(dto.getFollowupUnitPrice())
                 .followupEquityRate(dto.getFollowupEquityRate())
                 .followupInvestmentValue(dto.getFollowupInvestmentValue())
-                .followupStep(dto.getFollowupStep())
                 .build();
     }
 

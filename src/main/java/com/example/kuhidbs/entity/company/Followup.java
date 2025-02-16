@@ -2,13 +2,11 @@ package com.example.kuhidbs.entity.company;
 
 import com.example.kuhidbs.entity.BaseEntity;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.math.BigDecimal;
 
+@EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "KUH_FOL_TBL")
 @Data
@@ -49,8 +47,5 @@ public class Followup extends BaseEntity {
 
     @Column(name = "FOL_INV_VAL")
     private Long followupInvestmentValue; // 투자 밸류
-
-    @Column(name = "FOL_STEP")
-    private String followupStep; // 투자 단계 (ENUM)
 
 }

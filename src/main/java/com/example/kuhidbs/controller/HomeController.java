@@ -107,6 +107,9 @@ public class HomeController {
     @GetMapping("/companyAdd/followupInvestment/{id}")
     public String followupInvestment(@PathVariable("id") String id, Model model) {
         model.addAttribute("companyId", id);
+        RShrDTO shrDTO = shareholderService.getShareholderByCompanyId(id);
+        System.out.println(shrDTO);
+        model.addAttribute("shrDTO", shrDTO);
         return "companyAdd/followupInvestment"; // followupInvestment.html
     }
 

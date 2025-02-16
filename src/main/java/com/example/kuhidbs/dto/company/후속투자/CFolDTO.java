@@ -22,5 +22,4 @@ public class CFolDTO {
     private Long followupUnitPrice; // 투자 단가
     private BigDecimal followupEquityRate; // 지분율
     private Long followupInvestmentValue; // 투자 밸류
-    private String followupStep; // 투자 단계
 }

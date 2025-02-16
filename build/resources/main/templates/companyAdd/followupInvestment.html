@@ -4,6 +4,25 @@
   <meta charset="UTF-8">
   <title>후속 투자 정보 입력</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        input {
+            width: 100%;
+            border: none;
+            text-align: center;
+        }
+    </style>
   <script>
       function submitFirstForm() {
           let form = document.getElementById("firstForm");
@@ -27,11 +46,11 @@
               })
               .then(data => {
                   alert("저장이 완료되었습니다!");
-                  document.getElementById("secondForm").style.display = "block";  // ✅ 2번 폼 표시
+                  //document.getElementById("secondForm").style.display = "block";  // ✅ 2번 폼 표시
               })
               .catch(error => {
                   alert("저장 중 오류 발생: " + error.message);
-                  document.getElementById("secondForm").style.display = "block";  // ✅ 임시로 2번 폼 표시
+                  //document.getElementById("secondForm").style.display = "block";  // ✅ 임시로 2번 폼 표시
               });
       }
 
@@ -136,6 +155,11 @@
     </select>
   </div>
 
+<div class="mb-3">
+    <label class="form-label">투자 날짜</label>
+    <input type="date" class="form-control" name="followupStartDate">
+</div>
+
   <div class="mb-3"><label class="form-label">투자 단가 (단위: 원)</label>
     <input type="number" class="form-control" name="followupUnitPrice">
   </div>
@@ -197,57 +221,103 @@
     </tbody>
 </table>
 -->
-<form id="secondForm" method="post" style="display: block;">
-    <input type="hidden" name="companyId" th:value="${companyId}">
-    <h4 class="mb-3">주주구성 입력</h4>
-    <table class="table table-bordered text-center">
-        <tbody>
-        <tr>
-            <td><input type="text" class="form-control" name="shareholderName1" placeholder="주주명"></td>
-            <td><input type="text" class="form-control" name="shareholderName2" placeholder="주주명"></td>
-            <td><input type="text" class="form-control" name="shareholderName3" placeholder="주주명"></td>
-            <td><input type="text" class="form-control" name="shareholderName4" placeholder="주주명"></td>
-            <td><input type="text" class="form-control" name="shareholderName5" placeholder="주주명"></td>
-            <td><input type="text" class="form-control" name="shareholderName6" placeholder="주주명"></td>
-            <td><input type="text" class="form-control" name="shareholderName7" placeholder="주주명"></td>
-            <td><input type="text" class="form-control" name="shareholderName8" placeholder="주주명"></td>
-            <td class="align-middle">발행총주식수</td>
-        </tr>
-        <tr>
-            <td><input type="number" class="form-control" id="shareholderCount1" name="shareholderCount1"
-                       oninput="updateTotalShares()"></td>
-            <td><input type="number" class="form-control" id="shareholderCount2" name="shareholderCount2"
-                       oninput="updateTotalShares()"></td>
-            <td><input type="number" class="form-control" id="shareholderCount3" name="shareholderCount3"
-                       oninput="updateTotalShares()"></td>
-            <td><input type="number" class="form-control" id="shareholderCount4" name="shareholderCount4"
-                       oninput="updateTotalShares()"></td>
-            <td><input type="number" class="form-control" id="shareholderCount5" name="shareholderCount5"
-                       oninput="updateTotalShares()"></td>
-            <td><input type="number" class="form-control" id="shareholderCount6" name="shareholderCount6"
-                       oninput="updateTotalShares()"></td>
-            <td><input type="number" class="form-control" id="shareholderCount7" name="shareholderCount7"
-                       oninput="updateTotalShares()"></td>
-            <td><input type="number" class="form-control" id="shareholderCount8" name="shareholderCount8"
-                       oninput="updateTotalShares()"></td>
-            <td><input type="number" class="form-control" id="totalShareCount" name="totalShareCount" readonly></td>
-        </tr>
-        <tr>
-            <td><input type="text" class="form-control" id="shareholderRate1" name="shareholderRate1" readonly></td>
-            <td><input type="text" class="form-control" id="shareholderRate2" name="shareholderRate2" readonly></td>
-            <td><input type="text" class="form-control" id="shareholderRate3" name="shareholderRate3" readonly></td>
-            <td><input type="text" class="form-control" id="shareholderRate4" name="shareholderRate4" readonly></td>
-            <td><input type="text" class="form-control" id="shareholderRate5" name="shareholderRate5" readonly></td>
-            <td><input type="text" class="form-control" id="shareholderRate6" name="shareholderRate6" readonly></td>
-            <td><input type="text" class="form-control" id="shareholderRate7" name="shareholderRate7" readonly></td>
-            <td><input type="text" class="form-control" id="shareholderRate8" name="shareholderRate8" readonly></td>
-            <td><input type="text" class="form-control" id="totalEquityRate" readonly></td>
-        </tr>
-        </tbody>
-    </table>
-    <div class="mt-4">
-        <button type="button" class="btn btn-primary" onclick="submitSecondForm()">주주 정보 저장</button>
-    </div>
-</form>
+<!-- 주주변경 폼 -->
+<table>
+    <tr>
+        <th>주주명 1</th>
+        <th>주주명 2</th>
+        <th>주주명 3</th>
+        <th>주주명 4</th>
+        <th>주주명 5</th>
+        <th>주주명 6</th>
+        <th>주주명 7</th>
+        <th>주주명 8</th>
+        <th>발행총주식수</th>
+    </tr>
+    <tr>
+        <td><label for="shareholderName1"></label><input type="text" id="shareholderName1" th:value="${shrDTO.shareholderName1}"></td>
+        <td><label for="shareholderName2"></label><input type="text" id="shareholderName2" th:value="${shrDTO.shareholderName2}"></td>
+        <td><label for="shareholderName3"></label><input type="text" id="shareholderName3" th:value="${shrDTO.shareholderName3}"></td>
+        <td><label for="shareholderName4"></label><input type="text" id="shareholderName4" th:value="${shrDTO.shareholderName4}"></td>
+        <td><label for="shareholderName5"></label><input type="text" id="shareholderName5" th:value="${shrDTO.shareholderName5}"></td>
+        <td><label for="shareholderName6"></label><input type="text" id="shareholderName6" th:value="${shrDTO.shareholderName6}"></td>
+        <td><label for="shareholderName7"></label><input type="text" id="shareholderName7" th:value="${shrDTO.shareholderName7}"></td>
+        <td><label for="shareholderName8"></label><input type="text" id="shareholderName8" th:value="${shrDTO.shareholderName8}"></td>
+        <td rowspan="3"><label for="totalShareCount"></label><input type="number" id="totalShareCount" th:value="${shrDTO.totalShareCount}" readonly></td>
+    </tr>
+    <tr>
+        <td><label for="shareholderCount1"></label><input type="number" id="shareholderCount1" th:value="${shrDTO.shareholderCount1}"></td>
+        <td><label for="shareholderCount2"></label><input type="number" id="shareholderCount2" th:value="${shrDTO.shareholderCount2}"></td>
+        <td><label for="shareholderCount3"></label><input type="number" id="shareholderCount3" th:value="${shrDTO.shareholderCount3}"></td>
+        <td><label for="shareholderCount4"></label><input type="number" id="shareholderCount4" th:value="${shrDTO.shareholderCount4}"></td>
+        <td><label for="shareholderCount5"></label><input type="number" id="shareholderCount5" th:value="${shrDTO.shareholderCount5}"></td>
+        <td><label for="shareholderCount6"></label><input type="number" id="shareholderCount6" th:value="${shrDTO.shareholderCount6}"></td>
+        <td><label for="shareholderCount7"></label><input type="number" id="shareholderCount7" th:value="${shrDTO.shareholderCount7}"></td>
+        <td><label for="shareholderCount8"></label><input type="number" id="shareholderCount8" th:value="${shrDTO.shareholderCount8}"></td>
+    </tr>
+    <tr>
+        <td><label for="shareholderRate1"></label><input type="text" id="shareholderRate1" th:value="|${shrDTO.shareholderRate1} %|"></td>
+        <td><label for="shareholderRate2"></label><input type="text" id="shareholderRate2" th:value="|${shrDTO.shareholderRate2} %|"></td>
+        <td><label for="shareholderRate3"></label><input type="text" id="shareholderRate3" th:value="|${shrDTO.shareholderRate3} %|"></td>
+        <td><label for="shareholderRate4"></label><input type="text" id="shareholderRate4" th:value="|${shrDTO.shareholderRate4} %|"></td>
+        <td><label for="shareholderRate5"></label><input type="text" id="shareholderRate5" th:value="|${shrDTO.shareholderRate5} %|"></td>
+        <td><label for="shareholderRate6"></label><input type="text" id="shareholderRate6" th:value="|${shrDTO.shareholderRate6} %|"></td>
+        <td><label for="shareholderRate7"></label><input type="text" id="shareholderRate7" th:value="|${shrDTO.shareholderRate7} %|"></td>
+        <td><label for="shareholderRate8"></label><input type="text" id="shareholderRate8" th:value="|${shrDTO.shareholderRate8} %|"></td>
+    </tr>
+</table>
+
+<br>
+<button onclick="submitData()">저장</button>
+
+<script>
+    function submitData() {
+        const data = {
+            companyId: '[[${companyId}]]',
+            shareholderName1: document.getElementById("shareholderName1").value,
+            shareholderName2: document.getElementById("shareholderName2").value,
+            shareholderName3: document.getElementById("shareholderName3").value,
+            shareholderName4: document.getElementById("shareholderName4").value,
+            shareholderName5: document.getElementById("shareholderName5").value,
+            shareholderName6: document.getElementById("shareholderName6").value,
+            shareholderName7: document.getElementById("shareholderName7").value,
+            shareholderName8: document.getElementById("shareholderName8").value,
+
+            shareholderCount1: Number(document.getElementById("shareholderCount1").value),
+            shareholderCount2: Number(document.getElementById("shareholderCount2").value),
+            shareholderCount3: Number(document.getElementById("shareholderCount3").value),
+            shareholderCount4: Number(document.getElementById("shareholderCount4").value),
+            shareholderCount5: Number(document.getElementById("shareholderCount5").value),
+            shareholderCount6: Number(document.getElementById("shareholderCount6").value),
+            shareholderCount7: Number(document.getElementById("shareholderCount7").value),
+            shareholderCount8: Number(document.getElementById("shareholderCount8").value),
+
+            shareholderRate1: parseFloat(document.getElementById("shareholderRate1").value),
+            shareholderRate2: parseFloat(document.getElementById("shareholderRate2").value),
+            shareholderRate3: parseFloat(document.getElementById("shareholderRate3").value),
+            shareholderRate4: parseFloat(document.getElementById("shareholderRate4").value),
+            shareholderRate5: parseFloat(document.getElementById("shareholderRate5").value),
+            shareholderRate6: parseFloat(document.getElementById("shareholderRate6").value),
+            shareholderRate7: parseFloat(document.getElementById("shareholderRate7").value),
+            shareholderRate8: parseFloat(document.getElementById("shareholderRate8").value),
+
+            totalShareCount: Number(document.getElementById("totalShareCount").value)
+        };
+
+        fetch("/api/companies/createShareholder", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => response.json())
+            .then(data => {
+                alert("데이터가 저장되었습니다.");
+                location.reload();
+            })
+            .catch(error => console.error("Error:", error));
+    }
+</script>
 </body>
 </html>
