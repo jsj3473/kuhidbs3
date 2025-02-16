@@ -32,6 +32,7 @@ public class RecoveryService {
         Company company = companyRepository.findById(stcupDTO.getCompanyId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid company ID: " + stcupDTO.getInvestmentId()));
 
+        Long recoveryReturn = (stcupDTO.getRecoveryUnitPrice() - investment.getInvestmentUnitPrice())* stcupDTO.getRecoveryCount();
         // Recovery 엔터티 생성 및 설정
         Recovery recovery = Recovery.builder()
                 .investment(investment) // ManyToOne 관계 설정
@@ -39,8 +40,8 @@ public class RecoveryService {
                 .recoveryDate(stcupDTO.getRecoveryDate())
                 .recoveryCount(stcupDTO.getRecoveryCount())
                 .recoveryUnitPrice(stcupDTO.getRecoveryUnitPrice())
-                .fundReturn(stcupDTO.getFundReturn())
-                .kuhReturn(stcupDTO.getKuhReturn())
+                .fundReturn(recoveryReturn)
+                .kuhReturn(recoveryReturn)
                 .build();
 
         Recovery savedRecovery = recoveryRepository.save(recovery);
