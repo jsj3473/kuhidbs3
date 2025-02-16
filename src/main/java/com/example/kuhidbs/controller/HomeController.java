@@ -3,8 +3,11 @@ package com.example.kuhidbs.controller;
 import com.example.kuhidbs.dto.company.kuh투자.RIvtDTO;
 import com.example.kuhidbs.dto.company.감액환입.RShrupDTO;
 import com.example.kuhidbs.dto.company.무증.RBonusDTO;
+import com.example.kuhidbs.dto.company.사후관리.RMngDTO;
 import com.example.kuhidbs.dto.company.역사.RAccountDTO;
+import com.example.kuhidbs.dto.company.재무.RFncDTO;
 import com.example.kuhidbs.dto.company.주주명부.RShrDTO;
+import com.example.kuhidbs.dto.company.팁스.RTIPSDTO;
 import com.example.kuhidbs.dto.company.회수.RstcupDTO;
 import com.example.kuhidbs.dto.company.후속투자.RFolDTO;
 import com.example.kuhidbs.dto.user.UserDTO;
@@ -42,6 +45,13 @@ public class HomeController {
     private AccountService accountService;
     @Autowired
     private ShareholderService shareholderService;
+    @Autowired
+    private TipsService tipsService;
+    @Autowired
+    private ManageService manageService;
+    @Autowired
+    private FinancialService financialService;
+
     //공통 데이터 설정
     @ModelAttribute
     public void addCommonAttributes(Model model, HttpSession session) {
@@ -108,7 +118,6 @@ public class HomeController {
     public String followupInvestment(@PathVariable("id") String id, Model model) {
         model.addAttribute("companyId", id);
         RShrDTO shrDTO = shareholderService.getShareholderByCompanyId(id);
-        System.out.println(shrDTO);
         model.addAttribute("shrDTO", shrDTO);
         return "companyAdd/followupInvestment"; // followupInvestment.html
     }
@@ -239,6 +248,44 @@ public class HomeController {
         model.addAttribute("rBonusDTOS", rBonusDTOS);
         return "companyShow/bonusByCmp"; // bonusByCmp.html
     }
+    // 기업별 모든 팁스 전체조회 페이지
+    @GetMapping("/companyShow/tipsByCmp/{id}")
+    public String companyShowTipsByCmp(@PathVariable("id") String id, Model model) {
+        model.addAttribute("companyId", id);
+        List<RTIPSDTO> rTipsDTOS = tipsService.getTipsByCompanyId(id);
+        model.addAttribute("rTipsDTOS", rTipsDTOS);
+        return "companyShow/tipsByCmp"; // tipsByCmp.html
+    }
+    // 기업별 모든 재무제표 전체조회 페이지
+    @GetMapping("/companyShow/financialByCmp/{id}")
+    public String companyShowFinancialByCmp(@PathVariable("id") String id, Model model) {
+        model.addAttribute("companyId", id);
+
+        // ✅ 재무제표 데이터를 서비스에서 가져오기
+        List<RFncDTO> rFncDTOS = financialService.getRecentFinancialsByCompanyId(id);
+        model.addAttribute("rFncDTOS", rFncDTOS);
+
+        return "companyShow/financialByCmp"; // financialByCmp.html
+    }
+    // 기업별 모든 사후관리 전체조회 페이지
+    @GetMapping("/companyShow/manageByCmp/{id}")
+    public String companyShowManageByCmp(@PathVariable("id") String id, Model model) {
+        model.addAttribute("companyId", id);
+        RMngDTO rMngDTOS = manageService.getManageByCompanyId(id);
+        model.addAttribute("rMngDTOS", rMngDTOS);
+        return "companyShow/manageByCmp"; // manageByCmp.html
+    }
+
+    // 기업별 모든 사후담당자 전체조회 페이지
+    @GetMapping("/companyShow/managerChangeByCmp/{id}")
+    public String companyShowManagerChangeByCmp(@PathVariable("id") String id, Model model) {
+        model.addAttribute("companyId", id);
+//        RMngDTO rMngDTOS = manageService.getManageByCompanyId(id);
+//        model.addAttribute("rFncDTOS", rFncDTOS);
+        return "companyShow/managerChangeByCmp"; // managerChangeByCmp.html
+    }
+
+
     //투자별 계좌조회 //투자 id 값 사용
     @GetMapping("/companyShow/accountByIvt/{id}")
     public String companyShowAccountByIvt(@PathVariable("id") Long id, Model model) {
