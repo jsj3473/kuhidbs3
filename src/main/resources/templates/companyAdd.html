@@ -42,12 +42,12 @@
 
                             // 🔥 KUH 투자 입력 & 공통 투자 입력 링크 활성화
                             kuhInvestmentLink.href = "#";
-                            combineInvestmentLink.href = "#";
+                            // combineInvestmentLink.href = "#";
 
                             kuhInvestmentLink.style.pointerEvents = "auto"; // 클릭 가능
                             kuhInvestmentLink.style.color = "#007bff"; // 파란색 활성화
-                            combineInvestmentLink.style.pointerEvents = "auto";
-                            combineInvestmentLink.style.color = "#007bff";
+                            // combineInvestmentLink.style.pointerEvents = "auto";
+                            // combineInvestmentLink.style.color = "#007bff";
 
                         } else {
                             alert("저장 실패. 다시 시도해주세요.");
@@ -62,7 +62,7 @@
             // 팝업 열기 함수
             window.openPopup = function (type) {
                 if (!companyId) {
-                    alert("먼저 저장을 완료한 후 투자 입력을 진행하세요.");
+                    alert("먼저 기업정보를 저장한 후 투자 입력을 진행하세요.");
                     return;
                 }
 
@@ -128,7 +128,7 @@
     <!-- 📌 좌측 사이드바 -->
     <nav class="sidebar">
         <a href="#" id="kuhInvestmentLink" onclick="openPopup('kuhInvestment')">📊 KUH 투자 입력</a>
-        <a href="#" id="combineInvestmentLink" onclick="openPopup('combine')">📊 공통 투자 입력</a>
+        <!--<a href="#" id="combineInvestmentLink" onclick="openPopup('combine')">📊 공통 투자 입력</a>-->
     </nav>
 
     <!-- 📌 메인 콘텐츠 영역 -->

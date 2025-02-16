@@ -1,10 +1,19 @@
-
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>기업 정보 조회</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>기업정보조회</title>
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script defer th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/datatables-custom.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <script th:src="@{/js/common.js}"></script>
+
+    <style></style>
     <script>
         let companyId = /*[[${companyId}]]*/ '';
         // console.log("companyId:", companyId);
@@ -170,260 +179,357 @@
 
 
     </script>
+    <script defer>
+        document.addEventListener("DOMContentLoaded", function () {
+            let companyId = document.getElementById("companyId") ? document.getElementById("companyId").value : null;
+
+            // 🔥 팝업 열기 함수
+            window.openPopup = function (type) {
+                if (!companyId) {
+                    alert("먼저 기업 정보를 조회한 후 입력을 진행하세요.");
+                    return;
+                }
+
+                let url = `/companyAdd/${type}/${companyId}`;
+                window.open(url, "popupWindow", "width=1000,height=600,scrollbars=yes");
+            };
+        });
+
+
+
+    </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const searchModal = new bootstrap.Modal(document.getElementById('searchModal'));
+            const searchInput = document.getElementById('companyIdInput');
+            const searchButton = document.getElementById('searchButton');
+
+            function openSearchModal(target) {
+                searchInput.value = ''; // 입력창 초기화
+                searchButton.setAttribute("onclick", `goToPage('${target}')`);
+                searchModal.show();
+                setTimeout(() => searchInput.focus(), 200); // 모달 열리면 자동 포커스
+            }
+
+            function goToPage(target) {
+                const companyId = searchInput.value.trim();
+                if (!companyId) {
+                    alert("회사 고유번호를 입력하세요.");
+                    return;
+                }
+                window.location.href = `/${target}/${companyId}`;
+            }
+
+            // Enter 키 입력 시 검색 실행
+            searchInput.addEventListener("keypress", function (event) {
+                if (event.key === "Enter") {
+                    searchButton.click();
+                }
+            });
+
+            // 검색 버튼 클릭 시 실행 (중복 이벤트 방지)
+            searchButton.addEventListener("click", function () {
+                goToPage(searchButton.getAttribute("onclick").match(/'([^']+)'/)[1]);
+            });
+
+            // 전역 함수로 설정 (Thymeleaf에서 호출 가능)
+            window.openSearchModal = openSearchModal;
+        });
+
+    </script>
+
 </head>
-<body class="container mt-4">
-<input type="hidden" id="companyIdValue" th:value="${companyId}" />
+<body>
 
-<script>
-    document.addEventListener("DOMContentLoaded", function () {
-        let companyId = document.getElementById("companyIdValue").value;
-        console.log("✅ companyId:", companyId);
-        if (companyId) {
-            fetchCompanyInfo(companyId);
-        }
-    });
-</script>
-<h2 class="mb-4">기업 정보 조회</h2>
+<div th:replace="fragments/navbar :: navbar"></div>
 
-<!-- 1. 회사 기본 정보 -->
-<div class="card mb-4">
-    <div class="card-header">회사 기본 정보</div>
-    <div class="card-body">
-        <div class="mb-3"><label class="form-label">회사 고유번호</label><input type="text" class="form-control" id="companyId" readonly></div>
-        <div class="mb-3"><label class="form-label">투자 상태</label><input type="text" class="form-control" id="status" readonly></div>
-        <div class="mb-3"><label class="form-label">회사명</label><input type="text" class="form-control" id="companyName" readonly></div>
-        <div class="mb-3"><label class="form-label">설립 일자</label><input type="text" class="form-control" id="establishmentDate" readonly></div>
-        <div class="mb-3"><label class="form-label">대표 이사</label><input type="text" class="form-control" id="ceoName" readonly></div>
-        <div class="mb-3"><label class="form-label">회사 주소</label><input type="text" class="form-control" id="companyAddress" readonly></div>
-        <div class="mb-3"><label class="form-label">사업자 등록번호</label><input type="text" class="form-control" id="businessRegistrationNumber" readonly></div>
-        <div class="mb-3"><label class="form-label">법인 등록번호</label><input type="text" class="form-control" id="corporateRegistrationNumber" readonly></div>
-        <div class="mb-3"><label class="form-label">표준 산업분류</label><input type="text" class="form-control" id="industryCode" readonly></div>
-        <div class="mb-3"><label class="form-label">자본금</label><input type="text" class="form-control" id="capital" readonly></div>
-        <div class="mb-3"><label class="form-label">액면가</label><input type="text" class="form-control" id="parValue" readonly></div>
-        <div class="mb-3"><label class="form-label">임직원 수</label><input type="text" class="form-control" id="employeeCount" readonly></div>
+
+<div class="wrapper">
+    <!-- 📌 좌측 사이드바 -->
+    <!-- 📌 좌측 사이드바 -->
+    <nav class="sidebar">
+        <a href="#" onclick="openPopup('kuhInvestment')">📊 KUH 투자 입력</a>
+        <a href="#" onclick="openPopup('followupInvestment')">📈 후속투자 입력</a>
+        <a href="#" onclick="openPopup('investmentStatus')">📌 투자상태 입력</a>
+        <a href="#" onclick="openPopup('tips')">💡 팁스현황 입력</a>
+        <a href="#" onclick="openPopup('financial')">🗂️ 재무제표 입력</a>
+        <a href="#" onclick="openPopup('manage')">📋 사후관리정보 입력</a>
+        <a href="#" onclick="openPopup('managerChange')">👤 사후관리담당 입력</a>
+    </nav>
+
+    <input type="hidden" id="companyIdValue" th:value="${companyId}" />
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let companyId = document.getElementById("companyIdValue").value;
+            console.log("✅ companyId:", companyId);
+            if (companyId) {
+                fetchCompanyInfo(companyId);
+            }
+        });
+    </script>
+    <!-- 📌 메인 콘텐츠 영역 -->
+    <div class="content">
+        <h2>🏢 기업 정보 조회</h2>
+        <!-- 1. 회사 기본 정보 -->
+        <div class="card mb-4">
+            <div class="card-header">회사 기본 정보</div>
+            <div class="card-body">
+                <div class="mb-3"><label class="form-label">회사 고유번호</label><input type="text" class="form-control" id="companyId" readonly></div>
+                <div class="mb-3"><label class="form-label">투자 상태</label><input type="text" class="form-control" id="status" readonly></div>
+                <div class="mb-3"><label class="form-label">회사명</label><input type="text" class="form-control" id="companyName" readonly></div>
+                <div class="mb-3"><label class="form-label">설립 일자</label><input type="text" class="form-control" id="establishmentDate" readonly></div>
+                <div class="mb-3"><label class="form-label">대표 이사</label><input type="text" class="form-control" id="ceoName" readonly></div>
+                <div class="mb-3"><label class="form-label">회사 주소</label><input type="text" class="form-control" id="companyAddress" readonly></div>
+                <div class="mb-3"><label class="form-label">사업자 등록번호</label><input type="text" class="form-control" id="businessRegistrationNumber" readonly></div>
+                <div class="mb-3"><label class="form-label">법인 등록번호</label><input type="text" class="form-control" id="corporateRegistrationNumber" readonly></div>
+                <div class="mb-3"><label class="form-label">표준 산업분류</label><input type="text" class="form-control" id="industryCode" readonly></div>
+                <div class="mb-3"><label class="form-label">자본금</label><input type="text" class="form-control" id="capital" readonly></div>
+                <div class="mb-3"><label class="form-label">액면가</label><input type="text" class="form-control" id="parValue" readonly></div>
+                <div class="mb-3"><label class="form-label">임직원 수</label><input type="text" class="form-control" id="employeeCount" readonly></div>
+            </div>
+        </div>
+
+        <!-- 2. 회사 속성 정보 -->
+        <!-- 2. 회사 속성 정보 -->
+        <div class="card mb-4">
+            <div class="card-header">회사 속성 정보</div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <label class="form-label">KUH 자회사</label>
+                    <select readonly class="form-control" id="kuhSubsidiary">
+                        <option value="">선택하세요</option>
+                        <option value="KUH자회사">KUH자회사</option>
+                        <option value="일반기업">일반기업</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">고대창업구분</label>
+                    <select readonly class="form-control" id="kuhStartup">
+                        <option value="">선택하세요</option>
+                        <option value="고려대창업">고려대창업</option>
+                        <option value="비고려대창업">비고려대창업</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">창업구분</label>
+                    <select readonly class="form-control" id="startupType">
+                        <option value="">선택하세요</option>
+                        <option value="교원창업">교원창업</option>
+                        <option value="학생창업">학생창업</option>
+                        <option value="일반창업">일반창업</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">초기창업구분</label>
+                    <select readonly class="form-control" id="earlyStartupType">
+                        <option value="">선택하세요</option>
+                        <option value="창업 3년 이내">창업 3년 이내</option>
+                        <option value="창업 7년 이내">창업 7년 이내</option>
+                        <option value="창업 7년 초과">창업 7년 초과</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">중소기업구분</label>
+                    <select readonly class="form-control" id="smeStatus">
+                        <option value="">선택하세요</option>
+                        <option value="중소기업">중소기업</option>
+                        <option value="대기업">대기업</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">지방창업구분</label>
+                    <select readonly class="form-control" id="regionalCompany">
+                        <option value="">선택하세요</option>
+                        <option value="서울창업">서울창업</option>
+                        <option value="지방창업">지방창업</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">벤처기업구분</label>
+                    <select readonly class="form-control" id="ventureRecognition">
+                        <option value="">선택하세요</option>
+                        <option value="벤처기업">벤처기업</option>
+                        <option value="일반기업">일반기업</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">연구소기업구분</label>
+                    <select readonly class="form-control" id="researchRecognition">
+                        <option value="">선택하세요</option>
+                        <option value="연구소기업">연구소기업</option>
+                        <option value="일반기업">일반기업</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">공공기술이전</label>
+                    <select readonly class="form-control" id="publicTechnologyTransfer">
+                        <option value="">선택하세요</option>
+                        <option value="기술이전기업">기술이전기업</option>
+                        <option value="일반기업">일반기업</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">투자기업실사</label>
+                    <select readonly class="form-control" id="dueDiligence">
+                        <option value="">선택하세요</option>
+                        <option value="미실사기업">미실사기업</option>
+                        <option value="실사기업">실사기업</option>
+                        <option value="실사보완중">실사보완중</option>
+                    </select>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label">상장여부</label>
+                    <select readonly class="form-control" id="listingStatus">
+                        <option value="">선택하세요</option>
+                        <option value="비상장기업">비상장기업</option>
+                        <option value="상장기업">상장기업</option>
+                        <option value="상장완료">상장완료</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- 3. BIZ SECTOR 및 투자 Highlight -->
+        <div class="card mb-4">
+            <div class="card-header">BIZ SECTOR 구분</div>
+            <div class="card-body">
+                <div class="mb-3"><label class="form-label">BIZ SECTOR</label><input type="text" class="form-control" id="investmentSector" readonly></div>
+                <div class="mb-3"><label class="form-label">주요 제품 내용</label><textarea class="form-control" id="mainProducts" rows="2" readonly></textarea></div>
+            </div>
+            <div class="card-header">투자 Highlight (포인트)</div>
+            <div class="card-body">
+                <div class="mb-3"><label class="form-label">포인트 1</label><textarea class="form-control" id="investmentPoint1" rows="2" readonly></textarea></div>
+                <div class="mb-3"><label class="form-label">포인트 2</label><textarea class="form-control" id="investmentPoint2" rows="2" readonly></textarea></div>
+                <div class="mb-3"><label class="form-label">포인트 3</label><textarea class="form-control" id="investmentPoint3" rows="2" readonly></textarea></div>
+            </div>
+        </div>
+
+        <!-- 4. 요약 재무제표 -->
+        <div class="card mb-4">
+            <div class="card-header">요약 재무제표 (최근 2회차)</div>
+            <div class="card-body">
+                <table class="table table-bordered text-center">
+                    <thead>
+                    <tr>
+                        <th>연도(반기)</th>
+                        <th>매출액</th>
+                        <th>영업이익</th>
+                        <th>당기순익</th>
+                        <th>자산총계</th>
+                        <th>부채총계</th>
+                        <th>자본총계</th>
+                        <th>자본금</th>
+                        <th>임직원수</th>
+                    </tr>
+                    </thead>
+                    <tbody id="financialsTable"></tbody>
+                </table>
+            </div>
+        </div>
+        <!-- KUH 투자내역 카드 -->
+        <div class="card mb-4">
+            <div class="card-header">KUH 투자내역</div>
+            <div class="card-body">
+                <table class="table table-bordered text-center">
+                    <thead>
+                    <tr>
+                        <th>투자일자</th>
+                        <th>투자상품</th>
+                        <th>투자금액</th>
+                        <th>투자단가</th>
+                        <th>주식수량</th>
+                        <th>지분율</th>
+                        <th>발행주식</th>
+                        <th>투자밸류</th>
+                        <th>현재밸류</th>
+                        <th>투자단계</th>
+                    </tr>
+                    </thead>
+                    <tbody id="investmentTable"></tbody>
+                </table>
+            </div>
+        </div>
+        <!-- 주주명부 카드 -->
+        <div class="card mb-4">
+            <div class="card-header">주주명부</div>
+            <div class="card-body">
+                <table class="table table-bordered text-center">
+                    <thead>
+                    <tr>
+                        <th>주주명 1</th>
+                        <th>주주명 2</th>
+                        <th>주주명 3</th>
+                        <th>주주명 4</th>
+                        <th>주주명 5</th>
+                        <th>주주명 6</th>
+                        <th>주주명 7</th>
+                        <th>주주명 8</th>
+                        <th>발행총주식수</th>
+                    </tr>
+                    </thead>
+                    <tbody id="shareholderTable"></tbody>
+                </table>
+            </div>
+        </div>
+        <!-- 투자 담당자 정보 -->
+        <div class="card mb-4">
+            <div class="card-header">투자 담당자 및 기업 실무자 정보</div>
+            <div class="card-body">
+                <div class="mb-3"><label class="form-label">투자 발굴자</label><input type="text" class="form-control" id="manager1" readonly></div>
+                <div class="mb-3"><label class="form-label">투자 심사자</label><input type="text" class="form-control" id="manager2" readonly></div>
+                <div class="mb-3"><label class="form-label">사후 관리 담당자</label><input type="text" class="form-control" id="manager3" readonly></div>
+                <div class="mb-3"><label class="form-label">기업 담당자명/직책</label>
+                    <input type="text" class="form-control" id="name" readonly>
+                    <input type="text" class="form-control" id="positionType" readonly>
+                </div>
+                <div class="mb-3"><label class="form-label">전화번호</label><input type="text" class="form-control" id="phoneNumber" readonly></div>
+                <div class="mb-3"><label class="form-label">이메일</label><input type="email" class="form-control" id="email" readonly></div>
+            </div>
+        </div>
+
+        <!-- 사후관리 정보 -->
+        <div class="card mb-4">
+            <div class="card-header">사후관리 정보</div>
+            <div class="card-body">
+                <div class="mb-3"><label class="form-label">관리 연도</label><input type="text" class="form-control" id="managementYear" readonly></div>
+                <div class="mb-3"><label class="form-label">관리 등급</label><input type="text" class="form-control" id="evalGrade" readonly></div>
+                <div class="mb-3"><label class="form-label">사업 진행 현황 1</label><input type="text" class="form-control" id="businessProgress1" readonly></div>
+                <div class="mb-3"><label class="form-label">사업 진행 현황 2</label><input type="text" class="form-control" id="businessProgress2" readonly></div>
+            </div>
+        </div>
+
+
+
     </div>
 </div>
 
-<!-- 2. 회사 속성 정보 -->
-<!-- 2. 회사 속성 정보 -->
-<div class="card mb-4">
-    <div class="card-header">회사 속성 정보</div>
-    <div class="card-body">
-        <div class="mb-3">
-            <label class="form-label">KUH 자회사</label>
-            <select readonly class="form-control" id="kuhSubsidiary">
-                <option value="">선택하세요</option>
-                <option value="KUH자회사">KUH자회사</option>
-                <option value="일반기업">일반기업</option>
-            </select>
-        </div>
 
-        <div class="mb-3">
-            <label class="form-label">고대창업구분</label>
-            <select readonly class="form-control" id="kuhStartup">
-                <option value="">선택하세요</option>
-                <option value="고려대창업">고려대창업</option>
-                <option value="비고려대창업">비고려대창업</option>
-            </select>
-        </div>
 
-        <div class="mb-3">
-            <label class="form-label">창업구분</label>
-            <select readonly class="form-control" id="startupType">
-                <option value="">선택하세요</option>
-                <option value="교원창업">교원창업</option>
-                <option value="학생창업">학생창업</option>
-                <option value="일반창업">일반창업</option>
-            </select>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">초기창업구분</label>
-            <select readonly class="form-control" id="earlyStartupType">
-                <option value="">선택하세요</option>
-                <option value="창업 3년 이내">창업 3년 이내</option>
-                <option value="창업 7년 이내">창업 7년 이내</option>
-                <option value="창업 7년 초과">창업 7년 초과</option>
-            </select>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">중소기업구분</label>
-            <select readonly class="form-control" id="smeStatus">
-                <option value="">선택하세요</option>
-                <option value="중소기업">중소기업</option>
-                <option value="대기업">대기업</option>
-            </select>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">지방창업구분</label>
-            <select readonly class="form-control" id="regionalCompany">
-                <option value="">선택하세요</option>
-                <option value="서울창업">서울창업</option>
-                <option value="지방창업">지방창업</option>
-            </select>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">벤처기업구분</label>
-            <select readonly class="form-control" id="ventureRecognition">
-                <option value="">선택하세요</option>
-                <option value="벤처기업">벤처기업</option>
-                <option value="일반기업">일반기업</option>
-            </select>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">연구소기업구분</label>
-            <select readonly class="form-control" id="researchRecognition">
-                <option value="">선택하세요</option>
-                <option value="연구소기업">연구소기업</option>
-                <option value="일반기업">일반기업</option>
-            </select>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">공공기술이전</label>
-            <select readonly class="form-control" id="publicTechnologyTransfer">
-                <option value="">선택하세요</option>
-                <option value="기술이전기업">기술이전기업</option>
-                <option value="일반기업">일반기업</option>
-            </select>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">투자기업실사</label>
-            <select readonly class="form-control" id="dueDiligence">
-                <option value="">선택하세요</option>
-                <option value="미실사기업">미실사기업</option>
-                <option value="실사기업">실사기업</option>
-                <option value="실사보완중">실사보완중</option>
-            </select>
-        </div>
-
-        <div class="mb-3">
-            <label class="form-label">상장여부</label>
-            <select readonly class="form-control" id="listingStatus">
-                <option value="">선택하세요</option>
-                <option value="비상장기업">비상장기업</option>
-                <option value="상장기업">상장기업</option>
-                <option value="상장완료">상장완료</option>
-            </select>
+<!-- 🔍 검색 모달 -->
+<div class="modal fade" id="searchModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body p-2 d-flex align-items-center">
+                <input type="text" id="companyIdInput" class="form-control me-2" placeholder="고유번호 입력" style="flex: 1; min-width: 120px;">
+                <button type="button" class="btn btn-primary btn-sm" id="searchButton">검색</button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
         </div>
     </div>
 </div>
-
-
-<!-- 3. BIZ SECTOR 및 투자 Highlight -->
-<div class="card mb-4">
-    <div class="card-header">BIZ SECTOR 구분</div>
-    <div class="card-body">
-        <div class="mb-3"><label class="form-label">BIZ SECTOR</label><input type="text" class="form-control" id="investmentSector" readonly></div>
-        <div class="mb-3"><label class="form-label">주요 제품 내용</label><textarea class="form-control" id="mainProducts" rows="2" readonly></textarea></div>
-    </div>
-    <div class="card-header">투자 Highlight (포인트)</div>
-    <div class="card-body">
-        <div class="mb-3"><label class="form-label">포인트 1</label><textarea class="form-control" id="investmentPoint1" rows="2" readonly></textarea></div>
-        <div class="mb-3"><label class="form-label">포인트 2</label><textarea class="form-control" id="investmentPoint2" rows="2" readonly></textarea></div>
-        <div class="mb-3"><label class="form-label">포인트 3</label><textarea class="form-control" id="investmentPoint3" rows="2" readonly></textarea></div>
-    </div>
-</div>
-
-<!-- 4. 요약 재무제표 -->
-<div class="card mb-4">
-    <div class="card-header">요약 재무제표 (최근 2회차)</div>
-    <div class="card-body">
-        <table class="table table-bordered text-center">
-            <thead>
-            <tr>
-                <th>연도(반기)</th>
-                <th>매출액</th>
-                <th>영업이익</th>
-                <th>당기순익</th>
-                <th>자산총계</th>
-                <th>부채총계</th>
-                <th>자본총계</th>
-                <th>자본금</th>
-                <th>임직원수</th>
-            </tr>
-            </thead>
-            <tbody id="financialsTable"></tbody>
-        </table>
-    </div>
-</div>
-<!-- KUH 투자내역 카드 -->
-<div class="card mb-4">
-    <div class="card-header">KUH 투자내역</div>
-    <div class="card-body">
-        <table class="table table-bordered text-center">
-            <thead>
-            <tr>
-                <th>투자일자</th>
-                <th>투자상품</th>
-                <th>투자금액</th>
-                <th>투자단가</th>
-                <th>주식수량</th>
-                <th>지분율</th>
-                <th>발행주식</th>
-                <th>투자밸류</th>
-                <th>현재밸류</th>
-                <th>투자단계</th>
-            </tr>
-            </thead>
-            <tbody id="investmentTable"></tbody>
-        </table>
-    </div>
-</div>
-<!-- 주주명부 카드 -->
-<div class="card mb-4">
-    <div class="card-header">주주명부</div>
-    <div class="card-body">
-        <table class="table table-bordered text-center">
-            <thead>
-            <tr>
-                <th>주주명 1</th>
-                <th>주주명 2</th>
-                <th>주주명 3</th>
-                <th>주주명 4</th>
-                <th>주주명 5</th>
-                <th>주주명 6</th>
-                <th>주주명 7</th>
-                <th>주주명 8</th>
-                <th>발행총주식수</th>
-            </tr>
-            </thead>
-            <tbody id="shareholderTable"></tbody>
-        </table>
-    </div>
-</div>
-<!-- 투자 담당자 정보 -->
-<div class="card mb-4">
-    <div class="card-header">투자 담당자 및 기업 실무자 정보</div>
-    <div class="card-body">
-        <div class="mb-3"><label class="form-label">투자 발굴자</label><input type="text" class="form-control" id="manager1" readonly></div>
-        <div class="mb-3"><label class="form-label">투자 심사자</label><input type="text" class="form-control" id="manager2" readonly></div>
-        <div class="mb-3"><label class="form-label">사후 관리 담당자</label><input type="text" class="form-control" id="manager3" readonly></div>
-        <div class="mb-3"><label class="form-label">기업 담당자명/직책</label>
-            <input type="text" class="form-control" id="name" readonly>
-            <input type="text" class="form-control" id="positionType" readonly>
-        </div>
-        <div class="mb-3"><label class="form-label">전화번호</label><input type="text" class="form-control" id="phoneNumber" readonly></div>
-        <div class="mb-3"><label class="form-label">이메일</label><input type="email" class="form-control" id="email" readonly></div>
-    </div>
-</div>
-
-<!-- 사후관리 정보 -->
-<div class="card mb-4">
-    <div class="card-header">사후관리 정보</div>
-    <div class="card-body">
-        <div class="mb-3"><label class="form-label">관리 연도</label><input type="text" class="form-control" id="managementYear" readonly></div>
-        <div class="mb-3"><label class="form-label">관리 등급</label><input type="text" class="form-control" id="evalGrade" readonly></div>
-        <div class="mb-3"><label class="form-label">사업 진행 현황 1</label><input type="text" class="form-control" id="businessProgress1" readonly></div>
-        <div class="mb-3"><label class="form-label">사업 진행 현황 2</label><input type="text" class="form-control" id="businessProgress2" readonly></div>
-    </div>
-</div>
-
 
 </body>
 </html>

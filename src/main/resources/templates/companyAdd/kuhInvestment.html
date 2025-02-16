@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>KUH 투자정보 입력</title>
+
+    <link rel="stylesheet" th:href="@{/css/common.css}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <script>
         function calculateInvestmentSumPrice() {
@@ -10,19 +12,25 @@
             let shareCount = parseFloat(document.getElementById("shareCount").value) || 0; // 주식 수량 (4번)
             let totalShares = parseFloat(document.getElementById("totalShares").value) || 1; // 발행 주식 수 (6번)
 
-            // 5번 항목(투자 금액) = 투자 단가 * 주식 수량
+            // 🔥 5번 항목(투자 금액) = 투자 단가 * 주식 수량
             let investmentSumPrice = unitPrice * shareCount;
             document.getElementById("investmentSumPrice").value = investmentSumPrice.toFixed(0);
 
-            // 7번 항목(KUH 지분율) = (주식 수량 / 발행 주식 수) * 100 (소수점 2자리까지)
+            // 🔥 7번 항목(KUH 지분율) = (주식 수량 / 발행 주식 수) * 100 (소수점 2자리까지)
             let equityRate = (shareCount / totalShares) * 100;
-            document.getElementById("equityRate").value = equityRate.toFixed(2); // % 없이 숫자만 입력
+            document.getElementById("equityRate").value = isNaN(equityRate) ? "" : equityRate.toFixed(2); // 값이 없으면 빈 문자열
 
-            // 8번 항목(투자 밸류) = 투자 단가 × 발행 주식 수
-            let investmentValue = (unitPrice * totalShares) / 100000000; // 억 단위로 변환
-            document.getElementById("investmentValue").value = investmentValue.toFixed(2); // 소수점 2자리까지 표시
+            // 🔥 8번 투자 밸류 (Long 값 유지 → 소수점 제거)
+            let investmentValue = Math.floor((unitPrice * totalShares) / 100000000); // 억 단위 변환 후 정수 처리
+            document.getElementById("investmentValue").value = isNaN(investmentValue) ? "" : investmentValue;
         }
 
+        // 🔥 모든 관련 입력 필드에 oninput 이벤트 추가 (자동 계산)
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("investmentUnitPrice").addEventListener("input", calculateInvestmentSumPrice);
+            document.getElementById("shareCount").addEventListener("input", calculateInvestmentSumPrice);
+            document.getElementById("totalShares").addEventListener("input", calculateInvestmentSumPrice);
+        });
 
         function removeDefaultOptions() {
             document.querySelectorAll("select").forEach(select => {
@@ -115,14 +123,22 @@
                     return response.json();
                 })
                 .then(data => {
-                    alert("저장이 완료되었습니다! 투자 이후 변경주주를 입력해주세요.");
-                    document.getElementById("beforeShTitle").style.display = "none";
-                    document.getElementById("afterShTitle").style.display = "block";
+                    // 현재 단계가 "기존 주주구성"이면 변경 주주구성으로 전환
+                    if (document.getElementById("beforeShTitle").style.display !== "none") {
+                        alert("저장이 완료되었습니다! 투자 이후 변경 주주구성을 입력해주세요.");
+                        document.getElementById("beforeShTitle").style.display = "none"; // 기존 주주구성 숨기기
+                        document.getElementById("afterShTitle").style.display = "block"; // 변경 주주구성 표시
+                    } else {
+                        // 두 번째 저장(변경 주주구성) 완료 후 팝업 닫기
+                        alert("저장이 완료되었습니다! KUH 투자 입력 팝업을 닫습니다.");
+                        window.close();
+                    }
                 })
                 .catch(error => {
                     alert("저장 중 오류 발생: " + error.message);
                 });
         }
+
 
 
         function updateEquityRate() {
@@ -212,8 +228,9 @@
         <input type="text" class="form-control" id="equityRate" name="equityRate" readonly>
     </div>
 
-    <div class="mb-3"><label class="form-label">8. 투자 밸류 (단위: 억원)</label>
-        <input type="number" class="form-control" name="investmentValue">
+    <div class="mb-3">
+        <label class="form-label">8. 투자 밸류 (단위: 억원)</label>
+        <input type="number" class="form-control" id="investmentValue" name="investmentValue" readonly>
     </div>
 
     <div class="mb-3"><label class="form-label">9. 투자 단계</label>
@@ -239,7 +256,7 @@
     <div class="mb-3"><label class="form-label">11. 투자 상태</label>
         <select class="form-control" name="investmentState">
             <option value="">선택하세요</option>
-            <option value="정상투자 A">정상투자 A</option>
+            <option value="정상투자 A" selected>정상투자 A</option>
             <option value="정상투자 B">정상투자 B</option>
             <option value="요주의 C">요주의 C</option>
             <option value="주의 D">주의 D</option>
@@ -263,6 +280,7 @@
     </div>
 </form>
 
+<br>
 <br>
 <!--<form id="secondForm" method="post" style="display: none;">-->
 <form id="secondForm" method="post">
