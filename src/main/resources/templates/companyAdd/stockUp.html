@@ -4,44 +4,25 @@
     <meta charset="UTF-8">
     <title>회수 관리</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <script>
-        function submitRecoveryForm(event) {
-            event.preventDefault();
-
-            let formData = {
-                companyId: document.getElementById("companyId").value,  // 추가
-                investmentId: Number(document.getElementById("investmentId").value),  // 추가
-                recoveryDate: document.getElementById("recoveryDate").value,  // 날짜는 String 유지
-                recoveryCount: Number(document.getElementById("recoveryCount").value),  // Long 변환
-                recoveryUnitPrice: Number(document.getElementById("recoveryUnitPrice").value),  // Long 변환
-                equityRate: parseFloat(document.getElementById("equityRate").value.replace("%", "").trim()),  // BigDecimal 변환, "%" 제거
-                fundReturn: Number(document.getElementById("fundReturn").value),  // Long 변환
-                kuhReturn: Number(document.getElementById("kuhReturn").value)  // Long 변환
-            };
-
-            console.log(formData)
-
-            fetch("/api/companies/createStcup", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(formData)
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("저장 실패");
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    alert("저장이 완료되었습니다!");
-                })
-                .catch(error => {
-                    alert("저장 중 오류 발생: " + error.message);
-                });
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: center;
         }
-    </script>
+        th, td {
+            border: 1px solid black;
+            padding: 10px;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        input {
+            width: 100%;
+            border: none;
+            text-align: center;
+        }
+    </style>
 </head>
 <body class="container mt-4">
 
@@ -74,11 +55,6 @@
         <input type="number" class="form-control" id="recoveryUnitPrice" required>
     </div>
 
-    <!-- 지분율 (자동 계산) -->
-    <div class="mb-3">
-        <label class="form-label">지분율 (단위: %)</label>
-        <input type="text" class="form-control" id="equityRate">
-    </div>
 
     <!-- 펀드 수익 -->
     <div class="mb-3">
@@ -98,6 +74,142 @@
     </div>
 
 </form>
+
+<!-- 주주변경 폼 -->
+<table>
+    <tr>
+        <th>주주명 1</th>
+        <th>주주명 2</th>
+        <th>주주명 3</th>
+        <th>주주명 4</th>
+        <th>주주명 5</th>
+        <th>주주명 6</th>
+        <th>주주명 7</th>
+        <th>주주명 8</th>
+        <th>발행총주식수</th>
+    </tr>
+    <tr>
+        <td><label for="shareholderName1"></label><input type="text" id="shareholderName1" th:value="${shrDTO.shareholderName1}"></td>
+        <td><label for="shareholderName2"></label><input type="text" id="shareholderName2" th:value="${shrDTO.shareholderName2}"></td>
+        <td><label for="shareholderName3"></label><input type="text" id="shareholderName3" th:value="${shrDTO.shareholderName3}"></td>
+        <td><label for="shareholderName4"></label><input type="text" id="shareholderName4" th:value="${shrDTO.shareholderName4}"></td>
+        <td><label for="shareholderName5"></label><input type="text" id="shareholderName5" th:value="${shrDTO.shareholderName5}"></td>
+        <td><label for="shareholderName6"></label><input type="text" id="shareholderName6" th:value="${shrDTO.shareholderName6}"></td>
+        <td><label for="shareholderName7"></label><input type="text" id="shareholderName7" th:value="${shrDTO.shareholderName7}"></td>
+        <td><label for="shareholderName8"></label><input type="text" id="shareholderName8" th:value="${shrDTO.shareholderName8}"></td>
+        <td rowspan="3"><label for="totalShareCount"></label><input type="number" id="totalShareCount" th:value="${shrDTO.totalShareCount}" readonly></td>
+    </tr>
+    <tr>
+        <td><label for="shareholderCount1"></label><input type="number" id="shareholderCount1" th:value="${shrDTO.shareholderCount1}"></td>
+        <td><label for="shareholderCount2"></label><input type="number" id="shareholderCount2" th:value="${shrDTO.shareholderCount2}"></td>
+        <td><label for="shareholderCount3"></label><input type="number" id="shareholderCount3" th:value="${shrDTO.shareholderCount3}"></td>
+        <td><label for="shareholderCount4"></label><input type="number" id="shareholderCount4" th:value="${shrDTO.shareholderCount4}"></td>
+        <td><label for="shareholderCount5"></label><input type="number" id="shareholderCount5" th:value="${shrDTO.shareholderCount5}"></td>
+        <td><label for="shareholderCount6"></label><input type="number" id="shareholderCount6" th:value="${shrDTO.shareholderCount6}"></td>
+        <td><label for="shareholderCount7"></label><input type="number" id="shareholderCount7" th:value="${shrDTO.shareholderCount7}"></td>
+        <td><label for="shareholderCount8"></label><input type="number" id="shareholderCount8" th:value="${shrDTO.shareholderCount8}"></td>
+    </tr>
+    <tr>
+        <td><label for="shareholderRate1"></label><input type="text" id="shareholderRate1" th:value="|${shrDTO.shareholderRate1} %|"></td>
+        <td><label for="shareholderRate2"></label><input type="text" id="shareholderRate2" th:value="|${shrDTO.shareholderRate2} %|"></td>
+        <td><label for="shareholderRate3"></label><input type="text" id="shareholderRate3" th:value="|${shrDTO.shareholderRate3} %|"></td>
+        <td><label for="shareholderRate4"></label><input type="text" id="shareholderRate4" th:value="|${shrDTO.shareholderRate4} %|"></td>
+        <td><label for="shareholderRate5"></label><input type="text" id="shareholderRate5" th:value="|${shrDTO.shareholderRate5} %|"></td>
+        <td><label for="shareholderRate6"></label><input type="text" id="shareholderRate6" th:value="|${shrDTO.shareholderRate6} %|"></td>
+        <td><label for="shareholderRate7"></label><input type="text" id="shareholderRate7" th:value="|${shrDTO.shareholderRate7} %|"></td>
+        <td><label for="shareholderRate8"></label><input type="text" id="shareholderRate8" th:value="|${shrDTO.shareholderRate8} %|"></td>
+    </tr>
+</table>
+
+<br>
+<button onclick="submitData()">저장</button>
+
+<script>
+    function submitRecoveryForm(event) {
+        event.preventDefault();
+
+        let formData = {
+            companyId: document.getElementById("companyId").value,  // 추가
+            investmentId: Number(document.getElementById("investmentId").value),  // 추가
+            recoveryDate: document.getElementById("recoveryDate").value,  // 날짜는 String 유지
+            recoveryCount: Number(document.getElementById("recoveryCount").value),  // Long 변환
+            recoveryUnitPrice: Number(document.getElementById("recoveryUnitPrice").value),  // Long 변환
+            equityRate: parseFloat(document.getElementById("equityRate").value.replace("%", "").trim()),  // BigDecimal 변환, "%" 제거
+            fundReturn: Number(document.getElementById("fundReturn").value),  // Long 변환
+            kuhReturn: Number(document.getElementById("kuhReturn").value)  // Long 변환
+        };
+
+        console.log(formData)
+
+        fetch("/api/companies/createStcup", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(formData)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("저장 실패");
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert("저장이 완료되었습니다!");
+            })
+            .catch(error => {
+                alert("저장 중 오류 발생: " + error.message);
+            });
+    }
+    function submitData() {
+        const data = {
+            companyId: '[[${companyId}]]',
+            shareholderName1: document.getElementById("shareholderName1").value,
+            shareholderName2: document.getElementById("shareholderName2").value,
+            shareholderName3: document.getElementById("shareholderName3").value,
+            shareholderName4: document.getElementById("shareholderName4").value,
+            shareholderName5: document.getElementById("shareholderName5").value,
+            shareholderName6: document.getElementById("shareholderName6").value,
+            shareholderName7: document.getElementById("shareholderName7").value,
+            shareholderName8: document.getElementById("shareholderName8").value,
+
+            shareholderCount1: Number(document.getElementById("shareholderCount1").value),
+            shareholderCount2: Number(document.getElementById("shareholderCount2").value),
+            shareholderCount3: Number(document.getElementById("shareholderCount3").value),
+            shareholderCount4: Number(document.getElementById("shareholderCount4").value),
+            shareholderCount5: Number(document.getElementById("shareholderCount5").value),
+            shareholderCount6: Number(document.getElementById("shareholderCount6").value),
+            shareholderCount7: Number(document.getElementById("shareholderCount7").value),
+            shareholderCount8: Number(document.getElementById("shareholderCount8").value),
+
+            shareholderRate1: parseFloat(document.getElementById("shareholderRate1").value),
+            shareholderRate2: parseFloat(document.getElementById("shareholderRate2").value),
+            shareholderRate3: parseFloat(document.getElementById("shareholderRate3").value),
+            shareholderRate4: parseFloat(document.getElementById("shareholderRate4").value),
+            shareholderRate5: parseFloat(document.getElementById("shareholderRate5").value),
+            shareholderRate6: parseFloat(document.getElementById("shareholderRate6").value),
+            shareholderRate7: parseFloat(document.getElementById("shareholderRate7").value),
+            shareholderRate8: parseFloat(document.getElementById("shareholderRate8").value),
+
+            totalShareCount: Number(document.getElementById("totalShareCount").value)
+        };
+
+        console.log(data)
+        fetch("/api/companies/createShareholder", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => response.json())
+            .then(data => {
+                alert("데이터가 저장되었습니다.");
+                location.reload();
+            })
+            .catch(error => console.error("Error:", error));
+    }
+</script>
 
 </body>
 </html>

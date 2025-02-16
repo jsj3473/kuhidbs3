@@ -141,6 +141,7 @@ public class CompanyController {
     //주주생성
     @PostMapping("/createShareholder")
     public ResponseEntity<Shareholder> createShareholder(@RequestBody CShrDTO shareholderDTO) {
+        System.out.println("Received DTO: " + shareholderDTO); // DTO 내용 출력
         Shareholder savedShareholder = shareholderService.createShareholder(shareholderDTO);
         return ResponseEntity.ok(savedShareholder);
     }

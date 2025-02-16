@@ -4,6 +4,7 @@ import com.example.kuhidbs.dto.company.kuh투자.RIvtDTO;
 import com.example.kuhidbs.dto.company.감액환입.RShrupDTO;
 import com.example.kuhidbs.dto.company.무증.RBonusDTO;
 import com.example.kuhidbs.dto.company.역사.RAccountDTO;
+import com.example.kuhidbs.dto.company.주주명부.RShrDTO;
 import com.example.kuhidbs.dto.company.회수.RstcupDTO;
 import com.example.kuhidbs.dto.company.후속투자.RFolDTO;
 import com.example.kuhidbs.dto.user.UserDTO;
@@ -39,6 +40,8 @@ public class HomeController {
     private RecoveryService recoveryService;
     @Autowired
     private AccountService accountService;
+    @Autowired
+    private ShareholderService shareholderService;
     //공통 데이터 설정
     @ModelAttribute
     public void addCommonAttributes(Model model, HttpSession session) {
@@ -66,6 +69,7 @@ public class HomeController {
     public String createUserPage() {
         return "system/createUser"; // createUser.html
     }
+
 
 
     @GetMapping("/main")
@@ -122,6 +126,8 @@ public class HomeController {
                         Model model) {
         model.addAttribute("companyId", companyId);
         model.addAttribute("investmentId", investmentId);
+        RShrDTO shrDTO = shareholderService.getShareholderByCompanyId(companyId);
+        model.addAttribute("shrDTO", shrDTO);
         return "companyAdd/bonus"; // bonus.html
     }
 
@@ -138,7 +144,8 @@ public class HomeController {
     @GetMapping("/companyAdd/stockUp/{companyId}/{investmentId}")
     public String stockUp(@PathVariable("companyId") String companyId,
                           @PathVariable("investmentId") String investmentId, Model model) {
-
+        RShrDTO shrDTO = shareholderService.getShareholderByCompanyId(companyId);
+        model.addAttribute("shrDTO", shrDTO);
         model.addAttribute("companyId", companyId);
         model.addAttribute("investmentId", investmentId);
         return "companyAdd/stockUp"; // stockUp.html
