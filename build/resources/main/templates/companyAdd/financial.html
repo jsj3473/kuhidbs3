@@ -21,6 +21,7 @@
                 employeeCount: document.getElementById("employeeCount")?.value.trim() || "",
                 totalDebt: document.getElementById("totalDebt")?.value.trim() || ""
             };
+            console.log(formData);
 
             fetch("/api/companies/createFinancial", {
                 method: "POST",

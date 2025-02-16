@@ -20,6 +20,8 @@ public class CMngDTO {
     private String businessProgress5;
     private String managementStatus1;
     private String managementStatus2;
-    private String exitPlan;
+    private String managementStatus3;
+    private String exitPlan1;
+    private String exitPlan2;
     private String exitEstimation;
 }

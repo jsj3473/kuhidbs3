@@ -148,7 +148,8 @@ public class CompanyController {
 
     //재무제표생성
     @PostMapping("/createFinancial")
-    public ResponseEntity<Financial> createFinancialStatement(@ModelAttribute CFncDTO dto) {
+    public ResponseEntity<Financial> createFinancialStatement(@RequestBody CFncDTO dto) {
+
         Financial createdFinancial = financialService.saveFinancialForCFncDTO(dto);
         return ResponseEntity.ok(createdFinancial);
     }

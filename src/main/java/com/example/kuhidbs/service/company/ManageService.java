@@ -42,7 +42,9 @@ public class ManageService {
                 .businessProgress5(dto.getBusinessProgress5())
                 .managementStatus1(dto.getManagementStatus1())
                 .managementStatus2(dto.getManagementStatus2())
-                .exitPlan(dto.getExitPlan())
+                .managementStatus3(dto.getManagementStatus3())
+                .exitPlan1(dto.getExitPlan1())
+                .exitPlan2(dto.getExitPlan2())
                 .exitEstimation(dto.getExitEstimation())
                 .build();
 
@@ -64,7 +66,9 @@ public class ManageService {
                 .businessProgress5(manage.getBusinessProgress5())
                 .managementStatus1(manage.getManagementStatus1())
                 .managementStatus2(manage.getManagementStatus2())
-                .exitPlan(manage.getExitPlan())
+                .managementStatus3(manage.getManagementStatus3())
+                .exitPlan1(manage.getExitPlan1())
+                .exitPlan2(manage.getExitPlan2())
                 .exitEstimation(manage.getExitEstimation())
                 .build()).orElse(null);
     }

@@ -262,7 +262,7 @@ public class HomeController {
         model.addAttribute("companyId", id);
 
         // ✅ 재무제표 데이터를 서비스에서 가져오기
-        List<RFncDTO> rFncDTOS = financialService.getRecentFinancialsByCompanyId(id);
+        List<RFncDTO> rFncDTOS = financialService.getAllFinancialsByCompanyId(id);
         model.addAttribute("rFncDTOS", rFncDTOS);
 
         return "companyShow/financialByCmp"; // financialByCmp.html

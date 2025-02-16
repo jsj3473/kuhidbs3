@@ -51,8 +51,14 @@ public class Manage {
     @Column(name = "MNG_STAT_2", length = 1000)
     private String managementStatus2;
 
-    @Column(name = "EXIT_PLAN", length = 1000)
-    private String exitPlan;
+    @Column(name = "MNG_STAT_3", length = 1000)
+    private String managementStatus3;
+
+    @Column(name = "EXIT_PLAN1", length = 1000)
+    private String exitPlan1;
+
+    @Column(name = "EXIT_PLAN2", length = 1000)
+    private String exitPlan2;
 
     @Column(name = "EXIT_ESTMT", length = 1000)
     private String exitEstimation;

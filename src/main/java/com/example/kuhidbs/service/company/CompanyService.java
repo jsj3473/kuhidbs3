@@ -106,8 +106,6 @@ public class CompanyService {
         }
 
 
-        System.out.println("currentCompanyValue: " + currentCompanyValue);
-
 
         //7. 최신 투자상태 받아오기
         RStatusDTO statusDTO = statusService.getStatusByCompanyId(companyId);

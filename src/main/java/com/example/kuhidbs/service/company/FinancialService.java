@@ -48,6 +48,7 @@ public class FinancialService {
 
     public Financial saveFinancialForCFncDTO(CFncDTO dto) {
 
+        System.out.println(dto);
         // Company 객체 조회
         Company company = companyRepository.findById(dto.getCompanyId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid company ID: " + dto.getCompanyId()));
@@ -87,4 +88,26 @@ public class FinancialService {
                         .build())
                 .collect(Collectors.toList());
     }
+
+    @Transactional(readOnly = true)
+    public List<RFncDTO> getAllFinancialsByCompanyId(String companyId) {
+        return financialRepository
+
+                .findByCompany_CompanyIdOrderByFinancialYearDescFinancialHalfDesc(companyId)
+                .stream()
+                .map(financial -> RFncDTO.builder()
+                        .financialYear(financial.getFinancialYear())
+                        .financialHalf(financial.getFinancialHalf())
+                        .revenue(financial.getRevenue())
+                        .operatingProfit(financial.getOperatingProfit())
+                        .netIncome(financial.getNetIncome())
+                        .totalAssets(financial.getTotalAssets())
+                        .totalCapital(financial.getTotalCapital())
+                        .capital(financial.getCapital())
+                        .employeeCount(financial.getEmployeeCount())
+                        .totalDebt(financial.getTotalDebt())
+                        .build())
+                .collect(Collectors.toList());
+    }
+
 }
