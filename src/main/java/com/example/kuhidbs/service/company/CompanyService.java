@@ -100,9 +100,18 @@ public class CompanyService {
         String latestManager3 = reviewerService.getLatestManagerByType(companyId, "사후관리자");
 
         Long currentCompanyValue = followupService.getCurrentCompanyValue(companyId);
+        // null 체크 후 기본값 설정
+        if (currentCompanyValue == null) {
+            currentCompanyValue = rivtDTO.getInvestmentValue(); // 기본값으로 최초투자밸류를 저장
+        }
+
+
+        System.out.println("currentCompanyValue: " + currentCompanyValue);
+
 
         //7. 최신 투자상태 받아오기
         RStatusDTO statusDTO = statusService.getStatusByCompanyId(companyId);
+
 
         // 7. DTO 생성 및 데이터 매핑
         return RCmpInfDTO.builder()
