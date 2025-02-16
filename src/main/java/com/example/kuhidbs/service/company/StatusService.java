@@ -58,7 +58,12 @@ public class StatusService {
     @Transactional(readOnly = true)
     public RStatusDTO getStatusByCompanyId(String companyId) {
         Status latestStatus = statusRepository.findTopByCompany_CompanyIdOrderByStatusIdDesc(companyId)
-                .orElseThrow(() -> new IllegalArgumentException("해당 회사의 투자 상태 정보가 존재하지 않습니다. ID: " + companyId));
+                .orElse(null); // 데이터가 없으면 null 반환
+
+        if (latestStatus == null) {
+            // 데이터가 없는 경우, 기본값을 가진 DTO 반환
+            return new RStatusDTO(companyId, "N/A", "No investment status available");
+        }
 
         return new RStatusDTO(latestStatus.getCompany().getCompanyId(), latestStatus.getStatus(), latestStatus.getAdditionalInfo());
     }
