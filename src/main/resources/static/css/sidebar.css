@@ -98,8 +98,8 @@
     align-items: center; /* 수직 중앙 정렬 */
     text-align: center;
     justify-content: flex-start; /* 왼쪽 정렬 */
-    padding: 20px; /* 여백 설정 */
-    border-bottom: 1px solid #dee2e6; /* 로고와 메뉴 구분선 */
+    padding: 15px; /* 여백 설정 */
+    /*border-bottom: 1px solid #dee2e6; !* 로고와 메뉴 구분선 *!*/
 }
 
 .logo-img {
@@ -111,7 +111,7 @@
 .logo-text {
     font-size: 27px; /* 텍스트 크기 */
     font-weight: bold;
-    color: #ffffff; /* 로고 텍스트 색상 */
+    color: #4E0719; /* 로고 텍스트 색상 */
     white-space: nowrap; /* 텍스트 줄바꿈 방지 */
 }
 .resizer {

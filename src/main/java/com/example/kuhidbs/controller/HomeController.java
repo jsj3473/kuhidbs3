@@ -178,65 +178,72 @@ public class HomeController {
 
 
     // 기업 전체조회 페이지
-    @GetMapping("/info/{id}")
-    public String info(@PathVariable("id") String id, Model model) {
+    @GetMapping("/companyShow/{id}")
+    public String companyShow(@PathVariable("id") String id, Model model) {
         model.addAttribute("companyId", id);
-        return "info"; // info.html
+        return "companyShow"; // companyShow.html
     }
 
     // 기업별 모든 투자 전체조회 페이지
-    @GetMapping("/show/ivtByCmp/{id}")
-    public String showIvtByCmp(@PathVariable("id") String id, Model model) {
+    @GetMapping("/companyShow/ivtByCmp/{id}")
+    public String companyShowIvtByCmp(@PathVariable("id") String id, Model model) {
         model.addAttribute("companyId", id);
         List<RIvtDTO> investments = investmentService.getAllInvestmentsByCompanyId(id);
         model.addAttribute("investments", investments);
-        return "show/ivtByCmp"; // ivtByCmp.html
+        return "companyShow/ivtByCmp"; // ivtByCmp.html
     }
 
     // 기업별 모든 후속투자 전체조회 페이지
-    @GetMapping("/show/folByCmp/{id}")
-    public String showFolByCmp(@PathVariable("id") String id, Model model) {
+    @GetMapping("/companyShow/folByCmp/{id}")
+    public String companyShowFolByCmp(@PathVariable("id") String id, Model model) {
         model.addAttribute("companyId", id);
         List<RFolDTO> followups = followupService.getFollowupByCompanyId(id);
 
         model.addAttribute("followups", followups);
-        return "show/folByCmp"; // folByCmp.html
+        return "companyShow/folByCmp"; // folByCmp.html
     }
     // 기업별 모든 감액환입 전체조회 페이지
-    @GetMapping("/show/shrupByCmp/{id}")
-    public String showShrupByCmp(@PathVariable("id") String id, Model model) {
+    @GetMapping("/companyShow/shrupByCmp/{id}")
+    public String companyShowShrupByCmp(@PathVariable("id") String id, Model model) {
         model.addAttribute("companyId", id);
         List<RShrupDTO> shrupDTOS = shrupService.getAllShrupsByCompanyId(id);
 
         model.addAttribute("shrupDTOS", shrupDTOS);
-        return "show/shrupByCmp"; // shrupByCmp.html
+        return "companyShow/shrupByCmp"; // shrupByCmp.html
     }
     // 기업별 모든 회수 전체조회 페이지
-    @GetMapping("/show/recoveryByCmp/{id}")
-    public String showRecoveryByCmp(@PathVariable("id") String id, Model model) {
+    @GetMapping("/companyShow/recoveryByCmp/{id}")
+    public String companyShowRecoveryByCmp(@PathVariable("id") String id, Model model) {
         model.addAttribute("companyId", id);
         List<RstcupDTO> rstcupDTOS = recoveryService.getAllstcupByCompanyId(id);
 
         model.addAttribute("rstcupDTOS", rstcupDTOS);
-        return "show/recoveryByCmp"; // recoveryByCmp.html
+        return "companyShow/recoveryByCmp"; // recoveryByCmp.html
     }
     // 기업별 모든 무상증자  전체조회 페이지
-    @GetMapping("/show/bonusByCmp/{id}")
-    public String showBonusByCmp(@PathVariable("id") String id, Model model) {
+    @GetMapping("/companyShow/bonusByCmp/{id}")
+    public String companyShowBonusByCmp(@PathVariable("id") String id, Model model) {
         model.addAttribute("companyId", id);
         List<RBonusDTO> rBonusDTOS = bonusService.getAllBonusByCompanyId(id);
 
         model.addAttribute("rBonusDTOS", rBonusDTOS);
-        return "show/bonusByCmp"; // bonusByCmp.html
+        return "companyShow/bonusByCmp"; // bonusByCmp.html
     }
     //투자별 계좌조회 //투자 id 값 사용
-    @GetMapping("/show/accountByIvt/{id}")
-    public String showAccountByIvt(@PathVariable("id") Long id, Model model) {
+    @GetMapping("/companyShow/accountByIvt/{id}")
+    public String companyShowAccountByIvt(@PathVariable("id") Long id, Model model) {
         model.addAttribute("investmentId", id);
         List<RAccountDTO> rAccountDTOS = accountService.getAllAccountsByInvestmentId(id);
 
         model.addAttribute("rAccountDTOS", rAccountDTOS);
-        return "show/accountByIvt"; // accountByIvt.html
+        return "companyShow/accountByIvt"; // accountByIvt.html
+    }
+
+    // 기업 전체조회 페이지
+    @GetMapping("/companyManage/{id}")
+    public String companyManage(@PathVariable("id") String id, Model model) {
+        model.addAttribute("companyId", id);
+        return "companyManage"; // companyManage.html
     }
 
 
