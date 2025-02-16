@@ -34,22 +34,21 @@
     </thead>
     <tbody>
     <!-- ✅ 데이터가 있는 경우 -->
-    <tr th:if="${rTipsDTOS != null and not #lists.isEmpty(rTipsDTOS)}"
-        th:each="tips : ${rTipsDTOS}">
-        <td th:text="${tips.tipsId}"></td>
-        <td th:text="${tips.tipsSelectionType}"></td>
-        <td th:text="${tips.selectionYesNo}"></td>
-        <td th:text="${tips.tipsSelectionDate}"></td>
-        <td th:text="${tips.executionStartDate}"></td>
-        <td th:text="${tips.executionEndDate}"></td>
-        <td th:text="${tips.successYesNo}"></td>
-        <td th:text="${tips.kips}"></td>
-        <td th:text="${tips.tipsComment}"></td>
-        <td th:text="${tips.tipsManagementEndDate}"></td>
-        <td th:text="${tips.followTips}"></td>
+    <tr th:if="${rTipsDTO != null}">
+        <td th:text="${rTipsDTO.tipsId}"></td>
+        <td th:text="${rTipsDTO.tipsSelectionType}"></td>
+        <td th:text="${rTipsDTO.selectionYesNo}"></td>
+        <td th:text="${rTipsDTO.tipsSelectionDate}"></td>
+        <td th:text="${rTipsDTO.executionStartDate}"></td>
+        <td th:text="${rTipsDTO.executionEndDate}"></td>
+        <td th:text="${rTipsDTO.successYesNo}"></td>
+        <td th:text="${rTipsDTO.kips}"></td>
+        <td th:text="${rTipsDTO.tipsComment}"></td>
+        <td th:text="${rTipsDTO.tipsManagementEndDate}"></td>
+        <td th:text="${rTipsDTO.followTips}"></td>
     </tr>
     <!-- ❌ 데이터가 없을 경우 -->
-    <tr th:if="${rTipsDTOS == null or #lists.isEmpty(rTipsDTOS)}">
+    <tr th:if="${rTipsDTO == null}">
         <td colspan="11" class="text-muted text-center">팁스 현황 데이터가 없습니다.</td>
     </tr>
     </tbody>
