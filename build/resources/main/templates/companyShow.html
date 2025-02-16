@@ -84,6 +84,10 @@
                 document.getElementById("businessProgress2").value = data.rmngDTO.businessProgress2 || "";
             }
 
+            if (data.currentCompanyValue) {
+                document.getElementById("currentCompanyValue").value = data.currentCompanyValue || "";
+            }
+
             updateFinancialsTable(data.recentFinancials);
             updateInvestmentTable(data.rivtDTO);
             updateShareholderTable(data.shrDTO);
@@ -123,7 +127,6 @@
             <td>${investmentData.equityRate?.toFixed(2) || ""} %</td>
             <td>${investmentData.totalShares?.toLocaleString() || ""} 주</td>
             <td>${investmentData.investmentValue?.toLocaleString() || ""} 원</td>
-            <td>${investmentData.currentCompanyValue?.toLocaleString() || ""} 원</td>
             <td>${investmentData.investmentStep || ""}</td>
         </tr>`;
 
@@ -145,7 +148,7 @@
             <td>${shareholderData.shareholderName6 || ""}</td>
             <td>${shareholderData.shareholderName7 || ""}</td>
             <td>${shareholderData.shareholderName8 || ""}</td>
-            <td class="align-middle">발행총주식수</td>
+            <td class="align-middle">-</td>
         </tr>`;
 
             // 주식수량 데이터
@@ -171,7 +174,7 @@
             <td>${shareholderData.shareholderRate6?.toFixed(2) || ""} %</td>
             <td>${shareholderData.shareholderRate7?.toFixed(2) || ""} %</td>
             <td>${shareholderData.shareholderRate8?.toFixed(2) || ""} %</td>
-            <td>${shareholderData.totalEquityRate?.toFixed(2) || ""} %</td>
+            <td>${shareholderData.totalEquityRate?.toFixed(2) || "100.00"} %</td>
         </tr>`;
 
             tableBody.innerHTML = nameRow + countRow + rateRow;
@@ -179,24 +182,33 @@
 
 
     </script>
+
+
     <script defer>
         document.addEventListener("DOMContentLoaded", function () {
-            let companyId = document.getElementById("companyId") ? document.getElementById("companyId").value : null;
+            // ✅ companyId 값을 hidden input에서 가져오기
+            let companyIdInput = document.getElementById("companyIdValue");
+            let companyId = companyIdInput ? companyIdInput.value : null;
 
-            // 🔥 팝업 열기 함수
-            window.openPopup = function (type) {
-                if (!companyId) {
-                    alert("먼저 기업 정보를 조회한 후 입력을 진행하세요.");
+            console.log("✅ companyId:", companyId);
+
+            if (companyId) {
+                window.companyId = companyId; // ✅ 전역 변수에 저장
+                fetchCompanyInfo(companyId); // ✅ 회사 정보 불러오기
+            } else {
+                console.warn("⚠️ companyId를 가져올 수 없습니다.");
+            }
+
+            // 🔥 조회 팝업 열기 함수
+            window.openViewPopup = function (type) {
+                if (!window.companyId) {
+                    alert("먼저 기업 정보를 조회한 후 확인하세요.");
                     return;
                 }
-
-                let url = `/companyAdd/${type}/${companyId}`;
-                window.open(url, "popupWindow", "width=1000,height=600,scrollbars=yes");
+                let url = `/companyShow/${type}/${window.companyId}`;
+                window.open(url, "popupWindow", "width=1500,height=600,scrollbars=yes");
             };
         });
-
-
-
     </script>
 
     <script>
@@ -246,19 +258,21 @@
 
 
 <div class="wrapper">
-    <!-- 📌 좌측 사이드바 -->
-    <!-- 📌 좌측 사이드바 -->
-    <nav class="sidebar">
-        <a href="#" onclick="openPopup('kuhInvestment')">📊 KUH 투자 입력</a>
-        <a href="#" onclick="openPopup('followupInvestment')">📈 후속투자 입력</a>
-        <a href="#" onclick="openPopup('investmentStatus')">📌 투자상태 입력</a>
-        <a href="#" onclick="openPopup('tips')">💡 팁스현황 입력</a>
-        <a href="#" onclick="openPopup('financial')">🗂️ 재무제표 입력</a>
-        <a href="#" onclick="openPopup('manage')">📋 사후관리정보 입력</a>
-        <a href="#" onclick="openPopup('managerChange')">👤 사후관리담당 입력</a>
-    </nav>
 
     <input type="hidden" id="companyIdValue" th:value="${companyId}" />
+
+    <!-- 📌 좌측 사이드바 -->
+    <nav class="sidebar">
+        <a href="#" onclick="openViewPopup('ivtByCmp')">📊 KUH 투자 조회</a>
+        <a href="#" onclick="openViewPopup('folByCmp')">📈 후속투자 조회</a>
+        <a href="#" onclick="openViewPopup('shrupByCmp')">💸 감액환입 조회</a>
+        <a href="#" onclick="openViewPopup('recoveryByCmp')">💰 회수내역 조회</a>
+        <a href="#" onclick="openViewPopup('bonusByCmp')">🎁 무상증자 조회</a>
+        <a href="#" onclick="openViewPopup('tips')">💡 팁스현황 조회</a>
+        <a href="#" onclick="openViewPopup('financial')">🗂️ 재무제표 조회</a>
+        <a href="#" onclick="openViewPopup('manage')">📋 사후관리 조회</a>
+        <a href="#" onclick="openViewPopup('managerChange')">👤 업무담당 조회</a>
+    </nav>
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -287,6 +301,7 @@
                 <div class="mb-3"><label class="form-label">표준 산업분류</label><input type="text" class="form-control" id="industryCode" readonly></div>
                 <div class="mb-3"><label class="form-label">자본금</label><input type="text" class="form-control" id="capital" readonly></div>
                 <div class="mb-3"><label class="form-label">액면가</label><input type="text" class="form-control" id="parValue" readonly></div>
+                <div class="mb-3"><label class="form-label">현재밸류</label><input type="text" class="form-control" id="currentCompanyValue" readonly></div>
                 <div class="mb-3"><label class="form-label">임직원 수</label><input type="text" class="form-control" id="employeeCount" readonly></div>
             </div>
         </div>
@@ -454,7 +469,6 @@
                         <th>지분율</th>
                         <th>발행주식</th>
                         <th>투자밸류</th>
-                        <th>현재밸류</th>
                         <th>투자단계</th>
                     </tr>
                     </thead>
@@ -515,7 +529,6 @@
 
     </div>
 </div>
-
 
 
 <!-- 🔍 검색 모달 -->

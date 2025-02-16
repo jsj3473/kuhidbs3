@@ -246,7 +246,7 @@ public class HomeController {
         return "companyShow/accountByIvt"; // accountByIvt.html
     }
 
-    // 기업 전체조회 페이지
+    // 기업후속관리 페이지
     @GetMapping("/companyManage/{id}")
     public String companyManage(@PathVariable("id") String id, Model model) {
         model.addAttribute("companyId", id);
