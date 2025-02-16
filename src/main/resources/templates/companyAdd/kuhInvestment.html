@@ -6,9 +6,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <script>
         function calculateInvestmentSumPrice() {
-            let unitPrice = parseFloat(document.getElementById("investmentUnitPrice").value) || 0;
-            let shareCount = parseFloat(document.getElementById("shareCount").value) || 0;
-            let totalShares = parseFloat(document.getElementById("totalShares").value) || 1; // 0 나눗셈 방지
+            let unitPrice = parseFloat(document.getElementById("investmentUnitPrice").value) || 0; // 투자 단가 (3번)
+            let shareCount = parseFloat(document.getElementById("shareCount").value) || 0; // 주식 수량 (4번)
+            let totalShares = parseFloat(document.getElementById("totalShares").value) || 1; // 발행 주식 수 (6번)
 
             // 5번 항목(투자 금액) = 투자 단가 * 주식 수량
             let investmentSumPrice = unitPrice * shareCount;
@@ -17,7 +17,12 @@
             // 7번 항목(KUH 지분율) = (주식 수량 / 발행 주식 수) * 100 (소수점 2자리까지)
             let equityRate = (shareCount / totalShares) * 100;
             document.getElementById("equityRate").value = equityRate.toFixed(2); // % 없이 숫자만 입력
+
+            // 8번 항목(투자 밸류) = 투자 단가 × 발행 주식 수
+            let investmentValue = (unitPrice * totalShares) / 100000000; // 억 단위로 변환
+            document.getElementById("investmentValue").value = investmentValue.toFixed(2); // 소수점 2자리까지 표시
         }
+
 
         function removeDefaultOptions() {
             document.querySelectorAll("select").forEach(select => {

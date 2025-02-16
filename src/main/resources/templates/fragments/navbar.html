@@ -8,20 +8,76 @@
 
 </head>
 <body>
-<nav class="navbar navbar-dark bg-dark" th:fragment="navbar">
-    <div class="container-fluid">
-        <!-- 동적 타이틀 -->
-        <span class="navbar-brand mb-0 h1" th:text="${title}">메인 페이지</span>
 
-        <!-- 우측 콘텐츠 -->
+<!-- 네비게이션 바 -->
+<nav class="navbar navbar-expand-lg navbar-light" th:fragment="navbar">
+    <div class="container-fluid d-flex align-items-center">
+
+        <!-- 좌측 로고 -->
+        <div class="logo">
+            <img src="/images/KuLogo2.gif" alt="프로그램 로고" class="logo-img">
+            <h1 class="logo-text">KUH IDBS</h1>
+        </div>
+
+        <!-- 네비게이션 메뉴 (왼쪽 정렬) -->
+        <ul class="navbar-nav me-auto">
+            <li class="nav-item">
+                <a class="nav-link" href="/main">대시보드</a>
+            </li>
+
+            <!-- 투자관리 Dropdown -->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#"
+                   id="investDropdown" role="button"
+                   data-bs-toggle="dropdown" aria-expanded="false">
+                    투자관리
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="investDropdown">
+                    <li><a class="dropdown-item" href="#" onclick="openSearchModal('companyShow')">기업정보조회</a></li>
+                    <li><a class="dropdown-item" href="/companyAdd">신규기업등록</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="openSearchModal('companyManage')">투자후속관리</a></li>
+                </ul>
+            </li>
+
+            <!-- 조합관리 Dropdown -->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#"
+                   id="fundDropdown" role="button"
+                   data-bs-toggle="dropdown" aria-expanded="false">
+                    조합관리
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="fundDropdown">
+                    <li><a class="dropdown-item" href="#">조합정보조회</a></li>
+                    <li><a class="dropdown-item" href="#">신규조합등록</a></li>
+                </ul>
+            </li>
+
+            <!-- 시스템관리 Dropdown -->
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#"
+                   id="systemDropdown" role="button"
+                   data-bs-toggle="dropdown" aria-expanded="false">
+                    시스템관리
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="systemDropdown">
+                    <li><a class="dropdown-item" href="#">사용자관리</a></li>
+                    <li><a class="dropdown-item" href="#">권한설정</a></li>
+                    <li><a class="dropdown-item" href="#">로그조회</a></li>
+                </ul>
+            </li>
+        </ul>
+
+        <!-- 우측 사용자 정보 및 로그아웃 버튼 -->
         <div class="d-flex align-items-center">
-            <div class="employee-info text-white me-3">
-                <div th:text="${empId} + ' ' + ${empName}"></div>
+            <div class="employee-info me-3">
+                <span th:text="${empId} + ' ' + ${empName}"></span>
             </div>
             <img src="/images/EmpImg.png" alt="사원 사진" class="emp-img me-3">
-            <button class="btn btn-outline-light btn-sm" id="logoutButton" onclick="confirmLogout()">로그아웃</button>
+            <button class="btn btn-outline-dark btn-sm" id="logoutButton" onclick="confirmLogout()">로그아웃</button>
         </div>
+
     </div>
 </nav>
+
 </body>
 </html>

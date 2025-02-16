@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KUH IDBS 네비게이션</title>
+    <title>대시보드</title>
 
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <script defer th:src="@{/js/bootstrap.bundle.min.js}"></script>
@@ -11,23 +11,9 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/sidebar.css}">
     <link rel="stylesheet" th:href="@{/css/navbar.css}">
-    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <script th:src="@{/js/common.js}"></script>
 
-
-    <style>
-        .navbar {
-            background-color: #f8f9fa;
-        }
-        .logo-img {
-            height: 40px;
-        }
-        .emp-img {
-            height: 32px;
-            width: 32px;
-            border-radius: 50%;
-        }
-    </style>
-
+    <style></style>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const searchModal = new bootstrap.Modal(document.getElementById('searchModal'));
@@ -71,75 +57,23 @@
 </head>
 <body>
 
-<!-- 네비게이션 바 -->
-<nav class="navbar navbar-expand-lg navbar-light">
-    <div class="container-fluid d-flex align-items-center">
+<div th:replace="fragments/navbar :: navbar"></div>
 
-        <!-- 좌측 로고 -->
-        <div class="sidebar-logo">
-            <img src="/images/KuLogo2.gif" alt="프로그램 로고" class="logo-img">
-            <h1 class="logo-text">KUH IDBS</h1>
-        </div>
 
-        <!-- 네비게이션 메뉴 (왼쪽 정렬) -->
-        <ul class="navbar-nav me-auto">
-            <li class="nav-item">
-                <a class="nav-link" href="#">대시보드</a>
-            </li>
 
-            <!-- 투자관리 Dropdown -->
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#"
-                   id="investDropdown" role="button"
-                   data-bs-toggle="dropdown" aria-expanded="false">
-                    투자관리
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="investDropdown">
-                    <li><a class="dropdown-item" href="#" onclick="openSearchModal('companyShow')">기업정보조회</a></li>
-                    <li><a class="dropdown-item" href="/companyAdd">신규기업등록</a></li>
-                    <li><a class="dropdown-item" href="#" onclick="openSearchModal('companyManage')">투자후속관리</a></li>
-                </ul>
-            </li>
+<div class="wrapper">
+    <!-- 📌 좌측 사이드바 -->
+    <nav class="sidebar">
+        <a href="/#">📊 KUH 투자현황</a>
+    </nav>
 
-            <!-- 조합관리 Dropdown -->
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#"
-                   id="fundDropdown" role="button"
-                   data-bs-toggle="dropdown" aria-expanded="false">
-                    조합관리
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="fundDropdown">
-                    <li><a class="dropdown-item" href="#">조합정보조회</a></li>
-                    <li><a class="dropdown-item" href="#">신규조합등록</a></li>
-                </ul>
-            </li>
 
-            <!-- 시스템관리 Dropdown -->
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#"
-                   id="systemDropdown" role="button"
-                   data-bs-toggle="dropdown" aria-expanded="false">
-                    시스템관리
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="systemDropdown">
-                    <li><a class="dropdown-item" href="#">사용자관리</a></li>
-                    <li><a class="dropdown-item" href="#">권한설정</a></li>
-                    <li><a class="dropdown-item" href="#">로그조회</a></li>
-                </ul>
-            </li>
-        </ul>
-
-        <!-- 우측 사용자 정보 및 로그아웃 버튼 -->
-        <div class="d-flex align-items-center">
-            <div class="employee-info me-3">
-                <span th:text="${empId} + ' ' + ${empName}"></span>
-            </div>
-            <img src="/images/EmpImg.png" alt="사원 사진" class="emp-img me-3">
-            <button class="btn btn-outline-dark btn-sm" id="logoutButton" onclick="confirmLogout()">로그아웃</button>
-        </div>
-
+    <!-- 📌 메인 콘텐츠 영역 -->
+    <div class="content">
+        <h2>📌 현재 페이지 내용 표시</h2>
+        <p>여기에 페이지별 내용을 넣을 수 있어!</p>
     </div>
-</nav>
+</div>
 
 <!-- 🔍 검색 모달 -->
 <div class="modal fade" id="searchModal" tabindex="-1" aria-hidden="true">
@@ -153,8 +87,6 @@
         </div>
     </div>
 </div>
-
-
 
 </body>
 </html>
