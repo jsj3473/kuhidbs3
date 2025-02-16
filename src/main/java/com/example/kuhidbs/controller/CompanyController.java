@@ -133,7 +133,7 @@ public class CompanyController {
 
     // 동반투자 생성
     @PostMapping("/createCombine")
-    public ResponseEntity<Combine> createCombine(@ModelAttribute CComDTO combineDTO) {
+    public ResponseEntity<Combine> createCombine(@RequestBody CComDTO combineDTO) {
         Combine savedCombine = combineService.saveCombine(combineDTO);
         return ResponseEntity.ok(savedCombine);
     }
@@ -168,7 +168,7 @@ public class CompanyController {
 
     // 무상증자 생성 API
     @PostMapping("/createBonus")
-    public ResponseEntity<Bonus> createBonus(@ModelAttribute CBonusDTO dto) {
+    public ResponseEntity<Bonus> createBonus(@RequestBody CBonusDTO dto) {
         Bonus createBonus = bonusService.createBonus(dto);
         return ResponseEntity.ok(createBonus);
     }
@@ -199,15 +199,6 @@ public class CompanyController {
         RCmpInfDTO companyInfo = companyService.getCompanyInfo(companyId);
         return ResponseEntity.ok(companyInfo);
     }
-//    // 회사 기본 정보 조회 API
-//    @GetMapping("/companyRead/{companyId}")
-//    public ResponseEntity<RCmpInfDTO> getCompanyInfo(@PathVariable String companyId) {
-//        System.out.println("companyId:  " + companyId);
-//        RCmpInfDTO companyInfo = companyService.getCompanyInfo(companyId);
-//        System.out.println("📢 companyService() 호출 - companyInfo: " + companyInfo);
-//        return ResponseEntity.ok(companyInfo);
-//    }
-
 
     //팁스 정보 조회 api
     @GetMapping("/tips/{companyId}")

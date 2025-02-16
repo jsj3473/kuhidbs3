@@ -27,8 +27,6 @@
 
         function updateCompanyInfo(data) {
             document.getElementById("companyId").value = data.companyId || "";
-            document.getElementById("status").value = data.status || "";
-            document.getElementById("investmentCompany").value = data.investmentCompany || "";
             document.getElementById("companyName").value = data.companyName || "";
             document.getElementById("establishmentDate").value = data.establishmentDate || "";
             document.getElementById("ceoName").value = data.ceoName || "";
@@ -64,9 +62,12 @@
             document.getElementById("positionType").value = data.positionType || "";
             document.getElementById("phoneNumber").value = data.phoneNumber || "";
             document.getElementById("email").value = data.email || "";
-            document.getElementById("rmngStatus").value = data.rmngDTO?.managementStatus || "";
+            document.getElementById("name").value = data.name || "";
 
-            //사후관리 내역
+            if (data.currentStatusDTO) {
+                document.getElementById("status").value = data.currentStatusDTO.status || "";
+            }
+
             if (data.rmngDTO) {
                 document.getElementById("managementYear").value = data.rmngDTO.year || "";
                 document.getElementById("evalGrade").value = data.rmngDTO.evalGrade || "";
@@ -78,6 +79,7 @@
             updateInvestmentTable(data.rivtDTO);
             updateShareholderTable(data.shrDTO);
         }
+
         //재무제표
         function updateFinancialsTable(financials) {
             const tableBody = document.getElementById("financialsTable");
@@ -100,10 +102,10 @@
         }
         //투자정보
         function updateInvestmentTable(investmentData) {
-                const tableBody = document.getElementById("investmentTable");
-                tableBody.innerHTML = "";
+            const tableBody = document.getElementById("investmentTable");
+            tableBody.innerHTML = "";
 
-                const row = `<tr>
+            const row = `<tr>
             <td>${investmentData.investmentDate || ""}</td>
             <td>${investmentData.investmentProduct || ""}</td>
             <td>${investmentData.investmentAmount?.toLocaleString() || ""} 원</td>
@@ -116,8 +118,8 @@
             <td>${investmentData.investmentStep || ""}</td>
         </tr>`;
 
-                tableBody.innerHTML = row;
-            }
+            tableBody.innerHTML = row;
+        }
 
         //주주명부
         function updateShareholderTable(shareholderData) {
@@ -189,7 +191,6 @@
     <div class="card-body">
         <div class="mb-3"><label class="form-label">회사 고유번호</label><input type="text" class="form-control" id="companyId" readonly></div>
         <div class="mb-3"><label class="form-label">투자 상태</label><input type="text" class="form-control" id="status" readonly></div>
-        <div class="mb-3"><label class="form-label">투자 회사</label><input type="text" class="form-control" id="investmentCompany" readonly></div>
         <div class="mb-3"><label class="form-label">회사명</label><input type="text" class="form-control" id="companyName" readonly></div>
         <div class="mb-3"><label class="form-label">설립 일자</label><input type="text" class="form-control" id="establishmentDate" readonly></div>
         <div class="mb-3"><label class="form-label">대표 이사</label><input type="text" class="form-control" id="ceoName" readonly></div>
@@ -335,17 +336,17 @@
     <div class="card-body">
         <table class="table table-bordered text-center">
             <thead>
-                <tr>
-                    <th>연도(반기)</th>
-                    <th>매출액</th>
-                    <th>영업이익</th>
-                    <th>당기순익</th>
-                    <th>자산총계</th>
-                    <th>부채총계</th>
-                    <th>자본총계</th>
-                    <th>자본금</th>
-                    <th>임직원수</th>
-                </tr>
+            <tr>
+                <th>연도(반기)</th>
+                <th>매출액</th>
+                <th>영업이익</th>
+                <th>당기순익</th>
+                <th>자산총계</th>
+                <th>부채총계</th>
+                <th>자본총계</th>
+                <th>자본금</th>
+                <th>임직원수</th>
+            </tr>
             </thead>
             <tbody id="financialsTable"></tbody>
         </table>
@@ -404,7 +405,7 @@
         <div class="mb-3"><label class="form-label">투자 심사자</label><input type="text" class="form-control" id="manager2" readonly></div>
         <div class="mb-3"><label class="form-label">사후 관리 담당자</label><input type="text" class="form-control" id="manager3" readonly></div>
         <div class="mb-3"><label class="form-label">기업 담당자명/직책</label>
-            <input type="text" class="form-control" id="clientName" readonly>
+            <input type="text" class="form-control" id="name" readonly>
             <input type="text" class="form-control" id="positionType" readonly>
         </div>
         <div class="mb-3"><label class="form-label">전화번호</label><input type="text" class="form-control" id="phoneNumber" readonly></div>

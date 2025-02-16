@@ -7,6 +7,53 @@
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+            document.getElementById("firstForm").addEventListener("submit", submitFirstForm);
+        });
+
+        function submitFirstForm(event) {
+            event.preventDefault(); // 기본 제출 방지
+
+            let form = document.getElementById("firstForm");
+
+            if (!form) {
+                alert("폼을 찾을 수 없습니다.");
+                return;
+            }
+
+            // 폼 데이터를 JSON 형식으로 변환
+            let formData = new FormData(form);
+            let jsonData = {};
+
+            formData.forEach((value, key) => {
+                jsonData[key] = value;
+            });
+
+            console.log("전송할 데이터:", jsonData); // 디버깅용
+
+            fetch("/api/companies/createBonus", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(jsonData)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("무상증자 정보 저장 실패");
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    alert("무상증자 정보가 저장되었습니다!"); // 성공 알림창
+                    form.reset(); // 입력 폼 초기화
+                })
+                .catch(error => {
+                    alert("저장 중 오류 발생: " + error.message);
+                });
+        }
+
         function submitSecondForm() {
             let form = document.getElementById("secondForm");
 
@@ -84,35 +131,31 @@
 </head>
 <body class="container mt-4">
 <h2 class="mb-4">무상증자 등록</h2>
-
-<form th:action="@{/api/companies/createBonus}" method="post">
+<form id="firstForm">
     <input type="hidden" name="companyId" th:value="${companyId}">
     <input type="hidden" name="investmentId" th:value="${investmentId}">
 
-
-    <div class="row mb-3">
-        <label class="col-sm-3 col-form-label">변경 주식 수</label>
-        <div class="col-sm-9">
-            <input type="number" name="changedShareCount" class="form-control" th:value="${changedShareCount}" required>
-        </div>
+    <div class="mb-3">
+        <label class="form-label">변경 주식 수</label>
+        <input type="number" name="changedShareCount" class="form-control" th:value="${changedShareCount}" required>
     </div>
 
-    <div class="row mb-3">
-        <label class="col-sm-3 col-form-label">투자 단가 (원)</label>
-        <div class="col-sm-9">
-            <input type="number" name="unitPrice" class="form-control" th:value="${unitPrice}" required>
-        </div>
+    <div class="mb-3">
+        <label class="form-label">투자 단가 (원)</label>
+        <input type="number" name="unitPrice" class="form-control" th:value="${unitPrice}" required>
     </div>
 
-    <div class="mb-3"><label class="form-label">무상증자 날짜</label>
+    <div class="mb-3">
+        <label class="form-label">무상증자 날짜</label>
         <input type="date" class="form-control" name="bonusDate">
     </div>
-
 
     <div class="mt-4">
         <button type="submit" class="btn btn-primary px-5">등록</button>
     </div>
 </form>
+
+
 <hr>
 <form id="secondForm" method="post" style="display: block;">
     <input type="hidden" name="companyId" th:value="${companyId}">

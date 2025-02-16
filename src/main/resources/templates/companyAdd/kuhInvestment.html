@@ -5,6 +5,20 @@
     <title>KUH 투자정보 입력</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <script>
+        function calculateInvestmentSumPrice() {
+            let unitPrice = parseFloat(document.getElementById("investmentUnitPrice").value) || 0;
+            let shareCount = parseFloat(document.getElementById("shareCount").value) || 0;
+            let totalShares = parseFloat(document.getElementById("totalShares").value) || 1; // 0 나눗셈 방지
+
+            // 5번 항목(투자 금액) = 투자 단가 * 주식 수량
+            let investmentSumPrice = unitPrice * shareCount;
+            document.getElementById("investmentSumPrice").value = investmentSumPrice.toFixed(0);
+
+            // 7번 항목(KUH 지분율) = (주식 수량 / 발행 주식 수) * 100 (소수점 2자리까지)
+            let equityRate = (shareCount / totalShares) * 100;
+            document.getElementById("equityRate").value = equityRate.toFixed(2); // % 없이 숫자만 입력
+        }
+
         function removeDefaultOptions() {
             document.querySelectorAll("select").forEach(select => {
                 if (select.value === "") {
@@ -43,8 +57,8 @@
                     return response.json(); // JSON 응답 처리
                 })
                 .then(data => {
-                    alert("저장이 완료되었습니다!");
-                    // document.getElementById("secondForm").style.display = "block"; // 2번 폼 표시
+                    alert("저장이 완료되었습니다! 기존 주주구성을 입력하세요.");
+                    document.getElementById("secondFormButton").disabled = false; // 버튼 활성화
                 })
                 .catch(error => {
                     alert("저장 중 오류 발생: " + error.message);
@@ -96,7 +110,7 @@
                     return response.json();
                 })
                 .then(data => {
-                    alert("저장이 완료되었습니다!");
+                    alert("저장이 완료되었습니다! 투자 이후 변경주주를 입력해주세요.");
                     document.getElementById("beforeShTitle").style.display = "none";
                     document.getElementById("afterShTitle").style.display = "block";
                 })
@@ -168,24 +182,29 @@
         </select>
     </div>
 
-    <div class="mb-3"><label class="form-label">3. 투자 단가 (단위: 원)</label>
-        <input type="number" class="form-control" name="investmentUnitPrice">
+    <div class="mb-3">
+        <label class="form-label">3. 투자 단가 (단위: 원)</label>
+        <input type="number" class="form-control" id="investmentUnitPrice" name="investmentUnitPrice" oninput="calculateInvestmentSumPrice()">
     </div>
 
-    <div class="mb-3"><label class="form-label">4. 주식 수량 (단위: 주)</label>
-        <input type="number" class="form-control" name="shareCount">
+    <div class="mb-3">
+        <label class="form-label">4. 주식 수량 (단위: 주)</label>
+        <input type="number" class="form-control" id="shareCount" name="shareCount" oninput="calculateInvestmentSumPrice()">
     </div>
 
-    <div class="mb-3"><label class="form-label">5. 투자 금액 (단위: 원)</label>
-        <input type="number" class="form-control" name="investmentSumPrice">
+    <div class="mb-3">
+        <label class="form-label">5. 투자 금액 (단위: 원)</label>
+        <input type="number" class="form-control" id="investmentSumPrice" name="investmentSumPrice" readonly>
     </div>
 
-    <div class="mb-3"><label class="form-label">6. 발행 주식 수 (단위: 주)</label>
-        <input type="number" class="form-control" name="totalShares">
+    <div class="mb-3">
+        <label class="form-label">6. 발행 주식 수 (단위: 주)</label>
+        <input type="number" class="form-control" id="totalShares" name="totalShares" oninput="calculateInvestmentSumPrice()">
     </div>
 
-    <div class="mb-3"><label class="form-label">7. 지분율 (단위: %)</label>
-        <input type="text" class="form-control" name="equityRate" readonly>
+    <div class="mb-3">
+        <label class="form-label">7. KUH 지분율 (단위: %)</label>
+        <input type="text" class="form-control" id="equityRate" name="equityRate" readonly>
     </div>
 
     <div class="mb-3"><label class="form-label">8. 투자 밸류 (단위: 억원)</label>
@@ -215,7 +234,7 @@
     <div class="mb-3"><label class="form-label">11. 투자 상태</label>
         <select class="form-control" name="investmentState">
             <option value="">선택하세요</option>
-            <option value="정상투자 A" selected>정상투자 A</option>
+            <option value="정상투자 A">정상투자 A</option>
             <option value="정상투자 B">정상투자 B</option>
             <option value="요주의 C">요주의 C</option>
             <option value="주의 D">주의 D</option>
@@ -239,11 +258,12 @@
     </div>
 </form>
 
+<br>
 <!--<form id="secondForm" method="post" style="display: none;">-->
 <form id="secondForm" method="post">
     <input type="hidden" name="companyId" th:value="${companyId}">
-    <h4 class="mb-3" id="beforeShTitle" style="display: block;">기존주주구성 입력</h4>
-    <h4 class="mb-3" id="afterShTitle" style="display: none;">변경주주구성 입력</h4>
+    <h4 class="mb-3" id="beforeShTitle" style="display: block;">기존 주주구성 입력</h4>
+    <h4 class="mb-3" id="afterShTitle" style="display: none;">변경 주주구성 입력</h4>
     <table class="table table-bordered text-center">
         <tbody>
         <tr>
@@ -290,7 +310,7 @@
         </tbody>
     </table>
     <div class="mt-4">
-        <button type="button" class="btn btn-primary" onclick="submitSecondForm()">저장</button>
+        <button type="button" class="btn btn-primary" id="secondFormButton" onclick="submitSecondForm()" disabled>저장</button>
     </div>
 </form>
 </body>

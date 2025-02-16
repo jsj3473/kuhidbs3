@@ -10,94 +10,114 @@
 <body class="container mt-4">
 <h2 class="mb-4">동반투자 등록</h2>
 
-<form th:action="@{/api/companies/createCombine}" method="post">
+<form id="combineForm">
     <input type="hidden" name="companyId" th:value="${companyId}">
     <input type="hidden" name="investmentId" th:value="${investmentId}">
 
-    <div class="row mb-3">
-        <label class="col-sm-3 col-form-label">투자 기관</label>
-        <div class="col-sm-9">
-            <input type="text" name="investmentCompanyName" class="form-control" required>
-        </div>
+    <div class="mb-3">
+        <label class="form-label">투자 기관</label>
+        <input type="text" name="investmentCompanyName" class="form-control" required>
     </div>
 
-    <div class="row mb-3">
-        <label class="col-sm-3 col-form-label">투자 일자</label>
-        <div class="col-sm-9">
-            <input type="date" name="investmentStartDate" class="form-control" required>
-        </div>
+    <div class="mb-3">
+        <label class="form-label">투자 일자</label>
+        <input type="date" name="investmentStartDate" class="form-control" required>
     </div>
 
-    <div class="row mb-3">
-        <label class="col-sm-3 col-form-label">투자 단가 (원)</label>
-        <div class="col-sm-9">
-            <input type="number" name="investmentUnitPrice" class="form-control" required>
-        </div>
+    <div class="mb-3">
+        <label class="form-label">투자 단가 (원)</label>
+        <input type="number" name="investmentUnitPrice" class="form-control" required>
     </div>
 
-    <div class="row mb-3">
-        <label class="col-sm-3 col-form-label">투자 금액 (원)</label>
-        <div class="col-sm-9">
-            <input type="number" name="investmentSumPrice" class="form-control" required>
-        </div>
+    <div class="mb-3">
+        <label class="form-label">투자 금액 (원)</label>
+        <input type="number" name="investmentSumPrice" class="form-control" required>
     </div>
 
-    <div class="row mb-3">
-        <label class="col-sm-3 col-form-label">투자 상품</label>
-        <div class="col-sm-9">
-            <select class="form-control" name="investmentProduct" required>
-                <option>선택하세요.</option>
-                <option value="CS">보통주(CS)</option>
-                <option value="RCPS">상환전환우선주(RCPS)</option>
-                <option value="CPS">전환우선주(CPS)</option>
-                <option value="CB">전환사채(CB)</option>
-                <option value="BW">신주인수권부사채(BW)</option>
-                <option value="EB">교환사채(EB)</option>
-                <option value="CN">컨버터블노트(CN)</option>
-                <option value="SAFE">세이프(SAFE)</option>
-            </select>
-        </div>
+    <div class="mb-3">
+        <label class="form-label">투자 상품</label>
+        <select class="form-control" name="investmentProduct" required>
+            <option>선택하세요.</option>
+            <option value="CS">보통주(CS)</option>
+            <option value="RCPS">상환전환우선주(RCPS)</option>
+            <option value="CPS">전환우선주(CPS)</option>
+            <option value="CB">전환사채(CB)</option>
+            <option value="BW">신주인수권부사채(BW)</option>
+            <option value="EB">교환사채(EB)</option>
+            <option value="CN">컨버터블노트(CN)</option>
+            <option value="SAFE">세이프(SAFE)</option>
+        </select>
     </div>
 
-    <div class="row mb-3">
-        <label class="col-sm-3 col-form-label">지분율 (%)</label>
-        <div class="col-sm-9">
-            <input type="text" name="equityRate" class="form-control" required>
-        </div>
+    <div class="mb-3">
+        <label class="form-label">지분율 (%)</label>
+        <input type="text" name="equityRate" class="form-control" required>
     </div>
 
-    <div class="row mb-3">
-        <label class="col-sm-3 col-form-label">투자 단계</label>
-        <div class="col-sm-9">
-            <select class="form-control" name="investmentStep" required>
-                <option>선택하세요</option>
-                <option value="Seed">Seed</option>
-                <option value="Pre-A">Pre-A</option>
-                <option value="Series A">Series A</option>
-                <option value="Series B">Series B</option>
-                <option value="Series C">Series C</option>
-            </select>
-        </div>
+    <div class="mb-3">
+        <label class="form-label">투자 단계</label>
+        <select class="form-control" name="investmentStep" required>
+            <option>선택하세요</option>
+            <option value="Seed">Seed</option>
+            <option value="Pre-A">Pre-A</option>
+            <option value="Series A">Series A</option>
+            <option value="Series B">Series B</option>
+            <option value="Series C">Series C</option>
+        </select>
     </div>
 
-    <div class="row mb-3">
-        <label class="col-sm-3 col-form-label">주식 수량 (주)</label>
-        <div class="col-sm-9">
-            <input type="number" name="shareCount" class="form-control" required>
-        </div>
+    <div class="mb-3">
+        <label class="form-label">주식 수량 (주)</label>
+        <input type="number" name="shareCount" class="form-control" required>
     </div>
 
-    <div class="row mb-3">
-        <label class="col-sm-3 col-form-label">비고</label>
-        <div class="col-sm-9">
-            <textarea name="comment" class="form-control" rows="3"></textarea>
-        </div>
+    <div class="mb-3">
+        <label class="form-label">비고</label>
+        <textarea name="comment" class="form-control" rows="3"></textarea>
     </div>
 
-    <div class="mt-4 text-center">
+    <div class="mt-4 text-start">
         <button type="submit" class="btn btn-primary px-5">등록</button>
     </div>
 </form>
+
+<!-- JavaScript -->
+<script>
+    document.getElementById("combineForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // 기본 제출 방지
+
+        let form = document.getElementById("combineForm");
+        let formData = new FormData(form);
+        let jsonData = {};
+
+        formData.forEach((value, key) => {
+            jsonData[key] = value;
+        });
+
+        console.log("전송할 데이터:", jsonData); // 디버깅용
+
+        fetch("/api/companies/createCombine", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(jsonData)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("등록 실패");
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert("등록이 완료되었습니다!");
+                form.reset(); // 폼 초기화
+            })
+            .catch(error => {
+                alert("오류 발생: " + error.message);
+            });
+    });
+</script>
 
 <!-- Bootstrap JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

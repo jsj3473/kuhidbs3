@@ -106,7 +106,7 @@ public class HomeController {
         return "companyAdd/followupInvestment"; // followupInvestment.html
     }
 
-    // 투자감액/복원입력 팝업
+    // 투자감액/복원 입력 팝업
     @GetMapping("/companyAdd/shareUp/{companyId}/{investmentId}")
     public String shareUp(@PathVariable("companyId") String companyId,
                           @PathVariable("investmentId") String investmentId, Model model) {
@@ -115,7 +115,7 @@ public class HomeController {
         return "companyAdd/shareUp"; // shareUp.html
     }
 
-    // 무상증자 팝업
+    // 무상증자 입력 팝업
     @GetMapping("/companyAdd/bonus/{companyId}/{investmentId}")
     public String bonus(@PathVariable("companyId") String companyId,
                         @PathVariable("investmentId") String investmentId,
@@ -125,7 +125,7 @@ public class HomeController {
         return "companyAdd/bonus"; // bonus.html
     }
 
-    // 동반투자 팝업
+    // 동반투자 입력 팝업
     @GetMapping("/companyAdd/combine/{companyId}/{investmentId}")
     public String combine(@PathVariable("companyId") String companyId,
                           @PathVariable("investmentId") String investmentId, Model model) {
@@ -133,6 +133,49 @@ public class HomeController {
         model.addAttribute("investmentId", investmentId);
         return "companyAdd/combine"; // companion.html
     }
+
+    // 투자회수 입력 팝업
+    @GetMapping("/companyAdd/stockUp/{companyId}/{investmentId}")
+    public String stockUp(@PathVariable("companyId") String companyId,
+                          @PathVariable("investmentId") String investmentId, Model model) {
+
+        model.addAttribute("companyId", companyId);
+        model.addAttribute("investmentId", investmentId);
+        return "companyAdd/stockUp"; // stockUp.html
+    }
+    // 투자상태 입력 팝업
+    @GetMapping("/companyAdd/investmentStatus/{id}")
+    public String investmentStatus(@PathVariable("id") String id, Model model) {
+        model.addAttribute("companyId", id);
+        return "companyAdd/investmentStatus"; // investmentStatus.html
+    }
+    // 팁스현황 입력 팝업
+    @GetMapping("/companyAdd/tips/{id}")
+    public String tips(@PathVariable("id") String id, Model model) {
+        model.addAttribute("companyId", id);
+        return "companyAdd/tips"; // tips.html
+    }
+    // 재무제표 입력 팝업
+    @GetMapping("/companyAdd/financial/{id}")
+    public String financial(@PathVariable("id") String id, Model model) {
+        model.addAttribute("companyId", id);
+        return "companyAdd/financial"; // financial.html
+    }
+    // 사후관리 입력 팝업
+    @GetMapping("/companyAdd/manage/{id}")
+    public String manage(@PathVariable("id") String id, Model model) {
+        model.addAttribute("companyId", id);
+        return "companyAdd/manage"; // manage.html
+    }
+
+    // 사후관리담당자 입력 팝업
+    @GetMapping("/companyAdd/managerChange/{id}")
+    public String managerChange(@PathVariable("id") String id, Model model) {
+        System.out.println("Received companyId: " + id);  // 로그 출력
+        model.addAttribute("companyId", id);
+        return "companyAdd/managerChange"; // managerChange.html
+    }
+
 
     // 기업 전체조회 페이지
     @GetMapping("/info/{id}")
@@ -142,128 +185,59 @@ public class HomeController {
     }
 
     // 기업별 모든 투자 전체조회 페이지
-    @GetMapping("/showIvtByCmp/{id}")
+    @GetMapping("/show/ivtByCmp/{id}")
     public String showIvtByCmp(@PathVariable("id") String id, Model model) {
         model.addAttribute("companyId", id);
         List<RIvtDTO> investments = investmentService.getAllInvestmentsByCompanyId(id);
         model.addAttribute("investments", investments);
-        return "showIvtByCmp"; // info.html
+        return "show/ivtByCmp"; // ivtByCmp.html
     }
 
     // 기업별 모든 후속투자 전체조회 페이지
-    @GetMapping("/showFolByCmp/{id}")
+    @GetMapping("/show/folByCmp/{id}")
     public String showFolByCmp(@PathVariable("id") String id, Model model) {
         model.addAttribute("companyId", id);
         List<RFolDTO> followups = followupService.getFollowupByCompanyId(id);
 
         model.addAttribute("followups", followups);
-        return "showFolByCmp"; // info.html
+        return "show/folByCmp"; // folByCmp.html
     }
     // 기업별 모든 감액환입 전체조회 페이지
-    @GetMapping("/showShrupByCmp/{id}")
+    @GetMapping("/show/shrupByCmp/{id}")
     public String showShrupByCmp(@PathVariable("id") String id, Model model) {
         model.addAttribute("companyId", id);
         List<RShrupDTO> shrupDTOS = shrupService.getAllShrupsByCompanyId(id);
 
         model.addAttribute("shrupDTOS", shrupDTOS);
-        return "showShrupByCmp"; // info.html
+        return "show/shrupByCmp"; // shrupByCmp.html
     }
     // 기업별 모든 회수 전체조회 페이지
-    @GetMapping("/showRecoveryByCmp/{id}")
+    @GetMapping("/show/recoveryByCmp/{id}")
     public String showRecoveryByCmp(@PathVariable("id") String id, Model model) {
         model.addAttribute("companyId", id);
         List<RstcupDTO> rstcupDTOS = recoveryService.getAllstcupByCompanyId(id);
 
         model.addAttribute("rstcupDTOS", rstcupDTOS);
-        return "showRecoveryByCmp"; // info.html
+        return "show/recoveryByCmp"; // recoveryByCmp.html
     }
     // 기업별 모든 무상증자  전체조회 페이지
-    @GetMapping("/showBonusByCmp/{id}")
+    @GetMapping("/show/bonusByCmp/{id}")
     public String showBonusByCmp(@PathVariable("id") String id, Model model) {
         model.addAttribute("companyId", id);
         List<RBonusDTO> rBonusDTOS = bonusService.getAllBonusByCompanyId(id);
 
         model.addAttribute("rBonusDTOS", rBonusDTOS);
-        return "showBonusByCmp"; // info.html
+        return "show/bonusByCmp"; // bonusByCmp.html
     }
-    //투자별 계좌조회
-    @GetMapping("/showAccountByIvt/{id}")
-    public String showBonusByCmp(@PathVariable("id") Long id, Model model) {
+    //투자별 계좌조회 //투자 id 값 사용
+    @GetMapping("/show/accountByIvt/{id}")
+    public String showAccountByIvt(@PathVariable("id") Long id, Model model) {
         model.addAttribute("investmentId", id);
         List<RAccountDTO> rAccountDTOS = accountService.getAllAccountsByInvestmentId(id);
 
         model.addAttribute("rAccountDTOS", rAccountDTOS);
-        return "showAccountByIvt"; // info.html
+        return "show/accountByIvt"; // accountByIvt.html
     }
 
 
-
-//지
-//    @GetMapping("/companyRead/{id}")
-//    public String companyRead(@PathVariable("id") String id, Model model) {
-//        System.out.println("📢 companyRead() 호출 - companyId: " + id);
-//        model.addAttribute("companyId", id);
-//        return "companyRead"; // info.html
-//    }
-//
-
-
-    // 재무 및 인력상황
-    @GetMapping("/company/financial/{id}")
-    public String financialInfo(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("companyId", id);
-        return "company/financial"; // financial.html
-    }
-    // 회수성과 팝업
-    @GetMapping("/company/recovery/{companyId}/{investmentId}")
-    public String recoveryInfo(@PathVariable("companyId") String companyId,
-                               @PathVariable("investmentId") String investmentId, Model model) {
-
-        model.addAttribute("companyId", companyId);
-        model.addAttribute("investmentId", investmentId);
-        return "companyAdd/recovery"; // recovery.html
-    }
-
-    // TIPS 팝업
-    @GetMapping("/company/tips/{id}")
-    public String tipsInfo(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("companyId", id);
-        return "company/tips"; // tips.html
-    }
-
-    // 주주명부 팝업
-    @GetMapping("/company/shareholder/{id}")
-    public String shareholderInfo(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("companyId", id);
-        return "company/shareholder"; // shareholder.html
-    }
-
-    // 사업진행현황 팝업
-    @GetMapping("/compaInvestmentServiceny/progress/{id}")
-    public String progressInfo(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("companyId", id);
-        return "company/progress"; // progress.html
-    }
-
-    // 투자회수 팝업
-    @GetMapping("/companyAdd/stockUp/{companyId}/{investmentId}")
-    public String stockUp(@PathVariable("companyId") String companyId,
-                          @PathVariable("investmentId") String investmentId, Model model) {
-
-        model.addAttribute("companyId", companyId);
-        model.addAttribute("investmentId", investmentId);
-        return "companyAdd/stockUp"; // stockUp.html
-    }
-    // 투자상태 팝업
-    @GetMapping("/companyAdd/investmentStatus/{id}")
-    public String investmentStatus(@PathVariable("id") String id, Model model) {
-        model.addAttribute("companyId", id);
-        return "companyAdd/investmentStatus"; // investmentStatus.html
-    }
-    // 팁스현황 팝업
-    @GetMapping("/companyAdd/tips/{id}")
-    public String tips(@PathVariable("id") String id, Model model) {
-        model.addAttribute("companyId", id);
-        return "companyAdd/tips"; // tips.html
-    }
 }

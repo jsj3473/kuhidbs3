@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>사후관리 입력</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let urlParams = new URLSearchParams(window.location.search);
+            let companyId = urlParams.get("companyId") || document.getElementById("companyId")?.value;
+
+            if (companyId) {
+                document.getElementById("companyId").value = companyId;
+            } else {
+                console.warn("🚨 회사 ID가 설정되지 않았습니다!");
+            }
+
+            document.getElementById("manageForm").addEventListener("submit", function (event) {
+                event.preventDefault(); // 기본 제출 방지
+
+                let formData = {
+                    companyId: document.getElementById("companyId")?.value.trim() || "",
+                    evalGrade: document.getElementById("evalGrade")?.value.trim() || "",
+                    businessProgress1: document.getElementById("businessProgress1")?.value.trim() || "",
+                    businessProgress2: document.getElementById("businessProgress2")?.value.trim() || "",
+                    businessProgress3: document.getElementById("businessProgress3")?.value.trim() || "",
+                    managementStatus1: document.getElementById("managementStatus1")?.value.trim() || "",
+                    managementStatus2: document.getElementById("managementStatus2")?.value.trim() || "",
+                    exitPlan: document.getElementById("exitPlan")?.value.trim() || "",
+                    exitEstimation: document.getElementById("exitEstimation")?.value.trim() || ""
+                };
+
+                // 필수 입력값 확인
+                if (!formData.companyId) {
+                    alert("🚨 회사 ID가 누락되었습니다. 다시 시도해주세요.");
+                    return;
+                }
+                if (!formData.evalGrade) {
+                    alert("🚨 평가 등급을 선택해주세요.");
+                    return;
+                }
+
+                console.log("📨 전송할 데이터:", formData); // 확인용
+
+                fetch("/api/companies/createManage", {
+                    method: "POST",
+                    credentials: "include",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(formData)
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error("저장 실패");
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        alert("✅ 사후관리 정보가 저장되었습니다!");
+                        document.getElementById("manageForm").reset(); // 입력 필드 초기화
+                    })
+                    .catch(error => {
+                        alert("❌ 저장 중 오류 발생: " + error.message);
+                    });
+            });
+        });
+    </script>
+</head>
+<body class="container mt-4">
+
+<h2 class="mb-4">사후관리 입력</h2>
+
+<form id="manageForm">
+<!-- 회사 고유번호 및 사용자 정보 -->
+    <input type="hidden" id="companyId" name="companyId" th:value="${companyId}" />
+    <!--    <input type="hidden" id="createUser" name="createUser" th:value="${loggedInUser}" />-->
+    <!--    <input type="hidden" id="updateUser" name="updateUser" th:value="${loggedInUser}" />-->
+
+
+    <!-- 평가 등급 -->
+    <div class="mb-3">
+        <label class="form-label">평가 등급</label>
+        <select class="form-control" id="evalGrade">
+            <option value="">선택하세요</option>
+            <option value="정상투자 A">정상투자 A</option>
+            <option value="정상투자 B">정상투자 B</option>
+            <option value="요주의 C">요주의 C</option>
+            <option value="주의 D">주의 D</option>
+            <option value="투자종료/주식매각">투자종료/주식매각</option>
+            <option value="투자종료/회사청산">투자종료/회사청산</option>
+        </select>
+    </div>
+
+    <!-- 사업 진행 현황 -->
+    <div class="mb-3">
+        <label class="form-label">사업 진행 현황 1</label>
+        <input type="text" class="form-control" id="businessProgress1">
+    </div>
+    <div class="mb-3">
+        <label class="form-label">사업 진행 현황 2</label>
+        <input type="text" class="form-control" id="businessProgress2">
+    </div>
+    <div class="mb-3">
+        <label class="form-label">사업 진행 현황 3</label>
+        <input type="text" class="form-control" id="businessProgress3">
+    </div>
+
+    <!-- 사후관리 현황 -->
+    <div class="mb-3">
+        <label class="form-label">사후관리 현황 1</label>
+        <input type="text" class="form-control" id="managementStatus1">
+    </div>
+    <div class="mb-3">
+        <label class="form-label">사후관리 현황 2</label>
+        <input type="text" class="form-control" id="managementStatus2">
+    </div>
+
+    <!-- Exit 방안 -->
+    <div class="mb-3">
+        <label class="form-label">EXIT 방안</label>
+        <input type="text" class="form-control" id="exitPlan">
+    </div>
+
+    <!-- Exit 예상 -->
+    <div class="mb-3">
+        <label class="form-label">EXIT 예상</label>
+        <input type="text" class="form-control" id="exitEstimation">
+    </div>
+
+    <!-- 저장 버튼 -->
+    <div class="text-end">
+        <button type="submit" class="btn btn-primary">저장</button>
+    </div>
+</form>
+
+</body>
+</html>
