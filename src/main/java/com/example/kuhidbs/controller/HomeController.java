@@ -102,10 +102,17 @@ public class HomeController {
         model.addAttribute("users", userDTOList);
         return "system/userManage"; // userManage.html
     }
-    // 기업 신규등록 페이지
+
+
+// ====================================
+//  기업관리
+// ====================================
+
+
+    // 신규기업등록 페이지
     @GetMapping("/companyAdd")
     public String companyAddPage(Model model) {
-        model.addAttribute("title", "기업 신규등록");
+        model.addAttribute("title", "신규기업등록");
         return "companyAdd"; // companyAdd.html
     }
 
@@ -317,5 +324,16 @@ public class HomeController {
         return "companyManage"; // companyManage.html
     }
 
+
+// ====================================
+//  투자조합(펀드)
+// ====================================
+
+    // 조합 신규등록 페이지
+    @GetMapping("/fundAdd")
+    public String fundAddPage(Model model) {
+        model.addAttribute("title", "신규조합등록");
+        return "fundAdd"; // fundAdd.html
+    }
 
 }

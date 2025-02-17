@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>신규조합등록</title>
+
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script defer th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/datatables-custom.css}">
+    <link rel="stylesheet" th:href="@{/css/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <script th:src="@{/js/common.js}"></script>
+
+    <script defer>
+        document.addEventListener("DOMContentLoaded", function () {
+            const fundForm = document.getElementById("fundForm");
+            let fundId = null;
+
+            fundForm.addEventListener("submit", function (event) {
+                event.preventDefault();
+                fundId = document.getElementById("fundId").value.trim();
+                if (!fundId) {
+                    alert("조합 고유번호를 입력하세요.");
+                    return;
+                }
+                const formData = new FormData(fundForm);
+                fetch("/api/funds/createFund", {
+                    method: "POST",
+                    body: formData
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            alert("저장이 완료되었습니다! 추가 작업을 진행하세요.");
+                        } else {
+                            alert("저장 실패. 다시 시도해주세요.");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("에러 발생:", error);
+                        alert("서버 오류 발생. 관리자에게 문의하세요.");
+                    });
+            });
+
+            // 팝업 열기 함수
+            window.openPopup = function (type) {
+                if (!fundId) {
+                    alert("먼저 조합정보를 저장한 후 투자 입력을 진행하세요.");
+                    return;
+                }
+
+                let url = type === "이동할 페이지"
+                    ? `/fundAdd/이동할 페이지/${fundId}`
+                    : `/fundAdd/이동할 페이지2/${fundId}`;
+
+                window.open(url, "popupWindow", "width=1000,height=600,scrollbars=yes");
+            };
+        });
+    </script>
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<div class="wrapper">
+
+    <!-- 📌 좌측 사이드바 -->
+    <nav class="sidebar">
+        <a href="#" id="이동할 페이지" onclick="openPopup('이동할 페이지')">📊 사후관리 변경</a>
+        <!--<a href="#" id="combineInvestmentLink" onclick="openPopup('combine')">📊 공통 투자 입력</a>-->
+    </nav>
+
+    <div class="content">
+        <h2>📜 조합 정보 입력</h2>
+
+        <form id="fundForm" th:action="@{/api/funds/createFund}" method="post">
+            <div class="mb-3"><label class="form-label">1. 조합 고유번호</label>
+                <input type="text" class="form-control" name="fundId" id="fundId" required></div>
+
+            <div class="mb-3"><label class="form-label">2. 청산 여부</label>
+                <input type="text" class="form-control" name="liquidationStatus"></div>
+
+            <div class="mb-3"><label class="form-label">3. 청산일자</label>
+                <input type="date" class="form-control" name="liquidationDate"></div>
+
+            <div class="mb-3"><label class="form-label">4. 조합명</label>
+                <input type="text" class="form-control" name="fundName"></div>
+
+            <div class="mb-3"><label class="form-label">5. 세부 조합명</label>
+                <input type="text" class="form-control" name="fundNameDetail"></div>
+
+            <div class="mb-3"><label class="form-label">6. 설립일자</label>
+                <input type="date" class="form-control" name="establishmentDate"></div>
+
+            <div class="mb-3"><label class="form-label">7. 존속기간</label>
+                <input type="number" class="form-control" name="duration"></div>
+
+            <div class="mb-3"><label class="form-label">8. 존속기간 시작일</label>
+                <input type="date" class="form-control" name="durationStartDate"></div>
+
+            <div class="mb-3"><label class="form-label">9. 존속기간 종료일</label>
+                <input type="date" class="form-control" name="durationEndDate"></div>
+
+            <div class="mb-3"><label class="form-label">10. 투자기간</label>
+                <input type="number" class="form-control" name="investmentDuration"></div>
+
+            <div class="mb-3"><label class="form-label">11. 투자기간 시작일</label>
+                <input type="date" class="form-control" name="investmentStartDate"></div>
+
+            <div class="mb-3"><label class="form-label">12. 투자기간 종료일</label>
+                <input type="date" class="form-control" name="investmentEndDate"></div>
+
+            <div class="mb-3"><label class="form-label">13. 약정 총액</label>
+                <input type="number" class="form-control" name="committedTotalPrice"></div>
+
+            <div class="mb-3"><label class="form-label">14. 1좌당 금액</label>
+                <input type="number" class="form-control" name="unitPrice"></div>
+
+            <div class="mb-3"><label class="form-label">15. 투자기구 유형</label>
+                <input type="text" class="form-control" name="fundOrganizationType"></div>
+
+            <div class="mb-3"><label class="form-label">16. 납입방법</label>
+                <input type="text" class="form-control" name="paymentType"></div>
+
+            <div class="mb-3"><label class="form-label">17. 운용인력 전원</label>
+                <input type="text" class="form-control" name="currentStaff"></div>
+
+            <div class="mb-3"><label class="form-label">18. 회계감사인명</label>
+                <input type="text" class="form-control" name="auditorName"></div>
+
+            <div class="mb-3"><label class="form-label">19. 회계감사인 변경일자</label>
+                <input type="date" class="form-control" name="auditorDate"></div>
+            <div class="mb-3"><label class="form-label">20. 업무수탁법인</label>
+                <input type="text" class="form-control" name="trusteeCorporation"></div>
+
+            <div class="mb-3"><label class="form-label">21. 사무수탁법인</label>
+                <input type="text" class="form-control" name="administrationCorporation"></div>
+
+            <div class="mb-3"><label class="form-label">22. 기준 수익률</label>
+                <input type="number" step="0.01" class="form-control" name="targetReturnRate"></div>
+
+            <div class="mb-3"><label class="form-label">23. 성과 보수율</label>
+                <input type="number" step="0.01" class="form-control" name="performanceFeeRate"></div>
+
+            <div class="mb-3"><label class="form-label">24. 관리보수 (투자기간)</label>
+                <input type="number" step="0.01" class="form-control" name="managementFeeInvestmentPeriod"></div>
+
+            <div class="mb-3"><label class="form-label">25. 관리보수 (운영기간)</label>
+                <input type="number" step="0.01" class="form-control" name="managementFeeManagementPeriod"></div>
+
+            <div class="mb-3"><label class="form-label">26. 약정기준 여부</label>
+                <input type="text" class="form-control" name="agreementCriteria"></div>
+
+            <div class="mb-3"><label class="form-label">27. 인센티브 조건</label>
+                <input type="text" class="form-control" name="incentiveCondition"></div>
+
+            <div class="mb-3"><label class="form-label">28. 우선손실충당 GP</label>
+                <input type="text" class="form-control" name="priorLossGP"></div>
+
+            <div class="mb-3"><label class="form-label">29. 우선손실충당 LP</label>
+                <input type="text" class="form-control" name="priorLossLP"></div>
+
+            <div class="mt-4">
+                <button type="submit" class="btn btn-primary">저장</button>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>
