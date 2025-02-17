@@ -13,7 +13,20 @@
     <link rel="stylesheet" th:href="@{/css/navbar.css}">
     <script th:src="@{/js/common.js}"></script>
 
-    <style></style>
+    <style>
+        /* 메인 콘텐츠 영역에서 가로 너비를 꽉 차게 만들기 */
+        .full-screen-section {
+            width: 100%;  /* 가로 크기를 부모 요소(메인 콘텐츠)와 동일하게 */
+            max-width: 1200px; /* 원하는 최대 너비 설정 (예: 1200px) */
+            margin: 0 auto; /* 가운데 정렬 */
+        }
+
+        .full-screen-section img {
+            width: 100%;  /* 가로 크기 100% */
+            height: auto;  /* 세로 비율 유지 */
+            display: block;
+        }
+    </style>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const searchModal = new bootstrap.Modal(document.getElementById('searchModal'));
@@ -70,8 +83,19 @@
 
     <!-- 📌 메인 콘텐츠 영역 -->
     <div class="content">
-        <h2>📌 현재 페이지 내용 표시</h2>
-        <p> 페이지별 내용!</p>
+<!--        <h2>📌 현재 페이지 내용 표시</h2>-->
+<!--        <p> 페이지별 내용!</p>-->
+        <!-- 첫 번째 이미지 -->
+        <br>
+        <div class="full-screen-section">
+            <img th:src="@{/images/mainImg1.png}" alt="메인 이미지 1">
+        </div>
+        <br><br>
+        <!-- 두 번째 이미지 -->
+        <div class="full-screen-section">
+            <img th:src="@{/images/mainImg2.png}" alt="메인 이미지 2">
+        </div>
+
     </div>
 </div>
 
