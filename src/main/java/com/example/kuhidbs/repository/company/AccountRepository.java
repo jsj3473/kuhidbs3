@@ -15,5 +15,5 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     Account findTop1ByInvestmentInvestmentIdOrderByAccountIdDesc(Long investmentId);
 
     // 특정 투자 ID에 해당하는 모든 계좌 조회
-    List<Account> findByInvestment_InvestmentId(Long investmentId);
+    List<Account> findByInvestment_InvestmentIdOrderByAccountDateAsc(Long investmentId);
 }

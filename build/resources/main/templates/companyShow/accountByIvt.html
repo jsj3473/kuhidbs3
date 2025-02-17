@@ -19,6 +19,7 @@
 <table class="table table-bordered">
     <thead>
     <tr>
+        <th>변동 일자</th>
         <th>투자 단가</th>
         <th>보유 주식 수</th>
         <th>투자 원금</th>
@@ -28,7 +29,8 @@
     </thead>
     <tbody>
     <!-- ✅ Thymeleaf 반복문을 사용하여 계좌 내역 출력 -->
-    <tr th:each="account : ${rAccountDTOS}">
+    <tr th:each="account : ${rAccountDTOS}">S
+        <td th:text="${account.accountDate}"></td>
         <td th:text="${account.unitPrice}"></td>
         <td th:text="${account.heldShareCount}"></td>
         <td th:text="${account.totalPrincipal}"></td>

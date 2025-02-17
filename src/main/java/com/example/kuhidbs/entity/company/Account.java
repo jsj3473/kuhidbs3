@@ -26,6 +26,9 @@ public class Account extends BaseEntity {
     @JoinColumn(name = "INV_ID", nullable = false)
     private Investment investment; // 투자 고유 번호
 
+    @Column(name = "ACNT_DATE", length = 100)
+    private String accountDate; // 거래 일자
+
     @Column(name = "UNIT_PRICE", nullable = false)
     private Long unitPrice; // 투자 단가
 

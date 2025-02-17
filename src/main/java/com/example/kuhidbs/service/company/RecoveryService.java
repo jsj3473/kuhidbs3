@@ -50,6 +50,7 @@ public class RecoveryService {
         Account latestAccount = accountRepository.findTop1ByInvestmentInvestmentIdOrderByAccountIdDesc(stcupDTO.getInvestmentId());
         // 일부 컬럼 수정
         Account updatedAccount = Account.builder()
+                .accountDate(stcupDTO.getRecoveryDate())
                 .investment(latestAccount.getInvestment()) // 기존 투자 엔터티 유지
                 .unitPrice(latestAccount.getUnitPrice()) // 기존 주당 가치 유지
                 .heldShareCount(latestAccount.getHeldShareCount() - stcupDTO.getRecoveryCount()) // 기존 보유주식수 - 매각주식수

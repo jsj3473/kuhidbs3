@@ -21,11 +21,12 @@ public class AccountService {
      */
     @Transactional(readOnly = true)
     public List<RAccountDTO> getAllAccountsByInvestmentId(Long investmentId) {
-        List<Account> accounts = accountRepository.findByInvestment_InvestmentId(investmentId);
+        List<Account> accounts = accountRepository.findByInvestment_InvestmentIdOrderByAccountDateAsc(investmentId);
 
         return accounts.stream()
                 .map(account -> new RAccountDTO(
                         account.getInvestment().getInvestmentId(),
+                        account.getAccountDate(),
                         account.getUnitPrice(),
                         account.getHeldShareCount(),
                         account.getTotalPrincipal(),

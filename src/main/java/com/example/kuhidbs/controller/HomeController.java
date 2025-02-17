@@ -285,7 +285,7 @@ public class HomeController {
     @GetMapping("/companyShow/manageByCmp/{id}")
     public String companyShowManageByCmp(@PathVariable("id") String id, Model model) {
         model.addAttribute("companyId", id);
-        RMngDTO rMngDTOS = manageService.getManageByCompanyId(id);
+        RMngDTO rMngDTOS = manageService.getTopManageByCompanyId(id);
         model.addAttribute("rMngDTOS", rMngDTOS);
         return "companyShow/manageByCmp"; // manageByCmp.html
     }

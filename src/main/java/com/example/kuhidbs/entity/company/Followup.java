@@ -42,9 +42,6 @@ public class Followup extends BaseEntity {
     @Column(name = "FOL_UNIT_PRICE")
     private Long followupUnitPrice; // 투자 단가
 
-    @Column(name = "FOL_EQT_RATE", precision = 5, scale = 2)
-    private BigDecimal followupEquityRate; // 지분율
-
     @Column(name = "FOL_INV_VAL")
     private Long followupInvestmentValue; // 투자 밸류
 

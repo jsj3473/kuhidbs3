@@ -50,6 +50,7 @@ public class BonusService {
 
         // 일부 컬럼 수정
         Account updatedAccount = Account.builder()
+                .accountDate(dto.getBonusDate()) //날짜갱신
                 .investment(latestAccount.getInvestment()) // 기존 투자 엔터티 유지
                 .unitPrice(dto.getUnitPrice()) // 새로운 주당 가치로 업데이트
                 .heldShareCount(dto.getChangedShareCount()) // 기존 보유 주식 수 유지

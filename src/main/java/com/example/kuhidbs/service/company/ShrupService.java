@@ -55,6 +55,7 @@ public class ShrupService {
 
         // 일부 컬럼 수정
         Account updatedAccount = Account.builder()
+                .accountDate(shrupDTO.getShareUpdateDate())
                 .investment(latestAccount.getInvestment()) // 기존 투자 엔터티 유지
                 .unitPrice(shrupDTO.getShareUnitValue()) // 새로운 주당 가치로 업데이트
                 .heldShareCount(latestAccount.getHeldShareCount()) // 기존 보유 주식 수 유지

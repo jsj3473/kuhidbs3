@@ -88,7 +88,7 @@ public class CompanyService {
         RShrDTO shrDTO = shareholderService.getShareholderByCompanyId(companyId);
 
         // 5. 사후관리 정보 조회 (ManageService 호출)
-        RMngDTO rmngDTO = manageService.getManageByCompanyId(companyId);
+        RMngDTO rmngDTO = manageService.getTopManageByCompanyId(companyId);
 
         Optional<Client> clientOpt = clientRepository.findTopByCompany_CompanyIdOrderByClientIdDesc(companyId);
         Client client = clientOpt.orElse(null);

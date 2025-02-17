@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 @Builder
 public class RAccountDTO {
     private Long investmentId; // 투자 고유 번호 (INV_ID)
+    private String accountDate; //일자
     private Long unitPrice; // 투자 단가
     private Long heldShareCount; // 보유 주식 수
     private Long totalPrincipal; // 투자 원금

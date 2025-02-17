@@ -52,7 +52,7 @@ public class ManageService {
     }
 
     @Transactional(readOnly = true)
-    public RMngDTO getManageByCompanyId(String companyId) {
+    public RMngDTO getTopManageByCompanyId(String companyId) {
         Optional<Manage> manageOpt = manageRepository.findTopByCompany_CompanyIdOrderByManageIdDesc(companyId);
 
         return manageOpt.map(manage -> RMngDTO.builder()
