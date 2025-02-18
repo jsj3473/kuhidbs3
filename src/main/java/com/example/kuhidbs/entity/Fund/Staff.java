@@ -1,5 +1,6 @@
-package com.example.kuhidbs.entity;
+package com.example.kuhidbs.entity.Fund;
 
+import com.example.kuhidbs.entity.BaseEntity;
 import com.example.kuhidbs.entity.Fund.Fund;
 import jakarta.persistence.*;
 import lombok.*;
@@ -11,7 +12,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Staff{
+public class Staff extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 증가 설정

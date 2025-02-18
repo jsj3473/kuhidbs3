@@ -1,7 +1,10 @@
 package com.example.kuhidbs.entity.Fund;
 
+import com.example.kuhidbs.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.math.BigDecimal;
 
 @Entity
 @Table(name = "KUH_FUNDFNC_TBL") // 테이블 이름 지정
@@ -10,7 +13,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class FundFinancial {
+public class FundFinancial extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 증가 설정
@@ -21,9 +24,10 @@ public class FundFinancial {
     @JoinColumn(name = "FUND_ID", nullable = false)
     private Fund fund; // 조합 고유번호 (FK)
 
-    @Column(name = "FNC_YEAR", length = 4)
-    private String financialYear; // 회계연도 (YYYY)
+    @Column(name = "FNC_YEAR", length = 40)
+    private String financialYear; // 회계연도 (YYYY-12)
 
+    // ✅ 재무 상태
     @Column(name = "VENT_AST")
     private Long ventureAssets; // 창투자산
 
@@ -51,6 +55,7 @@ public class FundFinancial {
     @Column(name = "TOT_CAPITAL")
     private Long totalCapital; // 자본총계
 
+    // ✅ 손익 계산
     @Column(name = "OPERATING_REVENUE")
     private Long operatingRevenue; // 영업수익
 
@@ -60,14 +65,24 @@ public class FundFinancial {
     @Column(name = "NET_PROFIT")
     private Long netProfit; // 당기순이익
 
-    @Column(name = "MANAGEMENT_FEE")
-    private Long managementFee; // 관리보수
+    // ✅ 영업비용
 
-    @Column(name = "PERFORMANCE_FEE")
-    private Long performanceFee; // 성과보수
+    @Column(name = "INVESTMENT_IMPAIRMENT_LOSS", precision = 10, scale = 1)
+    private BigDecimal investmentImpairmentLoss; // 투자주식손상차손
 
-    @Column(name = "CUSTODY_MANAGEMENT_FEE")
-    private Long custodyManagementFee; // 수탁관리보수
+    @Column(name = "MANAGEMENT_FEE", precision = 10, scale = 1)
+    private BigDecimal managementFee; // 관리보수
 
-    //데시멀로 해야함 반기영업보고서 참조
+    @Column(name = "PERFORMANCE_FEE", precision = 10, scale = 1)
+    private BigDecimal performanceFee; // 성과보수
+
+    @Column(name = "CUSTODY_MANAGEMENT_FEE", precision = 10, scale = 1)
+    private BigDecimal custodyManagementFee; // 수탁관리보수
+
+
+    @Column(name = "AUDIT_FEE", precision = 10, scale = 1)
+    private BigDecimal auditFee; // 회계감사수수료
+
+    @Column(name = "MISC_EXPENSE", precision = 10, scale = 1)
+    private BigDecimal miscExpense; // 기타 비용
 }

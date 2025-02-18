@@ -5,6 +5,7 @@ import com.example.kuhidbs.entity.Fund.Fund;
 import com.example.kuhidbs.repository.Fund.FundRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -15,39 +16,40 @@ public class FundService {
     // 펀드 생성
     public Fund createFund(CFundDTO dto) {
         Fund fund = Fund.builder()
-                .fundName(dto.getFundName())
-                .fundNameDetail(dto.getFundNameDetail())
-                .establishmentDate(dto.getEstablishmentDate())
-                .durationStartDate(dto.getDurationStartDate())
-                .durationEndDate(dto.getDurationEndDate())
-                .investmentStartDate(dto.getInvestmentStartDate())
-                .investmentEndDate(dto.getInvestmentEndDate())
-                .committedTotalPrice(dto.getCommittedTotalPrice())
-                .paymentType(dto.getPaymentType())
-                .fundManager(dto.getFundManager())
-                .fundOrganizationType(dto.getFundOrganizationType())
-                .tipsType(dto.getTipsType())
-                .fundMainRequirement(dto.getFundMainRequirement())
-                .targetReturnRate(dto.getTargetReturnRate())
-                .performanceFeeRate(dto.getPerformanceFeeRate())
-                .managementFee1(dto.getManagementFee1())
-                .managementFee2(dto.getManagementFee2())
-                .incentive1(dto.getIncentive1())
-                .incentive2(dto.getIncentive2())
-                .incentive3(dto.getIncentive3())
-                .incentive4(dto.getIncentive4())
-                .priorLoss1(dto.getPriorLoss1())
-                .priorLoss2(dto.getPriorLoss2())
-                .dutyRate1(dto.getDutyRate1())
-                .dutyRate2(dto.getDutyRate2())
-                .dutyRate3(dto.getDutyRate3())
-                .dutyRate4(dto.getDutyRate4())
-                .dutyRate5(dto.getDutyRate5())
-                .dutyRate6(dto.getDutyRate6())
-                .dutyRate7(dto.getDutyRate7())
-                .dutyRate8(dto.getDutyRate8())
+                .fundId(dto.getFundId()) // 조합 고유번호
+                .fundName(dto.getFundName()) // 조합명
+                .fundNameDetail(dto.getFundNameDetail()) // 세부 조합명
+                .establishmentDate(dto.getEstablishmentDate()) // 설립일자 (YYYY-MM-DD)
+                .duration(dto.getDuration()) // 존속기간
+                .durationStartDate(dto.getDurationStartDate()) // 존속기간 시작일 (YYYY-MM-DD)
+                .durationEndDate(dto.getDurationEndDate()) // 존속기간 종료일 (YYYY-MM-DD)
+                .investmentDuration(dto.getInvestmentDuration()) // 투자기간
+                .investmentStartDate(dto.getInvestmentStartDate()) // 투자기간 시작일 (YYYY-MM-DD)
+                .investmentEndDate(dto.getInvestmentEndDate()) // 투자기간 종료일 (YYYY-MM-DD)
+                .committedTotalPrice(dto.getCommittedTotalPrice()) // 약정 총액
+                .unitPrice(dto.getUnitPrice()) // 1좌당 금액
+                .fundOrganizationType(dto.getFundOrganizationType()) // 투자기구 유형
+                .paymentType(dto.getPaymentType()) // 납입방법
+                .currentStaff(dto.getCurrentStaff()) // 운용인력 전원
+                .trusteeCorporation(dto.getTrusteeCorporation()) // 업무수탁법인
+                .administrationCorporation(dto.getAdministrationCorporation()) // 사무수탁법인
+                .targetReturnRate(dto.getTargetReturnRate()) // 기준 수익률
+                .performanceFeeRate(dto.getPerformanceFeeRate()) // 성과 보수율
+                .managementFeeInvestmentPeriod(dto.getManagementFeeInvestmentPeriod()) // 관리보수 (투자기간)
+                .managementFeeManagementPeriod(dto.getManagementFeeManagementPeriod()) // 관리보수 (운영기간)
+                .agreementCriteria(dto.getAgreementCriteria()) // 약정기준여부
+                .incentiveCondition(dto.getIncentiveCondition()) // 인센티브 조건
+                .priorLossGP(dto.getPriorLossGP()) // 우선손실충당 GP
+                .priorLossLP(dto.getPriorLossLP()) // 우선손실충당 LP
+                .liquidationStatus(dto.getLiquidationStatus()) // 청산 여부
+                .liquidationDate(dto.getLiquidationDate()) // 청산일자 (YYYY-MM-DD)
                 .build();
 
         return fundRepository.save(fund);
+    }
+
+    @Transactional
+    public void updateCurrentStaff(String fundId, String currentStaff) {
+        fundRepository.updateCurrentStaffByFundId(fundId, currentStaff);
     }
 }

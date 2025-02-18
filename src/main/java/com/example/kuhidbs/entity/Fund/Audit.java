@@ -1,5 +1,6 @@
-package com.example.kuhidbs.entity;
+package com.example.kuhidbs.entity.Fund;
 
+import com.example.kuhidbs.entity.BaseEntity;
 import com.example.kuhidbs.entity.Fund.Fund;
 import jakarta.persistence.*;
 import lombok.*;
@@ -11,18 +12,22 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Audit {
+public class Audit extends BaseEntity {
 
     @Id
-    @Column(name = "AUDIT_ID", length = 8, nullable = false)
-    private String auditId; // 회계감사 고유번호 (PK)
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 증가 설정
+    @Column(name = "AUDIT_ID", nullable = false)
+    private Long auditId; // 조합재무제표 고유번호 (PK, Auto Increment)
 
     @ManyToOne
     @JoinColumn(name = "FUND_ID", nullable = false)
     private Fund fund; // 조합 고유번호 (FK)
 
+    @Column(name = "CHNG_YR")
+    private String fncYear; // 회계연도
+
     @Column(name = "CHNG_DT")
-    private String changeDate; // 변경일자 (YYYY-MM-DD)
+    private String changeDate; // 변경일자 (변경일자)
 
     @Column(name = "AUDIT_NM", length = 8)
     private String auditorName; // 회계감사인명

@@ -239,4 +239,57 @@ createBouns
   "unitPrice": 4000
 }
 
+http://localhost:8080/api/funds/createFund
+{
+  "fundId": "F2025001",
+  "liquidationStatus": "Active",
+  "liquidationDate": "2035-12-31",
+  "fundName": "성장펀드 1호",
+  "fundNameDetail": "벤처 성장 투자 조합",
+  "establishmentDate": "2025-01-15",
+  "duration": 10,
+  "durationStartDate": "2025-01-15",
+  "durationEndDate": "2035-01-14",
+  "investmentDuration": 5,
+  "investmentStartDate": "2025-01-15",
+  "investmentEndDate": "2030-01-14",
+  "committedTotalPrice": 50000000000,
+  "unitPrice": 1000000,
+  "fundOrganizationType": "Limited Partnership",
+  "paymentType": "Installment",
+  "currentStaff": "송승용(대펀), 홍승표 (반기보고서 참조)",
+  "auditorName": "삼정회계법인",
+  "auditorDate": "2026-06-30",
+  "trusteeCorporation": "한국예탁결제원",
+  "administrationCorporation": "신한은행",
+  "targetReturnRate": 8.50,
+  "performanceFeeRate": 20.00,
+  "managementFeeInvestmentPeriod": 2.50,
+  "managementFeeManagementPeriod": 1.50,
+  "agreementCriteria": "Yes",
+  "incentiveCondition": "성과보수 20% 초과 수익배분",
+  "priorLossGP": "10%",
+  "priorLossLP": "90%"
+}
 
+http://localhost:8080/api/funds/createAudit
+
+{
+  "fundId": "F2025001",
+  "changeDate": "2025-02-17",
+  "fncYear": "2024"
+  "auditorName": "김회계",
+  "changeReason": "회계감사인 변경으로 인한 업데이트"
+}
+
+
+http://localhost:8080/api/funds/createStaff
+
+{
+  "fundId": "F2025001",
+  "changeDate": "2025-02-17",
+  "previousStaff": "이운용, 박펀드",
+  "currentStaff": "김운용, 최투자",
+  "resignDate": "2025-02-16",
+  "reasonAndSanction": "퇴사 사유: 개인 사정 / 내부 징계 없음"
+}

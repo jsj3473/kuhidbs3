@@ -9,7 +9,7 @@ import lombok.*;
 @Builder
 public class CStaffDTO {
 
-    private Long fundId; // 조합 고유번호 (FK)
+    private String fundId; // 조합 고유번호 (FK)
     private String changeDate; // 변경일자 (YYYY-MM-DD)
     private String previousStaff; // 변경 전 운용인력
     private String currentStaff; // 변경 후 운용인력

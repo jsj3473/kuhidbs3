@@ -1,12 +1,15 @@
 package com.example.kuhidbs.service.Fund;
 
 import com.example.kuhidbs.dto.Fund.CStaffDTO;
-import com.example.kuhidbs.entity.Fund.Fund;
-import com.example.kuhidbs.entity.Staff;
+import com.example.kuhidbs.dto.Fund.RStaffDTO;
+import com.example.kuhidbs.entity.Fund.*;
 import com.example.kuhidbs.repository.Fund.FundRepository;
 import com.example.kuhidbs.repository.Fund.StaffRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,5 +33,19 @@ public class StaffService {
                 .build();
 
         return staffRepository.save(staff);
+    }
+
+    // 특정 fundId에 해당하는 모든 Staff 변경 내역 조회
+    public List<RStaffDTO> getStaffChangesByFundId(String fundId) {
+        List<Staff> staffChanges = staffRepository.findByFund_FundId(fundId);
+
+        return staffChanges.stream().map(staff -> RStaffDTO.builder()
+                .changeDate(staff.getChangeDate())
+                .previousStaff(staff.getPreviousStaff())
+                .currentStaff(staff.getCurrentStaff())
+                .resignDate(staff.getResignDate())
+                .reasonAndSanction(staff.getReasonAndSanction())
+                .build()
+        ).collect(Collectors.toList());
     }
 }
