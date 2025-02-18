@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>조합 재무 정보 등록</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="container mt-4">
+
+<h2 class="mb-4">조합 재무 정보 등록</h2>
+
+<form id="fundFinancialAddForm">
+    <input type="hidden" id="fundId" name="fundId" th:value="${fundId}" />
+
+    <div class="mb-3">
+        <label class="form-label">회계연도</label>
+        <input type="month" class="form-control" id="financialYear">
+    </div>
+
+    <!-- 재무 상태 -->
+    <div class="card mt-4">
+        <div class="card-header">재무 상태</div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label class="form-label">창투자산</label>
+                <input type="number" class="form-control" id="ventureAssets">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">기타자산</label>
+                <input type="number" class="form-control" id="otherAssets">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">자산총계</label>
+                <input type="number" class="form-control" id="totalAssets">
+            </div>
+        </div>
+    </div>
+
+    <!-- 손익 계산 -->
+    <div class="card mt-4">
+        <div class="card-header">손익 계산</div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label class="form-label">영업수익</label>
+                <input type="number" class="form-control" id="operatingRevenue">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">영업비용</label>
+                <input type="number" class="form-control" id="operatingExpense">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">당기순이익</label>
+                <input type="number" class="form-control" id="netProfit">
+            </div>
+        </div>
+    </div>
+
+    <!-- 영업비용 상세 -->
+    <div class="card mt-4">
+        <div class="card-header">영업비용 상세</div>
+        <div class="card-body">
+            <div class="mb-3">
+                <label class="form-label">투자주식손상차손</label>
+                <input type="number" step="0.1" class="form-control" id="investmentImpairmentLoss">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">관리보수</label>
+                <input type="number" step="0.1" class="form-control" id="managementFee">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">성과보수</label>
+                <input type="number" step="0.1" class="form-control" id="performanceFee">
+            </div>
+        </div>
+    </div>
+
+    <div class="text-end mt-4">
+        <button type="submit" class="btn btn-primary">저장</button>
+    </div>
+</form>
+
+</body>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("fundFinancialAddForm").addEventListener("submit", submitFundFinancialAddForm);
+    });
+
+    function submitFundFinancialAddForm(event) {
+        event.preventDefault();
+
+        let formData = {
+            fundId: document.getElementById("fundId")?.value.trim() || "",
+            financialYear: document.getElementById("financialYear")?.value.trim() || "",
+            ventureAssets: document.getElementById("ventureAssets")?.value.trim() || "",
+            otherAssets: document.getElementById("otherAssets")?.value.trim() || "",
+            totalAssets: document.getElementById("totalAssets")?.value.trim() || "",
+            operatingRevenue: document.getElementById("operatingRevenue")?.value.trim() || "",
+            operatingExpense: document.getElementById("operatingExpense")?.value.trim() || "",
+            netProfit: document.getElementById("netProfit")?.value.trim() || "",
+            investmentImpairmentLoss: document.getElementById("investmentImpairmentLoss")?.value.trim() || "",
+            managementFee: document.getElementById("managementFee")?.value.trim() || "",
+            performanceFee: document.getElementById("performanceFee")?.value.trim() || ""
+        };
+
+        console.log("전송되는 JSON 데이터:", JSON.stringify(formData, null, 2));
+
+        fetch("/api/funds/createFundFinancial", {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(formData)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("저장 실패");
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert("재무 정보가 저장되었습니다.");
+                document.getElementById("fundFinancialAddForm").reset();
+            })
+            .catch(error => {
+                alert("저장 중 오류 발생: " + error.message);
+            });
+    }
+</script>
+</html>

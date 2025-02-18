@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>회계감사인 등록</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="container mt-4">
+
+<h2 class="mb-4">회계감사인 등록</h2>
+
+<form id="auditAddForm">
+    <input type="hidden" id="fundId" name="fundId" th:value="${fundId}"/>
+
+    <div class="mb-3">
+        <label class="form-label">연도</label>
+        <input type="text" class="form-control" id="fncYear" placeholder="예: 2024">
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">변경일자</label>
+        <input type="date" class="form-control" id="changeDate">
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">회계감사인명</label>
+        <input type="text" class="form-control" id="auditorName" placeholder="회계감사인 입력">
+    </div>
+
+    <div class="mb-3">
+        <label class="form-label">변경 사유</label>
+        <input type="text" class="form-control" id="changeReason" placeholder="변경 사유 입력">
+    </div>
+
+    <div class="text-end">
+        <button type="submit" class="btn btn-primary">저장</button>
+    </div>
+</form>
+
+</body>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.getElementById("auditAddForm").addEventListener("submit", submitAuditAddForm);
+    });
+
+    function submitAuditAddForm(event) {
+        event.preventDefault();
+
+        let formData = {
+            fundId: document.getElementById("fundId")?.value.trim() || "",
+            fncYear: document.getElementById("fncYear")?.value.trim() || "",
+            changeDate: document.getElementById("changeDate")?.value.trim() || "",
+            auditorName: document.getElementById("auditorName")?.value.trim() || "",
+            changeReason: document.getElementById("changeReason")?.value.trim() || ""
+        };
+
+        console.log("전송되는 JSON 데이터:", JSON.stringify(formData, null, 2));
+
+        if (!formData.fundId) {
+            alert("조합 고유번호가 누락되었습니다.");
+            return;
+        }
+        if (!formData.fncYear) {
+            alert("연도를 입력해주세요.");
+            return;
+        }
+        if (!formData.changeDate) {
+            alert("변경일자를 입력해주세요.");
+            return;
+        }
+        if (!formData.auditorName) {
+            alert("회계감사인을 입력해주세요.");
+            return;
+        }
+        if (!formData.changeReason) {
+            alert("변경 사유를 입력해주세요.");
+            return;
+        }
+
+        fetch("/api/funds/createAudit", {
+            method: "POST",
+            credentials: "include",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(formData)
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("저장 실패");
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert("회계감사인 정보가 저장되었습니다.");
+                document.getElementById("auditAddForm").reset();
+            })
+            .catch(error => {
+                alert("저장 중 오류 발생: " + error.message);
+            });
+    }
+</script>
+</html>

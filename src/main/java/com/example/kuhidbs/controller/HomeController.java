@@ -1,5 +1,6 @@
 package com.example.kuhidbs.controller;
 
+import com.example.kuhidbs.dto.Fund.RFundFinancialDTO;
 import com.example.kuhidbs.dto.company.kuh투자.RIvtDTO;
 import com.example.kuhidbs.dto.company.감액환입.RShrupDTO;
 import com.example.kuhidbs.dto.company.무증.RBonusDTO;
@@ -13,6 +14,7 @@ import com.example.kuhidbs.dto.company.회수.RstcupDTO;
 import com.example.kuhidbs.dto.company.후속투자.RFolDTO;
 import com.example.kuhidbs.dto.user.UserDTO;
 import com.example.kuhidbs.entity.User;
+import com.example.kuhidbs.service.Fund.FundFinancialService;
 import com.example.kuhidbs.service.UserService;
 import com.example.kuhidbs.service.company.*;
 import jakarta.servlet.http.HttpSession;
@@ -54,6 +56,8 @@ public class HomeController {
     private FinancialService financialService;
     @Autowired
     private ReviewerService reviewerService;
+    @Autowired
+    private FundFinancialService fundFinancialService;
 
     //공통 데이터 설정
     @ModelAttribute
@@ -335,5 +339,55 @@ public class HomeController {
         model.addAttribute("title", "신규조합등록");
         return "fundAdd"; // fundAdd.html
     }
+    // 회계감사인 입력 팝업
+    @GetMapping("/fundAdd/audit/{id}")
+    public String audit(@PathVariable("id") String id, Model model) {
+        model.addAttribute("fundId", id);
+        return "fundAdd/audit"; // audit.html
+    }
+    // 운용인력 입력 팝업
+    @GetMapping("/fundAdd/staff/{id}")
+    public String staff(@PathVariable("id") String id, Model model) {
+        model.addAttribute("fundId", id);
+        return "fundAdd/staff"; // staff.html
+    }
+    // 조합재무제표 입력 팝업
+    @GetMapping("/fundAdd/fundFinancial/{id}")
+    public String fundFinancial(@PathVariable("id") String id, Model model) {
+        model.addAttribute("fundId", id);
+        return "fundAdd/fundFinancial"; // fundFinancial.html
+    }
 
+
+
+    // 회계감사인 조회 팝업
+    @GetMapping("/fundShow/auditsByFund/{id}")
+    public String auditsByFund(@PathVariable("id") String id, Model model) {
+        model.addAttribute("fundId", id);
+        return "fundShow/auditsByFund"; // auditsByFund.html
+    }
+    // 운용인력 조회 팝업
+    @GetMapping("/fundShow/staffsByFund/{id}")
+    public String staffsByFund(@PathVariable("id") String id, Model model) {
+        model.addAttribute("fundId", id);
+        return "fundShow/staffsByFund"; // staffsByFund.html
+    }
+    // 조합재무제표 조회 팝업
+    @GetMapping("/fundShow/financialsByFund/{id}")
+    public String financialsByFund(@PathVariable("id") String id, Model model) {
+        model.addAttribute("fundId", id);
+
+        // ✅ 재무제표 데이터를 서비스에서 가져오기
+        List<RFundFinancialDTO> rFundFinancialDTOS = fundFinancialService.getFundFinancialsByFundId(id);
+        model.addAttribute("rFundFinancialDTOS", rFundFinancialDTOS);
+
+        return "fundShow/financialsByFund"; // financialsByFund.html
+    }
+
+    // 기업 전체조회 페이지
+    @GetMapping("/fundShow/{id}")
+    public String fundShow(@PathVariable("id") String id, Model model) {
+        model.addAttribute("fundId", id);
+        return "fundShow"; // fundShow.html
+    }
 }

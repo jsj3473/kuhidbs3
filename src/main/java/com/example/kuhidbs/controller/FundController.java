@@ -23,7 +23,7 @@ public class FundController {
 
     // 펀드 생성 API
     @PostMapping("/createFund")
-    public ResponseEntity<Fund> createFund(@RequestBody CFundDTO dto) {
+    public ResponseEntity<Fund> createFund(@ModelAttribute CFundDTO dto) {
         fundService.createFund(dto);
         auditService.createAuditByFund(dto);
         return ResponseEntity.ok().build();
@@ -44,6 +44,14 @@ public class FundController {
         return ResponseEntity.ok(newStaff);
     }
 
+    /**
+     * ✅ 재무 정보 생성 API
+     */
+    @PostMapping("/createFundFinancial")
+    public FundFinancial createFundFinancial(@RequestBody CFundFinancialDTO dto) {
+        return fundFinancialService.createFundFinancial(dto);
+    }
+
     // 특정 fundId에 해당하는 모든 Audit 데이터 조회
     @GetMapping("showAuditsByFund/{fundId}")
     public ResponseEntity<List<RAuditDTO>> getAuditsByFundId(@PathVariable String fundId) {
@@ -56,14 +64,6 @@ public class FundController {
     public ResponseEntity<List<RStaffDTO>> getStaffChangesByFundId(@PathVariable String fundId) {
         List<RStaffDTO> staffChanges = staffService.getStaffChangesByFundId(fundId);
         return ResponseEntity.ok(staffChanges);
-    }
-
-    /**
-     * ✅ 재무 정보 생성 API
-     */
-    @PostMapping("/createFundFinancial")
-    public FundFinancial createFundFinancial(@RequestBody CFundFinancialDTO dto) {
-        return fundFinancialService.createFundFinancial(dto);
     }
 
     /**

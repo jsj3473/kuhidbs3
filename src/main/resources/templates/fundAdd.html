@@ -45,7 +45,7 @@
             // 팝업 열기 함수
             window.openPopup = function (type) {
                 if (!fundId) {
-                    alert("먼저 조합정보를 저장한 후 투자 입력을 진행하세요.");
+                    alert("먼저 조합정보를 저장한 후 입력을 진행하세요.");
                     return;
                 }
 
@@ -57,6 +57,48 @@
             };
         });
     </script>
+
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const searchModal = new bootstrap.Modal(document.getElementById('searchModal'));
+            const searchInput = document.getElementById('companyIdInput');
+            const searchButton = document.getElementById('searchButton');
+
+            function openSearchModal(target) {
+                searchInput.value = ''; // 입력창 초기화
+                searchButton.setAttribute("onclick", `goToPage('${target}')`);
+                searchModal.show();
+                setTimeout(() => searchInput.focus(), 200); // 모달 열리면 자동 포커스
+            }
+
+            function goToPage(target) {
+                const companyId = searchInput.value.trim();
+                if (!companyId) {
+                    alert("회사 고유번호를 입력하세요.");
+                    return;
+                }
+                window.location.href = `/${target}/${companyId}`;
+            }
+
+            // Enter 키 입력 시 검색 실행
+            searchInput.addEventListener("keypress", function (event) {
+                if (event.key === "Enter") {
+                    searchButton.click();
+                }
+            });
+
+            // 검색 버튼 클릭 시 실행 (중복 이벤트 방지)
+            searchButton.addEventListener("click", function () {
+                goToPage(searchButton.getAttribute("onclick").match(/'([^']+)'/)[1]);
+            });
+
+            // 전역 함수로 설정 (Thymeleaf에서 호출 가능)
+            window.openSearchModal = openSearchModal;
+        });
+
+    </script>
+
 </head>
 <body>
 <div th:replace="fragments/navbar :: navbar"></div>
@@ -65,12 +107,12 @@
 
     <!-- 📌 좌측 사이드바 -->
     <nav class="sidebar">
-        <a href="#" id="이동할 페이지" onclick="openPopup('이동할 페이지')">📊 사후관리 변경</a>
+        <a href="#" id="이동할 페이지" onclick="openPopup('이동할 페이지')">📊 이동할 페이지</a>
         <!--<a href="#" id="combineInvestmentLink" onclick="openPopup('combine')">📊 공통 투자 입력</a>-->
     </nav>
 
     <div class="content">
-        <h2>📜 조합 정보 입력</h2>
+        <h2>🏦 조합 정보 입력</h2>
 
         <form id="fundForm" th:action="@{/api/funds/createFund}" method="post">
             <div class="mb-3"><label class="form-label">1. 조합 고유번호</label>
@@ -165,5 +207,19 @@
         </form>
     </div>
 </div>
+
+<!-- 🔍 검색 모달 -->
+<div class="modal fade" id="searchModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-body p-2 d-flex align-items-center">
+                <input type="text" id="companyIdInput" class="form-control me-2" placeholder="고유번호 입력" style="flex: 1; min-width: 120px;">
+                <button type="button" class="btn btn-primary btn-sm" id="searchButton">검색</button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>
