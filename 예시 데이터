@@ -293,3 +293,43 @@ http://localhost:8080/api/funds/createStaff
   "resignDate": "2025-02-16",
   "reasonAndSanction": "퇴사 사유: 개인 사정 / 내부 징계 없음"
 }
+
+http://localhost:8080/api/funds/createFundMem
+[
+    {
+        "fundId": "F2025_001",
+        "memberType": "일반",
+        "memberName": "홍길동",
+        "committedUnitPrice": 1000000,
+        "contributionRate": 10.5,
+        "businessType": "개인사업자",
+        "businessRegNo": "123-45-67890",
+        "contact": "010-1234-5678",
+        "residentRegNo": "123456-7890123",
+        "address": "서울시 강남구"
+    },
+    {
+        "fundId": "F2025_001",
+        "memberType": "VIP",
+        "memberName": "김영희",
+        "committedUnitPrice": 5000000,
+        "contributionRate": 15.75,
+        "businessType": "법인",
+        "businessRegNo": "987-65-43210",
+        "contact": "010-9876-5432",
+        "residentRegNo": "789012-3456789",
+        "address": "부산시 해운대구"
+    },
+    {
+        "fundId": "F2025_001",
+        "memberType": "프리미엄",
+        "memberName": "이철수",
+        "committedUnitPrice": 2500000,
+        "contributionRate": 12.0,
+        "businessType": "개인사업자",
+        "businessRegNo": "456-78-90123",
+        "contact": "010-4567-8901",
+        "residentRegNo": "234567-8901234",
+        "address": "대전시 서구"
+    }
+]

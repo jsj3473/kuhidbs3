@@ -20,10 +20,12 @@ public class FundController {
     private final AuditService auditService;
     private final StaffService staffService;
     private final FundFinancialService fundFinancialService;
+    private final FundMemService fundMemService;
 
     // 펀드 생성 API
     @PostMapping("/createFund")
     public ResponseEntity<Fund> createFund(@ModelAttribute CFundDTO dto) {
+        System.out.println(dto.getFundId());
         fundService.createFund(dto);
         auditService.createAuditByFund(dto);
         return ResponseEntity.ok().build();
@@ -72,5 +74,15 @@ public class FundController {
     @GetMapping("/showFundFinancialsByFund/{fundId}")
     public List<RFundFinancialDTO> getFundFinancials(@PathVariable String fundId) {
         return fundFinancialService.getFundFinancialsByFundId(fundId);
+    }
+
+
+    /**
+     * 조합원 목록을 받아 저장하는 API
+     */
+    @PostMapping("/createFundMem")
+    public ResponseEntity<List<FundMem>> createFundMems(@RequestBody List<CFundMemDTO> dtos) {
+        List<FundMem> savedFundMems = fundMemService.saveAll(dtos);
+        return ResponseEntity.ok(savedFundMems);
     }
 }

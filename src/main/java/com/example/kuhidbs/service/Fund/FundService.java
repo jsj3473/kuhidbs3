@@ -15,6 +15,7 @@ public class FundService {
 
     // 펀드 생성
     public Fund createFund(CFundDTO dto) {
+        System.out.println(dto.getFundId());
         Fund fund = Fund.builder()
                 .fundId(dto.getFundId()) // 조합 고유번호
                 .fundName(dto.getFundName()) // 조합명
