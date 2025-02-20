@@ -202,6 +202,13 @@ public class CompanyController {
         return ResponseEntity.ok(companyInfo);
     }
 
+    // 투자후속관리 회사 기본정보 조회 api
+    @GetMapping("/info2/{companyId}")
+    public ResponseEntity<RCmpInf2DTO> getCompany2Info(@PathVariable String companyId) {
+        RCmpInf2DTO companyInfo = companyService.getCompanyInfo2(companyId);
+        return ResponseEntity.ok(companyInfo);
+    }
+
 
 
     // 팁스 정보 수정 API

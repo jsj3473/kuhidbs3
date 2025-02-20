@@ -2,6 +2,7 @@ package com.example.kuhidbs.service.company;
 
 import com.example.kuhidbs.dto.company.kuh투자.RIvtDTO;
 import com.example.kuhidbs.dto.company.기본정보.CCmpInfDTO;
+import com.example.kuhidbs.dto.company.기본정보.RCmpInf2DTO;
 import com.example.kuhidbs.dto.company.기본정보.RCmpInfDTO;
 import com.example.kuhidbs.dto.company.사후관리.RMngDTO;
 import com.example.kuhidbs.dto.company.재무.RFncDTO;
@@ -171,6 +172,76 @@ public class CompanyService {
 
                 //현재 투자상태
                 .currentStatusDTO(statusDTO)
+                .build();
+    }
+
+    @Transactional(readOnly = true)
+    public RCmpInf2DTO getCompanyInfo2(String companyId) {
+        // 1. 회사 기본 정보 조회
+        Company company = companyRepository.findById(companyId)
+                .orElseThrow(() -> new EntityNotFoundException("Company not found with id: " + companyId));
+
+        // 2. 최근 2개 재무제표 조회 (FinancialService 호출)
+        List<RFncDTO> recentFinancials = financialService.getRecentFinancialsByCompanyId(companyId);
+
+        Optional<Client> clientOpt = clientRepository.findTopByCompany_CompanyIdOrderByClientIdDesc(companyId);
+        Client client = clientOpt.orElse(null);
+
+        // 6. 담당자 정보 조회 (최신 정보 가져오기)
+        String latestManager1 = reviewerService.getLatestManagerByType(companyId, "발굴자");
+        String latestManager2 = reviewerService.getLatestManagerByType(companyId, "심사자");
+        String latestManager3 = reviewerService.getLatestManagerByType(companyId, "사후관리자");
+
+
+
+        // 7. DTO 생성 및 데이터 매핑
+        return RCmpInf2DTO.builder()
+                .companyId(company.getCompanyId())
+                .companyName(company.getCompanyName())
+                .establishmentDate(company.getEstablishmentDate())
+                .ceoName(company.getCeoName())
+                .companyAddress(company.getCompanyAddress())
+                .businessRegistrationNumber(company.getBusinessRegistrationNumber())
+                .corporateRegistrationNumber(company.getCorporateRegistrationNumber())
+                .industryCode(company.getIndustryCode())
+                .capital(company.getCapital())
+                .parValue(company.getParValue())
+                .employeeCount(company.getEmployeeCount())
+                .startupType(company.getStartupType())
+                .regionalCompany(company.getRegionalCompany())
+                .kuhStartup(company.getKuhStartup())
+                .ventureRecognition(company.getVentureRecognition())
+                .researchRecognition(company.getResearchRecognition())
+                .earlyStartupType(company.getEarlyStartupType())
+                .kuhSubsidiary(company.getKuhSubsidiary())
+                .investmentSector(company.getInvestmentSector())
+                .dueDiligence(company.getDueDiligence())
+                .mainProducts(company.getMainProducts())
+                .investmentPoint1(company.getInvestmentPoint1())
+                .investmentPoint2(company.getInvestmentPoint2())
+                .investmentPoint3(company.getInvestmentPoint3())
+                .publicTechnologyTransfer(company.getPublicTechnologyTransfer())
+                .smeStatus(company.getSmeStatus())
+                .listingStatus(company.getListingStatus())
+                .companyPostalCode(company.getCompanyPostalCode())
+
+                // 최근 2개 재무제표
+                .recentFinancials(recentFinancials)
+
+
+
+                // 담당자 정보
+                .manager1(latestManager1)
+                .manager2(latestManager2)
+                .manager3(latestManager3)
+
+                //client table 피투자기업 실무자
+                .positionType(client != null ? client.getPositionType() : null)
+                .phoneNumber(client != null ? client.getPhoneNumber() : null)
+                .email(client != null ? client.getEmail() : null)
+                .name(client != null ? client.getName() : null)
+
+
                 .build();
     }
 }

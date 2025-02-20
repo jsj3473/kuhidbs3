@@ -14,7 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 
-public class RCmpInfDTO {
+public class RCmpInf2DTO {
     private String companyId;
 
     private String companyName;
@@ -27,37 +27,43 @@ public class RCmpInfDTO {
 
     private String companyPostalCode; //회사우편번호
 
-    private String businessRegistrationNumber;
+    private String businessRegistrationNumber; //사업자등록번호
 
-    private String corporateRegistrationNumber;
+    private String corporateRegistrationNumber; //법인등록번호
 
     private String industryCode;
 
     private Integer capital;
 
-    private Integer parValue;
+    private Integer parValue; //액면가
 
-    private Integer employeeCount;
-
-    private String startupType;
-
-    private String regionalCompany;
-
-    private String kuhStartup;
-
-    private String ventureRecognition;
-
-    private String researchRecognition;
-
-    private String earlyStartupType;
+    private Integer employeeCount; //임직원수
 
     private String kuhSubsidiary; //kuh 자회사
 
-    private String investmentSector; //biz sector 구분
+    private String kuhStartup; //고대창업구분
+
+    private String startupType; //창업구분
+
+    private String earlyStartupType; //초기창업구분
+
+    private String smeStatus; //중소기업여부
+
+    private String regionalCompany;  //지방창업구분
+
+    private String ventureRecognition; //벤처기업구분
+
+    private String researchRecognition; //연구소기업구분
+
+    private String publicTechnologyTransfer; //공공기술이전
 
     private String dueDiligence; //투자기업실사
 
-    private String mainProducts;
+    private String listingStatus; //상장여부
+
+    private String investmentSector; //biz sector 구분
+
+    private String mainProducts; //주요제품내용
 
     private String investmentPoint1;
 
@@ -65,25 +71,9 @@ public class RCmpInfDTO {
 
     private String investmentPoint3;
 
-    private String evaluationEmployee;
-
-    private String publicTechnologyTransfer;
-
-    private String smeStatus; //중소기업여부
-
-    private String listingDate;
-
-    private String listingStatus;
-
 
     // 최근 2개의 재무제표 정보
     private List<RFncDTO> recentFinancials;
-
-    //kuh 투자내역
-    private RIvtDTO rivtDTO;
-
-    //주주명부
-    private RShrDTO shrDTO;
     //발굴자
     private String manager1;
     //심사자
@@ -96,13 +86,4 @@ public class RCmpInfDTO {
     private String phoneNumber;
     private String email;
     private String name;
-
-    //사후관리 표시 manage테이블에서 가져옴
-    private RMngDTO rmngDTO;
-
-    //후속투자 테이블에서 가져온 가장 최신의 기업가치
-    private Long currentCompanyValue;
-
-    //투자상태
-    private RStatusDTO currentStatusDTO;
 }
