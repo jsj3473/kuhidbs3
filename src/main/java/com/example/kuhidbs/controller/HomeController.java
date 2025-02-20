@@ -1,6 +1,7 @@
 package com.example.kuhidbs.controller;
 
 import com.example.kuhidbs.dto.Fund.RFundFinancialDTO;
+import com.example.kuhidbs.dto.Fund.RFundNameDTO;
 import com.example.kuhidbs.dto.company.kuh투자.RIvtDTO;
 import com.example.kuhidbs.dto.company.감액환입.RShrupDTO;
 import com.example.kuhidbs.dto.company.무증.RBonusDTO;
@@ -15,6 +16,7 @@ import com.example.kuhidbs.dto.company.후속투자.RFolDTO;
 import com.example.kuhidbs.dto.user.UserDTO;
 import com.example.kuhidbs.entity.User;
 import com.example.kuhidbs.service.Fund.FundFinancialService;
+import com.example.kuhidbs.service.Fund.FundService;
 import com.example.kuhidbs.service.UserService;
 import com.example.kuhidbs.service.company.*;
 import jakarta.servlet.http.HttpSession;
@@ -58,6 +60,8 @@ public class HomeController {
     private ReviewerService reviewerService;
     @Autowired
     private FundFinancialService fundFinancialService;
+    @Autowired
+    private FundService fundService;
 
     //공통 데이터 설정
     @ModelAttribute
@@ -124,6 +128,8 @@ public class HomeController {
     @GetMapping("/companyAdd/kuhInvestment/{id}")
     public String kuhInvestment(@PathVariable("id") String id, Model model) {
         model.addAttribute("companyId", id);
+        List<RFundNameDTO> funds = fundService.getAllFundIdAndName();
+        model.addAttribute("funds", funds);
         return "companyAdd/kuhInvestment"; // kuhInvestment.html
     }
 

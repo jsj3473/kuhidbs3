@@ -2,9 +2,11 @@ package com.example.kuhidbs.service.company;
 
 import com.example.kuhidbs.dto.company.kuh투자.CIvtDTO;
 import com.example.kuhidbs.dto.company.kuh투자.RIvtDTO;
+import com.example.kuhidbs.entity.Fund.Fund;
 import com.example.kuhidbs.entity.company.Account;
 import com.example.kuhidbs.entity.company.Company;
 import com.example.kuhidbs.entity.company.Investment;
+import com.example.kuhidbs.repository.Fund.FundRepository;
 import com.example.kuhidbs.repository.company.AccountRepository;
 import com.example.kuhidbs.repository.company.CompanyRepository;
 import com.example.kuhidbs.repository.company.InvestmentRepository;
@@ -27,6 +29,8 @@ public class InvestmentService {
 
     @Autowired
     private AccountRepository accountRepository;
+    @Autowired
+    private FundRepository fundRepository;
 
     /**
      * 투자 정보를 저장하는 메서드.
@@ -40,8 +44,12 @@ public class InvestmentService {
         Company company = companyRepository.findById(dto.getCompanyId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid company ID: " + dto.getCompanyId()));
 
+        // ✅ Fund 객체 조회
+        Fund fund = fundRepository.findById(dto.getFundId())
+                .orElseThrow(() -> new IllegalArgumentException("Invalid fund ID: " + dto.getFundId()));
+
         // DTO를 Ivt 엔터티로 변환
-        Investment investment = toEntity(dto, company);
+        Investment investment = toEntity(dto, company, fund);
 
         // Ivt 엔터티 저장
         Investment savedInvestment = investmentRepository.save(investment);
@@ -57,11 +65,12 @@ public class InvestmentService {
     public RIvtDTO getInvestmentByCompanyIdRecent(String companyId) {
         Optional<Investment> investmentOpt = investmentRepository.findFirstByCompany_CompanyIdOrderByInvestmentIdDesc(companyId);
 
+
         return investmentOpt.map(investment -> RIvtDTO.builder()
                 .investmentId(investment.getInvestmentId())
                 .investmentDate(investment.getInvestmentDate())
                 .investmentProduct(investment.getInvestmentProduct())
-                .fundId(investment.getFundId())
+                .fundId(investment.getFund().getFundId())  // ✅ Fund 객체에서 fundId 가져오기
                 .investmentSumPrice(investment.getInvestmentSumPrice())
                 .investmentUnitPrice(investment.getInvestmentUnitPrice())
                 .shareCount(investment.getShareCount())
@@ -84,7 +93,7 @@ public class InvestmentService {
                         .investmentId(investment.getInvestmentId())
                         .investmentDate(investment.getInvestmentDate())
                         .investmentProduct(investment.getInvestmentProduct())
-                        .fundId(investment.getFundId())
+                        .fundId(investment.getFund().getFundId())  // ✅ Fund 객체에서 fundId 가져오기
                         .investmentSumPrice(investment.getInvestmentSumPrice())
                         .investmentUnitPrice(investment.getInvestmentUnitPrice())
                         .shareCount(investment.getShareCount())
@@ -104,9 +113,9 @@ public class InvestmentService {
      * @param dto 변환할 DTO 객체
      * @return 변환된 Investment 엔터티
      */
-    private Investment toEntity(CIvtDTO dto, Company company) {
+    private Investment toEntity(CIvtDTO dto, Company company, Fund fund) {
         return Investment.builder()
-                .fundId(dto.getFundId()) // 투자 재원
+                .fund(fund) // 투자 재원
                 .company(company) // 회사 고유 번호
                 .investmentProduct(dto.getInvestmentProduct()) // 투자 상품
                 .investmentSumPrice(dto.getInvestmentSumPrice()) // 투자 금액

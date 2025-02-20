@@ -102,7 +102,7 @@ public class CompanyService {
 
         Long currentCompanyValue = followupService.getCurrentCompanyValue(companyId);
         // null 체크 후 기본값 설정
-        if (currentCompanyValue == null) {
+        if (currentCompanyValue == null && rivtDTO != null) {
             currentCompanyValue = rivtDTO.getInvestmentValue(); // 기본값으로 최초투자밸류를 저장
         }
 

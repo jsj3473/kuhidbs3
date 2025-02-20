@@ -1,6 +1,7 @@
 package com.example.kuhidbs.entity.company;
 
 import com.example.kuhidbs.entity.BaseEntity;
+import com.example.kuhidbs.entity.Fund.Fund;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,9 +23,10 @@ public class Investment extends BaseEntity {
     @Column(name = "INV_ID", nullable = false)
     private Long investmentId; // 투자 고유 번호
 
-
-    @Column(name = "FUND_ID", length = 100)
-    private String fundId; // 투자 재원
+    // 🔥 다대일(Many-to-One) 관계 설정
+    @ManyToOne
+    @JoinColumn(name = "FUND_ID", nullable = false)  // 🔥 외래 키(FK) 설정
+    private Fund fund; // 투자 재원 (Fund 엔터티와 연결)
 
     @ManyToOne
     @JoinColumn(name = "CMP_ID", nullable = false)

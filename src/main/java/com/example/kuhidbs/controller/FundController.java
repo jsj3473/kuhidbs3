@@ -24,7 +24,7 @@ public class FundController {
 
     // 펀드 생성 API
     @PostMapping("/createFund")
-    public ResponseEntity<Fund> createFund(@ModelAttribute CFundDTO dto) {
+    public ResponseEntity<Fund> createFund(@RequestBody CFundDTO dto) {
         System.out.println(dto.getFundId());
         fundService.createFund(dto);
         auditService.createAuditByFund(dto);
@@ -84,5 +84,13 @@ public class FundController {
     public ResponseEntity<List<FundMem>> createFundMems(@RequestBody List<CFundMemDTO> dtos) {
         List<FundMem> savedFundMems = fundMemService.saveAll(dtos);
         return ResponseEntity.ok(savedFundMems);
+    }
+
+
+
+    @GetMapping("/showAllFundMem/{fundId}")
+    public ResponseEntity<List<RFundMemDTO>> getActiveFundMembersByFundId(@PathVariable("fundId") String fundId) {
+        List<RFundMemDTO> fundMembers = fundMemService.getActiveFundMembersByFundId(fundId);
+        return ResponseEntity.ok(fundMembers);
     }
 }

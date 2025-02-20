@@ -100,4 +100,6 @@ public class Fund extends BaseEntity {
 
     @Column(name = "CURR_STAFF", length = 800)
     private String currentStaff; // 운용인력
+
+    
 }
