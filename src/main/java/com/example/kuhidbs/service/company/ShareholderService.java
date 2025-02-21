@@ -2,13 +2,16 @@ package com.example.kuhidbs.service.company;
 
 import com.example.kuhidbs.dto.company.주주명부.CShrDTO;
 import com.example.kuhidbs.dto.company.주주명부.RShrDTO;
+import com.example.kuhidbs.entity.CompanyAccount;
 import com.example.kuhidbs.entity.company.Company;
 import com.example.kuhidbs.entity.company.Shareholder;
+import com.example.kuhidbs.repository.CompanyAccountRepository;
 import com.example.kuhidbs.repository.company.ShareholderRepository;
 import com.example.kuhidbs.repository.company.CompanyRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 @Service
@@ -16,21 +19,22 @@ public class ShareholderService {
 
     private final ShareholderRepository shareholderRepository;
     private final CompanyRepository companyRepository;
+    private final CompanyAccountRepository companyAccountRepository;
 
-    public ShareholderService(ShareholderRepository shareholderRepository, CompanyRepository companyRepository) {
+    public ShareholderService(ShareholderRepository shareholderRepository,
+                              CompanyRepository companyRepository,
+                              CompanyAccountRepository companyAccountRepository) {
         this.shareholderRepository = shareholderRepository;
         this.companyRepository = companyRepository;
+        this.companyAccountRepository = companyAccountRepository;
     }
 
     public Shareholder createShareholder(CShrDTO shareholderDTO) {
-        Optional<Company> company = companyRepository.findById(shareholderDTO.getCompanyId());
-
-        if (company.isEmpty()) {
-            throw new IllegalArgumentException("Company not found with ID: " + shareholderDTO.getCompanyId());
-        }
+        Company company = companyRepository.findById(shareholderDTO.getCompanyId())
+                .orElseThrow(() -> new IllegalArgumentException("Company not found with ID: " + shareholderDTO.getCompanyId()));
 
         Shareholder shareholder = Shareholder.builder()
-                .company(company.get())
+                .company(company)
                 .shareholderName1(shareholderDTO.getShareholderName1())
                 .shareholderCount1(shareholderDTO.getShareholderCount1())
                 .shareholderRate1(shareholderDTO.getShareholderRate1()) // ✅ 추가됨
@@ -65,9 +69,67 @@ public class ShareholderService {
 
                 .totalShareCount(shareholderDTO.getTotalShareCount()) // ✅ 총 발행 주식 수 추가
                 .build();
+        // ✅ 고려대 지분율 가져오기
+        BigDecimal kuhOwnershipPercentage = findKuhOwnership(shareholderDTO);
 
+        // ✅ CompanyAccount 업데이트
+        updateCompanyAccount(company, shareholderDTO.getTotalShareCount(), kuhOwnershipPercentage);
 
         return shareholderRepository.save(shareholder);
+    }
+
+    /**
+     * "고려대" 주주의 지분율을 찾아 반환
+     */
+    private BigDecimal findKuhOwnership(CShrDTO shareholderDTO) {
+        if ("고려대".equals(shareholderDTO.getShareholderName1())) {
+            return shareholderDTO.getShareholderRate1();
+        }
+        if ("고려대".equals(shareholderDTO.getShareholderName2())) {
+            return shareholderDTO.getShareholderRate2();
+        }
+        if ("고려대".equals(shareholderDTO.getShareholderName3())) {
+            return shareholderDTO.getShareholderRate3();
+        }
+        if ("고려대".equals(shareholderDTO.getShareholderName4())) {
+            return shareholderDTO.getShareholderRate4();
+        }
+        if ("고려대".equals(shareholderDTO.getShareholderName5())) {
+            return shareholderDTO.getShareholderRate5();
+        }
+        if ("고려대".equals(shareholderDTO.getShareholderName6())) {
+            return shareholderDTO.getShareholderRate6();
+        }
+        if ("고려대".equals(shareholderDTO.getShareholderName7())) {
+            return shareholderDTO.getShareholderRate7();
+        }
+        if ("고려대".equals(shareholderDTO.getShareholderName8())) {
+            return shareholderDTO.getShareholderRate8();
+        }
+        return BigDecimal.ZERO; // 고려대가 없을 경우 0 반환
+    }
+
+    /**
+     * CompanyAccount의 totalSharesIssued 및 kuhOwnershipPercentage 업데이트
+     */
+    private void updateCompanyAccount(Company company, Long totalShares, BigDecimal kuhOwnershipPercentage) {
+        Optional<CompanyAccount> companyAccountOptional = companyAccountRepository.findByCompanyId(company.getCompanyId());
+
+        if (companyAccountOptional.isPresent()) {
+            // ✅ 기존 CompanyAccount 업데이트
+            CompanyAccount companyAccount = companyAccountOptional.get();
+            companyAccount.setTotalSharesIssued(totalShares);
+            companyAccount.setKuhOwnershipPercentage(kuhOwnershipPercentage);
+            companyAccountRepository.save(companyAccount);
+        } else {
+            // ✅ CompanyAccount가 없으면 새로 생성
+            CompanyAccount newCompanyAccount = CompanyAccount.builder()
+                    .company(company)
+                    .totalSharesIssued(totalShares)
+                    .kuhOwnershipPercentage(kuhOwnershipPercentage)
+                    .build();
+            companyAccountRepository.save(newCompanyAccount);
+        }
     }
 
     @Transactional(readOnly = true)

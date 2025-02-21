@@ -15,6 +15,7 @@ import com.example.kuhidbs.dto.company.회수.CStcupDTO;
 import com.example.kuhidbs.dto.company.후속투자.*;
 import com.example.kuhidbs.entity.*;
 import com.example.kuhidbs.entity.company.*;
+import com.example.kuhidbs.service.Fund.FundService;
 import com.example.kuhidbs.service.company.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -69,6 +70,9 @@ public class CompanyController {
     @Autowired
     private StatusService statusService;
 
+    @Autowired
+    private FundService fundService;
+
     @PostMapping("/createCompany")
     public ResponseEntity<Void> createCompany(@ModelAttribute CCmpInfDTO CCmpInfDTO) {
 
@@ -90,17 +94,19 @@ public class CompanyController {
 
     @PostMapping("/createInvestment")
     public ResponseEntity<?> createInvestment(@RequestBody CIvtDTO cIvtDTO) {
-        // InvestmentDto를 받아 InvestmentService에 전달
+        // 1. 투자 데이터 저장
         Investment savedInvestment = investmentService.saveInvestment(cIvtDTO);
 
+        // 2. Status 데이터 생성
         Status status = statusService.createStatusFirst(
                 cIvtDTO.getCompanyId(),
                 cIvtDTO.getInvestmentState(),
                 cIvtDTO.getInvestmentMemo()
         );
 
-        return ResponseEntity.ok(savedInvestment); // 저장된 Investment 반환
+        return ResponseEntity.ok(savedInvestment);
     }
+
 
     /**
      * 후속 투자 정보를 생성하는 API 엔드포인트.
@@ -158,6 +164,7 @@ public class CompanyController {
     @PostMapping("/createManage")
     public ResponseEntity<Manage> createManage(@RequestBody CMngDTO dto) {
         Manage createdManage =  manageService.createManage(dto);
+        statusService.createStatusByManage(dto);
         return ResponseEntity.ok(createdManage);
     }
 
@@ -216,5 +223,12 @@ public class CompanyController {
     public ResponseEntity<String> updateTips(@RequestBody UTIPSDTO dto) {
         tipsService.updateTips(dto);
         return ResponseEntity.ok("TIPS 정보가 업데이트되었습니다.");
+    }
+
+    // ✅ 기업 정보 수정 API (PUT 요청)
+    @PutMapping("/updateCompany")
+    public ResponseEntity<Company> updateCompany(@RequestBody UCmpInfDTO companyDTO) {
+        Company updatedCompany = companyService.updateCompany(companyDTO);
+        return ResponseEntity.ok(updatedCompany);
     }
 }

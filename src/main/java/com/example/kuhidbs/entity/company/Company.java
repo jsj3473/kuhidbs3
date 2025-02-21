@@ -1,6 +1,7 @@
 package com.example.kuhidbs.entity.company;
 
 import com.example.kuhidbs.entity.BaseEntity;
+import com.example.kuhidbs.entity.CompanyAccount;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,6 +17,9 @@ public class Company extends BaseEntity {
     @Id
     @Column(name = "CMP_ID", length = 8, nullable = false)
     private String companyId;
+
+    @OneToOne(mappedBy = "company", cascade = CascadeType.ALL)
+    private CompanyAccount companyAccount;
 
     @Column(name = "CMP_NM", length = 100, nullable = false)
     private String companyName;

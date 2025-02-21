@@ -2,19 +2,23 @@ package com.example.kuhidbs.service.company;
 
 import com.example.kuhidbs.dto.company.감액환입.CShrupDTO;
 import com.example.kuhidbs.dto.company.감액환입.RShrupDTO;
+import com.example.kuhidbs.entity.InvestmentAssetSummary;
 import com.example.kuhidbs.entity.company.Account;
 import com.example.kuhidbs.entity.company.Company;
 import com.example.kuhidbs.entity.company.Investment;
 import com.example.kuhidbs.entity.company.ShareUpdate;
+import com.example.kuhidbs.repository.InvestmentAssetSummaryRepository;
 import com.example.kuhidbs.repository.company.AccountRepository;
 import com.example.kuhidbs.repository.company.CompanyRepository;
 import com.example.kuhidbs.repository.company.InvestmentRepository;
 import com.example.kuhidbs.repository.company.ShrupRepository;
+import com.example.kuhidbs.service.Fund.IASService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,6 +29,8 @@ public class ShrupService {
     private final InvestmentRepository investmentRepository;
     private final AccountRepository accountRepository;
     private final CompanyRepository companyRepository;
+    private final InvestmentAssetSummaryRepository investmentAssetSummaryRepository;
+    private final IASService iasService;
 
 
     /**
@@ -52,6 +58,29 @@ public class ShrupService {
 
         // 최신 계좌 데이터 조회
         Account latestAccount = accountRepository.findTop1ByInvestmentInvestmentIdOrderByAccountIdDesc(shrupDTO.getInvestmentId());
+        InvestmentAssetSummary ias = investmentAssetSummaryRepository.findByInvestment_InvestmentId(investment.getInvestmentId());
+
+        //투자자산총괄표갱신
+        long additionalReduction;
+        if(Objects.equals(shrupDTO.getShareUpdateType(), "감액"))
+        {
+            //System.out.println("감액");
+            // reductionAmount 값 업데이트:
+            // 기존 reductionAmount + (보유 주식수 * (기존 단가 - 새로운 단가))
+            additionalReduction = latestAccount.getHeldShareCount() *
+                    (latestAccount.getUnitPrice() - shrupDTO.getShareUnitValue());
+            //System.out.println(additionalReduction);
+        }
+        else{
+            //System.out.println("환입");
+            additionalReduction = latestAccount.getHeldShareCount() *
+                    (latestAccount.getUnitPrice() - shrupDTO.getShareUnitValue());
+            //System.out.println(additionalReduction);
+        }
+
+        ias.setReductionAmount(ias.getReductionAmount() + additionalReduction);
+        iasService.calculateDerivedFields(ias);
+        investmentAssetSummaryRepository.save(ias);
 
         // 일부 컬럼 수정
         Account updatedAccount = Account.builder()

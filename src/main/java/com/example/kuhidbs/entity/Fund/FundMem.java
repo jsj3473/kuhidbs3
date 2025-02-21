@@ -1,5 +1,6 @@
 package com.example.kuhidbs.entity.Fund;
 
+import com.example.kuhidbs.entity.BaseEntity;
 import com.example.kuhidbs.entity.Fund.Fund;
 import jakarta.persistence.*;
 import lombok.*;
@@ -13,7 +14,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class FundMem {
+public class FundMem extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

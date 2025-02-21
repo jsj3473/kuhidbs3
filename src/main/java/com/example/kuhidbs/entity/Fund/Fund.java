@@ -101,5 +101,9 @@ public class Fund extends BaseEntity {
     @Column(name = "CURR_STAFF", length = 800)
     private String currentStaff; // 운용인력
 
-    
+    @Column(name = "ALLOC_RATIO", precision = 5, scale = 2)
+    private BigDecimal allocRatio; // 배분비율
+
+    @Column(name = "IVT_RATIO", precision = 5, scale = 2)
+    private BigDecimal ivtRatio; // 출자비율
 }

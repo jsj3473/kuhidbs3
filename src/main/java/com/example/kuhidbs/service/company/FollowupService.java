@@ -2,15 +2,19 @@ package com.example.kuhidbs.service.company;
 
 import com.example.kuhidbs.dto.company.후속투자.CFolDTO;
 import com.example.kuhidbs.dto.company.후속투자.RFolDTO;
+import com.example.kuhidbs.entity.CompanyAccount;
 import com.example.kuhidbs.entity.company.Company;
 import com.example.kuhidbs.entity.company.Followup;
+import com.example.kuhidbs.repository.CompanyAccountRepository;
 import com.example.kuhidbs.repository.company.CompanyRepository;
 import com.example.kuhidbs.repository.company.FollowupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -21,14 +25,30 @@ public class FollowupService {
 
     @Autowired
     private CompanyRepository companyRepository;
-
+    @Autowired
+    private CompanyAccountRepository companyAccountRepository;
     /**
      * 후속 투자 정보를 저장.
      *
      * @param followupDto 후속 투자 정보가 담긴 DTO 객체
      * @return 저장된 Followup 객체
      */
+    @Transactional
     public Followup saveFollowup(CFolDTO followupDto) {
+        // ✅ CompanyAccount 가져오기 (없으면 예외 발생)
+        CompanyAccount companyAccount = companyAccountRepository.findByCompanyId(followupDto.getCompanyId())
+                .orElseThrow(() -> new IllegalArgumentException("CompanyAccount not found with ID: " + followupDto.getCompanyId()));
+
+        // ✅ 시가총액(Market Cap) 계산 (BigDecimal 사용하여 정밀도 유지)
+        Long totalSharesIssued = Optional.ofNullable(companyAccount.getTotalSharesIssued()).orElse(0L);
+        BigDecimal followupUnitPrice = BigDecimal.valueOf(followupDto.getFollowupUnitPrice());
+        BigDecimal marketCap = followupUnitPrice.multiply(BigDecimal.valueOf(totalSharesIssued));
+
+        // ✅ 시가총액 업데이트 후 저장
+        companyAccount.setMarketCap(marketCap);
+        companyAccountRepository.save(companyAccount); // 변경 사항을 DB에 반영
+
+        // ✅ Followup 엔티티 변환 및 저장
         Followup followup = toEntity(followupDto);
         return followupRepository.save(followup);
     }

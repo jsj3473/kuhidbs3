@@ -1,5 +1,6 @@
 package com.example.kuhidbs.service.company;
 
+import com.example.kuhidbs.dto.company.사후관리.CMngDTO;
 import com.example.kuhidbs.dto.company.투자상태.CStatusDTO;
 import com.example.kuhidbs.dto.company.투자상태.RStatusDTO;
 import com.example.kuhidbs.entity.company.Status;
@@ -49,6 +50,22 @@ public class StatusService {
                 .company(company)
                 .build();
         return statusRepository.save(newStatus);
+
+    }
+
+    @Transactional
+    public void createStatusByManage(CMngDTO dto) {
+        // 회사 엔티티 조회 (회사 ID 기반)
+        Company company = companyRepository.findById(dto.getCompanyId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 회사가 존재하지 않습니다. ID: " + dto.getCompanyId()));
+
+
+        Status newStatus = Status.builder()
+                .status(dto.getEvalGrade())
+                .additionalInfo("사후관리에 의해 생성된 투자상태")
+                .company(company)
+                .build();
+        statusRepository.save(newStatus);
 
     }
 

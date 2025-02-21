@@ -177,6 +177,9 @@ public class HomeController {
     public String stockUp(@PathVariable("companyId") String companyId,
                           @PathVariable("investmentId") String investmentId, Model model) {
         RShrDTO shrDTO = shareholderService.getShareholderByCompanyId(companyId);
+        if (shrDTO == null) {
+            shrDTO = new RShrDTO(); // 기본 객체 생성
+        }
         model.addAttribute("shrDTO", shrDTO);
         model.addAttribute("companyId", companyId);
         model.addAttribute("investmentId", investmentId);

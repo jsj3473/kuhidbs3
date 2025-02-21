@@ -3,13 +3,16 @@ package com.example.kuhidbs.service.company;
 import com.example.kuhidbs.dto.company.kuh투자.CIvtDTO;
 import com.example.kuhidbs.dto.company.kuh투자.RIvtDTO;
 import com.example.kuhidbs.entity.Fund.Fund;
+import com.example.kuhidbs.entity.InvestmentAssetSummary;
 import com.example.kuhidbs.entity.company.Account;
 import com.example.kuhidbs.entity.company.Company;
 import com.example.kuhidbs.entity.company.Investment;
 import com.example.kuhidbs.repository.Fund.FundRepository;
+import com.example.kuhidbs.repository.InvestmentAssetSummaryRepository;
 import com.example.kuhidbs.repository.company.AccountRepository;
 import com.example.kuhidbs.repository.company.CompanyRepository;
 import com.example.kuhidbs.repository.company.InvestmentRepository;
+import com.example.kuhidbs.service.Fund.IASService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,8 +32,15 @@ public class InvestmentService {
 
     @Autowired
     private AccountRepository accountRepository;
+
     @Autowired
     private FundRepository fundRepository;
+
+    @Autowired
+    private InvestmentAssetSummaryRepository investmentAssetSummaryRepository;
+
+    @Autowired
+    private IASService iasService;
 
     /**
      * 투자 정보를 저장하는 메서드.
@@ -40,26 +50,39 @@ public class InvestmentService {
      */
     public Investment saveInvestment(CIvtDTO dto) {
 
-        // Company 객체 조회
+        // 1. Company 객체 조회
         Company company = companyRepository.findById(dto.getCompanyId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid company ID: " + dto.getCompanyId()));
 
-        // ✅ Fund 객체 조회
+        // 2. Fund 객체 조회
         Fund fund = fundRepository.findById(dto.getFundId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid fund ID: " + dto.getFundId()));
 
-        // DTO를 Ivt 엔터티로 변환
+        // 3. DTO를 Investment 엔터티로 변환 및 저장
         Investment investment = toEntity(dto, company, fund);
-
-        // Ivt 엔터티 저장
         Investment savedInvestment = investmentRepository.save(investment);
 
-        // Account 엔터티 생성 및 저장
+        // 4. Account 엔터티 생성 및 저장
         Account account = toAccountEntity(dto, savedInvestment);
         accountRepository.save(account);
 
+        // 5. 투자자산총괄데이터(InvestmentAssetSummary) 생성
+        InvestmentAssetSummary assetSummary = InvestmentAssetSummary.builder()
+                .fund(fund)
+                .investment(savedInvestment)
+                .investmentProduct(dto.getInvestmentProduct())
+                .investmentAmount(dto.getInvestmentSumPrice())
+                .investmentDate(dto.getInvestmentDate())
+                .investmentCompany(company.getCompanyName())
+                .build();
+
+        // 6. 투자자산총괄데이터 저장
+        iasService.calculateDerivedFields(assetSummary);
+        investmentAssetSummaryRepository.save(assetSummary);
+
         return savedInvestment;
     }
+
 
     @Transactional(readOnly = true)
     public RIvtDTO getInvestmentByCompanyIdRecent(String companyId) {
@@ -134,6 +157,7 @@ public class InvestmentService {
     private Account toAccountEntity(CIvtDTO dto, Investment savedInvestment) {
         return Account.builder()
                 .investment(savedInvestment) // Ivt 엔터티 설정 (ManyToOne 관계)
+                .accountDate(dto.getInvestmentDate()) //날짜
                 .unitPrice(dto.getInvestmentUnitPrice()) // 투자 단가
                 .heldShareCount(dto.getShareCount()) // 보유 주식 수량
                 .totalPrincipal(dto.getInvestmentSumPrice()) // 투자 원금 (투자 금액)

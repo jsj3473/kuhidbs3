@@ -21,10 +21,11 @@ public class FundController {
     private final StaffService staffService;
     private final FundFinancialService fundFinancialService;
     private final FundMemService fundMemService;
+    private final IASService iasService;
 
     // 펀드 생성 API
     @PostMapping("/createFund")
-    public ResponseEntity<Fund> createFund(@RequestBody CFundDTO dto) {
+    public ResponseEntity<Fund> createFund(@ModelAttribute CFundDTO dto) {
         System.out.println(dto.getFundId());
         fundService.createFund(dto);
         auditService.createAuditByFund(dto);
@@ -92,5 +93,12 @@ public class FundController {
     public ResponseEntity<List<RFundMemDTO>> getActiveFundMembersByFundId(@PathVariable("fundId") String fundId) {
         List<RFundMemDTO> fundMembers = fundMemService.getActiveFundMembersByFundId(fundId);
         return ResponseEntity.ok(fundMembers);
+    }
+
+    // 특정 펀드에 해당하는 투자자산총괄 데이터를 조회하는 API
+    @GetMapping("/showInvestmentAssetSummary/{fundId}")
+    public ResponseEntity<List<RIASDTO>> getInvestmentAssetSummariesByFundId(@PathVariable String fundId) {
+        List<RIASDTO> summaries = iasService.getInvestmentAssetSummaryByFundId(fundId);
+        return ResponseEntity.ok(summaries);
     }
 }

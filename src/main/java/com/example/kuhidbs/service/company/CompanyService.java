@@ -4,6 +4,7 @@ import com.example.kuhidbs.dto.company.kuh투자.RIvtDTO;
 import com.example.kuhidbs.dto.company.기본정보.CCmpInfDTO;
 import com.example.kuhidbs.dto.company.기본정보.RCmpInf2DTO;
 import com.example.kuhidbs.dto.company.기본정보.RCmpInfDTO;
+import com.example.kuhidbs.dto.company.기본정보.UCmpInfDTO;
 import com.example.kuhidbs.dto.company.사후관리.RMngDTO;
 import com.example.kuhidbs.dto.company.재무.RFncDTO;
 import com.example.kuhidbs.dto.company.주주명부.RShrDTO;
@@ -243,5 +244,23 @@ public class CompanyService {
 
 
                 .build();
+    }
+
+    @Transactional
+    public Company updateCompany(UCmpInfDTO companyDTO) {
+        // ✅ 1. companyId를 사용하여 기존 회사 데이터를 가져옴
+        Company company = companyRepository.findById(companyDTO.getCompanyId())
+                .orElseThrow(() -> new IllegalArgumentException("Company not found with ID: " + companyDTO.getCompanyId()));
+
+        // ✅ 2. DTO 데이터를 엔티티에 반영
+        company.setCompanyName(companyDTO.getCompanyName());
+        company.setCeoName(companyDTO.getCeoName());
+        company.setCompanyAddress(companyDTO.getCompanyAddress());
+        company.setCompanyPostalCode(companyDTO.getCompanyPostalCode());
+        company.setListingDate(companyDTO.getListingDate());
+        company.setListingStatus(companyDTO.getListingStatus());
+
+        // ✅ 3. 변경된 데이터 저장 후 반환
+        return companyRepository.save(company);
     }
 }
