@@ -2,11 +2,13 @@ package com.example.kuhidbs.service.company;
 
 import com.example.kuhidbs.dto.company.감액환입.CShrupDTO;
 import com.example.kuhidbs.dto.company.감액환입.RShrupDTO;
+import com.example.kuhidbs.entity.CompanyAccount;
 import com.example.kuhidbs.entity.InvestmentAssetSummary;
 import com.example.kuhidbs.entity.company.Account;
 import com.example.kuhidbs.entity.company.Company;
 import com.example.kuhidbs.entity.company.Investment;
 import com.example.kuhidbs.entity.company.ShareUpdate;
+import com.example.kuhidbs.repository.CompanyAccountRepository;
 import com.example.kuhidbs.repository.InvestmentAssetSummaryRepository;
 import com.example.kuhidbs.repository.company.AccountRepository;
 import com.example.kuhidbs.repository.company.CompanyRepository;
@@ -17,8 +19,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -31,6 +35,7 @@ public class ShrupService {
     private final CompanyRepository companyRepository;
     private final InvestmentAssetSummaryRepository investmentAssetSummaryRepository;
     private final IASService iasService;
+    private final CompanyAccountRepository companyAccountRepository;
 
 
     /**
@@ -70,6 +75,17 @@ public class ShrupService {
             additionalReduction = latestAccount.getHeldShareCount() *
                     (latestAccount.getUnitPrice() - shrupDTO.getShareUnitValue());
             //System.out.println(additionalReduction);
+
+            if (shrupDTO.getShareUnitValue() == 0) {
+                CompanyAccount ca = companyAccountRepository.findByCompanyId(company.getCompanyId())
+                        .orElseGet(() -> new CompanyAccount());
+
+                ca.setCompany(company);
+                ca.setMarketCap(BigDecimal.valueOf(1000));
+
+                companyAccountRepository.save(ca);
+            }
+
         }
         else{
             //System.out.println("환입");

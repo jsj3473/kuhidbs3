@@ -2,11 +2,13 @@ package com.example.kuhidbs.service.company;
 
 import com.example.kuhidbs.dto.company.kuh투자.CIvtDTO;
 import com.example.kuhidbs.dto.company.kuh투자.RIvtDTO;
+import com.example.kuhidbs.entity.CompanyAccount;
 import com.example.kuhidbs.entity.Fund.Fund;
 import com.example.kuhidbs.entity.InvestmentAssetSummary;
 import com.example.kuhidbs.entity.company.Account;
 import com.example.kuhidbs.entity.company.Company;
 import com.example.kuhidbs.entity.company.Investment;
+import com.example.kuhidbs.repository.CompanyAccountRepository;
 import com.example.kuhidbs.repository.Fund.FundRepository;
 import com.example.kuhidbs.repository.InvestmentAssetSummaryRepository;
 import com.example.kuhidbs.repository.company.AccountRepository;
@@ -41,6 +43,9 @@ public class InvestmentService {
 
     @Autowired
     private IASService iasService;
+
+    @Autowired
+    private CompanyAccountRepository companyAccountRepository;
 
     /**
      * 투자 정보를 저장하는 메서드.
@@ -79,6 +84,11 @@ public class InvestmentService {
         // 6. 투자자산총괄데이터 저장
         iasService.calculateDerivedFields(assetSummary);
         investmentAssetSummaryRepository.save(assetSummary);
+
+        //7. 회사계좌업데이트
+        //CompanyAccount ca = companyAccountRepository.findByCompanyId(company.getCompanyId())
+         //       .orElseGet(() -> new CompanyAccount());
+
 
         return savedInvestment;
     }

@@ -15,6 +15,7 @@ import com.example.kuhidbs.dto.company.회수.CStcupDTO;
 import com.example.kuhidbs.dto.company.후속투자.*;
 import com.example.kuhidbs.entity.*;
 import com.example.kuhidbs.entity.company.*;
+import com.example.kuhidbs.repository.company.CompanyRepository;
 import com.example.kuhidbs.service.Fund.FundService;
 import com.example.kuhidbs.service.company.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -72,6 +73,8 @@ public class CompanyController {
 
     @Autowired
     private FundService fundService;
+    @Autowired
+    private CompanyRepository companyRepository;
 
     @PostMapping("/createCompany")
     public ResponseEntity<Void> createCompany(@ModelAttribute CCmpInfDTO CCmpInfDTO) {
@@ -231,4 +234,11 @@ public class CompanyController {
         Company updatedCompany = companyService.updateCompany(companyDTO);
         return ResponseEntity.ok(updatedCompany);
     }
+
+    @GetMapping("/searchQueryForCompanyInHeader")
+    public ResponseEntity<List<String>> searchQueryForCompanyInHeader(@RequestParam String query) {
+        List<String> companyIds = companyRepository.searchCompanies(query);
+        return ResponseEntity.ok(companyIds);
+    }
+
 }
