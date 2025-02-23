@@ -19,4 +19,7 @@ public class RAccountDTO {
     private Long totalPrincipal; // 투자 원금
     private String functionType; // 실행 함수
     private BigDecimal kuhEquityRate; // KUH 지분율
+    private Long curUnitPrice; // 현재 주당 단가
+    private Long postValue; // 현재 시가총액
+    private Long totalShareCount; // 발행총 주식수
 }

@@ -1,11 +1,15 @@
 package com.example.kuhidbs.service.company;
 
+import com.example.kuhidbs.dto.company.kuh투자.CIvtDTO;
 import com.example.kuhidbs.dto.company.후속투자.CFolDTO;
 import com.example.kuhidbs.dto.company.후속투자.RFolDTO;
 import com.example.kuhidbs.entity.CompanyAccount;
+import com.example.kuhidbs.entity.company.Account;
 import com.example.kuhidbs.entity.company.Company;
 import com.example.kuhidbs.entity.company.Followup;
+import com.example.kuhidbs.entity.company.Investment;
 import com.example.kuhidbs.repository.CompanyAccountRepository;
+import com.example.kuhidbs.repository.company.AccountRepository;
 import com.example.kuhidbs.repository.company.CompanyRepository;
 import com.example.kuhidbs.repository.company.FollowupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -27,32 +32,49 @@ public class FollowupService {
     private CompanyRepository companyRepository;
     @Autowired
     private CompanyAccountRepository companyAccountRepository;
-    /**
-     * 후속 투자 정보를 저장.
-     *
-     * @param followupDto 후속 투자 정보가 담긴 DTO 객체
-     * @return 저장된 Followup 객체
-     */
+    @Autowired
+    private AccountRepository accountRepository;
+
+    private Account toAccountEntity(CFolDTO dto, Investment savedInvestment, Account lastAccount, Long curTotalShareCount) {
+        return Account.builder()
+                .investment(savedInvestment) // Ivt 엔터티 설정 (ManyToOne 관계)
+                .accountDate(dto.getFollowupStartDate()) //날짜
+                .unitPrice(lastAccount.getUnitPrice()) // 투자 단가
+                .heldShareCount(lastAccount.getHeldShareCount()) // 보유 주식 수량
+                .totalPrincipal(lastAccount.getTotalPrincipal()) // 투자 원금 (투자 금액)
+                .functionType("후속투자") // 실행 함수 (예: "SAVE_INVESTMENT")
+                .curUnitPrice(dto.getFollowupUnitPrice()) // 현재단가
+                .totalShareCount(curTotalShareCount)//발행총주식수
+                .postValue(dto.getFollowupUnitPrice()*curTotalShareCount)//현재시총
+                .kuhEquityRate(
+                        BigDecimal.valueOf(lastAccount.getHeldShareCount())
+                                .multiply(BigDecimal.valueOf(100)) // 백분율 변환
+                                .divide(BigDecimal.valueOf(curTotalShareCount), 2, RoundingMode.HALF_UP) // 소수점 2자리 반올림
+                )
+                .build();
+    }
     @Transactional
     public Followup saveFollowup(CFolDTO followupDto) {
-        // ✅ CompanyAccount 가져오기 (없으면 예외 발생)
-        CompanyAccount companyAccount = companyAccountRepository.findByCompanyId(followupDto.getCompanyId())
-                .orElseThrow(() -> new IllegalArgumentException("CompanyAccount not found with ID: " + followupDto.getCompanyId()));
-
-        // ✅ 시가총액(Market Cap) 계산 (BigDecimal 사용하여 정밀도 유지)
-        Long totalSharesIssued = Optional.ofNullable(companyAccount.getTotalSharesIssued()).orElse(0L);
-        BigDecimal followupUnitPrice = BigDecimal.valueOf(followupDto.getFollowupUnitPrice());
-        BigDecimal marketCap = followupUnitPrice.multiply(BigDecimal.valueOf(totalSharesIssued));
-
-        // ✅ 시가총액 업데이트 후 저장
-        companyAccount.setMarketCap(marketCap);
-        companyAccountRepository.save(companyAccount); // 변경 사항을 DB에 반영
+        Company company = companyRepository.findById(followupDto.getCompanyId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 companyId가 존재하지 않습니다: " + followupDto.getCompanyId()));
+        List<Investment> investments = company.getInvestments();
+        Long postValue = 0L;
+        // 3️⃣ Investment 리스트를 반복하면서 처리
+        for (Investment investment : investments) {
+            //가장 최신의 계좌를 가져온다
+            Account account = accountRepository.findTop1ByInvestmentInvestmentIdOrderByAccountIdDesc(investment.getInvestmentId());
+            Long curTotalShareCount = account.getTotalShareCount()+followupDto.getFollowupShareCount();
+            Account newAccount = toAccountEntity(followupDto, investment,account,curTotalShareCount);
+            accountRepository.save(newAccount);
+            postValue = newAccount.getPostValue();
+        }
 
         // ✅ Followup 엔티티 변환 및 저장
-        Followup followup = toEntity(followupDto);
+        Followup followup = toEntity(followupDto,postValue);
         return followupRepository.save(followup);
     }
 
+    //postvalue 가져오는 메소드
     @Transactional(readOnly = true)
     public Long getCurrentCompanyValue(String companyId) {
         return followupRepository.findTopByCompany_CompanyIdOrderByFollowupStartDateDesc(companyId)
@@ -84,7 +106,7 @@ public class FollowupService {
      * @param dto 변환할 DTO 객체
      * @return 변환된 Followup 엔터티
      */
-    private Followup toEntity(CFolDTO dto) {
+    private Followup toEntity(CFolDTO dto, Long postValue) {
         Company company = companyRepository.findById(dto.getCompanyId())
                 .orElseThrow(() -> new IllegalArgumentException("Company not found with ID: " + dto.getCompanyId()));
 
@@ -96,8 +118,10 @@ public class FollowupService {
                 .followupSumPrice(dto.getFollowupSumPrice())
                 .followupShareCount(dto.getFollowupShareCount())
                 .followupUnitPrice(dto.getFollowupUnitPrice())
-                .followupInvestmentValue(dto.getFollowupInvestmentValue())
+                .followupInvestmentValue(postValue)
                 .build();
     }
+
+
 
 }

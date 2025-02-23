@@ -76,16 +76,6 @@ public class ShrupService {
                     (latestAccount.getUnitPrice() - shrupDTO.getShareUnitValue());
             //System.out.println(additionalReduction);
 
-            if (shrupDTO.getShareUnitValue() == 0) {
-                CompanyAccount ca = companyAccountRepository.findByCompanyId(company.getCompanyId())
-                        .orElseGet(() -> new CompanyAccount());
-
-                ca.setCompany(company);
-                ca.setMarketCap(BigDecimal.valueOf(1000));
-
-                companyAccountRepository.save(ca);
-            }
-
         }
         else{
             //System.out.println("환입");
@@ -104,9 +94,17 @@ public class ShrupService {
                 .investment(latestAccount.getInvestment()) // 기존 투자 엔터티 유지
                 .unitPrice(shrupDTO.getShareUnitValue()) // 새로운 주당 가치로 업데이트
                 .heldShareCount(latestAccount.getHeldShareCount()) // 기존 보유 주식 수 유지
-                .totalPrincipal(shrupDTO.getShareUnitValue()*latestAccount.getHeldShareCount()) // 기존 투자 원금 유지
+                .totalPrincipal(shrupDTO.getShareUnitValue()*latestAccount.getHeldShareCount()) // 투자 원금 업데이트
                 .functionType(shrupDTO.getShareUpdateType()) // 실행 함수 업데이트(감액 or 환입)
                 .kuhEquityRate(latestAccount.getKuhEquityRate()) // 기존 KUH 지분율 유지
+                .curUnitPrice(shrupDTO.getShareUnitValue()) //현재단가 업데이트
+                .totalShareCount(latestAccount.getTotalShareCount()) //발행총주식수는 변함없음
+                .postValue(
+                        shrupDTO.getShareUnitValue() == 0
+                                ? 1000
+                                : shrupDTO.getShareUnitValue() * latestAccount.getTotalShareCount()
+                )
+                .kuhEquityRate(latestAccount.getKuhEquityRate())
                 .build();
 
         accountRepository.save(updatedAccount);

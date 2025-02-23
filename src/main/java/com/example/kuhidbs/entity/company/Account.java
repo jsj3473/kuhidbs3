@@ -41,6 +41,15 @@ public class Account extends BaseEntity {
     @Column(name = "FUN_TP", length = 100)
     private String functionType; // 실행 함수
 
+    @Column(name = "CUR_UNIT_PRICE")
+    private Long curUnitPrice; // 현재 주당 단가
+
+    @Column(name = "POST_VALUE")
+    private Long postValue; // 현재 시가총액
+
+    @Column(name = "TOT_SHR_CNT")
+    private Long totalShareCount; // 발행총 주식수
+
     @Column(name = "KUH_EQT_RATE", precision = 5, scale = 2)
     private BigDecimal kuhEquityRate; // KUH 지분율
 }

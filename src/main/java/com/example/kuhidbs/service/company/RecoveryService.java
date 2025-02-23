@@ -42,6 +42,7 @@ public class RecoveryService {
 
         Company company = companyRepository.findById(stcupDTO.getCompanyId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid company ID: " + stcupDTO.getInvestmentId()));
+
         Long fundReturn = (stcupDTO.getRecoveryUnitPrice() - investment.getInvestmentUnitPrice())* stcupDTO.getRecoveryCount();
         Long recoveryReturn;
         if(!Objects.equals(investment.getFund().getFundId(), "고유계정"))
@@ -83,7 +84,14 @@ public class RecoveryService {
                 .heldShareCount(latestAccount.getHeldShareCount() - stcupDTO.getRecoveryCount()) // 기존 보유주식수 - 매각주식수
                 .totalPrincipal(latestAccount.getTotalPrincipal() - stcupDTO.getRecoveryCount()*latestAccount.getUnitPrice())
                 .functionType("회수") // 실행 함수 업데이트()
-                .kuhEquityRate(latestAccount.getKuhEquityRate()) // 기존 KUH 지분율 유지
+                .curUnitPrice(latestAccount.getCurUnitPrice()) //현재단가도 유지
+                .postValue(latestAccount.getPostValue()) //기존 시총 유지
+                .totalShareCount(latestAccount.getTotalShareCount()) //발행총주식수도 유지
+                .kuhEquityRate(
+                        BigDecimal.valueOf(latestAccount.getHeldShareCount() - stcupDTO.getRecoveryCount())
+                                .multiply(BigDecimal.valueOf(100)) // 백분율 변환
+                                .divide(BigDecimal.valueOf(latestAccount.getTotalShareCount()), 2, RoundingMode.HALF_UP) // 소수점 2자리 반올림
+                )  //kuh지분율 갱신
                 .build();
 
 

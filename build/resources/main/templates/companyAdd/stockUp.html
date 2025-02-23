@@ -95,19 +95,6 @@
         <input type="number" class="form-control" id="recoveryUnitPrice" required>
     </div>
 
-
-    <!-- 펀드 수익 -->
-    <div class="mb-3">
-        <label class="form-label">펀드 수익 (단위: 원)</label>
-        <input type="number" class="form-control" id="fundReturn">
-    </div>
-
-    <!-- KUH 수익 -->
-    <div class="mb-3">
-        <label class="form-label">KUH 수익 (단위: 원)</label>
-        <input type="number" class="form-control" id="kuhReturn">
-    </div>
-
     <!-- 저장 버튼 -->
     <div class="mt-4">
         <button type="submit" class="btn btn-primary">저장</button>
@@ -179,8 +166,6 @@
             recoveryDate: document.getElementById("recoveryDate").value,  // 날짜는 String 유지
             recoveryCount: Number(document.getElementById("recoveryCount").value),  // Long 변환
             recoveryUnitPrice: Number(document.getElementById("recoveryUnitPrice").value),  // Long 변환
-            fundReturn: Number(document.getElementById("fundReturn").value),  // Long 변환
-            kuhReturn: Number(document.getElementById("kuhReturn").value)  // Long 변환
         };
 
         console.log(formData)

@@ -172,6 +172,9 @@ public class InvestmentService {
                 .heldShareCount(dto.getShareCount()) // 보유 주식 수량
                 .totalPrincipal(dto.getInvestmentSumPrice()) // 투자 원금 (투자 금액)
                 .functionType("최초투자") // 실행 함수 (예: "SAVE_INVESTMENT")
+                .curUnitPrice(dto.getInvestmentUnitPrice()) // 현재단가
+                .totalShareCount(dto.getTotalShares())//발행총주식수
+                .postValue(dto.getInvestmentValue())//현재시총
                 .kuhEquityRate(dto.getEquityRate()) // KUH 지분율
                 .build();
     }

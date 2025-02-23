@@ -31,7 +31,10 @@ public class AccountService {
                         account.getHeldShareCount(),
                         account.getTotalPrincipal(),
                         account.getFunctionType(),
-                        account.getKuhEquityRate()
+                        account.getKuhEquityRate(),
+                        account.getPostValue(),
+                        account.getCurUnitPrice(),
+                        account.getTotalShareCount()
                 ))
                 .collect(Collectors.toList());
     }

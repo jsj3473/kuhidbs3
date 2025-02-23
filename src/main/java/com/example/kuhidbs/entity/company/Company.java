@@ -5,6 +5,8 @@ import com.example.kuhidbs.entity.CompanyAccount;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "KUH_CMP_INFO")
@@ -17,6 +19,10 @@ public class Company extends BaseEntity {
     @Id
     @Column(name = "CMP_ID", length = 8, nullable = false)
     private String companyId;
+
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Investment> investments;
+
 
     @OneToOne(mappedBy = "company", cascade = CascadeType.ALL)
     private CompanyAccount companyAccount;

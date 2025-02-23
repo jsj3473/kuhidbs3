@@ -24,7 +24,10 @@
         <th>보유 주식 수</th>
         <th>투자 원금</th>
         <th>실행 함수</th>
-<!--        <th>KUH 지분율</th>-->
+        <th>KUH 지분율</th>
+        <th>현재 단가</th>
+        <th>post value</th>
+        <th>발행 총 주식수</th>
     </tr>
     </thead>
     <tbody>
@@ -35,7 +38,10 @@
         <td th:text="${account.heldShareCount}"></td>
         <td th:text="${account.totalPrincipal}"></td>
         <td th:text="${account.functionType}"></td>
-<!--        <td th:text="${account.kuhEquityRate}"></td>-->
+        <td th:text="${account.kuhEquityRate}"></td>
+        <td th:text="${account.curUnitPrice}"></td>
+        <td th:text="${account.postValue}"></td>
+        <td th:text="${account.totalShareCount}"></td>
     </tr>
     </tbody>
 </table>
