@@ -24,7 +24,7 @@
   </tr>
   </thead>
   <tbody>
-  <tr th:each="audit : ${auditList}">
+  <tr th:each="audit : ${auditDTOS}">
     <td th:text="${audit.fncYear}"></td>
     <td th:text="${audit.changeDate}"></td>
     <td th:text="${audit.auditorName}"></td>

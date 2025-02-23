@@ -15,7 +15,7 @@ import java.math.BigDecimal;
 public class CFundMemDTO {
     private String fundId;  // 조합고유번호 (FK, Fund 엔터티의 ID)
     private String memberType;  // 조합원유형
-    private String memberName;  // 조합원
+    private String memberName;  // 조합원명
     private Long committedUnitPrice;  // 출자금액
     private BigDecimal contributionRate;  // 출자비율
     private String businessType;  // 사업자유형

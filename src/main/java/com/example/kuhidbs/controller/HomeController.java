@@ -1,7 +1,6 @@
 package com.example.kuhidbs.controller;
 
-import com.example.kuhidbs.dto.Fund.RFundFinancialDTO;
-import com.example.kuhidbs.dto.Fund.RFundNameDTO;
+import com.example.kuhidbs.dto.Fund.*;
 import com.example.kuhidbs.dto.company.kuh투자.RIvtDTO;
 import com.example.kuhidbs.dto.company.감액환입.RShrupDTO;
 import com.example.kuhidbs.dto.company.무증.RBonusDTO;
@@ -15,8 +14,7 @@ import com.example.kuhidbs.dto.company.회수.RstcupDTO;
 import com.example.kuhidbs.dto.company.후속투자.RFolDTO;
 import com.example.kuhidbs.dto.user.UserDTO;
 import com.example.kuhidbs.entity.User;
-import com.example.kuhidbs.service.Fund.FundFinancialService;
-import com.example.kuhidbs.service.Fund.FundService;
+import com.example.kuhidbs.service.Fund.*;
 import com.example.kuhidbs.service.UserService;
 import com.example.kuhidbs.service.company.*;
 import jakarta.servlet.http.HttpSession;
@@ -62,6 +60,14 @@ public class HomeController {
     private FundFinancialService fundFinancialService;
     @Autowired
     private FundService fundService;
+    @Autowired
+    private AuditService auditService;
+    @Autowired
+    private StaffService staffService;
+    @Autowired
+    private FundMemService fundMemService;
+    @Autowired
+    private IASService iasService;
 
     //공통 데이터 설정
     @ModelAttribute
@@ -373,27 +379,64 @@ public class HomeController {
     @GetMapping("/fundShow/auditsByFund/{id}")
     public String auditsByFund(@PathVariable("id") String id, Model model) {
         model.addAttribute("fundId", id);
+        List<RAuditDTO> auditDTOS = auditService.getAuditsByFundId(id);
+        model.addAttribute("auditDTOS", auditDTOS);
         return "fundShow/auditsByFund"; // auditsByFund.html
     }
     // 운용인력 조회 팝업
     @GetMapping("/fundShow/staffsByFund/{id}")
     public String staffsByFund(@PathVariable("id") String id, Model model) {
         model.addAttribute("fundId", id);
+        List<RStaffDTO> staffDTOS = staffService.getStaffChangesByFundId(id);
+        model.addAttribute("staffDTOS", staffDTOS);
         return "fundShow/staffsByFund"; // staffsByFund.html
     }
     // 조합재무제표 조회 팝업
     @GetMapping("/fundShow/financialsByFund/{id}")
     public String financialsByFund(@PathVariable("id") String id, Model model) {
         model.addAttribute("fundId", id);
-
-        // ✅ 재무제표 데이터를 서비스에서 가져오기
         List<RFundFinancialDTO> rFundFinancialDTOS = fundFinancialService.getFundFinancialsByFundId(id);
         model.addAttribute("rFundFinancialDTOS", rFundFinancialDTOS);
-
         return "fundShow/financialsByFund"; // financialsByFund.html
     }
 
-    // 기업 전체조회 페이지
+    // 투자조합원 조회 팝업
+    @GetMapping("/fundShow/membersByFund/{id}")
+    public String membersByFund(@PathVariable("id") String id, Model model) {
+        model.addAttribute("fundId", id);
+        List<RFundMemDTO> rFundMemDTOS = fundMemService.getActiveFundMembersByFundId(id);
+        model.addAttribute("rFundMemDTOS", rFundMemDTOS);
+        return "fundShow/membersByFund"; // membersByFund.html
+    }
+
+    // 투자자산총괄표 조회 팝업
+    @GetMapping("/fundShow/IASByfund/{id}")
+    public String IASByfund(@PathVariable("id") String id, Model model) {
+        model.addAttribute("fundId", id);
+        List<RIASDTO> rIASDTOS = iasService.getInvestmentAssetSummaryByFundId(id);
+        model.addAttribute("rIASDTOS", rIASDTOS);
+        return "fundShow/IASByfund"; // IASByfund.html
+    }
+
+    // 투자기업실사 조회 팝업
+    @GetMapping("/fundShow/dueStatusByFund/{id}")
+    public String dueStatusByFund(@PathVariable("id") String id, Model model) {
+        model.addAttribute("fundId", id);
+//        List<RIASDTO> rIASDTOS = iasService.getInvestmentAssetSummaryByFundId(id);
+//        model.addAttribute("rIASDTOS", rIASDTOS);
+        return "fundShow/dueStatusByFund"; // dueStatusByFund.html
+    }
+
+    // 투자기업 고용변경 조회 팝업
+    @GetMapping("/fundShow/empChangeByFund/{id}")
+    public String empChangeByFund(@PathVariable("id") String id, Model model) {
+        model.addAttribute("fundId", id);
+//        List<RIASDTO> rIASDTOS = iasService.getInvestmentAssetSummaryByFundId(id);
+//        model.addAttribute("rIASDTOS", rIASDTOS);
+        return "fundShow/empChangeByFund"; // empChangeByFund.html
+    }
+
+    // 펀드 전체조회 페이지
     @GetMapping("/fundShow/{id}")
     public String fundShow(@PathVariable("id") String id, Model model) {
         model.addAttribute("fundId", id);

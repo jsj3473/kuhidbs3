@@ -25,7 +25,7 @@
   </tr>
   </thead>
   <tbody>
-  <tr th:each="staff : ${staffList}">
+  <tr th:each="staff : ${staffDTOS}">
     <td th:text="${staff.changeDate}"></td>
     <td th:text="${staff.previousStaff}"></td>
     <td th:text="${staff.currentStaff}"></td>
