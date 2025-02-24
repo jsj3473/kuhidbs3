@@ -134,28 +134,41 @@
 
             let formData = new FormData(form);
             let jsonData = {};
+
             formData.forEach((value, key) => {
-                jsonData[key] = removeCommas(value);
+                let cleanedValue = removeCommas(value);
+
+                // 🔥 % 기호를 포함하는 지분율 필드를 숫자로 변환 (0.00 형식)
+                if (key.startsWith("shareholderRate") || key === "totalEquityRate") {
+                    jsonData[key] = cleanedValue ? parseFloat(cleanedValue.replace("%", "")).toFixed(2) : "0.00";
+                } else {
+                    jsonData[key] = cleanedValue;
+                }
             });
 
-            console.log("전송할 JSON 데이터:", jsonData);
+            console.log("🚀 전송할 두번째 JSON 데이터:", JSON.stringify(jsonData, null, 2));
 
             fetch("/api/companies/createShareholder", {
                 method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(jsonData)
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(jsonData) // ✅ JSON 형식으로 변환하여 전송
             })
                 .then(response => {
-                    if (!response.ok) throw new Error("저장 실패: " + response.status);
-                    return response.json();
-                })
-                .then(data => {
-                    alert("저장이 완료되었습니다!");
+                    if (response.ok) {
+                        alert("저장이 완료되었습니다! 투자 이후 변경 주주구성을 입력해주세요.");
+                        document.getElementById("beforeShTitle").style.display = "none"; // 기존 주주구성 숨기기
+                        document.getElementById("afterShTitle").style.display = "block";
+                    } else {
+                        throw new Error("저장 실패: " + response.status);
+                    }
                 })
                 .catch(error => {
                     alert("저장 중 오류 발생: " + error.message);
                 });
         }
+
         function updateEquityRate() {
             let totalShares = parseFloat(removeCommas(document.getElementById("totalShareCount").value)) || 1;
             let totalPercentage = 0;

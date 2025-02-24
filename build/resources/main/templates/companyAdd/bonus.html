@@ -115,54 +115,6 @@
                 });
         }
 
-        function submitSecondForm() {
-            let form = document.getElementById("secondForm");
-
-            if (!form) {
-                alert("폼을 찾을 수 없습니다.");
-                return;
-            }
-
-            // 폼 데이터를 JSON 형식으로 변환
-            let formData = new FormData(form);
-            let jsonData = {};
-
-            formData.forEach((value, key) => {
-                // 숫자로 변환할 값들 (주주 수 & 총 발행 주식 수)
-                if (key.startsWith("shareholderCount") || key === "totalShareCount") {
-                    jsonData[key] = parseInt(value, 10) || 0; // 빈 값이면 0
-                }
-                // % 기호가 포함된 지분율 값 처리
-                else if (key.startsWith("shareholderRate")) {
-                    jsonData[key] = parseFloat(value.replace("%", "").trim()) || 0; // % 제거 후 변환
-                }
-                // 나머지는 그대로 저장
-                else {
-                    jsonData[key] = value;
-                }
-            });
-
-            console.log("전송할 데이터:", jsonData); // 디버깅용
-            fetch("/api/companies/createShareholder", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(jsonData)
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("주주 정보 저장 실패");
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    alert("주주 정보가 저장되었습니다!");
-                })
-                .catch(error => {
-                    alert("저장 중 오류 발생: " + error.message);
-                });
-        }
 
         function updateEquityRate() {
             let totalShares = parseFloat(document.getElementById("totalShareCount").value) || 1; // 총 발행 주식 수
@@ -309,12 +261,18 @@
             },
             body: JSON.stringify(data)
         })
-            .then(response => response.json())
-            .then(data => {
-                alert("데이터가 저장되었습니다.");
-                location.reload();
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("저장 실패: " + response.status);
+                }
+                return response.text();
             })
-            .catch(error => console.error("Error:", error));
+            .then(data => {
+                alert("저장이 완료되었습니다!");
+            })
+            .catch(error => {
+                alert("저장 중 오류 발생: " + error.message);
+            });
     }
 </script>
 
