@@ -6,6 +6,8 @@ import com.example.kuhidbs.repository.Fund.FundFinancialRepository;
 import com.example.kuhidbs.service.Fund.*;
 import com.example.kuhidbs.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +24,7 @@ public class FundController {
     private final FundFinancialService fundFinancialService;
     private final FundMemService fundMemService;
     private final IASService iasService;
+    private final DueDiligenceService dueDiligenceService;
 
     // 펀드 생성 API
     @PostMapping("/createFund")
@@ -100,5 +103,18 @@ public class FundController {
     public ResponseEntity<List<RIASDTO>> getInvestmentAssetSummariesByFundId(@PathVariable String fundId) {
         List<RIASDTO> summaries = iasService.getInvestmentAssetSummaryByFundId(fundId);
         return ResponseEntity.ok(summaries);
+    }
+
+    @PostMapping("/createDueDiligence")
+    public ResponseEntity<String> createDueDiligence(@RequestBody CDueDiligenceDTO dto) {
+        dueDiligenceService.createDueDiligence(dto);
+        return ResponseEntity.status(HttpStatus.CREATED).body("Due diligence created successfully");
+    }
+
+    //펀드id에 걸맞는 투자금 실사현황들 조회하기
+    @GetMapping("/showAllDueDils/{fundId}")
+    public ResponseEntity<List<RDueDiligenceDTO>> getDueDiligenceByFund(@PathVariable String fundId) {
+        List<RDueDiligenceDTO> dtos = dueDiligenceService.getDueDiligenceByFundId(fundId);
+        return ResponseEntity.ok(dtos);
     }
 }

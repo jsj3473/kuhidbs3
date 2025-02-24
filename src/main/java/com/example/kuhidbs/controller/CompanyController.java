@@ -1,5 +1,6 @@
 package com.example.kuhidbs.controller;
 
+import com.example.kuhidbs.dto.Fund.CDueDiligenceDTO;
 import com.example.kuhidbs.dto.company.투자상태.CStatusDTO;
 import com.example.kuhidbs.dto.company.kuh투자.*;
 import com.example.kuhidbs.dto.company.감액환입.CShrupDTO;
@@ -15,6 +16,7 @@ import com.example.kuhidbs.dto.company.회수.CStcupDTO;
 import com.example.kuhidbs.dto.company.후속투자.*;
 import com.example.kuhidbs.entity.company.*;
 import com.example.kuhidbs.repository.company.CompanyRepository;
+import com.example.kuhidbs.service.Fund.DueDiligenceService;
 import com.example.kuhidbs.service.Fund.FundService;
 import com.example.kuhidbs.service.company.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,6 +75,7 @@ public class CompanyController {
 
     @Autowired
     private FundService fundService;
+
     @Autowired
     private CompanyRepository companyRepository;
 
