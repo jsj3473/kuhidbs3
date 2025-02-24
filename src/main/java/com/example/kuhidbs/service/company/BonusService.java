@@ -14,6 +14,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,29 +36,32 @@ public class BonusService {
                 .orElseThrow(() -> new IllegalArgumentException("Invalid investment ID: " + dto.getInvestmentId()));        // 투자 고유 번호로 Ivt 객체 조회
         Company company = companyRepository.findById(dto.getCompanyId())
                 .orElseThrow(() -> new IllegalArgumentException("Invalid company ID: " + dto.getInvestmentId()));
-        // DTO → Entity 변환 후 저장
-        Bonus bonus = Bonus.builder()
-                .company(company)
-                .investment(investment)
-                .bonusDate(dto.getBonusDate())
-                .changedShareCount(dto.getChangedShareCount())
-                .unitPrice(dto.getUnitPrice())
-                .build();
-
 
 
         // 최신 계좌 데이터 조회
         Account latestAccount = accountRepository.findTop1ByInvestmentInvestmentIdOrderByAccountIdDesc(dto.getInvestmentId());
+        Long newUnitValue = latestAccount.getUnitPrice()*latestAccount.getHeldShareCount()/dto.getChangedShareCount();
+                // DTO → Entity 변환 후 저장
+                Bonus bonus = Bonus.builder()
+                .company(company)
+                .investment(investment)
+                .bonusDate(dto.getBonusDate())
+                .changedShareCount(dto.getChangedShareCount())
+                .unitPrice(newUnitValue)
+                .build();
 
         // 일부 컬럼 수정
         Account updatedAccount = Account.builder()
                 .accountDate(dto.getBonusDate()) //날짜갱신
                 .investment(latestAccount.getInvestment()) // 기존 투자 엔터티 유지
-                .unitPrice(dto.getUnitPrice()) // 새로운 주당 가치로 업데이트
-                .heldShareCount(dto.getChangedShareCount()) // 기존 보유 주식 수 유지
+                .unitPrice(newUnitValue) // 새로운 주당 가치로 업데이트
+                .heldShareCount(dto.getChangedShareCount()) // 기존 보유 주식 수 변경
                 .totalPrincipal(latestAccount.getTotalPrincipal()) // 기존 투자 원금 유지
-                .functionType("무증") // 실행 함수 업데이트(감액 or 복원)
+                .functionType("무상증자") // 실행 함수 업데이트
                 .kuhEquityRate(latestAccount.getKuhEquityRate()) // 기존 KUH 지분율 유지
+                .curUnitPrice(latestAccount.getCurUnitPrice()*newUnitValue/latestAccount.getUnitPrice()) // 현재단가
+                .totalShareCount(latestAccount.getTotalShareCount()*dto.getChangedShareCount()/latestAccount.getHeldShareCount())//발행총주식수
+                .postValue(latestAccount.getPostValue())//현재시총
                 .build();
 
         accountRepository.save(updatedAccount);

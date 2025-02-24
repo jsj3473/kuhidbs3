@@ -26,6 +26,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.ArrayList;
 
 @Controller
 public class HomeController {
@@ -143,8 +145,11 @@ public class HomeController {
     @GetMapping("/companyAdd/followupInvestment/{id}")
     public String followupInvestment(@PathVariable("id") String id, Model model) {
         model.addAttribute("companyId", id);
-        RShrDTO shrDTO = shareholderService.getShareholderByCompanyId(id);
+        RShrDTO shrDTO = Optional.ofNullable(shareholderService.getShareholderByCompanyId(id))
+                .orElse(new RShrDTO()); // 기본 빈 DTO 객체 생성
+
         model.addAttribute("shrDTO", shrDTO);
+
         return "companyAdd/followupInvestment"; // followupInvestment.html
     }
 
@@ -164,7 +169,8 @@ public class HomeController {
                         Model model) {
         model.addAttribute("companyId", companyId);
         model.addAttribute("investmentId", investmentId);
-        RShrDTO shrDTO = shareholderService.getShareholderByCompanyId(companyId);
+        RShrDTO shrDTO = Optional.ofNullable(shareholderService.getShareholderByCompanyId(companyId))
+                .orElse(new RShrDTO()); // 기본 빈 DTO 객체 생성
         model.addAttribute("shrDTO", shrDTO);
         return "companyAdd/bonus"; // bonus.html
     }
@@ -182,10 +188,8 @@ public class HomeController {
     @GetMapping("/companyAdd/stockUp/{companyId}/{investmentId}")
     public String stockUp(@PathVariable("companyId") String companyId,
                           @PathVariable("investmentId") String investmentId, Model model) {
-        RShrDTO shrDTO = shareholderService.getShareholderByCompanyId(companyId);
-        if (shrDTO == null) {
-            shrDTO = new RShrDTO(); // 기본 객체 생성
-        }
+        RShrDTO shrDTO = Optional.ofNullable(shareholderService.getShareholderByCompanyId(companyId))
+                .orElse(new RShrDTO()); // 기본 빈 DTO 객체 생성
         model.addAttribute("shrDTO", shrDTO);
         model.addAttribute("companyId", companyId);
         model.addAttribute("investmentId", investmentId);
@@ -247,94 +251,102 @@ public class HomeController {
     @GetMapping("/companyShow/ivtByCmp/{id}")
     public String companyShowIvtByCmp(@PathVariable("id") String id, Model model) {
         model.addAttribute("companyId", id);
-        List<RIvtDTO> investments = investmentService.getAllInvestmentsByCompanyId(id);
+        List<RIvtDTO> investments = Optional.ofNullable(investmentService.getAllInvestmentsByCompanyId(id))
+                .orElseGet(ArrayList::new);
         model.addAttribute("investments", investments);
-        return "companyShow/ivtByCmp"; // ivtByCmp.html
+        return "companyShow/ivtByCmp";
     }
 
     // 기업별 모든 후속투자 전체조회 페이지
     @GetMapping("/companyShow/folByCmp/{id}")
     public String companyShowFolByCmp(@PathVariable("id") String id, Model model) {
         model.addAttribute("companyId", id);
-        List<RFolDTO> followups = followupService.getFollowupByCompanyId(id);
-
+        List<RFolDTO> followups = Optional.ofNullable(followupService.getFollowupByCompanyId(id))
+                .orElseGet(ArrayList::new);
         model.addAttribute("followups", followups);
-        return "companyShow/folByCmp"; // folByCmp.html
+        return "companyShow/folByCmp";
     }
+
     // 기업별 모든 감액환입 전체조회 페이지
     @GetMapping("/companyShow/shrupByCmp/{id}")
     public String companyShowShrupByCmp(@PathVariable("id") String id, Model model) {
         model.addAttribute("companyId", id);
-        List<RShrupDTO> shrupDTOS = shrupService.getAllShrupsByCompanyId(id);
-
+        List<RShrupDTO> shrupDTOS = Optional.ofNullable(shrupService.getAllShrupsByCompanyId(id))
+                .orElseGet(ArrayList::new);
         model.addAttribute("shrupDTOS", shrupDTOS);
-        return "companyShow/shrupByCmp"; // shrupByCmp.html
+        return "companyShow/shrupByCmp";
     }
+
     // 기업별 모든 회수 전체조회 페이지
     @GetMapping("/companyShow/recoveryByCmp/{id}")
     public String companyShowRecoveryByCmp(@PathVariable("id") String id, Model model) {
         model.addAttribute("companyId", id);
-        List<RstcupDTO> rstcupDTOS = recoveryService.getAllstcupByCompanyId(id);
-
+        List<RstcupDTO> rstcupDTOS = Optional.ofNullable(recoveryService.getAllstcupByCompanyId(id))
+                .orElseGet(ArrayList::new);
         model.addAttribute("rstcupDTOS", rstcupDTOS);
-        return "companyShow/recoveryByCmp"; // recoveryByCmp.html
+        return "companyShow/recoveryByCmp";
     }
-    // 기업별 모든 무상증자  전체조회 페이지
+
+    // 기업별 모든 무상증자 전체조회 페이지
     @GetMapping("/companyShow/bonusByCmp/{id}")
     public String companyShowBonusByCmp(@PathVariable("id") String id, Model model) {
         model.addAttribute("companyId", id);
-        List<RBonusDTO> rBonusDTOS = bonusService.getAllBonusByCompanyId(id);
-
+        List<RBonusDTO> rBonusDTOS = Optional.ofNullable(bonusService.getAllBonusByCompanyId(id))
+                .orElseGet(ArrayList::new);
         model.addAttribute("rBonusDTOS", rBonusDTOS);
-        return "companyShow/bonusByCmp"; // bonusByCmp.html
+        return "companyShow/bonusByCmp";
     }
+
     // 기업별 모든 팁스 전체조회 페이지
     @GetMapping("/companyShow/tipsByCmp/{id}")
     public String companyShowTipsByCmp(@PathVariable("id") String id, Model model) {
         model.addAttribute("companyId", id);
-        RTIPSDTO rTipsDTO = tipsService.getTipsByCompanyId(id);
+        RTIPSDTO rTipsDTO = Optional.ofNullable(tipsService.getTipsByCompanyId(id))
+                .orElseGet(RTIPSDTO::new);
         model.addAttribute("rTipsDTO", rTipsDTO);
-        return "companyShow/tipsByCmp"; // tipsByCmp.html
+        return "companyShow/tipsByCmp";
     }
+
     // 기업별 모든 재무제표 전체조회 페이지
     @GetMapping("/companyShow/financialByCmp/{id}")
     public String companyShowFinancialByCmp(@PathVariable("id") String id, Model model) {
         model.addAttribute("companyId", id);
-
-        // ✅ 재무제표 데이터를 서비스에서 가져오기
-        List<RFncDTO> rFncDTOS = financialService.getAllFinancialsByCompanyId(id);
+        List<RFncDTO> rFncDTOS = Optional.ofNullable(financialService.getAllFinancialsByCompanyId(id))
+                .orElseGet(ArrayList::new);
         model.addAttribute("rFncDTOS", rFncDTOS);
-
-        return "companyShow/financialByCmp"; // financialByCmp.html
+        return "companyShow/financialByCmp";
     }
+
     // 기업별 모든 사후관리 전체조회 페이지
     @GetMapping("/companyShow/manageByCmp/{id}")
     public String companyShowManageByCmp(@PathVariable("id") String id, Model model) {
         model.addAttribute("companyId", id);
-        RMngDTO rMngDTOS = manageService.getTopManageByCompanyId(id);
-        model.addAttribute("rMngDTOS", rMngDTOS);
-        return "companyShow/manageByCmp"; // manageByCmp.html
+        RMngDTO rMngDTO = Optional.ofNullable(manageService.getTopManageByCompanyId(id))
+                .orElseGet(RMngDTO::new);
+        model.addAttribute("rMngDTO", rMngDTO);
+        return "companyShow/manageByCmp";
     }
 
     // 기업별 모든 사후담당자 전체조회 페이지
     @GetMapping("/companyShow/reviewerChangeByCmp/{id}")
     public String companyShowManagerChangeByCmp(@PathVariable("id") String id, Model model) {
         model.addAttribute("companyId", id);
-        List<RRwrDTO> rRwrDTOS = reviewerService.getReviewersByCompanyId(id);
+        List<RRwrDTO> rRwrDTOS = Optional.ofNullable(reviewerService.getReviewersByCompanyId(id))
+                .orElseGet(ArrayList::new);
         model.addAttribute("rRwrDTOS", rRwrDTOS);
-        return "companyShow/reviewerChangeByCmp"; // reviewerChangeByCmp.html
+        return "companyShow/reviewerChangeByCmp";
     }
 
-
-    //투자별 계좌조회 //투자 id 값 사용
+    // 투자별 계좌조회 (투자 ID 값 사용)
     @GetMapping("/companyShow/accountByIvt/{id}")
     public String companyShowAccountByIvt(@PathVariable("id") Long id, Model model) {
         model.addAttribute("investmentId", id);
-        List<RAccountDTO> rAccountDTOS = accountService.getAllAccountsByInvestmentId(id);
-
+        List<RAccountDTO> rAccountDTOS = Optional.ofNullable(accountService.getAllAccountsByInvestmentId(id))
+                .orElseGet(ArrayList::new);
         model.addAttribute("rAccountDTOS", rAccountDTOS);
-        return "companyShow/accountByIvt"; // accountByIvt.html
+        return "companyShow/accountByIvt";
     }
+
 
     // 기업후속관리 페이지
     @GetMapping("/companyManage/{id}")

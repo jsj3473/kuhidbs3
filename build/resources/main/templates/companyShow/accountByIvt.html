@@ -32,7 +32,7 @@
     </thead>
     <tbody>
     <!-- ✅ Thymeleaf 반복문을 사용하여 계좌 내역 출력 -->
-    <tr th:each="account : ${rAccountDTOS}">S
+    <tr th:each="account : ${rAccountDTOS}">
         <td th:text="${account.accountDate}"></td>
         <td th:text="${account.unitPrice}"></td>
         <td th:text="${account.heldShareCount}"></td>
