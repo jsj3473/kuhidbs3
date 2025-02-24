@@ -36,7 +36,7 @@ public class InvestmentAssetSummary {
     private String investmentProduct;
 
     @Column(name = "management_fee_target")
-    private Boolean managementFeeTarget;
+    private String managementFeeTarget;
 
     @Column(name = "investment_amount")
     private Long investmentAmount;

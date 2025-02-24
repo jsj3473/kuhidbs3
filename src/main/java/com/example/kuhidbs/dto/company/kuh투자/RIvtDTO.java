@@ -25,6 +25,8 @@ public class RIvtDTO {
     private String investmentStep; // 투자 단계
     private String tangibleInvestment; // 현물 투자
     private String investmentEmployee; // 투자 담당자
+    private String managementFeeTarget; //관리보수대상 여부
+    private String evaluationMethod; //평가방법
 }
 
 

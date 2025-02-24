@@ -64,4 +64,10 @@ public class Investment extends BaseEntity {
 
     @Column(name = "TOT_SHR")
     private Long totalShares; // 발행 주식 수
+
+    @Column(name = "management_fee_target")
+    private String managementFeeTarget; //관리보수대상 여부
+
+    @Column(name = "evaluation_method")
+    private String evaluationMethod; //평가방법
 }

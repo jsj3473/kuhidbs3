@@ -79,6 +79,8 @@ public class InvestmentService {
                 .investmentAmount(dto.getInvestmentSumPrice())
                 .investmentDate(dto.getInvestmentDate())
                 .investmentCompany(company.getCompanyName())
+                .evaluationMethod(dto.getEvaluationMethod())
+                .managementFeeTarget(dto.getManagementFeeTarget())
                 .build();
 
         // 6. 투자자산총괄데이터 저장
@@ -113,6 +115,8 @@ public class InvestmentService {
                 .tangibleInvestment(investment.getTangibleInvestment())
                 .investmentEmployee(investment.getInvestmentEmployee())
                 .investmentStep(investment.getInvestmentStep())
+                .managementFeeTarget(investment.getManagementFeeTarget())
+                .evaluationMethod(investment.getEvaluationMethod())
                 .build()).orElse(null);
 
     }
@@ -136,6 +140,8 @@ public class InvestmentService {
                         .tangibleInvestment(investment.getTangibleInvestment())
                         .investmentEmployee(investment.getInvestmentEmployee())
                         .investmentStep(investment.getInvestmentStep())
+                        .managementFeeTarget(investment.getManagementFeeTarget())
+                        .evaluationMethod(investment.getEvaluationMethod())
                         .build())
                 .collect(Collectors.toList());
     }
@@ -161,6 +167,8 @@ public class InvestmentService {
                 .investmentDate(dto.getInvestmentDate()) // 투자 일자
                 .investmentEmployee(dto.getInvestmentEmployee()) // 투자 담당자
                 .totalShares(dto.getTotalShares()) // 발행 주식 수
+                .managementFeeTarget(dto.getManagementFeeTarget()) //관리보수대상여부
+                .evaluationMethod(dto.getEvaluationMethod()) //평가방법
                 .build();
     }
 

@@ -19,7 +19,7 @@ public class RIASDTO {
     private String investmentProduct;
 
     // 관리보수 대상 여부 (true: 대상, false: 비대상)
-    private Boolean managementFeeTarget;
+    private String managementFeeTarget;
 
     // 투자 원금
     private Long investmentAmount;

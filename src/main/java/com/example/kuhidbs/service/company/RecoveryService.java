@@ -108,6 +108,9 @@ public class RecoveryService {
 
         ias.setRecoveredPrincipal(recoveredPrincipal);
         ias.setRecoveredProfit(recoveredProfit);
+        //잔여자산
+        Long remainingAssetValuation = recoveredPrincipal* latestAccount.getCurUnitPrice()/latestAccount.getUnitPrice();
+        ias.setRemainingAssetValuation(remainingAssetValuation);
 
         iasService.calculateDerivedFields(ias);
         investmentAssetSummaryRepository.save(ias);

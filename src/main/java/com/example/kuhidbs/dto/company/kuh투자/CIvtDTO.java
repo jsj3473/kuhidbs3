@@ -28,6 +28,8 @@ public class CIvtDTO {
     private Long totalShares; // 발행 주식 수
     private String investmentState; // 투자 상태
     private String investmentMemo; // 기타 메모
+    private String managementFeeTarget; //관리보수대상 여부
+    private String evaluationMethod; //평가방법
 }
 
 
