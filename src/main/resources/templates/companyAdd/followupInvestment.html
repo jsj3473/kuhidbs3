@@ -159,7 +159,7 @@
                     if (!response.ok) {
                         throw new Error("주주 정보 저장 실패");
                     }
-                    return response.json();
+                    return response.text();
                 })
                 .then(data => {
                     alert("주주 정보가 저장되었습니다!");

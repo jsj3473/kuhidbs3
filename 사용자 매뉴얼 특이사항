@@ -1,2 +1,8 @@
 고유계정이라는 id를 가진 펀드를 억지로 생성해야한다
 펀드를 생성하기전엔 투자를 생성할수없다
+
+📌 [createInvestment] 요청 데이터 수신: CIvtDTO(fundId=고유계정, companyId=hifor,
+investmentProduct=CS, investmentSumPrice=10000000000, shareCount=100000, investmentUnitPrice=100000,
+equityRate=10, investmentValue=100000000000, tangibleInvestment=현금투자, investmentStep=Seed,
+investmentDate=2025-02-24, investmentEmployee=1,
+ totalShares=1000000, investmentState=정상투자 A, investmentMemo=1, managementFeeTarget=1, evaluationMethod=1)
