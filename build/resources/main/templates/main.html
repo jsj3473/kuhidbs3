@@ -12,54 +12,18 @@
     <link rel="stylesheet" th:href="@{/css/sidebar.css}">
     <link rel="stylesheet" th:href="@{/css/navbar.css}">
     <script th:src="@{/js/common.js}"></script>
+    <script defer th:src="@{/js/searchModal.js}"></script>
 
     <style>
 
     </style>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const searchModal = new bootstrap.Modal(document.getElementById('searchModal'));
-            const searchInput = document.getElementById('companyIdInput');
-            const searchButton = document.getElementById('searchButton');
-
-            function openSearchModal(target) {
-                searchInput.value = ''; // 입력창 초기화
-                searchButton.setAttribute("onclick", `goToPage('${target}')`);
-                searchModal.show();
-                setTimeout(() => searchInput.focus(), 200); // 모달 열리면 자동 포커스
-            }
-
-            function goToPage(target) {
-                const companyId = searchInput.value.trim();
-                if (!companyId) {
-                    alert("회사 고유번호를 입력하세요.");
-                    return;
-                }
-                window.location.href = `/${target}/${companyId}`;
-            }
-
-            // Enter 키 입력 시 검색 실행
-            searchInput.addEventListener("keypress", function (event) {
-                if (event.key === "Enter") {
-                    searchButton.click();
-                }
-            });
-
-            // 검색 버튼 클릭 시 실행 (중복 이벤트 방지)
-            searchButton.addEventListener("click", function () {
-                goToPage(searchButton.getAttribute("onclick").match(/'([^']+)'/)[1]);
-            });
-
-            // 전역 함수로 설정 (Thymeleaf에서 호출 가능)
-            window.openSearchModal = openSearchModal;
-        });
-
-    </script>
 
 </head>
 <body>
 
 <div th:replace="fragments/navbar :: navbar"></div>
+<div th:replace="fragments/searchModal :: searchModal"></div>
+
 
 
 
