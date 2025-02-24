@@ -1,6 +1,7 @@
 package com.example.kuhidbs.service.Fund;
 
 import com.example.kuhidbs.dto.Fund.CFundDTO;
+import com.example.kuhidbs.dto.Fund.RFundDTO;
 import com.example.kuhidbs.dto.Fund.RFundMemDTO;
 import com.example.kuhidbs.dto.Fund.RFundNameDTO;
 import com.example.kuhidbs.entity.Fund.Fund;
@@ -68,5 +69,38 @@ public class FundService {
         fundRepository.updateCurrentStaffByFundId(fundId, currentStaff);
     }
 
+    public RFundDTO getFundById(String fundId) {
+        Fund fund = fundRepository.findById(fundId)
+                .orElseThrow(() -> new RuntimeException("Fund not found with ID: " + fundId));
 
+        return RFundDTO.builder()
+                .fundId(fund.getFundId())
+                .fundName(fund.getFundName())
+                .fundNameDetail(fund.getFundNameDetail())
+                .establishmentDate(fund.getEstablishmentDate())
+                .duration(fund.getDuration())
+                .durationStartDate(fund.getDurationStartDate())
+                .durationEndDate(fund.getDurationEndDate())
+                .investmentDuration(fund.getInvestmentDuration())
+                .investmentStartDate(fund.getInvestmentStartDate())
+                .investmentEndDate(fund.getInvestmentEndDate())
+                .committedTotalPrice(fund.getCommittedTotalPrice())
+                .unitPrice(fund.getUnitPrice())
+                .fundOrganizationType(fund.getFundOrganizationType())
+                .paymentType(fund.getPaymentType())
+                .currentStaff(fund.getCurrentStaff())
+                .trusteeCorporation(fund.getTrusteeCorporation())
+                .administrationCorporation(fund.getAdministrationCorporation())
+                .targetReturnRate(fund.getTargetReturnRate())
+                .performanceFeeRate(fund.getPerformanceFeeRate())
+                .managementFeeInvestmentPeriod(fund.getManagementFeeInvestmentPeriod())
+                .managementFeeManagementPeriod(fund.getManagementFeeManagementPeriod())
+                .agreementCriteria(fund.getAgreementCriteria())
+                .incentiveCondition(fund.getIncentiveCondition())
+                .priorLossGP(fund.getPriorLossGP())
+                .priorLossLP(fund.getPriorLossLP())
+                .liquidationStatus(fund.getLiquidationStatus())
+                .liquidationDate(fund.getLiquidationDate())
+                .build();
+    }
 }

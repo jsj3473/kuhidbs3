@@ -117,4 +117,13 @@ public class FundController {
         List<RDueDiligenceDTO> dtos = dueDiligenceService.getDueDiligenceByFundId(fundId);
         return ResponseEntity.ok(dtos);
     }
+
+    @GetMapping("/{fundId}")
+    public ResponseEntity<RFundDTO> getFundById(@PathVariable String fundId) {
+        RFundDTO fundDTO = fundService.getFundById(fundId);
+        List<RFundMemDTO> fundMems = fundMemService.getActiveFundMembersByFundId(fundId);
+        fundDTO.setFundMems(fundMems);
+        return ResponseEntity.ok(fundDTO);
+    }
+
 }
