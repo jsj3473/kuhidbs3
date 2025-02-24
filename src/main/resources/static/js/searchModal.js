@@ -83,6 +83,12 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
+    // 모달이 닫힐 때 검색 리스트 박스도 숨기기
+    document.getElementById("searchModal").addEventListener("hidden.bs.modal", function () {
+        searchResults.innerHTML = "";
+        searchResults.style.display = "none";
+    });
+
     // 전역 함수로 설정 (Thymeleaf에서 호출 가능)
     window.openSearchModal = openSearchModal;
 });

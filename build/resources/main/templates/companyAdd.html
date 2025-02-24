@@ -11,35 +11,11 @@
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/sidebar.css}">
     <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/slimTable.css}">
     <script th:src="@{/js/common.js}"></script>
     <script defer th:src="@{/js/searchModal.js}"></script>
 
     <style>
-
-        table {
-            font-size: 12px;
-            border-spacing: 0px;
-        }
-        th, td {
-            text-align: center;
-            vertical-align: middle;
-            padding: 1px 3px;
-            white-space: nowrap;
-            line-height: 1;
-        }
-        th {
-            background-color: #f8f9fa !important;
-            font-weight: normal;
-        }
-        input.form-control, select.form-control {
-            height: 22px;
-            font-size: 12px;
-            padding: 2px 5px;
-        }
-        .input-inline {
-            display: flex;
-            gap: 5px;
-        }
     </style>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
@@ -324,7 +300,7 @@
                 </tr>
 
                 <tr>
-                    <th colspan="10">BIZ SECTOR 및 투자 정보</th>
+                    <th colspan="10">회사 BIZ 정보</th>
                 </tr>
                 <tr>
                     <th>BIZ SECTOR 구분</th>
