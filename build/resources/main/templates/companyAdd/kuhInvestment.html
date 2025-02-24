@@ -7,31 +7,62 @@
     <link rel="stylesheet" th:href="@{/css/common.css}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <script>
-        function calculateInvestmentSumPrice() {
-            let unitPrice = parseFloat(document.getElementById("investmentUnitPrice").value) || 0; // 투자 단가 (3번)
-            let shareCount = parseFloat(document.getElementById("shareCount").value) || 0; // 주식 수량 (4번)
-            let totalShares = parseFloat(document.getElementById("totalShares").value) || 1; // 발행 주식 수 (6번)
-
-            // 🔥 5번 항목(투자 금액) = 투자 단가 * 주식 수량
-            let investmentSumPrice = unitPrice * shareCount;
-            document.getElementById("investmentSumPrice").value = investmentSumPrice.toFixed(0);
-
-            // 🔥 7번 항목(KUH 지분율) = (주식 수량 / 발행 주식 수) * 100 (소수점 2자리까지)
-            let equityRate = (shareCount / totalShares) * 100;
-            document.getElementById("equityRate").value = isNaN(equityRate) ? "" : equityRate.toFixed(2); // 값이 없으면 빈 문자열
-
-            // 🔥 8번 투자 밸류 (Long 값 유지 → 소수점 제거)
-            let investmentValue = Math.floor((unitPrice * totalShares) / 100000000); // 억 단위 변환 후 정수 처리
-            document.getElementById("investmentValue").value = isNaN(investmentValue) ? "" : investmentValue;
+        function formatNumberWithCommas(value) {
+            return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
         }
 
-        // 🔥 모든 관련 입력 필드에 oninput 이벤트 추가 (자동 계산)
+        function removeCommas(value) {
+            return value.replace(/,/g, "");
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelectorAll("input[data-format='number']").forEach(input => {
+                input.addEventListener("input", function () {
+                    let plainNumber = removeCommas(this.value);
+                    if (!isNaN(plainNumber) && plainNumber !== "") {
+                        this.value = formatNumberWithCommas(plainNumber);
+                    }
+                });
+                input.addEventListener("blur", function () {
+                    if (this.value === "") {
+                        this.value = "0";
+                    }
+                });
+            });
+
+            document.getElementById("firstForm").addEventListener("submit", function () {
+                document.querySelectorAll("input[data-format='number']").forEach(input => {
+                    input.value = removeCommas(input.value);
+                });
+            });
+
+            document.getElementById("secondForm").addEventListener("submit", function () {
+                document.querySelectorAll("input[data-format='number']").forEach(input => {
+                    input.value = removeCommas(input.value);
+                });
+            });
+        });
+
+        function calculateInvestmentSumPrice() {
+            let unitPrice = parseFloat(removeCommas(document.getElementById("investmentUnitPrice").value)) || 0;
+            let shareCount = parseFloat(removeCommas(document.getElementById("shareCount").value)) || 0;
+            let totalShares = parseFloat(removeCommas(document.getElementById("totalShares").value)) || 1;
+
+            let investmentSumPrice = unitPrice * shareCount;
+            document.getElementById("investmentSumPrice").value = formatNumberWithCommas(investmentSumPrice.toFixed(0));
+
+            let equityRate = (shareCount / totalShares) * 100;
+            document.getElementById("equityRate").value = isNaN(equityRate) ? "" : equityRate.toFixed(2);
+
+            let investmentValue = Math.floor((unitPrice * totalShares) / 100000000);
+            document.getElementById("investmentValue").value = isNaN(investmentValue) ? "" : formatNumberWithCommas(investmentValue);
+        }
+
         document.addEventListener("DOMContentLoaded", function () {
             document.getElementById("investmentUnitPrice").addEventListener("input", calculateInvestmentSumPrice);
             document.getElementById("shareCount").addEventListener("input", calculateInvestmentSumPrice);
             document.getElementById("totalShares").addEventListener("input", calculateInvestmentSumPrice);
         });
-
         function removeDefaultOptions() {
             document.querySelectorAll("select").forEach(select => {
                 if (select.value === "") {
@@ -42,79 +73,38 @@
 
         function submitFirstForm() {
             let form = document.getElementById("firstForm");
-
             if (!form) {
                 alert("폼을 찾을 수 없습니다.");
                 return;
             }
 
-            // 폼 데이터를 JSON 형식으로 변환
             let formData = new FormData(form);
             let jsonData = {};
 
             formData.forEach((value, key) => {
-                jsonData[key] = value;
+                let cleanedValue = removeCommas(value);
+
+                // 🔥 숫자로 변환해야 하는 필드 (Long 타입)
+                if (["investmentUnitPrice", "shareCount", "investmentSumPrice", "totalShares", "investmentValue"].includes(key)) {
+                    jsonData[key] = cleanedValue ? parseInt(cleanedValue, 10) : 0;
+                }
+                else if (key === "equityRate") {
+                    // 🔥 `BigDecimal`로 변환 (문자열 → 숫자)
+                    jsonData[key] = cleanedValue ? Number(parseFloat(cleanedValue).toFixed(2)) : 0.00;
+                }
+                else {
+                    jsonData[key] = cleanedValue;
+                }
             });
+
+            console.log("🚀 전송할 JSON 데이터:", JSON.stringify(jsonData, null, 2));
 
             fetch("/api/companies/createInvestment", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: JSON.stringify(jsonData) // JSON 형식으로 변환
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("저장 실패: " + response.status);
-                    }
-                    return response.json(); // JSON 응답 처리
-                })
-                .then(data => {
-                    alert("저장이 완료되었습니다! 기존 주주구성을 입력하세요.");
-                    document.getElementById("secondFormButton").disabled = false; // 버튼 활성화
-                })
-                .catch(error => {
-                    alert("저장 중 오류 발생: " + error.message);
-                });
-        }
-
-
-
-        function submitSecondForm() {
-            let form = document.getElementById("secondForm");
-
-            if (!form) {
-                alert("폼을 찾을 수 없습니다.");
-                return;
-            }
-
-            // 폼 데이터를 JSON 형식으로 변환
-            let formData = new FormData(form);
-            let jsonData = {};
-
-            formData.forEach((value, key) => {
-                // 숫자로 변환할 값들 (주주 수 & 총 발행 주식 수)
-                if (key.startsWith("shareholderCount") || key === "totalShareCount") {
-                    jsonData[key] = parseInt(value, 10) || 0; // 빈 값이면 0
-                }
-                // % 기호가 포함된 지분율 값 처리
-                else if (key.startsWith("shareholderRate")) {
-                    jsonData[key] = parseFloat(value.replace("%", "").trim()) || 0; // % 제거 후 변환
-                }
-                // 나머지는 그대로 저장
-                else {
-                    jsonData[key] = value;
-                }
-            });
-
-            console.log("전송할 데이터:", jsonData); // 디버깅용
-
-            fetch("/api/companies/createShareholder", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(jsonData) // JSON 형식으로 변환하여 전송
+                body: JSON.stringify(jsonData)
             })
                 .then(response => {
                     if (!response.ok) {
@@ -123,16 +113,8 @@
                     return response.json();
                 })
                 .then(data => {
-                    // 현재 단계가 "기존 주주구성"이면 변경 주주구성으로 전환
-                    if (document.getElementById("beforeShTitle").style.display !== "none") {
-                        alert("저장이 완료되었습니다! 투자 이후 변경 주주구성을 입력해주세요.");
-                        document.getElementById("beforeShTitle").style.display = "none"; // 기존 주주구성 숨기기
-                        document.getElementById("afterShTitle").style.display = "block"; // 변경 주주구성 표시
-                    } else {
-                        // 두 번째 저장(변경 주주구성) 완료 후 팝업 닫기
-                        alert("저장이 완료되었습니다! KUH 투자 입력 팝업을 닫습니다.");
-                        window.close();
-                    }
+                    alert("저장이 완료되었습니다! 기존 주주구성을 입력하세요.");
+                    document.getElementById("secondFormButton").disabled = false;
                 })
                 .catch(error => {
                     alert("저장 중 오류 발생: " + error.message);
@@ -140,27 +122,56 @@
         }
 
 
+        function submitSecondForm() {
+            let form = document.getElementById("secondForm");
+            if (!form) {
+                alert("폼을 찾을 수 없습니다.");
+                return;
+            }
 
+            let formData = new FormData(form);
+            let jsonData = {};
+            formData.forEach((value, key) => {
+                jsonData[key] = removeCommas(value);
+            });
+
+            console.log("전송할 JSON 데이터:", jsonData);
+
+            fetch("/api/companies/createShareholder", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(jsonData)
+            })
+                .then(response => {
+                    if (!response.ok) throw new Error("저장 실패: " + response.status);
+                    return response.json();
+                })
+                .then(data => {
+                    alert("저장이 완료되었습니다!");
+                })
+                .catch(error => {
+                    alert("저장 중 오류 발생: " + error.message);
+                });
+        }
         function updateEquityRate() {
-            let totalShares = parseFloat(document.getElementById("totalShareCount").value) || 1; // 총 발행 주식 수
+            let totalShares = parseFloat(removeCommas(document.getElementById("totalShareCount").value)) || 1;
             let totalPercentage = 0;
 
             for (let i = 1; i <= 8; i++) {
-                let shares = parseFloat(document.getElementById("shareholderCount" + i).value) || 0;
+                let shares = parseFloat(removeCommas(document.getElementById("shareholderCount" + i).value)) || 0;
                 let rateField = document.getElementById("shareholderRate" + i);
                 let percentage = (shares / totalShares) * 100;
                 rateField.value = percentage.toFixed(2) + "%";
                 totalPercentage += percentage;
             }
 
-            // 지분율 총합 업데이트
             document.getElementById("totalEquityRate").value = totalPercentage.toFixed(2) + "%";
         }
 
         function updateTotalShares() {
             let sum = 0;
             for (let i = 1; i <= 8; i++) {
-                sum += parseFloat(document.getElementById("shareholderCount" + i).value) || 0;
+                sum += parseFloat(removeCommas(document.getElementById("shareholderCount" + i).value)) || 0;
             }
             document.getElementById("totalShareCount").value = sum;
             updateEquityRate();
@@ -200,22 +211,22 @@
 
     <div class="mb-3">
         <label class="form-label">3. 투자 단가 (단위: 원)</label>
-        <input type="number" class="form-control" id="investmentUnitPrice" name="investmentUnitPrice" oninput="calculateInvestmentSumPrice()">
+        <input type="text" data-format="number"class="form-control" id="investmentUnitPrice" name="investmentUnitPrice" oninput="calculateInvestmentSumPrice()">
     </div>
 
     <div class="mb-3">
         <label class="form-label">4. 주식 수량 (단위: 주)</label>
-        <input type="number" class="form-control" id="shareCount" name="shareCount" oninput="calculateInvestmentSumPrice()">
+        <input type="text" data-format="number"class="form-control" id="shareCount" name="shareCount" oninput="calculateInvestmentSumPrice()">
     </div>
 
     <div class="mb-3">
         <label class="form-label">5. 투자 금액 (단위: 원)</label>
-        <input type="number" class="form-control" id="investmentSumPrice" name="investmentSumPrice" readonly>
+        <input type="text" data-format="number"class="form-control" id="investmentSumPrice" name="investmentSumPrice" readonly>
     </div>
 
     <div class="mb-3">
         <label class="form-label">6. 발행 주식 수 (단위: 주)</label>
-        <input type="number" class="form-control" id="totalShares" name="totalShares" oninput="calculateInvestmentSumPrice()">
+        <input type="text" data-format="number"class="form-control" id="totalShares" name="totalShares" oninput="calculateInvestmentSumPrice()">
     </div>
 
     <div class="mb-3">
@@ -225,7 +236,7 @@
 
     <div class="mb-3">
         <label class="form-label">8. 투자 밸류 (단위: 억원)</label>
-        <input type="number" class="form-control" id="investmentValue" name="investmentValue" readonly>
+        <input type="text" data-format="number"class="form-control" id="investmentValue" name="investmentValue" readonly>
     </div>
 
     <div class="mb-3"><label class="form-label">9. 투자 단계</label>
@@ -270,14 +281,6 @@
         <input type="text" class="form-control" name="investmentEmployee">
     </div>
 
-    <div class="mb-3"><label class="form-label">15. 관리보수대상여부</label>
-        <input type="text" class="form-control" name="managementFeeTarget">
-    </div>
-
-    <div class="mb-3"><label class="form-label">16. 평가방법</label>
-        <input type="text" class="form-control" name="evaluationMethod">
-    </div>
-
     <div class="mt-4">
         <button type="button" class="btn btn-primary" onclick="submitFirstForm()">저장</button>
     </div>
@@ -304,23 +307,23 @@
             <td class="align-middle">발행총주식수</td>
         </tr>
         <tr>
-            <td><input type="number" class="form-control" id="shareholderCount1" name="shareholderCount1"
+            <td><input type="text" data-format="number"class="form-control" id="shareholderCount1" name="shareholderCount1"
                        oninput="updateTotalShares()"></td>
-            <td><input type="number" class="form-control" id="shareholderCount2" name="shareholderCount2"
+            <td><input type="text" data-format="number"class="form-control" id="shareholderCount2" name="shareholderCount2"
                        oninput="updateTotalShares()"></td>
-            <td><input type="number" class="form-control" id="shareholderCount3" name="shareholderCount3"
+            <td><input type="text" data-format="number"class="form-control" id="shareholderCount3" name="shareholderCount3"
                        oninput="updateTotalShares()"></td>
-            <td><input type="number" class="form-control" id="shareholderCount4" name="shareholderCount4"
+            <td><input type="text" data-format="number"class="form-control" id="shareholderCount4" name="shareholderCount4"
                        oninput="updateTotalShares()"></td>
-            <td><input type="number" class="form-control" id="shareholderCount5" name="shareholderCount5"
+            <td><input type="text" data-format="number"class="form-control" id="shareholderCount5" name="shareholderCount5"
                        oninput="updateTotalShares()"></td>
-            <td><input type="number" class="form-control" id="shareholderCount6" name="shareholderCount6"
+            <td><input type="text" data-format="number"class="form-control" id="shareholderCount6" name="shareholderCount6"
                        oninput="updateTotalShares()"></td>
-            <td><input type="number" class="form-control" id="shareholderCount7" name="shareholderCount7"
+            <td><input type="text" data-format="number"class="form-control" id="shareholderCount7" name="shareholderCount7"
                        oninput="updateTotalShares()"></td>
-            <td><input type="number" class="form-control" id="shareholderCount8" name="shareholderCount8"
+            <td><input type="text" data-format="number"class="form-control" id="shareholderCount8" name="shareholderCount8"
                        oninput="updateTotalShares()"></td>
-            <td><input type="number" class="form-control" id="totalShareCount" name="totalShareCount" readonly></td>
+            <td><input type="text" data-format="number"class="form-control" id="totalShareCount" name="totalShareCount" readonly></td>
         </tr>
         <tr>
             <td><input type="text" class="form-control" id="shareholderRate1" name="shareholderRate1" readonly></td>

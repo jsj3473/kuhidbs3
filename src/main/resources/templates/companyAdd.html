@@ -13,7 +13,66 @@
     <link rel="stylesheet" th:href="@{/css/navbar.css}">
     <script th:src="@{/js/common.js}"></script>
 
-    <style></style>
+    <style>
+
+        table {
+            font-size: 12px;
+            border-spacing: 0px;
+        }
+        th, td {
+            text-align: center;
+            vertical-align: middle;
+            padding: 1px 3px;
+            white-space: nowrap;
+            line-height: 1;
+        }
+        th {
+            background-color: #f8f9fa !important;
+            font-weight: normal;
+        }
+        input.form-control, select.form-control {
+            height: 22px;
+            font-size: 12px;
+            padding: 2px 5px;
+        }
+        .input-inline {
+            display: flex;
+            gap: 5px;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // 숫자 입력 필드 자동 포맷 적용
+            function formatNumberInput(input) {
+                input.addEventListener("input", function () {
+                    let value = this.value.replace(/[^0-9]/g, ""); // 숫자 이외 제거
+                    if (value !== "") {
+                        this.value = Number(value).toLocaleString("en-US"); // 3자리마다 콤마 추가
+                    }
+                });
+
+                input.addEventListener("blur", function () {
+                    let value = this.value.replace(/[^0-9]/g, "");
+                    this.value = value !== "" ? Number(value).toLocaleString("en-US") : "";
+                });
+            }
+
+            // 숫자 입력 필드 자동 포맷 적용 (자본금, 액면가, 매출액 등)
+            const numberFields = document.querySelectorAll(".number-format");
+            numberFields.forEach(formatNumberInput);
+
+            // 🔥 폼 제출 시 숫자 필드의 콤마 제거 후 전송
+            document.getElementById("companyForm").addEventListener("submit", function (event) {
+                numberFields.forEach(field => {
+                    field.value = field.value.replace(/,/g, ""); // 콤마 제거
+                });
+            });
+
+
+        });
+    </script>
+
+
     <script defer>
         document.addEventListener("DOMContentLoaded", function () {
             const companyForm = document.getElementById("companyForm");
@@ -57,6 +116,27 @@
                         console.error("에러 발생:", error);
                         alert("서버 오류 발생. 관리자에게 문의하세요.");
                     });
+                function formatNumberInput(input) {
+                    input.addEventListener("input", function () {
+                        let value = this.value.replace(/[^0-9]/g, ""); // 숫자 이외 제거
+                        if (value !== "") {
+                            this.value = Number(value).toLocaleString("en-US"); // 3자리마다 콤마 추가
+                        }
+                    });
+
+                    input.addEventListener("blur", function () {
+                        let value = this.value.replace(/[^0-9]/g, "");
+                        this.value = value !== "" ? Number(value).toLocaleString("en-US") : "";
+                    });
+                }
+                // 숫자 입력 필드 자동 포맷 적용 (자본금, 액면가, 매출액 등)
+                const numberFields = document.querySelectorAll(".number-format");
+                numberFields.forEach(formatNumberInput);
+                // 4️⃣ 숫자 필드에 다시 콤마 적용
+                numberFields.forEach(field => {
+                    let value = field.value.replace(/[^0-9]/g, "");
+                    field.value = value !== "" ? Number(value).toLocaleString("en-US") : "";
+                });
             });
 
             // 팝업 열기 함수
@@ -137,214 +217,253 @@
 
         <form id="companyForm" th:action="@{/api/companies/createCompany}" method="post">
 
-            <div class="mb-3"><label class="form-label">1. 회사고유번호</label>
-                <input type="text" class="form-control" name="companyId" id="companyId" required></div>
-
-            <div class="mb-3"><label class="form-label">2. 투자회사</label>
-                <input type="text" class="form-control" name="companyName"></div>
-
-            <div class="mb-3"><label class="form-label">3. 설립일자</label>
-                <input type="date" class="form-control" name="establishmentDate"></div>
-
-            <div class="mb-3"><label class="form-label">4. 대표이사</label>
-                <input type="text" class="form-control" name="ceoName"></div>
-
-            <div class="mb-3"><label class="form-label">5. 회사주소</label>
-                <input type="text" class="form-control" name="companyAddress"></div>
-
-            <div class="mb-3"><label class="form-label">5-1. 회사 우편번호</label>
-                <input type="text" class="form-control" name="companyPostalCode"></div>
-
-            <div class="mb-3"><label class="form-label">6. 사업자등록번호</label>
-                <input type="text" class="form-control" name="businessRegistrationNumber"></div>
-
-            <div class="mb-3"><label class="form-label">7. 법인등록번호</label>
-                <input type="text" class="form-control" name="corporateRegistrationNumber"></div>
-
-            <div class="mb-3"><label class="form-label">8. 표준산업분류</label>
-                <input type="text" class="form-control" name="industryCode"></div>
-
-            <div class="mb-3"><label class="form-label">9. 자본금</label>
-                <input type="number" class="form-control" name="capital"></div>
-
-            <div class="mb-3"><label class="form-label">10. 액면가</label>
-                <input type="number" class="form-control" name="parValue"></div>
-
-            <div class="mb-3"><label class="form-label">11. 임직원수</label>
-                <input type="number" class="form-control" name="employeeCount"></div>
-
-
-            <div class="mb-3"><label class="form-label">13. KUH 자회사</label>
-                <select class="form-control" name="kuhSubsidiary">
-                    <option value="">선택하세요.</option>
-                    <option value="KUH자회사">KUH자회사</option>
-                    <option value="일반기업">일반기업</option>
-                </select>
-            </div>
-
-            <div class="mb-3"><label class="form-label">14. 초기창업구분</label>
-                <select class="form-control" name="earlyStartupType">
-                    <option value="">선택하세요.</option>
-                    <option value="창업 3년 이내">창업 3년 이내</option>
-                    <option value="창업 7년 이내">창업 7년 이내</option>
-                    <option value="창업 7년 초과">창업 7년 초과</option>
-                </select>
-            </div>
-
-            <div class="mb-3"><label class="form-label">15. 벤처기업구분</label>
-                <select class="form-control" name="ventureRecognition">
-                    <option value="">선택하세요.</option>
-                    <option value="벤처기업">벤처기업</option>
-                    <option value="일반기업">일반기업</option>
-                </select>
-            </div>
-
-            <div class="mb-3"><label class="form-label">16. 투자기업실사</label>
-                <select class="form-control" name="dueDiligence">
-                    <option value="">선택하세요.</option>
-                    <option value="미실사기업">미실사기업</option>
-                    <option value="실사기업">실사기업</option>
-                    <option value="실사완료일자">실사완료일자</option>
-                </select>
-            </div>
-
-            <div class="mb-3"><label class="form-label">17. 고려대 창업구분</label>
-                <select class="form-control" name="kuhStartup">
-                    <option value="">선택하세요.</option>
-                    <option value="고려대창업">고려대창업</option>
-                    <option value="비고려대창업">비고려대창업</option>
-                </select>
-            </div>
-
-            <div class="mb-3"><label class="form-label">18. 창업구분</label>
-                <select class="form-control" name="startupType">
-                    <option value="">선택하세요.</option>
-                    <option value="교원창업">교원창업</option>
-                    <option value="학생창업">학생창업</option>
-                    <option value="일반창업">일반창업</option>
-                </select>
-            </div>
-
-            <div class="mb-3"><label class="form-label">19. 중소기업구분</label>
-                <select class="form-control" name="smeStatus">
-                    <option value="">선택하세요.</option>
-                    <option value="중소기업">중소기업</option>
-                    <option value="대기업">대기업</option>
-                </select>
-            </div>
-
-            <div class="mb-3"><label class="form-label">20. 연구소기업구분</label>
-                <select class="form-control" name="researchRecognition">
-                    <option value="">선택하세요.</option>
-                    <option value="연구소기업">연구소기업</option>
-                    <option value="일반기업">일반기업</option>
-                </select>
-            </div>
-
-            <div class="mb-3"><label class="form-label">21. 상장여부</label>
-                <select class="form-control" name="listingStatus">
-                    <option value="">선택하세요.</option>
-                    <option value="비상장기업">비상장기업</option>
-                    <option value="상장기업">상장기업</option>
-                </select>
-            </div>
-
-            <div class="mb-3"><label class="form-label">21-2. 상장일자</label>
-                <input type="date" class="form-control" name="listingDate">
-            </div>
-
-            <div class="mb-3"><label class="form-label">22. 지방창업구분</label>
-                <select class="form-control" name="regionalCompany">
-                    <option value="">선택하세요.</option>
-                    <option value="서울창업">서울창업</option>
-                    <option value="지방창업">지방창업</option>
-                </select>
-            </div>
-
-            <div class="mb-3"><label class="form-label">23. 공공기술이전</label>
-                <select class="form-control" name="publicTechnologyTransfer">
-                    <option value="">선택하세요.</option>
-                    <option value="기술이전기업">기술이전기업</option>
-                    <option value="일반기업">일반기업</option>
-                </select>
-            </div>
-            <div class="mb-3"><label class="form-label">24. BIZ SECTOR 구분</label>
-                <select class="form-control" name="investmentSector">
-                    <option value="">선택하세요.</option>
-                    <option value="기계/소재/화학">기계/소재/화학</option>
-                    <option value="전기전자정보통신">전기전자정보통신</option>
-                    <option value="바이오/의료">바이오/의료</option>
-                    <option value="에너지/자원">에너지/자원</option>
-                    <option value="융복합">융복합</option>
-                    <option value="기타 SECTOR">기타 SECTOR</option>
-                </select>
-            </div>
-
-            <div class="mb-3"><label class="form-label">25. 주요제품내용</label>
-                <input type="text" class="form-control" name="mainProducts"></div>
-
-            <div class="mb-3"><label class="form-label">26. 투자 포인트 1</label>
-                <input type="text" class="form-control" name="investmentPoint1"></div>
-
-            <div class="mb-3"><label class="form-label">27. 투자 포인트 2</label>
-                <input type="text" class="form-control" name="investmentPoint2"></div>
-
-            <div class="mb-3"><label class="form-label">28. 투자 포인트 3</label>
-                <input type="text" class="form-control" name="investmentPoint3"></div>
+            <table class="table table-bordered text-center">
+                <tbody>
+                <tr>
+                    <th colspan="10">회사고유정보</th>
+                </tr>
+                <tr>
+                    <th>회사고유번호</th>
+                    <td colspan="9"><input type="text" class="form-control" name="companyId" id="companyId" required></td>
+                </tr>
+                <tr>
+                    <th>투자회사</th>
+                    <td colspan="3"><input type="text" class="form-control" name="companyName"></td>
+                    <th>설립일자</th>
+                    <td colspan="2"><input type="date" class="form-control" name="establishmentDate"></td>
+                    <th>대표이사</th>
+                    <td colspan="3"><input type="text" class="form-control" name="ceoName"></td>
+                </tr>
+                <tr>
+                    <th>회사주소</th>
+                    <td colspan="9"><input type="text" class="form-control" name="companyAddress"></td>
+                </tr>
+                <tr>
+                    <th>사업자등록번호</th>
+                    <td colspan="3"><input type="text" class="form-control" name="businessRegistrationNumber"></td>
+                    <th>법인등록번호</th>
+                    <td colspan="2"><input type="text" class="form-control" name="corporateRegistrationNumber"></td>
+                    <th>표준산업분류</th>
+                    <td colspan="3"><input type="text" class="form-control" name="industryCode"></td>
+                </tr>
+                <tr>
+                    <th>자본금</th>
+                    <td colspan="3"><input type="text" class="form-control number-format" name="capital"></td>
+                    <th>액면가</th>
+                    <td colspan="2"><input type="text" class="form-control number-format" name="parValue"></td>
+                    <th>임직원수</th>
+                    <td colspan="3"><input type="text" class="form-control number-format" name="employeeCount"></td>
+                </tr>
 
 
-            <div class="mb-3"><label class="form-label">29. 재무 연도</label>
-                <input type="number" class="form-control" name="financialYear"></div>
+                <tr>
+                    <th colspan="10">회사속성정보</th>
+                </tr>
+                <tr>
+                    <th>KUH 자회사</th>
+                    <td colspan="3">
+                        <select class="form-control" name="kuhSubsidiary">
+                            <option value="">선택하세요.</option>
+                            <option value="KUH자회사">KUH자회사</option>
+                            <option value="일반기업">일반기업</option>
+                        </select>
+                    </td>
+                    <th>고대창업구분</th>
+                    <td colspan="2">
+                        <select class="form-control" name="kuhStartup">
+                            <option value="">선택하세요.</option>
+                            <option value="고려대창업">고려대창업</option>
+                            <option value="비고려대창업">비고려대창업</option>
+                        </select>
+                    </td>
+                    <th>창업구분</th>
+                    <td colspan="3">
+                        <select class="form-control" name="startupType">
+                            <option value="">선택하세요.</option>
+                            <option value="교원창업">교원창업</option>
+                            <option value="학생창업">학생창업</option>
+                            <option value="일반창업">일반창업</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>초기창업구분</th>
+                    <td colspan="3">
+                        <select class="form-control" name="earlyStartupType">
+                            <option value="">선택하세요.</option>
+                            <option value="창업 3년 이내">창업 3년 이내</option>
+                            <option value="창업 7년 이내">창업 7년 이내</option>
+                            <option value="창업 7년 초과">창업 7년 초과</option>
+                        </select>
+                    </td>
+                    <th>중소기업구분</th>
+                    <td colspan="2">
+                        <select class="form-control" name="smeStatus">
+                            <option value="">선택하세요.</option>
+                            <option value="중소기업">중소기업</option>
+                            <option value="대기업">대기업</option>
+                        </select>
+                    </td>
+                    <th>지방창업구분</th>
+                    <td colspan="3">
+                        <select class="form-control" name="regionalCompany">
+                            <option value="">선택하세요.</option>
+                            <option value="서울창업">서울창업</option>
+                            <option value="지방창업">지방창업</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>벤처기업구분</th>
+                    <td colspan="3">
+                        <select class="form-control" name="ventureRecognition">
+                            <option value="">선택하세요.</option>
+                            <option value="벤처기업">벤처기업</option>
+                            <option value="일반기업">일반기업</option>
+                        </select>
+                    </td>
+                    <th>연구소기업구분</th>
+                    <td colspan="2">
+                        <select class="form-control" name="researchRecognition">
+                            <option value="">선택하세요.</option>
+                            <option value="연구소기업">연구소기업</option>
+                            <option value="일반기업">일반기업</option>
+                        </select>
+                    </td>
+                    <th>공공기술이전</th>
+                    <td colspan="3">
+                        <select class="form-control" name="publicTechnologyTransfer">
+                            <option value="">선택하세요.</option>
+                            <option value="기술이전기업">기술이전기업</option>
+                            <option value="일반기업">일반기업</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>투자기업실사</th>
+                    <td colspan="3">
+                        <select class="form-control" name="dueDiligence">
+                            <option value="">선택하세요.</option>
+                            <option value="미실사기업">미실사기업</option>
+                            <option value="실사기업">실사기업</option>
+                            <option value="실사완료일자">실사완료일자</option>
+                        </select>
+                    </td>
+                    <th>상장여부</th>
+                    <td colspan="2">
+                        <select class="form-control" name="listingStatus">
+                            <option value="">선택하세요.</option>
+                            <option value="비상장기업">비상장기업</option>
+                            <option value="상장기업">상장기업</option>
+                        </select>
+                    </td>
+                    <th>상장일자</th>
+                    <td colspan="3"><input type="date" class="form-control" name="listingDate"></td>
+                </tr>
 
-            <div class="mb-3"><label class="form-label">30. 반기</label>
-                <select class="form-control" name="financialHalf">
-                    <option value="">선택하세요.</option>
-                    <option value="상반기">상반기</option>
-                    <option value="하반기">하반기</option>
-                </select>
-            </div>
+                <tr>
+                    <th colspan="10">BIZ SECTOR 및 투자 정보</th>
+                </tr>
+                <tr>
+                    <th>BIZ SECTOR 구분</th>
+                    <td colspan="9">
+                        <select class="form-control" name="investmentSector">
+                            <option value="">선택하세요.</option>
+                            <option value="기계/소재/화학">기계/소재/화학</option>
+                            <option value="전기전자정보통신">전기전자정보통신</option>
+                            <option value="바이오/의료">바이오/의료</option>
+                            <option value="에너지/자원">에너지/자원</option>
+                            <option value="융복합">융복합</option>
+                            <option value="기타 SECTOR">기타 SECTOR</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>주요 제품내용</th>
+                    <td colspan="9"><input type="text" class="form-control" name="mainProducts"></td>
+                </tr>
+                <tr>
+                    <th>투자포인트 1</th>
+                    <td colspan="9"><input type="text" class="form-control" name="investmentPoint1"></td>
+                </tr>
+                <tr>
+                    <th>투자포인트 2</th>
+                    <td colspan="9"><input type="text" class="form-control" name="investmentPoint2"></td>
+                </tr>
+                <tr>
+                    <th>투자포인트 3</th>
+                    <td colspan="9"><input type="text" class="form-control" name="investmentPoint3"></td>
+                </tr>
 
-            <div class="mb-3"><label class="form-label">31. 매출액</label>
-                <input type="number" class="form-control" name="revenue"></div>
+                <tr>
+                    <th colspan="10">재무제표</th>
+                </tr>
+                <tr>
+                    <th>회계연도</th>
+                    <th>기간구분</th>
+                    <th>매출액</th>
+                    <th>영업이익</th>
+                    <th>당기순이익</th>
+                    <th>자산총계</th>
+                    <th>부채총계</th>
+                    <th>자본총계</th>
+                    <th>자본금</th>
+                    <th>임직원수</th>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="text" class="form-control" name="financialYear" placeholder="연도">
+                    </td>
+                    <td>
+                        <select class="form-control mt-1" name="financialHalf">
+                            <option value=""></option>
+                            <option value="상반기">상반기</option>
+                            <option value="하반기">하반기</option>
+                        </select>
+                    </td>
+                    <td><input type="text" class="form-control number-format" name="revenue"></td>
+                    <td><input type="text" class="form-control number-format" name="operatingProfit"></td>
+                    <td><input type="text" class="form-control number-format" name="netIncome"></td>
+                    <td><input type="text" class="form-control number-format" name="totalAssets"></td>
+                    <td><input type="text" class="form-control number-format" name="totalDebt"></td>
+                    <td><input type="text" class="form-control number-format" name="totalCapital"></td>
+                    <td><input type="text" class="form-control number-format" name="capital"></td>
+                    <td><input type="text" class="form-control number-format" name="employeeCount"></td>
+                </tr>
 
-            <div class="mb-3"><label class="form-label">32. 영업이익</label>
-                <input type="number" class="form-control" name="operatingProfit"></div>
 
-            <div class="mb-3"><label class="form-label">33. 당기순익</label>
-                <input type="number" class="form-control" name="netIncome"></div>
+                <tr>
+                    <th colspan="10">업무관계자 정보</th>
+                </tr>
+                <tr>
+                    <th>투자발굴자</th>
+                    <td colspan="3"><input type="text" class="form-control" name="manager1"></td>
+                    <th>투자심사자</th>
+                    <td colspan="2"><input type="text" class="form-control" name="manager2"></td>
+                    <th>사후관리담당자</th>
+                    <td colspan="3"><input type="text" class="form-control" name="manager3"></td>
+                </tr>
 
-            <div class="mb-3"><label class="form-label">34. 총 자산</label>
-                <input type="number" class="form-control" name="totalAssets"></div>
+                <tr>
+                    <th>실무진 성명 / 직책</th>
+                    <td colspan="3">
+                        <div class="input-inline">
+                            <input type="text" class="form-control" name="name" placeholder="담당자명">
+                            <input type="text" class="form-control" name="positionType" placeholder="직책">
+                        </div>
+                    </td>
+                    <th>전화번호</th>
+                    <td colspan="2"><input type="text" class="form-control" name="phoneNumber"></td>
+                    <th>이메일</th>
+                    <td colspan="2"><input type="email" class="form-control" name="email"></td>
+                </tr>
+                </tbody>
+            </table>
 
-            <div class="mb-3"><label class="form-label">35. 총 자본</label>
-                <input type="number" class="form-control" name="totalCapital"></div>
 
-            <div class="mb-3"><label class="form-label">36. 총 부채</label>
-                <input type="number" class="form-control" name="totalDebt"></div>
-
-            <div class="mb-3"><label class="form-label">37. 발굴자</label>
-                <input type="text" class="form-control" name="manager1"></div>
-
-            <div class="mb-3"><label class="form-label">38. 심사자</label>
-                <input type="text" class="form-control" name="manager2"></div>
-
-            <div class="mb-3"><label class="form-label">39. 사후관리자</label>
-                <input type="text" class="form-control" name="manager3"></div>
-
-            <div class="mb-3"><label class="form-label">40. 직책</label>
-                <input type="text" class="form-control" name="positionType"></div>
-
-            <div class="mb-3"><label class="form-label">41. 전화번호</label>
-                <input type="text" class="form-control" name="phoneNumber"></div>
-
-            <div class="mb-3"><label class="form-label">42. 이메일</label>
-                <input type="email" class="form-control" name="email"></div>
-
-            <div class="mb-3"><label class="form-label">43. 이름</label>
-                <input type="text" class="form-control" name="name"></div>
 
             <div class="mt-4">
-                <button type="submit" id="saveButton" class="btn btn-primary" onclick="redirectToCompanyShow()">저장</button>
+                <button type="submit" id="saveButton" class="btn btn-primary" >저장</button>
             </div>
         </form>
 
