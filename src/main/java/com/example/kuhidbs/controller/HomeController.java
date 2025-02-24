@@ -4,7 +4,7 @@ import com.example.kuhidbs.dto.Fund.*;
 import com.example.kuhidbs.dto.company.kuh투자.RIvtDTO;
 import com.example.kuhidbs.dto.company.감액환입.RShrupDTO;
 import com.example.kuhidbs.dto.company.무증.RBonusDTO;
-import com.example.kuhidbs.dto.company.발심사.RRwrDTO;
+import com.example.kuhidbs.dto.company.팁스.발심사.RRwrDTO;
 import com.example.kuhidbs.dto.company.사후관리.RMngDTO;
 import com.example.kuhidbs.dto.company.역사.RAccountDTO;
 import com.example.kuhidbs.dto.company.재무.RFncDTO;
