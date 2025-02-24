@@ -85,8 +85,7 @@ public class ShrupService {
         }
 
         ias.setReductionAmount(ias.getReductionAmount() + additionalReduction);
-        iasService.calculateDerivedFields(ias);
-        investmentAssetSummaryRepository.save(ias);
+        iasService.calculateDerivedFields(ias,null);
 
         // 일부 컬럼 수정
         Account updatedAccount = Account.builder()

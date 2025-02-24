@@ -84,7 +84,7 @@ public class InvestmentService {
                 .build();
 
         // 6. 투자자산총괄데이터 저장
-        iasService.calculateDerivedFields(assetSummary);
+        iasService.calculateDerivedFields(assetSummary,null);
         investmentAssetSummaryRepository.save(assetSummary);
 
         //7. 회사계좌업데이트

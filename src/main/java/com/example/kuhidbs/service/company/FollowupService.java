@@ -4,17 +4,20 @@ import com.example.kuhidbs.dto.company.kuh투자.CIvtDTO;
 import com.example.kuhidbs.dto.company.후속투자.CFolDTO;
 import com.example.kuhidbs.dto.company.후속투자.RFolDTO;
 import com.example.kuhidbs.entity.CompanyAccount;
+import com.example.kuhidbs.entity.InvestmentAssetSummary;
 import com.example.kuhidbs.entity.company.Account;
 import com.example.kuhidbs.entity.company.Company;
 import com.example.kuhidbs.entity.company.Followup;
 import com.example.kuhidbs.entity.company.Investment;
 import com.example.kuhidbs.repository.CompanyAccountRepository;
+import com.example.kuhidbs.repository.InvestmentAssetSummaryRepository;
 import com.example.kuhidbs.repository.company.AccountRepository;
 import com.example.kuhidbs.repository.company.CompanyRepository;
 import com.example.kuhidbs.repository.company.FollowupRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import com.example.kuhidbs.service.Fund.IASService;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -34,6 +37,10 @@ public class FollowupService {
     private CompanyAccountRepository companyAccountRepository;
     @Autowired
     private AccountRepository accountRepository;
+    @Autowired
+    private InvestmentAssetSummaryRepository investmentAssetSummaryRepository;
+    @Autowired
+    private IASService iasService;
 
     private Account toAccountEntity(CFolDTO dto, Investment savedInvestment, Account lastAccount, Long curTotalShareCount) {
         return Account.builder()
@@ -66,7 +73,11 @@ public class FollowupService {
             Long curTotalShareCount = account.getTotalShareCount()+followupDto.getFollowupShareCount();
             Account newAccount = toAccountEntity(followupDto, investment,account,curTotalShareCount);
             accountRepository.save(newAccount);
+            //84번줄에서 사용
             postValue = newAccount.getPostValue();
+            Account account2 = accountRepository.findTop1ByInvestmentInvestmentIdOrderByAccountIdDesc(investment.getInvestmentId());
+            InvestmentAssetSummary ias = investmentAssetSummaryRepository.findByInvestment_InvestmentId(investment.getInvestmentId());
+            iasService.calculateDerivedFields(ias, account2);
         }
 
         // ✅ Followup 엔티티 변환 및 저장

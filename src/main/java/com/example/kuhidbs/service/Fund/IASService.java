@@ -2,6 +2,7 @@ package com.example.kuhidbs.service.Fund;
 
 import com.example.kuhidbs.dto.Fund.RIASDTO;
 import com.example.kuhidbs.entity.InvestmentAssetSummary;
+import com.example.kuhidbs.entity.company.Account;
 import com.example.kuhidbs.repository.InvestmentAssetSummaryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -42,16 +43,20 @@ public class IASService {
                 .build();
     }
 
-    public void calculateDerivedFields(InvestmentAssetSummary summary) {
+    public void calculateDerivedFields(InvestmentAssetSummary summary, Account lateAccount) {
         if (summary.getInvestmentAmount() == null) summary.setInvestmentAmount(0L);
         if (summary.getReductionAmount() == null) summary.setReductionAmount(0L);
         if (summary.getRecoveredPrincipal() == null) summary.setRecoveredPrincipal(0L);
         if (summary.getRecoveredProfit() == null) summary.setRecoveredProfit(0L);
         if (summary.getRemainingAssetValuation() == null) summary.setRemainingAssetValuation(0L);
 
+        Long investmentBalance = summary.getInvestmentAmount() - summary.getReductionAmount() - summary.getRecoveredPrincipal();
         // 투자잔액 계산
-        summary.setInvestmentBalance(summary.getInvestmentAmount() - summary.getReductionAmount() - summary.getRecoveredPrincipal());
-
+        summary.setInvestmentBalance(investmentBalance);
+        if (lateAccount != null) {
+            Long janyeo = investmentBalance * lateAccount.getCurUnitPrice() / lateAccount.getUnitPrice();
+            summary.setRemainingAssetValuation(janyeo);
+        }
         // 멀티플 계산
         if (summary.getInvestmentAmount() != 0) {
             double multiple = (double) (summary.getRecoveredPrincipal() + summary.getRecoveredProfit() + summary.getRemainingAssetValuation()) / summary.getInvestmentAmount();
@@ -59,5 +64,6 @@ public class IASService {
         } else {
             summary.setMultiple(0.0);
         }
+        investmentAssetSummaryRepository.save(summary);
     }
 }
