@@ -45,16 +45,12 @@
 
             // 팝업 열기 함수
             window.openPopup = function (type) {
-                if (!fundId) {
-                    alert("먼저 조합정보를 저장한 후 입력을 진행하세요.");
+                if (!window.fundId) {
+                    alert("먼저 조합 정보를 조회한 후 입력하세요.");
                     return;
                 }
-
-                let url = type === "이동할 페이지"
-                    ? `/fundAdd/이동할 페이지/${fundId}`
-                    : `/fundAdd/이동할 페이지2/${fundId}`;
-
-                window.open(url, "popupWindow", "width=1000,height=600,scrollbars=yes");
+                let url = `/fundAdd/${type}/${window.fundId}`;
+                window.open(url, "popupWindow", "width=700,height=500,scrollbars=yes");
             };
         });
     </script>
@@ -65,12 +61,19 @@
 <div th:replace="fragments/searchModal :: searchModal"></div>
 
 <div class="wrapper">
-
     <!-- 📌 좌측 사이드바 -->
     <nav class="sidebar">
-        <a href="#" id="이동할 페이지" onclick="openPopup('이동할 페이지')">📊 이동할 페이지</a>
-        <!--<a href="#" id="combineInvestmentLink" onclick="openPopup('combine')">📊 공통 투자 입력</a>-->
+        <a href="#" onclick="openViewPopup('ivtByCmp')">📊 투자조합원 명부입력</a>
+        <a href="#" onclick="openViewPopup('folByCmp')">📈 사후관리 변경입력</a>
+        <a href="#" onclick="openViewPopup('shrupByCmp')">💸 투자조합원 변경입력</a>
+        <a href="#" onclick="openViewPopup('recoveryByCmp')">💰 회수내역 조회</a>
+        <a href="#" onclick="openViewPopup('bonusByCmp')">🎁 무상증자 조회</a>
+        <a href="#" onclick="openViewPopup('tipsByCmp')">💡 팁스현황 조회</a>
+        <a href="#" onclick="openViewPopup('financialByCmp')">🗂️ 재무제표 조회</a>
+        <a href="#" onclick="openViewPopup('manageByCmp')" title="투자포인트 및 진행상황">📋 사후관리 조회</a>
+        <a href="#" onclick="openViewPopup('reviewerChangeByCmp')">👤 업무이력 조회</a>
     </nav>
+
 
     <div class="content">
         <h2>🏦 조합 정보 입력</h2>

@@ -70,6 +70,8 @@ public class HomeController {
     private FundMemService fundMemService;
     @Autowired
     private IASService iasService;
+    @Autowired
+    private DueDiligenceService dueDiligenceService;
 
     //공통 데이터 설정
     @ModelAttribute
@@ -431,20 +433,18 @@ public class HomeController {
     }
 
     // 투자기업실사 조회 팝업
-    @GetMapping("/fundShow/dueStatusByFund/{id}")
-    public String dueStatusByFund(@PathVariable("id") String id, Model model) {
+    @GetMapping("/fundShow/dueDiligenceByFund/{id}")
+    public String dueDiligenceByFund(@PathVariable("id") String id, Model model) {
         model.addAttribute("fundId", id);
-//        List<RIASDTO> rIASDTOS = iasService.getInvestmentAssetSummaryByFundId(id);
-//        model.addAttribute("rIASDTOS", rIASDTOS);
-        return "fundShow/dueStatusByFund"; // dueStatusByFund.html
+        List<RDueDiligenceDTO> rDueDiligenceDTOS = dueDiligenceService.getDueDiligenceByFundId(id);
+        model.addAttribute("rDueDiligenceDTOS", rDueDiligenceDTOS);
+        return "fundShow/dueDiligenceByFund"; // dueDiligenceByFund.html
     }
 
     // 투자기업 고용변경 조회 팝업
     @GetMapping("/fundShow/empChangeByFund/{id}")
     public String empChangeByFund(@PathVariable("id") String id, Model model) {
         model.addAttribute("fundId", id);
-//        List<RIASDTO> rIASDTOS = iasService.getInvestmentAssetSummaryByFundId(id);
-//        model.addAttribute("rIASDTOS", rIASDTOS);
         return "fundShow/empChangeByFund"; // empChangeByFund.html
     }
 
@@ -454,4 +454,10 @@ public class HomeController {
         model.addAttribute("fundId", id);
         return "fundShow"; // fundShow.html
     }
+//    // 펀드 조합후속관리 페이지
+//    @GetMapping("/fundManage/{id}")
+//    public String fundManage(@PathVariable("id") String id, Model model) {
+//        model.addAttribute("fundId", id);
+//        return "fundManage"; // fundManage.html
+//    }
 }
