@@ -3,12 +3,14 @@ package com.example.kuhidbs.service.company;
 import com.example.kuhidbs.dto.company.kuh투자.CIvtDTO;
 import com.example.kuhidbs.dto.company.kuh투자.RIvtDTO;
 import com.example.kuhidbs.entity.CompanyAccount;
+import com.example.kuhidbs.entity.Fund.Employment;
 import com.example.kuhidbs.entity.Fund.Fund;
 import com.example.kuhidbs.entity.InvestmentAssetSummary;
 import com.example.kuhidbs.entity.company.Account;
 import com.example.kuhidbs.entity.company.Company;
 import com.example.kuhidbs.entity.company.Investment;
 import com.example.kuhidbs.repository.CompanyAccountRepository;
+import com.example.kuhidbs.repository.Fund.EmploymentRepository;
 import com.example.kuhidbs.repository.Fund.FundRepository;
 import com.example.kuhidbs.repository.InvestmentAssetSummaryRepository;
 import com.example.kuhidbs.repository.company.AccountRepository;
@@ -16,6 +18,7 @@ import com.example.kuhidbs.repository.company.CompanyRepository;
 import com.example.kuhidbs.repository.company.InvestmentRepository;
 import com.example.kuhidbs.service.Fund.IASService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,7 +48,9 @@ public class InvestmentService {
     private IASService iasService;
 
     @Autowired
-    private CompanyAccountRepository companyAccountRepository;
+    private EmploymentRepository EmploymentRepository;
+    @Autowired
+    private EmploymentRepository employmentRepository;
 
     /**
      * 투자 정보를 저장하는 메서드.
@@ -54,45 +59,82 @@ public class InvestmentService {
      * @return 저장된 Investment 엔터티
      */
     public Investment saveInvestment(CIvtDTO dto) {
+        try {
+            // 1. Company 객체 조회
+            System.out.println("[INFO] 회사 조회 시작: companyId = " + dto.getCompanyId());
+            Company company = companyRepository.findById(dto.getCompanyId())
+                    .orElseThrow(() -> {
+                        System.out.println("[ERROR] 유효하지 않은 회사 ID: " + dto.getCompanyId());
+                        return new IllegalArgumentException("Invalid company ID: " + dto.getCompanyId());
+                    });
+            System.out.println("[INFO] 회사 조회 성공: " + company.getCompanyName());
 
-        // 1. Company 객체 조회
-        Company company = companyRepository.findById(dto.getCompanyId())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid company ID: " + dto.getCompanyId()));
+            // 2. Fund 객체 조회
+            System.out.println("[INFO] 펀드 조회 시작: fundId = " + dto.getFundId());
+            Fund fund = fundRepository.findById(dto.getFundId())
+                    .orElseThrow(() -> {
+                        System.out.println("[ERROR] 유효하지 않은 펀드 ID: " + dto.getFundId());
+                        return new IllegalArgumentException("Invalid fund ID: " + dto.getFundId());
+                    });
+            System.out.println("[INFO] 펀드 조회 성공: " + fund.getFundName());
 
-        // 2. Fund 객체 조회
-        Fund fund = fundRepository.findById(dto.getFundId())
-                .orElseThrow(() -> new IllegalArgumentException("Invalid fund ID: " + dto.getFundId()));
+            // 3. DTO를 Investment 엔터티로 변환 및 저장
+            System.out.println("[INFO] 투자 데이터 변환 및 저장 시작");
+            Investment investment = toEntity(dto, company, fund);
+            Investment savedInvestment = investmentRepository.save(investment);
+            System.out.println("[INFO] 투자 데이터 저장 완료: investmentId = " + savedInvestment.getInvestmentId());
 
-        // 3. DTO를 Investment 엔터티로 변환 및 저장
-        Investment investment = toEntity(dto, company, fund);
-        Investment savedInvestment = investmentRepository.save(investment);
+            // 4. Account 엔터티 생성 및 저장
+            System.out.println("[INFO] 계좌 데이터 변환 및 저장 시작");
+            Account account = toAccountEntity(dto, savedInvestment);
+            accountRepository.save(account);
+            System.out.println("[INFO] 계좌 데이터 저장 완료: accountId = " + account.getAccountId());
 
-        // 4. Account 엔터티 생성 및 저장
-        Account account = toAccountEntity(dto, savedInvestment);
-        accountRepository.save(account);
+            // 5. 투자자산총괄데이터(InvestmentAssetSummary) 생성
+            System.out.println("[INFO] 투자자산총괄 데이터 생성 시작");
+            InvestmentAssetSummary assetSummary = InvestmentAssetSummary.builder()
+                    .fund(fund)
+                    .investment(savedInvestment)
+                    .investmentProduct(dto.getInvestmentProduct())
+                    .investmentAmount(dto.getInvestmentSumPrice())
+                    .investmentDate(dto.getInvestmentDate())
+                    .investmentCompany(company.getCompanyName())
+                    .evaluationMethod(dto.getEvaluationMethod())
+                    .managementFeeTarget(dto.getManagementFeeTarget())
+                    .build();
 
-        // 5. 투자자산총괄데이터(InvestmentAssetSummary) 생성
-        InvestmentAssetSummary assetSummary = InvestmentAssetSummary.builder()
-                .fund(fund)
-                .investment(savedInvestment)
-                .investmentProduct(dto.getInvestmentProduct())
-                .investmentAmount(dto.getInvestmentSumPrice())
-                .investmentDate(dto.getInvestmentDate())
-                .investmentCompany(company.getCompanyName())
-                .evaluationMethod(dto.getEvaluationMethod())
-                .managementFeeTarget(dto.getManagementFeeTarget())
-                .build();
+            // 파생 필드 계산 및 저장
+            System.out.println("[INFO] 투자자산총괄 데이터 파생 필드 계산 시작");
+            iasService.calculateDerivedFields(assetSummary, null);
+            investmentAssetSummaryRepository.save(assetSummary);
+            System.out.println("[INFO] 투자자산총괄 데이터 저장 완료: assetSummaryId = " + assetSummary.getInvestmentAssetSummaryId());
 
-        // 6. 투자자산총괄데이터 저장
-        iasService.calculateDerivedFields(assetSummary,null);
-        investmentAssetSummaryRepository.save(assetSummary);
+            // 6. 고용인력 데이터 생성
+            System.out.println("[INFO] 고용인력 데이터 생성 시작");
+            Employment employment = Employment.builder()
+                    .investment(savedInvestment) // 투자 정보
+                    .companyNm(company.getCompanyName()) //투자기업
+                    .initialInvestmentDate(dto.getInvestmentDate()) // 최초 투자일자
+                    .initialEmployeeCount(50) // 최초 투자 시점 인력 수
+                    .latestEmployeeCount(null) // 최신 인력 수 (최초에는 null)
+                    .finalRecoveryDate(null) // 최종 회수일자 (아직 없음)
+                    .finalEmployeeCount(null) // 최종 회수 시점 인력 수 (기본값)
+                    .build();
+            employmentRepository.save(employment);
+            System.out.println("[INFO] 고용인력 데이터 저장 완료: employmentId = " + employment.getId());
 
-        //7. 회사계좌업데이트
-        //CompanyAccount ca = companyAccountRepository.findByCompanyId(company.getCompanyId())
-         //       .orElseGet(() -> new CompanyAccount());
+            return savedInvestment;
 
-
-        return savedInvestment;
+        } catch (IllegalArgumentException e) {
+            System.out.println("[ERROR] 입력 데이터 오류 발생: " + e.getMessage());
+            throw e; // 예외 다시 던짐 (트랜잭션 롤백)
+        } catch (DataAccessException e) {
+            System.out.println("[ERROR] 데이터베이스 접근 중 오류 발생: " + e.getMessage());
+            throw new RuntimeException("Database error occurred", e);
+        } catch (Exception e) {
+            System.out.println("[ERROR] 알 수 없는 오류 발생: " + e.getMessage());
+            throw new RuntimeException("Unexpected error occurred", e);
+        }
     }
 
 

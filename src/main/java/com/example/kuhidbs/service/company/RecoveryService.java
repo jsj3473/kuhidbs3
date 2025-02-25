@@ -2,16 +2,19 @@ package com.example.kuhidbs.service.company;
 
 import com.example.kuhidbs.dto.company.회수.CStcupDTO;
 import com.example.kuhidbs.dto.company.회수.RstcupDTO;
+import com.example.kuhidbs.entity.Fund.Employment;
 import com.example.kuhidbs.entity.InvestmentAssetSummary;
 import com.example.kuhidbs.entity.company.Account;
 import com.example.kuhidbs.entity.company.Company;
 import com.example.kuhidbs.entity.company.Investment;
 import com.example.kuhidbs.entity.company.Recovery;
+import com.example.kuhidbs.repository.Fund.EmploymentRepository;
 import com.example.kuhidbs.repository.Fund.FundRepository;
 import com.example.kuhidbs.repository.InvestmentAssetSummaryRepository;
 import com.example.kuhidbs.repository.company.*;
 import com.example.kuhidbs.service.Fund.IASService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,6 +35,8 @@ public class RecoveryService {
     private final InvestmentAssetSummaryRepository investmentAssetSummaryRepository;
     private final IASService iasService;
     private final FundRepository fundRepository;
+    private final EmploymentRepository employmentRepository;
+
 
     public void saveRecovery(CStcupDTO stcupDTO) {
         System.out.println("🔹 saveRecovery() 시작 - DTO: " + stcupDTO);
@@ -112,6 +117,14 @@ public class RecoveryService {
             accountRepository.save(updatedAccount);
             System.out.println("✅ 계좌 데이터 업데이트 완료");
 
+            //회수후 보유주식수가 0 이면 employment 테이블
+            if(latestAccount.getHeldShareCount() - stcupDTO.getRecoveryCount() == 0) {
+                // 기존 Employment 데이터 조회
+                Employment employment = employmentRepository.findByInvestment(investment);
+                employment.setFinalRecoveryDate(stcupDTO.getRecoveryDate());
+                employment.setLatestEmployeeCount(10);
+                employmentRepository.save(employment);
+            }
             // 투자 자산 요약 조회
             InvestmentAssetSummary ias = investmentAssetSummaryRepository.findByInvestment_InvestmentId(investment.getInvestmentId());
             if (ias == null) {

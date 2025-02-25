@@ -25,6 +25,7 @@ public class FundController {
     private final FundMemService fundMemService;
     private final IASService iasService;
     private final DueDiligenceService dueDiligenceService;
+    private final EmploymentService employmentService;
 
     // 펀드 생성 API
     @PostMapping("/createFund")
@@ -124,6 +125,14 @@ public class FundController {
         List<RFundMemDTO> fundMems = fundMemService.getActiveFundMembersByFundId(fundId);
         fundDTO.setFundMems(fundMems);
         return ResponseEntity.ok(fundDTO);
+    }
+
+    /**
+     * 펀드 ID로 Employment 데이터 리스트 조회
+     */
+    @GetMapping("/showAllEmployment/{fundId}")
+    public List<REmploymentDTO> showAllEmployment(@PathVariable String fundId) {
+        return employmentService.showAllEmployment(fundId);
     }
 
 }
