@@ -285,4 +285,40 @@ public class CompanyController {
         return ResponseEntity.ok(companyIds);
     }
 
+    @PostMapping("/updateCompanyName")
+    public ResponseEntity<String> updateCompanyName(@RequestBody UCmpInfDTO request) {
+        companyService.updateCompanyName(request.getCompanyId(), request.getCompanyName());
+        return ResponseEntity.ok("Company name updated successfully");
+    }
+
+    @PostMapping("/updateCeoName")
+    public ResponseEntity<String> updateCeoName(@RequestBody UCmpInfDTO request) {
+        companyService.updateCeoName(request.getCompanyId(), request.getCeoName());
+        return ResponseEntity.ok("CEO name updated successfully");
+    }
+
+    @PostMapping("/updateCompanyAddress")
+    public ResponseEntity<String> updateCompanyAddress(@RequestBody UCmpInfDTO request) {
+        companyService.updateCompanyAddress(request.getCompanyId(), request.getCompanyAddress());
+        return ResponseEntity.ok("Company address updated successfully");
+    }
+
+    @PostMapping("/updateCompanyPostalCode")
+    public ResponseEntity<String> updateCompanyPostalCode(@RequestBody UCmpInfDTO request) {
+        companyService.updateCompanyPostalCode(request.getCompanyId(), request.getCompanyPostalCode());
+        return ResponseEntity.ok("Company postal code updated successfully");
+    }
+
+    @PostMapping("/updateListingDate")
+    public ResponseEntity<String> updateListingDate(@RequestBody UCmpInfDTO request) {
+        companyService.updateListingDate(request.getCompanyId(), request.getListingDate());
+        return ResponseEntity.ok("Listing date updated successfully");
+    }
+
+    @PostMapping("/updateListingStatus")
+    public ResponseEntity<String> updateListingStatus(@RequestBody UCmpInfDTO request) {
+        companyService.updateListingStatus(request.getCompanyId(), request.getListingStatus());
+        return ResponseEntity.ok("Listing status updated successfully");
+    }
+
 }
