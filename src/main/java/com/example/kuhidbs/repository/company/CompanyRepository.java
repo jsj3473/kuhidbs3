@@ -11,9 +11,9 @@ import java.util.List;
 @Repository
 public interface CompanyRepository extends JpaRepository<Company, String> {
 
-    @Query(value = "SELECT c.companyId FROM Company c " +
+    @Query(value = "SELECT c.companyId, c.companyName FROM Company c " +
             "WHERE c.companyName LIKE %:query% " +
             "OR c.ceoName LIKE %:query% " +
             "OR CAST(c.companyId AS string) LIKE %:query%")
-    List<String> searchCompanies(@Param("query") String query);
+    List<Object[]> searchCompanies(@Param("query") String query);
 }

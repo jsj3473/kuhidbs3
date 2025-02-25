@@ -3,6 +3,7 @@ package com.example.kuhidbs.controller;
 import com.example.kuhidbs.dto.Fund.*;
 import com.example.kuhidbs.entity.Fund.*;
 import com.example.kuhidbs.repository.Fund.FundFinancialRepository;
+import com.example.kuhidbs.repository.Fund.FundRepository;
 import com.example.kuhidbs.service.Fund.*;
 import com.example.kuhidbs.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ public class FundController {
     private final IASService iasService;
     private final DueDiligenceService dueDiligenceService;
     private final EmploymentService employmentService;
+    private final FundRepository fundRepository;
 
     // 펀드 생성 API
     @PostMapping("/createFund")
@@ -135,4 +137,10 @@ public class FundController {
         return employmentService.showAllEmployment(fundId);
     }
 
+
+    @GetMapping("/searchQueryForFundInHeader")
+    public ResponseEntity<List<Object[]>> searchQueryForFundInHeader(@RequestParam String query) {
+        List<Object[]> fundIds = fundRepository.searchFunds(query);
+        return ResponseEntity.ok(fundIds);
+    }
 }

@@ -21,4 +21,10 @@ public interface FundRepository extends JpaRepository<Fund, String> {
     // ✅ 모든 fundId와 fundName을 조회하는 메서드
     @Query("SELECT f.fundId, f.fundName FROM Fund f")
     List<Object[]> findAllFundIdAndName();
+
+    @Query(value = "SELECT f.fundId, f.fundName FROM Fund f " +
+            "WHERE f.fundId LIKE %:query% " +
+            "OR f.fundName LIKE %:query% " +
+            "OR CAST(f.fundId AS string) LIKE %:query%")
+    List<Object[]> searchFunds(@Param("query") String query);
 }

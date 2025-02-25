@@ -280,8 +280,8 @@ public class CompanyController {
     }
 
     @GetMapping("/searchQueryForCompanyInHeader")
-    public ResponseEntity<List<String>> searchQueryForCompanyInHeader(@RequestParam String query) {
-        List<String> companyIds = companyRepository.searchCompanies(query);
+    public ResponseEntity<List<Object[]>> searchQueryForCompanyInHeader(@RequestParam String query) {
+        List<Object[]> companyIds = companyRepository.searchCompanies(query);
         return ResponseEntity.ok(companyIds);
     }
 

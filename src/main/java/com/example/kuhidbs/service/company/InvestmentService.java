@@ -115,7 +115,7 @@ public class InvestmentService {
                     .investment(savedInvestment) // 투자 정보
                     .companyNm(company.getCompanyName()) //투자기업
                     .initialInvestmentDate(dto.getInvestmentDate()) // 최초 투자일자
-                    .initialEmployeeCount(50) // 최초 투자 시점 인력 수
+                    .initialEmployeeCount(company.getEmployeeCount()) // 최초 투자 시점 인력 수
                     .latestEmployeeCount(null) // 최신 인력 수 (최초에는 null)
                     .finalRecoveryDate(null) // 최종 회수일자 (아직 없음)
                     .finalEmployeeCount(null) // 최종 회수 시점 인력 수 (기본값)
