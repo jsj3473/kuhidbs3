@@ -33,6 +33,8 @@ public class FundController {
     @PostMapping("/createFund")
     public ResponseEntity<Fund> createFund(@ModelAttribute CFundDTO dto) {
         System.out.println(dto.getFundId());
+        System.out.println("Fund ID: " + dto.getFundId());
+
         fundService.createFund(dto);
         auditService.createAuditByFund(dto);
         return ResponseEntity.ok().build();

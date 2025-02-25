@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const searchResults = document.createElement("div");
     searchResults.className = "search-results list-group position-fixed bg-white border rounded shadow-sm p-2";
     searchResults.style.width = "300px";
-    searchResults.style.top = "10%";
+    searchResults.style.top = "79px";
     searchResults.style.left = "50%";
     searchResults.style.transform = "translateX(-50%)";
     searchResults.style.zIndex = "2000";

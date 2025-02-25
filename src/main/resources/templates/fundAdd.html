@@ -21,6 +21,7 @@
             fundForm.addEventListener("submit", function (event) {
                 event.preventDefault();
                 fundId = document.getElementById("fundId").value.trim();
+                console.log("fundId", fundId);
                 if (!fundId) {
                     alert("조합 고유번호를 입력하세요.");
                     return;
@@ -45,12 +46,16 @@
 
             // 팝업 열기 함수
             window.openPopup = function (type) {
-                if (!window.fundId) {
-                    alert("먼저 조합 정보를 조회한 후 입력하세요.");
+                if (!fundId) {
+                    alert("먼저 조합정보를 저장한 후 입력을 진행하세요.");
                     return;
                 }
-                let url = `/fundAdd/${type}/${window.fundId}`;
-                window.open(url, "popupWindow", "width=700,height=500,scrollbars=yes");
+
+                let url = type === "이동할 페이지"
+                    ? `/fundShow/membersByFund/${fundId}`
+                    : `/fundShow/membersByFund/${fundId}`;
+
+                window.open(url, "popupWindow", "width=1000,height=600,scrollbars=yes");
             };
         });
     </script>
@@ -61,19 +66,11 @@
 <div th:replace="fragments/searchModal :: searchModal"></div>
 
 <div class="wrapper">
+
     <!-- 📌 좌측 사이드바 -->
     <nav class="sidebar">
-        <a href="#" onclick="openViewPopup('ivtByCmp')">📊 투자조합원 명부입력</a>
-        <a href="#" onclick="openViewPopup('folByCmp')">📈 사후관리 변경입력</a>
-        <a href="#" onclick="openViewPopup('shrupByCmp')">💸 투자조합원 변경입력</a>
-        <a href="#" onclick="openViewPopup('recoveryByCmp')">💰 회수내역 조회</a>
-        <a href="#" onclick="openViewPopup('bonusByCmp')">🎁 무상증자 조회</a>
-        <a href="#" onclick="openViewPopup('tipsByCmp')">💡 팁스현황 조회</a>
-        <a href="#" onclick="openViewPopup('financialByCmp')">🗂️ 재무제표 조회</a>
-        <a href="#" onclick="openViewPopup('manageByCmp')" title="투자포인트 및 진행상황">📋 사후관리 조회</a>
-        <a href="#" onclick="openViewPopup('reviewerChangeByCmp')">👤 업무이력 조회</a>
+        <a href="#" id="membersByFund" onclick="openPopup('membersByFund')">📊 조합원명부 등록</a>
     </nav>
-
 
     <div class="content">
         <h2>🏦 조합 정보 입력</h2>
@@ -101,10 +98,10 @@
                 <input type="number" class="form-control" name="duration"></div>
 
             <div class="mb-3"><label class="form-label">8. 존속기간 시작일</label>
-                <input type="date" class="form-control" name="durationStartDate"></div>
+                <input type="date" class="form-control" name="durationStartDate" required></div>
 
             <div class="mb-3"><label class="form-label">9. 존속기간 종료일</label>
-                <input type="date" class="form-control" name="durationEndDate"></div>
+                <input type="date" class="form-control" name="durationEndDate" required></div>
 
             <div class="mb-3"><label class="form-label">10. 투자기간</label>
                 <input type="number" class="form-control" name="investmentDuration"></div>
@@ -172,18 +169,6 @@
     </div>
 </div>
 
-<!-- 🔍 검색 모달 -->
-<div class="modal fade" id="searchModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-body p-2 d-flex align-items-center">
-                <input type="text" id="companyIdInput" class="form-control me-2" placeholder="고유번호 입력" style="flex: 1; min-width: 120px;">
-                <button type="button" class="btn btn-primary btn-sm" id="searchButton">검색</button>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-        </div>
-    </div>
-</div>
 
 </body>
 </html>

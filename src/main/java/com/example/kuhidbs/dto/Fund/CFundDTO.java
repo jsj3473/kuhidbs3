@@ -11,17 +11,17 @@ import java.math.BigDecimal;
 @Builder
 public class CFundDTO {
     private String fundId; // 조합 고유번호
-    private String liquidationStatus; // 청산 여부
-    private String liquidationDate; // 청산일자 (YYYY-MM-DD)
     private String fundName; // 조합명
     private String fundNameDetail; // 세부 조합명
     private String establishmentDate; // 설립일자 (YYYY-MM-DD)
-    private Integer duration; // 존속기간
+    private Integer duration; // 존속기간 (년)
     private String durationStartDate; // 존속기간 시작일 (YYYY-MM-DD)
     private String durationEndDate; // 존속기간 종료일 (YYYY-MM-DD)
-    private Integer investmentDuration; // 투자기간
+    private Integer investmentDuration; // 투자기간 (년)
     private String investmentStartDate; // 투자기간 시작일 (YYYY-MM-DD)
     private String investmentEndDate; // 투자기간 종료일 (YYYY-MM-DD)
+    private String liquidationStatus; // 청산 여부
+    private String liquidationDate; // 청산일자 (YYYY-MM-DD)
     private Long committedTotalPrice; // 약정 총액
     private Long unitPrice; // 1좌당 금액
     private String fundOrganizationType; // 투자기구 유형
