@@ -6,29 +6,29 @@ document.addEventListener("DOMContentLoaded", function () {
     // 검색 결과 컨테이너를 화면 중앙 상단에 고정
     const searchResults = document.createElement("div");
     searchResults.className = "search-results list-group position-fixed bg-white border rounded shadow-sm p-2";
-    searchResults.style.width = "300px"; // 고정 너비
-    searchResults.style.top = "10%"; // 화면의 20% 지점 (살짝 위)
-    searchResults.style.left = "50%"; // 가운데 정렬
-    searchResults.style.transform = "translateX(-50%)"; // 정확한 중앙 정렬
-    searchResults.style.zIndex = "2000"; // 최상위 배치
-    searchResults.style.display = "none"; // 초기에는 숨김
+    searchResults.style.width = "300px";
+    searchResults.style.top = "10%";
+    searchResults.style.left = "50%";
+    searchResults.style.transform = "translateX(-50%)";
+    searchResults.style.zIndex = "2000";
+    searchResults.style.display = "none";
     document.body.appendChild(searchResults);
 
     function openSearchModal(target) {
-        searchInput.value = ''; // 입력창 초기화
+        searchInput.value = '';
         searchButton.setAttribute("onclick", `goToPage('${target}')`);
-        searchResults.innerHTML = ""; // 검색 결과 초기화
+        searchResults.innerHTML = "";
         searchResults.style.display = "none";
         searchModal.show();
-        setTimeout(() => searchInput.focus(), 200); // 모달 열리면 자동 포커스
+        setTimeout(() => searchInput.focus(), 200);
     }
 
-    function goToPage(target, companyId) {
-        if (!companyId) {
-            alert("회사 고유번호를 입력하세요.");
+    function goToPage(target, entityId) {
+        if (!entityId) {
+            alert("고유번호를 입력하세요.");
             return;
         }
-        window.location.href = `/${target}/${companyId}`;
+        window.location.href = `/${target}/${entityId}`;
     }
 
     searchInput.addEventListener("input", function () {
@@ -39,20 +39,26 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
-        fetch(`/api/companies/searchQueryForCompanyInHeader?query=${query}`)
+        const apiUrl = searchButton.getAttribute("onclick").includes("fund")
+            ? `/api/funds/searchQueryForFundInHeader?query=${query}`
+            : `/api/companies/searchQueryForCompanyInHeader?query=${query}`;
+
+        fetch(apiUrl)
             .then(response => response.json())
-            .then(companyIds => {
+            .then(results => {
                 searchResults.innerHTML = "";
                 searchResults.style.display = "block";
-                if (companyIds.length === 0) {
+                if (results.length === 0) {
                     searchResults.innerHTML = `<div class='list-group-item text-muted'>검색 결과 없음</div>`;
                 } else {
-                    companyIds.forEach(companyId => {
+                    results.forEach(item => {
+                        const [entityId, entityName] = item;
                         const resultItem = document.createElement("button");
                         resultItem.className = "list-group-item list-group-item-action";
-                        resultItem.textContent = companyId;
+                        resultItem.textContent = entityName;
                         resultItem.onclick = function () {
-                            searchInput.value = companyId;
+                            searchInput.value = entityName;
+                            searchInput.setAttribute("data-entity-id", entityId);
                             searchResults.innerHTML = "";
                             searchResults.style.display = "none";
                         };
@@ -63,32 +69,19 @@ document.addEventListener("DOMContentLoaded", function () {
             .catch(error => console.error("검색 오류:", error));
     });
 
-    // Enter 키 입력 시 검색 실행 및 결과 없음 알림
-    searchInput.addEventListener("keypress", function (event) {
-        if (event.key === "Enter") {
-            if (searchResults.children.length > 0) {
-                searchResults.children[0].click();
-            } else {
-                alert("검색 결과가 없습니다.");
-            }
-        }
-    });
-
-    // 검색 버튼 클릭 시 실행
     searchButton.addEventListener("click", function () {
-        if (searchResults.children.length > 0) {
-            searchResults.children[0].click();
+        const entityId = searchInput.getAttribute("data-entity-id");
+        if (entityId) {
+            goToPage(searchButton.getAttribute("onclick").match(/'([^']+)'/)[1], entityId);
         } else {
-            goToPage(searchButton.getAttribute("onclick").match(/'([^']+)'/)[1], searchInput.value.trim());
+            alert("검색 후 항목을 선택해주세요.");
         }
     });
 
-    // 모달이 닫힐 때 검색 리스트 박스도 숨기기
     document.getElementById("searchModal").addEventListener("hidden.bs.modal", function () {
         searchResults.innerHTML = "";
         searchResults.style.display = "none";
     });
 
-    // 전역 함수로 설정 (Thymeleaf에서 호출 가능)
     window.openSearchModal = openSearchModal;
 });

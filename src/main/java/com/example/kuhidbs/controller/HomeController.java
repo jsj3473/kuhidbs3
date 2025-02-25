@@ -72,6 +72,9 @@ public class HomeController {
     private IASService iasService;
     @Autowired
     private DueDiligenceService dueDiligenceService;
+    @Autowired
+    private EmploymentService employmentService;
+
 
     //공통 데이터 설정
     @ModelAttribute
@@ -445,6 +448,8 @@ public class HomeController {
     @GetMapping("/fundShow/empChangeByFund/{id}")
     public String empChangeByFund(@PathVariable("id") String id, Model model) {
         model.addAttribute("fundId", id);
+        List<REmploymentDTO> rEmploymentDTOS = employmentService.showAllEmployment(id);
+        model.addAttribute("rEmploymentDTOS", rEmploymentDTOS);
         return "fundShow/empChangeByFund"; // empChangeByFund.html
     }
 
