@@ -263,4 +263,54 @@ public class CompanyService {
         // ✅ 3. 변경된 데이터 저장 후 반환
         return companyRepository.save(company);
     }
+
+    @Transactional
+    public void updateCompanyName(String companyId, String companyName) {
+        Company company = companyRepository.findById(companyId)
+                .orElseThrow(() -> new IllegalArgumentException("Company not found with ID: " + companyId));
+
+        company.setCompanyName(companyName); // ✅ 올바르게 Company 객체에 접근
+        companyRepository.save(company);
+    }
+
+
+    @Transactional
+    public void updateCeoName(String companyId, String ceoName) {
+        Company company = companyRepository.findById(companyId)
+                .orElseThrow(() -> new IllegalArgumentException("Company not found with ID: " + companyId));
+        company.setCeoName(ceoName);
+        companyRepository.save(company);
+    }
+
+    @Transactional
+    public void updateCompanyAddress(String companyId, String companyAddress) {
+        Company company = companyRepository.findById(companyId)
+                .orElseThrow(() -> new IllegalArgumentException("Company not found with ID: " + companyId));
+        company.setCompanyAddress(companyAddress);
+        companyRepository.save(company);
+    }
+
+    @Transactional
+    public void updateCompanyPostalCode(String companyId, String companyPostalCode) {
+        Company company = companyRepository.findById(companyId)
+                .orElseThrow(() -> new IllegalArgumentException("Company not found with ID: " + companyId));
+        company.setCompanyPostalCode(companyPostalCode);
+        companyRepository.save(company);
+    }
+
+    @Transactional
+    public void updateListingDate(String companyId, String listingDate) {
+        Company company = companyRepository.findById(companyId)
+                .orElseThrow(() -> new IllegalArgumentException("Company not found with ID: " + companyId));
+        company.setListingDate(listingDate);
+        companyRepository.save(company);
+    }
+
+    @Transactional
+    public void updateListingStatus(String companyId, String listingStatus) {
+        Company company = companyRepository.findById(companyId)
+                .orElseThrow(() -> new IllegalArgumentException("Company not found with ID: " + companyId));
+        company.setListingStatus(listingStatus);
+        companyRepository.save(company);
+    }
 }
