@@ -9,5 +9,7 @@ import java.util.*;
 @Repository
 public interface ManageRepository extends JpaRepository<Manage, Long> {
     Optional<Manage> findTopByCompany_CompanyIdOrderByManageIdDesc(String companyId);
+
+    List<Manage> findAllByCompany_CompanyId(String companyId);
 }
 

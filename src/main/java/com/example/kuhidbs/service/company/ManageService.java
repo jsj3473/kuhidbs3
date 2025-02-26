@@ -11,7 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class ManageService {
@@ -72,5 +74,29 @@ public class ManageService {
                 .exitPlan2(manage.getExitPlan2())
                 .exitEstimation(manage.getExitEstimation())
                 .build()).orElse(null);
+    }
+
+
+    // 기업별 전체 사후관리 데이터 조회
+    public List<RMngDTO> getAllManageByCompanyId(String companyId) {
+        return manageRepository.findAllByCompany_CompanyId(companyId).stream()
+                .map(manage -> RMngDTO.builder()
+                        .companyId(companyId)
+                        .evalGrade(manage.getEvalGrade())
+                        .manageYear(manage.getManageYear())
+                        .halfYear(manage.getHalfYear())
+                        .businessProgress1(manage.getBusinessProgress1())
+                        .businessProgress2(manage.getBusinessProgress2())
+                        .businessProgress3(manage.getBusinessProgress3())
+                        .businessProgress4(manage.getBusinessProgress4())
+                        .businessProgress5(manage.getBusinessProgress5())
+                        .managementStatus1(manage.getManagementStatus1())
+                        .managementStatus2(manage.getManagementStatus2())
+                        .managementStatus3(manage.getManagementStatus3())
+                        .exitPlan1(manage.getExitPlan1())
+                        .exitPlan2(manage.getExitPlan2())
+                        .exitEstimation(manage.getExitEstimation())
+                        .build())
+                .collect(Collectors.toList());
     }
 }
