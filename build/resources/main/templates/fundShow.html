@@ -17,20 +17,8 @@
 
     <style></style>
     <script>
-        let fundId = /*[[${fundId}]]*/ '';
-        // console.log("fundId:", fundId);
-        document.addEventListener("DOMContentLoaded", function () {
-            let fundId = /*[[${fundId}]]*/ '';
-            // console.log("fundId:", fundId);
-            if (fundId) {
-                console.log("fundId: " + fundId);
-                fetchFundInfo(fundId);
-            }
-        });
-
         function fetchFundInfo(fundId) {
-            // fetch(`/api/companies/FundRead/${fundId}`)
-            fetch(`/api/companies/info/${fundId}`)
+            fetch(`/api/funds/info/${fundId}`)
                 .then(response => response.json())
                 .then(data => updateFundInfo(data))
                 .catch(error => console.error("데이터 로드 실패:", error));
@@ -38,150 +26,67 @@
 
         function updateFundInfo(data) {
             document.getElementById("fundId").value = data.fundId || "";
-            document.getElementById("FundName").value = data.FundName || "";
+            document.getElementById("liquidationStatus").value = data.liquidationStatus || "";
+            document.getElementById("liquidationDate").value = data.liquidationDate || "";
+            document.getElementById("fundName").value = data.fundName || "";
+            document.getElementById("fundNameDetail").value = data.fundNameDetail || "";
             document.getElementById("establishmentDate").value = data.establishmentDate || "";
-            document.getElementById("ceoName").value = data.ceoName || "";
-            document.getElementById("FundAddress").value = data.FundAddress || "";
-            document.getElementById("businessRegistrationNumber").value = data.businessRegistrationNumber || "";
-            document.getElementById("corporateRegistrationNumber").value = data.corporateRegistrationNumber || "";
-            document.getElementById("industryCode").value = data.industryCode || "";
-            document.getElementById("capital").value = data.capital || "";
-            document.getElementById("parValue").value = data.parValue || "";
-            document.getElementById("employeeCount").value = data.employeeCount || "";
+            document.getElementById("duration").value = data.duration || "";
+            document.getElementById("durationStartDate").value = data.durationStartDate || "";
+            document.getElementById("durationEndDate").value = data.durationEndDate || "";
+            document.getElementById("investmentDuration").value = data.investmentDuration || "";
+            document.getElementById("investmentStartDate").value = data.investmentStartDate || "";
+            document.getElementById("investmentEndDate").value = data.investmentEndDate || "";
+            document.getElementById("committedTotalPrice").value = formatNumber(data.committedTotalPrice);
+            document.getElementById("unitPrice").value = formatNumber(data.unitPrice);
+            document.getElementById("fundOrganizationType").value = data.fundOrganizationType || "";
+            document.getElementById("paymentType").value = data.paymentType || "";
+            document.getElementById("currentStaff").value = data.currentStaff || "";
+            document.getElementById("auditorName").value = data.auditorName || "";
+            document.getElementById("auditorDate").value = data.auditorDate || "";
+            document.getElementById("trusteeCorporation").value = data.trusteeCorporation || "";
+            document.getElementById("administrationCorporation").value = data.administrationCorporation || "";
+            document.getElementById("targetReturnRate").value = data.targetReturnRate || "";
+            document.getElementById("performanceFeeRate").value = data.performanceFeeRate || "";
+            document.getElementById("managementFeeInvestmentPeriod").value = data.managementFeeInvestmentPeriod || "";
+            document.getElementById("managementFeeManagementPeriod").value = data.managementFeeManagementPeriod || "";
+            // document.getElementById("agreementCriteria").value = data.agreementCriteria || "";
+            document.getElementById("incentiveCondition").value = data.incentiveCondition || "";
+            document.getElementById("priorLossGP").value = data.priorLossGP || "";
+            document.getElementById("priorLossLP").value = data.priorLossLP || "";
 
-            document.getElementById("kuhSubsidiary").value = data.kuhSubsidiary || "";
-            document.getElementById("kuhStartup").value = data.kuhStartup || "";
-            document.getElementById("startupType").value = data.startupType || "";
-            document.getElementById("earlyStartupType").value = data.earlyStartupType || "";
-            document.getElementById("smeStatus").value = data.smeStatus || "";
-            document.getElementById("regionalFund").value = data.regionalFund || "";
-            document.getElementById("ventureRecognition").value = data.ventureRecognition || "";
-            document.getElementById("researchRecognition").value = data.researchRecognition || "";
-            document.getElementById("publicTechnologyTransfer").value = data.publicTechnologyTransfer || "";
-            document.getElementById("dueDiligence").value = data.dueDiligence || "";
-            document.getElementById("listingStatus").value = data.listingStatus || "";
-
-            document.getElementById("investmentSector").value = data.investmentSector || "";
-            document.getElementById("mainProducts").value = data.mainProducts || "";
-            document.getElementById("investmentPoint1").value = data.investmentPoint1 || "";
-            document.getElementById("investmentPoint2").value = data.investmentPoint2 || "";
-            document.getElementById("investmentPoint3").value = data.investmentPoint3 || "";
-
-            document.getElementById("manager1").value = data.manager1 || "";
-            document.getElementById("manager2").value = data.manager2 || "";
-            document.getElementById("manager3").value = data.manager3 || "";
-            document.getElementById("positionType").value = data.positionType || "";
-            document.getElementById("phoneNumber").value = data.phoneNumber || "";
-            document.getElementById("email").value = data.email || "";
-            document.getElementById("name").value = data.name || "";
-
-            if (data.currentStatusDTO) {
-                document.getElementById("status").value = data.currentStatusDTO.status || "";
-            }
-
-            if (data.rmngDTO) {
-                document.getElementById("managementYear").value = data.rmngDTO.manageYear || "";
-                document.getElementById("evalGrade").value = data.rmngDTO.evalGrade || "";
-                document.getElementById("businessProgress1").value = data.rmngDTO.businessProgress1 || "";
-                document.getElementById("businessProgress2").value = data.rmngDTO.businessProgress2 || "";
-            }
-
-            if (data.currentFundValue) {
-                document.getElementById("currentFundValue").value = data.currentFundValue || "";
-            }
-
-            updateFinancialsTable(data.recentFinancials);
-            updateInvestmentTable(data.rivtDTO);
-            updateShareholderTable(data.shrDTO);
+            updateFundMembersTable(data.fundMems);
         }
 
-        //재무제표
-        function updateFinancialsTable(financials) {
-            const tableBody = document.getElementById("financialsTable");
+        function updateFundMembersTable(fundMems) {
+            const tableBody = document.getElementById("fundMembersTable");
             tableBody.innerHTML = "";
 
-            financials.forEach(financial => {
+            fundMems.forEach(member => {
                 const row = `<tr>
-            <td>${financial.financialYear || ""} (${financial.financialHalf === 1 ? "상반기" : "하반기"})</td>
-            <td>${financial.revenue?.toLocaleString() || ""}</td>
-            <td>${financial.operatingProfit?.toLocaleString() || ""}</td>
-            <td>${financial.netIncome?.toLocaleString() || ""}</td>
-            <td>${financial.totalAssets?.toLocaleString() || ""}</td>
-            <td>${financial.totalDebt?.toLocaleString() || ""}</td>
-            <td>${financial.totalCapital?.toLocaleString() || ""}</td>
-            <td>${financial.capital?.toLocaleString() || ""}</td>
-            <td>${financial.employeeCount?.toLocaleString() || ""}</td>
+            <td>${member.memberName || ""}</td>
+            <td>${member.memberType || ""}</td>
+            <td>${formatNumber(member.committedUnitPrice)}</td>
+            <td>${member.contact || ""}</td>
+            <td>${member.address || ""}</td>
+            <td>${member.businessRegNo || ""}</td>
+            <td>${member.residentRegNo || ""}</td>
         </tr>`;
                 tableBody.innerHTML += row;
             });
         }
-        //투자정보
-        function updateInvestmentTable(investmentData) {
-            const tableBody = document.getElementById("investmentTable");
-            tableBody.innerHTML = "";
 
-            const row = `<tr>
-            <td>${investmentData.investmentDate || ""}</td>
-            <td>${investmentData.investmentProduct || ""}</td>
-            <td>${investmentData.investmentSumPrice?.toLocaleString() || ""} 원</td>
-            <td>${investmentData.investmentUnitPrice?.toLocaleString() || ""} 원</td>
-            <td>${investmentData.shareCount?.toLocaleString() || ""} 주</td>
-            <td>${investmentData.equityRate?.toFixed(2) || ""} %</td>
-            <td>${investmentData.totalShares?.toLocaleString() || ""} 주</td>
-            <td>${investmentData.investmentValue?.toLocaleString() || ""} 억원</td>
-            <td>${investmentData.investmentStep || ""}</td>
-        </tr>`;
-
-            tableBody.innerHTML = row;
+        function formatNumber(value) {
+            if (!value) return "";
+            return Number(value).toLocaleString(); // 천 단위 콤마 추가
         }
 
-        //주주명부
-        function updateShareholderTable(shareholderData) {
-            const tableBody = document.getElementById("shareholderTable");
-            tableBody.innerHTML = "";
-
-            // 주주명 데이터
-            const nameRow = `<tr>
-            <td>${shareholderData.shareholderName1 || ""}</td>
-            <td>${shareholderData.shareholderName2 || ""}</td>
-            <td>${shareholderData.shareholderName3 || ""}</td>
-            <td>${shareholderData.shareholderName4 || ""}</td>
-            <td>${shareholderData.shareholderName5 || ""}</td>
-            <td>${shareholderData.shareholderName6 || ""}</td>
-            <td>${shareholderData.shareholderName7 || ""}</td>
-            <td>${shareholderData.shareholderName8 || ""}</td>
-            <td class="align-middle">-</td>
-        </tr>`;
-
-            // 주식수량 데이터
-            const countRow = `<tr>
-            <td>${shareholderData.shareholderCount1?.toLocaleString() || ""}</td>
-            <td>${shareholderData.shareholderCount2?.toLocaleString() || ""}</td>
-            <td>${shareholderData.shareholderCount3?.toLocaleString() || ""}</td>
-            <td>${shareholderData.shareholderCount4?.toLocaleString() || ""}</td>
-            <td>${shareholderData.shareholderCount5?.toLocaleString() || ""}</td>
-            <td>${shareholderData.shareholderCount6?.toLocaleString() || ""}</td>
-            <td>${shareholderData.shareholderCount7?.toLocaleString() || ""}</td>
-            <td>${shareholderData.shareholderCount8?.toLocaleString() || ""}</td>
-            <td>${shareholderData.totalShareCount?.toLocaleString() || ""}</td>
-        </tr>`;
-
-            // 지분율 데이터
-            const rateRow = `<tr>
-            <td>${shareholderData.shareholderRate1?.toFixed(2) || ""} %</td>
-            <td>${shareholderData.shareholderRate2?.toFixed(2) || ""} %</td>
-            <td>${shareholderData.shareholderRate3?.toFixed(2) || ""} %</td>
-            <td>${shareholderData.shareholderRate4?.toFixed(2) || ""} %</td>
-            <td>${shareholderData.shareholderRate5?.toFixed(2) || ""} %</td>
-            <td>${shareholderData.shareholderRate6?.toFixed(2) || ""} %</td>
-            <td>${shareholderData.shareholderRate7?.toFixed(2) || ""} %</td>
-            <td>${shareholderData.shareholderRate8?.toFixed(2) || ""} %</td>
-            <td>${shareholderData.totalEquityRate?.toFixed(2) || "100.00"} %</td>
-        </tr>`;
-
-            tableBody.innerHTML = nameRow + countRow + rateRow;
-        }
-
+        document.addEventListener("DOMContentLoaded", function () {
+            let fundId = document.getElementById("fundIdValue").value;
+            if (fundId) {
+                fetchFundInfo(fundId);
+            }
+        });
 
     </script>
 
@@ -263,56 +168,58 @@
         <h2>🏦 조합 정보 조회</h2>
         <!-- 1. 회사 기본 정보 -->
         <table class="table table-bordered text-center">
+            <thead>
+            <tr><th colspan="7">투자조합 고유정보</th></tr>
+            </thead>
             <tbody>
-            <tr><th colspan="7">투자조합 기본정보</th></tr>
             <tr>
                 <th>조합 고유번호</th>
-                <td colspan="2"><input type="text" class="form-control" name="fundId" id="fundId" required></td>
+                <td colspan="2"><input type="text" class="form-control" name="fundId" id="fundId" readonly></td>
                 <th>청산여부</th>
                 <td>
-                    <select class="form-control" name="liquidationStatus">
+                    <select class="form-control" name="liquidationStatus" disabled>
                         <option value="">선택하세요.</option>
                         <option value="Y">Y</option>
                         <option value="N">N</option>
                     </select>
                 </td>
                 <th>청산일자</th>
-                <td><input type="date" class="form-control" name="liquidationDate"></td>
+                <td><input type="date" class="form-control" name="liquidationDate" readonly></td>
             </tr>
             <tr>
                 <th>세부조합명</th>
-                <td colspan="2"><input type="text" class="form-control" name="fundNameDetail"></td>
+                <td colspan="2"><input type="text" class="form-control" name="fundNameDetail" readonly></td>
                 <th>조합명</th>
-                <td><input type="text" class="form-control" name="fundName"></td>
+                <td><input type="text" class="form-control" name="fundName" readonly></td>
                 <th>설립일자</th>
-                <td><input type="date" class="form-control" name="establishmentDate"></td>
+                <td><input type="date" class="form-control" name="establishmentDate" readonly></td>
             </tr>
             <tr>
                 <th>존속기간(년)</th>
-                <td colspan="2"><input type="number" class="form-control" name="duration"></td>
+                <td colspan="2"><input type="number" class="form-control" name="duration" readonly></td>
                 <th>존속기간 시작일</th>
-                <td><input type="date" class="form-control" name="durationStartDate" required></td>
+                <td><input type="date" class="form-control" name="durationStartDate" readonly></td>
                 <th>존속기간 종료일</th>
-                <td><input type="date" class="form-control" name="durationEndDate" required></td>
+                <td><input type="date" class="form-control" name="durationEndDate" readonly></td>
             </tr>
             <tr>
                 <th>투자기간(년)</th>
-                <td colspan="2"><input type="number" class="form-control" name="investmentDuration"></td>
+                <td colspan="2"><input type="number" class="form-control" name="investmentDuration" readonly></td>
                 <th>투자기간 시작일</th>
-                <td><input type="date" class="form-control" name="investmentStartDate"></td>
+                <td><input type="date" class="form-control" name="investmentStartDate" readonly></td>
                 <th>투자기간 종료일</th>
-                <td><input type="date" class="form-control" name="investmentEndDate"></td>
+                <td><input type="date" class="form-control" name="investmentEndDate" readonly></td>
             </tr>
             <tr>
                 <th>약정 총액</th>
-                <td colspan="2"><input type="number" class="form-control" name="committedTotalPrice"></td>
+                <td colspan="2"><input type="number" class="form-control" name="committedTotalPrice" readonly></td>
                 <th>1좌당 금액</th>
-                <td colspan="3"><input type="number" class="form-control" name="unitPrice"></td>
+                <td colspan="3"><input type="number" class="form-control" name="unitPrice" readonly></td>
             </tr>
             <tr>
                 <th>투자기구 유형</th>
                 <td colspan="2">
-                    <select class="form-control" name="fundOrganizationType">
+                    <select class="form-control" name="fundOrganizationType" disabled>
                         <option value="">선택하세요.</option>
                         <option value="개인투자조합">개인투자조합</option>
                         <option value="벤처투자조합">벤처투자조합</option>
@@ -320,7 +227,7 @@
                 </td>
                 <th>납입방법</th>
                 <td colspan="3">
-                    <select class="form-control" name="paymentType">
+                    <select class="form-control" name="paymentType" disabled>
                         <option value="">선택하세요.</option>
                         <option value="수시납">수시납</option>
                         <option value="일시납">일시납</option>
@@ -329,96 +236,96 @@
             </tr>
             <tr>
                 <th>운용인력 전원</th>
-                <td colspan="6"><input type="text" class="form-control" name="currentStaff"></td>
+                <td colspan="6"><input type="text" class="form-control" name="currentStaff" readonly></td>
             </tr>
             <tr>
                 <th>회계감사인명</th>
-                <td colspan="2"><input type="text" class="form-control" name="auditorName"></td>
+                <td colspan="2"><input type="text" class="form-control" name="auditorName" readonly></td>
                 <th>회계감사인 변경일자</th>
-                <td colspan="3"><input type="date" class="form-control" name="auditorDate"></td>
+                <td colspan="3"><input type="date" class="form-control" name="auditorDate" readonly></td>
             </tr>
             <tr>
                 <th>업무수탁법인</th>
-                <td colspan="2"><input type="text" class="form-control" name="trusteeCorporation"></td>
+                <td colspan="2"><input type="text" class="form-control" name="trusteeCorporation" readonly></td>
                 <th>사무수탁법인</th>
-                <td colspan="3"><input type="text" class="form-control" name="administrationCorporation"></td>
+                <td colspan="3"><input type="text" class="form-control" name="administrationCorporation" readonly></td>
             </tr>
 
             <tr><th colspan="7">투자조합 보수조건</th></tr>
             <tr>
                 <th>기준수익률(%)</th>
-                <td colspan="2"><input type="number" step="0.01" class="form-control" name="targetReturnRate"></td>
+                <td colspan="2"><input type="number" step="0.01" class="form-control" name="targetReturnRate" readonly></td>
                 <th>성과보수율(%)</th>
-                <td colspan="3"><input type="number" step="0.01" class="form-control" name="performanceFeeRate" placeholder="없을 경우 0.0%"></td>
+                <td colspan="3"><input type="number" step="0.01" class="form-control" name="performanceFeeRate" placeholder="없을 경우 0.0%" readonly></td>
             </tr>
             <tr>
-                <th>투자기간 관리보수 (%)</th>
-                <td colspan="2"><input type="number" step="0.01" class="form-control" name="managementFeeInvestmentPeriod"></td>
-                <th>약정기준 여부</th>
-                <td colspan="3">
-                    <select class="form-control" name="agreementCriteria">
-                        <option value="">선택하세요.</option>
-                        <option value="Y">Y</option>
-                        <option value="N">N</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <th>운영기간 관리보수 (%)</th>
-                <td colspan="2"><input type="number" step="0.01" class="form-control" name="managementFeeManagementPeriod"></td>
-                <th>약정기준 여부</th>
-                <td colspan="3">
-                    <select class="form-control" name="agreementCriteria">
-                        <option value="">선택하세요.</option>
-                        <option value="Y">Y</option>
-                        <option value="N">N</option>
-                    </select>
-                </td>
+                <th>투자기간 관리보수(%)</th>
+                <td colspan="2"><input type="number" step="0.01" class="form-control" name="managementFeeInvestmentPeriod" readonly></td>
+                <th>운영기간 관리보수(%)</th>
+                <td colspan="3"><input type="number" step="0.01" class="form-control" name="managementFeeManagementPeriod" readonly></td>
             </tr>
             <tr>
                 <th>인센티브 조건</th>
-                <td colspan="6"><input type="text" class="form-control" name="incentiveCondition"></td>
+                <td colspan="6"><input type="text" class="form-control" name="incentiveCondition" readonly></td>
             </tr>
             <tr>
                 <th>우선손실충당 GP</th>
-                <td colspan="6"><input type="text" class="form-control" name="priorLossGP"></td>
+                <td colspan="6"><input type="text" class="form-control" name="priorLossGP" readonly></td>
             </tr>
             <tr>
                 <th>우선손실충당 LP</th>
-                <td colspan="6"><input type="text" class="form-control" name="priorLossLP"></td>
+                <td colspan="6"><input type="text" class="form-control" name="priorLossLP" readonly></td>
+            </tr>
+            <tr><th colspan="7">투자조합 의무투자조건 - 주목적/특수목적 투자조건</th></tr>
+            <tr>
+                <th>의무투자 1</th>
+                <td colspan="2"><input type="text" class="form-control" name="mandatoryInvestment1" readonly></td>
+                <th>의무투자 2</th>
+                <td colspan="3"><input type="text" class="form-control" name="mandatoryInvestment2" readonly></td>
+            </tr>
+            <tr>
+                <th>주목적투자 1</th>
+                <td colspan="2"><input type="text" class="form-control" name="primaryInvestment1" readonly></td>
+                <th>주목적투자 2</th>
+                <td colspan="3"><input type="text" class="form-control" name="primaryInvestment2" readonly></td>
+            </tr>
+            <tr>
+                <th>특수목적투자 1</th>
+                <td colspan="2"><input type="text" class="form-control" name="specialPurposeInvestment1" readonly></td>
+                <th>특수목적투자 2</th>
+                <td colspan="3"><input type="text" class="form-control" name="specialPurposeInvestment2" readonly></td>
+            </tr>
+            <tr>
+                <th>특수목적투자 3</th>
+                <td colspan="2"><input type="text" class="form-control" name="specialPurposeInvestment3" readonly></td>
+                <th>특수목적투자 기타</th>
+                <td colspan="3"><input type="text" class="form-control" name="specialPurposeInvestment4" readonly></td>
             </tr>
             </tbody>
+
+            <!-- 투자조합원 명부 -->
+            <thead>
+            <tr><th colspan="7">투자조합 조합원 명부</th></tr>
+            <tr>
+                <th>조합원</th>
+                <th>조합원유형</th>
+                <th>출자약정액</th>
+                <th>연락처</th>
+                <th>주소</th>
+                <th>사업자등록번호</th>
+                <th>주민등록번호</th>
+            </tr>
+            </thead>
+            <tbody id="fundMembersTable"></tbody>
+
+
+
         </table>
 
-<!--        private String mandatoryInvestment1; // 의무투자-->
-<!--        private String mandatoryInvestment2;-->
-<!--        private String primaryInvestment1; // 주목적투자-->
-<!--        private String primaryInvestment2; // 주목적투자-->
-<!--        private String specialPurposeInvestment1; // 특수목적투자-->
-<!--        private String specialPurposeInvestment2; // 특수목적투자-->
-<!--        private String specialPurposeInvestment3; // 특수목적투자-->
-<!--        private String specialPurposeInvestment4; // 특수목적투자기타-->
-
-
-<!--        private List<RFundMemDTO> fundMems; //조합원 명부들-->
-
 
     </div>
 </div>
 
-
-<!-- 🔍 검색 모달 -->
-<div class="modal fade" id="searchModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-body p-2 d-flex align-items-center">
-                <input type="text" id="fundIdInput" class="form-control me-2" placeholder="고유번호 입력" style="flex: 1; min-width: 120px;">
-                <button type="button" class="btn btn-primary btn-sm" id="searchButton">검색</button>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-        </div>
-    </div>
-</div>
 
 </body>
 </html>
