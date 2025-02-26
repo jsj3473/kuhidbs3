@@ -10,6 +10,7 @@
     <link rel="stylesheet" th:href="@{/css/datatables-custom.css}">
     <link rel="stylesheet" th:href="@{/css/sidebar.css}">
     <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/slimTable.css}">
     <script th:src="@{/js/common.js}"></script>
     <script defer th:src="@{/js/searchModal.js}"></script>
 
@@ -74,94 +75,134 @@
 
     <div class="content">
         <h2>🏦 조합 정보 입력</h2>
-
         <form id="fundForm" th:action="@{/api/funds/createFund}" method="post">
-            <div class="mb-3"><label class="form-label">1. 조합 고유번호</label>
-                <input type="text" class="form-control" name="fundId" id="fundId" required></div>
+            <table class="table table-bordered text-center">
+                <tbody>
+                <tr><th colspan="7">투자조합 기본정보</th></tr>
+                <tr>
+                    <th>조합 고유번호</th>
+                    <td colspan="2"><input type="text" class="form-control" name="fundId" id="fundId" required></td>
+                    <th>청산여부</th>
+                    <td>
+                        <select class="form-control" name="liquidationStatus">
+                            <option value="">선택하세요.</option>
+                            <option value="Y">Y</option>
+                            <option value="N">N</option>
+                        </select>
+                    </td>
+                    <th>청산일자</th>
+                    <td><input type="date" class="form-control" name="liquidationDate"></td>
+                </tr>
+                <tr>
+                    <th>세부조합명</th>
+                    <td colspan="2"><input type="text" class="form-control" name="fundNameDetail"></td>
+                    <th>조합명</th>
+                    <td><input type="text" class="form-control" name="fundName"></td>
+                    <th>설립일자</th>
+                    <td><input type="date" class="form-control" name="establishmentDate"></td>
+                </tr>
+                <tr>
+                    <th>존속기간(년)</th>
+                    <td colspan="2"><input type="number" class="form-control" name="duration"></td>
+                    <th>존속기간 시작일</th>
+                    <td><input type="date" class="form-control" name="durationStartDate" required></td>
+                    <th>존속기간 종료일</th>
+                    <td><input type="date" class="form-control" name="durationEndDate" required></td>
+                </tr>
+                <tr>
+                    <th>투자기간(년)</th>
+                    <td colspan="2"><input type="number" class="form-control" name="investmentDuration"></td>
+                    <th>투자기간 시작일</th>
+                    <td><input type="date" class="form-control" name="investmentStartDate"></td>
+                    <th>투자기간 종료일</th>
+                    <td><input type="date" class="form-control" name="investmentEndDate"></td>
+                </tr>
+                <tr>
+                    <th>약정 총액</th>
+                    <td colspan="2"><input type="number" class="form-control" name="committedTotalPrice"></td>
+                    <th>1좌당 금액</th>
+                    <td colspan="3"><input type="number" class="form-control" name="unitPrice"></td>
+                </tr>
+                <tr>
+                    <th>투자기구 유형</th>
+                    <td colspan="2">
+                        <select class="form-control" name="fundOrganizationType">
+                            <option value="">선택하세요.</option>
+                            <option value="개인투자조합">개인투자조합</option>
+                            <option value="벤처투자조합">벤처투자조합</option>
+                        </select>
+                    </td>
+                    <th>납입방법</th>
+                    <td colspan="3">
+                        <select class="form-control" name="paymentType">
+                            <option value="">선택하세요.</option>
+                            <option value="수시납">수시납</option>
+                            <option value="일시납">일시납</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>운용인력 전원</th>
+                    <td colspan="6"><input type="text" class="form-control" name="currentStaff"></td>
+                </tr>
+                <tr>
+                    <th>회계감사인명</th>
+                    <td colspan="2"><input type="text" class="form-control" name="auditorName"></td>
+                    <th>회계감사인 변경일자</th>
+                    <td colspan="3"><input type="date" class="form-control" name="auditorDate"></td>
+                </tr>
+                <tr>
+                    <th>업무수탁법인</th>
+                    <td colspan="2"><input type="text" class="form-control" name="trusteeCorporation"></td>
+                    <th>사무수탁법인</th>
+                    <td colspan="3"><input type="text" class="form-control" name="administrationCorporation"></td>
+                </tr>
 
-            <div class="mb-3"><label class="form-label">2. 청산 여부</label>
-                <input type="text" class="form-control" name="liquidationStatus"></div>
-
-            <div class="mb-3"><label class="form-label">3. 청산일자</label>
-                <input type="date" class="form-control" name="liquidationDate"></div>
-
-            <div class="mb-3"><label class="form-label">4. 조합명</label>
-                <input type="text" class="form-control" name="fundName"></div>
-
-            <div class="mb-3"><label class="form-label">5. 세부 조합명</label>
-                <input type="text" class="form-control" name="fundNameDetail"></div>
-
-            <div class="mb-3"><label class="form-label">6. 설립일자</label>
-                <input type="date" class="form-control" name="establishmentDate"></div>
-
-            <div class="mb-3"><label class="form-label">7. 존속기간</label>
-                <input type="number" class="form-control" name="duration"></div>
-
-            <div class="mb-3"><label class="form-label">8. 존속기간 시작일</label>
-                <input type="date" class="form-control" name="durationStartDate" required></div>
-
-            <div class="mb-3"><label class="form-label">9. 존속기간 종료일</label>
-                <input type="date" class="form-control" name="durationEndDate" required></div>
-
-            <div class="mb-3"><label class="form-label">10. 투자기간</label>
-                <input type="number" class="form-control" name="investmentDuration"></div>
-
-            <div class="mb-3"><label class="form-label">11. 투자기간 시작일</label>
-                <input type="date" class="form-control" name="investmentStartDate"></div>
-
-            <div class="mb-3"><label class="form-label">12. 투자기간 종료일</label>
-                <input type="date" class="form-control" name="investmentEndDate"></div>
-
-            <div class="mb-3"><label class="form-label">13. 약정 총액</label>
-                <input type="number" class="form-control" name="committedTotalPrice"></div>
-
-            <div class="mb-3"><label class="form-label">14. 1좌당 금액</label>
-                <input type="number" class="form-control" name="unitPrice"></div>
-
-            <div class="mb-3"><label class="form-label">15. 투자기구 유형</label>
-                <input type="text" class="form-control" name="fundOrganizationType"></div>
-
-            <div class="mb-3"><label class="form-label">16. 납입방법</label>
-                <input type="text" class="form-control" name="paymentType"></div>
-
-            <div class="mb-3"><label class="form-label">17. 운용인력 전원</label>
-                <input type="text" class="form-control" name="currentStaff"></div>
-
-            <div class="mb-3"><label class="form-label">18. 회계감사인명</label>
-                <input type="text" class="form-control" name="auditorName"></div>
-
-            <div class="mb-3"><label class="form-label">19. 회계감사인 변경일자</label>
-                <input type="date" class="form-control" name="auditorDate"></div>
-            <div class="mb-3"><label class="form-label">20. 업무수탁법인</label>
-                <input type="text" class="form-control" name="trusteeCorporation"></div>
-
-            <div class="mb-3"><label class="form-label">21. 사무수탁법인</label>
-                <input type="text" class="form-control" name="administrationCorporation"></div>
-
-            <div class="mb-3"><label class="form-label">22. 기준 수익률</label>
-                <input type="number" step="0.01" class="form-control" name="targetReturnRate"></div>
-
-            <div class="mb-3"><label class="form-label">23. 성과 보수율</label>
-                <input type="number" step="0.01" class="form-control" name="performanceFeeRate"></div>
-
-            <div class="mb-3"><label class="form-label">24. 관리보수 (투자기간)</label>
-                <input type="number" step="0.01" class="form-control" name="managementFeeInvestmentPeriod"></div>
-
-            <div class="mb-3"><label class="form-label">25. 관리보수 (운영기간)</label>
-                <input type="number" step="0.01" class="form-control" name="managementFeeManagementPeriod"></div>
-
-            <div class="mb-3"><label class="form-label">26. 약정기준 여부</label>
-                <input type="text" class="form-control" name="agreementCriteria"></div>
-
-            <div class="mb-3"><label class="form-label">27. 인센티브 조건</label>
-                <input type="text" class="form-control" name="incentiveCondition"></div>
-
-            <div class="mb-3"><label class="form-label">28. 우선손실충당 GP</label>
-                <input type="text" class="form-control" name="priorLossGP"></div>
-
-            <div class="mb-3"><label class="form-label">29. 우선손실충당 LP</label>
-                <input type="text" class="form-control" name="priorLossLP"></div>
-
+                <tr><th colspan="7">투자조합 보수조건</th></tr>
+                <tr>
+                    <th>기준수익률(%)</th>
+                    <td colspan="2"><input type="number" step="0.01" class="form-control" name="targetReturnRate"></td>
+                    <th>성과보수율(%)</th>
+                    <td colspan="3"><input type="number" step="0.01" class="form-control" name="performanceFeeRate" placeholder="없을 경우 0.0%"></td>
+                </tr>
+                <tr>
+                    <th>투자기간 관리보수 (%)</th>
+                    <td colspan="2"><input type="number" step="0.01" class="form-control" name="managementFeeInvestmentPeriod"></td>
+                    <th>약정기준 여부</th>
+                    <td colspan="3">
+                        <select class="form-control" name="agreementCriteria">
+                            <option value="">선택하세요.</option>
+                            <option value="Y">Y</option>
+                            <option value="N">N</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>운영기간 관리보수 (%)</th>
+                    <td colspan="2"><input type="number" step="0.01" class="form-control" name="managementFeeManagementPeriod"></td>
+                    <th>약정기준 여부</th>
+                    <td colspan="3">
+                        <select class="form-control" name="agreementCriteria">
+                            <option value="">선택하세요.</option>
+                            <option value="Y">Y</option>
+                            <option value="N">N</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>인센티브 조건</th>
+                    <td colspan="6"><input type="text" class="form-control" name="incentiveCondition"></td>
+                </tr>
+                <tr>
+                    <th>우선손실충당 GP</th>
+                    <td colspan="6"><input type="text" class="form-control" name="priorLossGP"></td>
+                </tr>
+                <tr>
+                    <th>우선손실충당 LP</th>
+                    <td colspan="6"><input type="text" class="form-control" name="priorLossLP"></td>
+                </tr>
+                </tbody>
+            </table>
             <div class="mt-4">
                 <button type="submit" class="btn btn-primary">저장</button>
             </div>
