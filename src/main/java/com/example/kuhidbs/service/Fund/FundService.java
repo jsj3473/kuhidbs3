@@ -94,7 +94,6 @@ public class FundService {
                 .performanceFeeRate(fund.getPerformanceFeeRate())
                 .managementFeeInvestmentPeriod(fund.getManagementFeeInvestmentPeriod())
                 .managementFeeManagementPeriod(fund.getManagementFeeManagementPeriod())
-                .agreementCriteria(fund.getAgreementCriteria())
                 .incentiveCondition(fund.getIncentiveCondition())
                 .priorLossGP(fund.getPriorLossGP())
                 .priorLossLP(fund.getPriorLossLP())
