@@ -20,4 +20,5 @@ public interface FundMemRepository extends JpaRepository<FundMem, Long> {
             "WHERE fm.fund.fundId = :fundId AND fm.isActive = true")
     List<RFundMemDTO> findActiveFundMembersByFundId(@Param("fundId") String fundId);
 
+    void deleteByFund_FundId(String fundFundId);
 }

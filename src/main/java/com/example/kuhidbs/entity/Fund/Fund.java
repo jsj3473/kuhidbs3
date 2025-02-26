@@ -105,5 +105,5 @@ public class Fund extends BaseEntity {
     private BigDecimal allocRatio; // 배분비율
 
     @Column(name = "IVT_RATIO", precision = 5, scale = 2)
-    private BigDecimal ivtRatio; // 출자비율
+    private BigDecimal ivtRatio; // 고려대 출자비율(약정비율)
 }

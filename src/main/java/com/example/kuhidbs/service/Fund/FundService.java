@@ -1,15 +1,14 @@
 package com.example.kuhidbs.service.Fund;
 
-import com.example.kuhidbs.dto.Fund.CFundDTO;
-import com.example.kuhidbs.dto.Fund.RFundDTO;
-import com.example.kuhidbs.dto.Fund.RFundMemDTO;
-import com.example.kuhidbs.dto.Fund.RFundNameDTO;
+import com.example.kuhidbs.dto.Fund.*;
 import com.example.kuhidbs.entity.Fund.Fund;
+import com.example.kuhidbs.entity.Fund.FundMem;
 import com.example.kuhidbs.repository.Fund.FundRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
