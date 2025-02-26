@@ -2,6 +2,7 @@ package com.example.kuhidbs.controller;
 
 import com.example.kuhidbs.dto.Fund.*;
 import com.example.kuhidbs.entity.Fund.*;
+import com.example.kuhidbs.repository.Fund.AuditRepository;
 import com.example.kuhidbs.repository.Fund.FundFinancialRepository;
 import com.example.kuhidbs.repository.Fund.FundRepository;
 import com.example.kuhidbs.service.Fund.*;
@@ -28,6 +29,7 @@ public class FundController {
     private final DueDiligenceService dueDiligenceService;
     private final EmploymentService employmentService;
     private final FundRepository fundRepository;
+    private final AuditRepository auditRepository;
 
     // 펀드 생성 API
     @PostMapping("/createFund")
@@ -128,6 +130,7 @@ public class FundController {
         RFundDTO fundDTO = fundService.getFundById(fundId);
         List<RFundMemDTO> fundMems = fundMemService.getActiveFundMembersByFundId(fundId);
         fundDTO.setFundMems(fundMems);
+        fundDTO.setAuditorName(auditRepository.findLatestAuditNameByFundId(fundId));
         return ResponseEntity.ok(fundDTO);
     }
 

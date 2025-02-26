@@ -14,11 +14,12 @@ public interface FundMemRepository extends JpaRepository<FundMem, Long> {
 
 
 
-    @Query("SELECT new com.example.kuhidbs.dto.Fund.RFundMemDTO(fm.fund.fundId, fm.memberType, fm.memberName, fm.committedUnitPrice, " +
-            "fm.contributionRate, fm.businessType, fm.businessRegNo, fm.contact, fm.residentRegNo, fm.address) " +
+    @Query("SELECT new com.example.kuhidbs.dto.Fund.RFundMemDTO(fm.fund.fundId, fm.memberName, fm.memberType, " +
+            "fm.contact, fm.regNo, fm.address, fm.committedUnitPrice, fm.contributionRate) " +
             "FROM FundMem fm " +
-            "WHERE fm.fund.fundId = :fundId AND fm.isActive = true")
-    List<RFundMemDTO> findActiveFundMembersByFundId(@Param("fundId") String fundId);
+            "WHERE fm.fund.fundId = :fundId")
+    List<RFundMemDTO> findFundMembersByFundId(@Param("fundId") String fundId);
+
 
     void deleteByFund_FundId(String fundFundId);
 }

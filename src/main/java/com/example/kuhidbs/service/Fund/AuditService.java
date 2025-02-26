@@ -45,6 +45,7 @@ public class AuditService {
                 .fncYear(dto.getDurationStartDate().substring(0, 4))
                 .changeDate(dto.getAuditorDate())
                 .auditorName(dto.getAuditorName())
+                .changeReason("최초선임")
                 .build();
 
         auditRepository.save(audit);

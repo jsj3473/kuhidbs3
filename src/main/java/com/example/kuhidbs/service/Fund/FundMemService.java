@@ -42,16 +42,13 @@ public class FundMemService {
 
             return FundMem.builder()
                     .fund(fund)
-                    .memberType(dto.getMemberType())
                     .memberName(dto.getMemberName())
+                    .memberType(dto.getMemberType())
+                    .contact(dto.getContact())
+                    .regNo(dto.getRegNo())
+                    .address(dto.getAddress())
                     .committedUnitPrice(dto.getCommittedUnitPrice())
                     .contributionRate(dto.getContributionRate())
-                    .businessType(dto.getBusinessType())
-                    .businessRegNo(dto.getBusinessRegNo())
-                    .contact(dto.getContact())
-                    .residentRegNo(dto.getResidentRegNo())
-                    .address(dto.getAddress())
-                    .isActive(true)
                     .build();
         }).collect(Collectors.toList());
 
@@ -71,6 +68,6 @@ public class FundMemService {
 
     @Transactional(readOnly = true)
     public List<RFundMemDTO> getActiveFundMembersByFundId(String fundId) {
-        return fundMemRepository.findActiveFundMembersByFundId(fundId);
+        return fundMemRepository.findFundMembersByFundId(fundId);
     }
 }

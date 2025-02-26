@@ -39,4 +39,5 @@ public class CFundDTO {
     private String incentiveCondition; // 인센티브 조건
     private String priorLossGP; // 우선손실충당 GP
     private String priorLossLP; // 우선손실충당 LP
+
 }
