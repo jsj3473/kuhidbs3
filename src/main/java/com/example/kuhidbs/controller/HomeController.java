@@ -393,6 +393,12 @@ public class HomeController {
         model.addAttribute("fundId", id);
         return "fundAdd/staff"; // staff.html
     }
+    // 조합원명부 입력 팝업
+    @GetMapping("/fundAdd/member/{id}")
+    public String member(@PathVariable("id") String id, Model model) {
+        model.addAttribute("fundId", id);
+        return "fundAdd/member"; // member.html
+    }
     // 조합재무제표 입력 팝업
     @GetMapping("/fundAdd/fundFinancial/{id}")
     public String fundFinancial(@PathVariable("id") String id, Model model) {
@@ -427,7 +433,7 @@ public class HomeController {
         return "fundShow/financialsByFund"; // financialsByFund.html
     }
 
-    // 투자조합원 조회 팝업
+    // 투자조합원명부 조회 팝업
     @GetMapping("/fundShow/membersByFund/{id}")
     public String membersByFund(@PathVariable("id") String id, Model model) {
         model.addAttribute("fundId", id);

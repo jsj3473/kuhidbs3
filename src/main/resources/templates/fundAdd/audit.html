@@ -2,35 +2,36 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>회계감사인 등록</title>
+    <title>회계감사인 관리</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script defer th:src="@{/js/bootstrap.bundle.min.js}"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" th:href="@{/css/slimTable.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
 </head>
 <body class="container mt-4">
 
-<h2 class="mb-4">회계감사인 등록</h2>
+<h2 class="mb-4">회계감사인 관리</h2>
 
 <form id="auditAddForm">
     <input type="hidden" id="fundId" name="fundId" th:value="${fundId}"/>
 
-    <div class="mb-3">
-        <label class="form-label">연도</label>
-        <input type="text" class="form-control" id="fncYear" placeholder="예: 2024">
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label">변경일자</label>
-        <input type="date" class="form-control" id="changeDate">
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label">회계감사인명</label>
-        <input type="text" class="form-control" id="auditorName" placeholder="회계감사인 입력">
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label">변경 사유</label>
-        <input type="text" class="form-control" id="changeReason" placeholder="변경 사유 입력">
-    </div>
+    <table class="table table-bordered">
+        <tbody>
+        <tr>
+            <th>연도</th>
+            <td><input type="text" class="form-control" id="fncYear" placeholder=""></td>
+            <th>변경일자</th>
+            <td><input type="date" class="form-control" id="changeDate"></td>
+        </tr>
+        <tr>
+            <th>회계감사인명</th>
+            <td><input type="text" class="form-control" id="auditorName" placeholder=""></td>
+            <th>변경 사유</th>
+            <td><input type="text" class="form-control" id="changeReason" placeholder=""></td>
+        </tr>
+        </tbody>
+    </table>
 
     <div class="text-end">
         <button type="submit" class="btn btn-primary">저장</button>
@@ -92,11 +93,11 @@
                 return response.json();
             })
             .then(data => {
-                alert("회계감사인 정보가 저장되었습니다.");
-                document.getElementById("auditAddForm").reset();
+                alert("저장이 완료되었습니다! 화면을 종료합니다.");
+                window.close(); // 팝업 화면 종료
             })
             .catch(error => {
-                alert("저장 중 오류 발생: " + error.message);
+                alert("저장 중 오류 발생: " + error.message + ", 값을 확인해주세요.");
             });
     }
 </script>
