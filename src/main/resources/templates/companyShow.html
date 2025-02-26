@@ -89,7 +89,9 @@
                 document.getElementById("businessProgress1").value = data.rmngDTO.businessProgress1 || "";
                 document.getElementById("businessProgress2").value = data.rmngDTO.businessProgress2 || "";
             }
-
+            if (data.currentStatusDTO) {
+                document.getElementById("status").value = data.currentStatusDTO.status || "";
+            }
             updateFinancialsTable(data.recentFinancials);
             updateInvestmentTable(data.rivtDTO);
             updateShareholderTable(data.shrDTO);
@@ -214,7 +216,37 @@
                     return;
                 }
                 let url = `/companyShow/${type}/${window.companyId}`;
-                window.open(url, "popupWindow", "width=1500,height=600,scrollbars=yes");
+
+
+                let width = 800;
+                let height = 600;
+                // companyId에 따른 팝업 크기 조건 설정
+                if (type === "ivtByCmp") {
+                    width = 1050;
+                    height = 500;
+                } else if (type === "folByCmp") {
+                    height = 500;
+                } else if (type === "shrupByCmp") {
+                    height = 500;
+                } else if (type === "recoveryByCmp") {
+                    height = 500;
+                } else if (type === "bonusByCmp") {
+                    height = 500;
+                } else if (type === "tipsByCmp") {
+                    width = 1050;
+                    height = 500;
+                } else if (type === "financialByCmp") {
+                    height = 500;
+                } else if (type === "manageByCmp") {
+                    width = 1050;
+                    height = 800;
+                } else if (type === "reviewerChangeByCmp") {
+                    width = 600;
+                    height = 400;
+                }
+
+
+                window.open(url, "popupWindow", `width=${width},height=${height},scrollbars=yes`);
             };
         });
     </script>
@@ -238,7 +270,7 @@
         <a href="#" onclick="openViewPopup('bonusByCmp')">🎁 무상증자 조회</a>
         <a href="#" onclick="openViewPopup('tipsByCmp')">💡 팁스현황 조회</a>
         <a href="#" onclick="openViewPopup('financialByCmp')">🗂️ 재무제표 조회</a>
-        <a href="#" onclick="openViewPopup('manageByCmp')" title="투자포인트 및 진행상황">📋 사후관리 조회</a>
+        <a href="#" onclick="openViewPopup('manageByCmp')">📋 사후관리 조회</a>
         <a href="#" onclick="openViewPopup('reviewerChangeByCmp')">👤 업무이력 조회</a>
     </nav>
 
@@ -264,7 +296,19 @@
             <tbody>
             <tr>
                 <th>회사 고유번호</th>
-                <td colspan="9"><input type="text" class="form-control" id="companyId" readonly></td>
+                <td colspan="3"><input type="text" class="form-control" id="companyId" readonly></td>
+                <th>투자상태</th>
+                <td colspan="5">
+                    <select class="form-control" id="status" name="status" disabled>
+                        <option value="">선택하세요</option>
+                        <option value="정상투자 A">정상투자 A</option>
+                        <option value="정상투자 B">정상투자 B</option>
+                        <option value="요주의 C">요주의 C</option>
+                        <option value="주의 D">주의 D</option>
+                        <option value="투자종료/주식매각">투자종료/주식매각</option>
+                        <option value="투자종료/회사청산">투자종료/회사청산</option>
+                    </select>
+                </td>
             </tr>
             <tr>
                 <th>투자회사</th>
@@ -306,7 +350,7 @@
                 <th>KUH 자회사</th>
                 <td colspan="3">
                     <select class="form-control" id="kuhSubsidiary" disabled>
-                        <option value="">선택하세요.</option>
+                        <option value="">선택하세요</option>
                         <option value="KUH자회사">KUH자회사</option>
                         <option value="일반기업">일반기업</option>
                     </select>
@@ -314,7 +358,7 @@
                 <th>고대창업구분</th>
                 <td colspan="2">
                     <select class="form-control" id="kuhStartup" disabled>
-                        <option value="">선택하세요.</option>
+                        <option value="">선택하세요</option>
                         <option value="고려대창업">고려대창업</option>
                         <option value="비고려대창업">비고려대창업</option>
                     </select>
@@ -322,7 +366,7 @@
                 <th>창업구분</th>
                 <td colspan="3">
                     <select class="form-control" id="startupType" disabled>
-                        <option value="">선택하세요.</option>
+                        <option value="">선택하세요</option>
                         <option value="교원창업">교원창업</option>
                         <option value="학생창업">학생창업</option>
                         <option value="일반창업">일반창업</option>
@@ -333,7 +377,7 @@
                 <th>초기창업구분</th>
                 <td colspan="3">
                     <select class="form-control" id="earlyStartupType" disabled>
-                        <option value="">선택하세요.</option>
+                        <option value="">선택하세요</option>
                         <option value="창업 3년 이내">창업 3년 이내</option>
                         <option value="창업 7년 이내">창업 7년 이내</option>
                         <option value="창업 7년 초과">창업 7년 초과</option>
@@ -342,7 +386,7 @@
                 <th>중소기업구분</th>
                 <td colspan="2">
                     <select class="form-control" id="smeStatus" disabled>
-                        <option value="">선택하세요.</option>
+                        <option value="">선택하세요</option>
                         <option value="중소기업">중소기업</option>
                         <option value="대기업">대기업</option>
                     </select>
@@ -350,7 +394,7 @@
                 <th>지방창업구분</th>
                 <td colspan="3">
                     <select class="form-control" id="regionalCompany" disabled>
-                        <option value="">선택하세요.</option>
+                        <option value="">선택하세요</option>
                         <option value="서울창업">서울창업</option>
                         <option value="지방창업">지방창업</option>
                     </select>
@@ -360,7 +404,7 @@
                 <th>벤처기업구분</th>
                 <td colspan="3">
                     <select class="form-control" id="ventureRecognition" disabled>
-                        <option value="">선택하세요.</option>
+                        <option value="">선택하세요</option>
                         <option value="벤처기업">벤처기업</option>
                         <option value="일반기업">일반기업</option>
                     </select>
@@ -368,7 +412,7 @@
                 <th>연구소기업구분</th>
                 <td colspan="2">
                     <select class="form-control" id="researchRecognition" disabled>
-                        <option value="">선택하세요.</option>
+                        <option value="">선택하세요</option>
                         <option value="연구소기업">연구소기업</option>
                         <option value="일반기업">일반기업</option>
                     </select>
@@ -376,7 +420,7 @@
                 <th>공공기술이전</th>
                 <td colspan="3">
                     <select class="form-control" id="publicTechnologyTransfer" disabled>
-                        <option value="">선택하세요.</option>
+                        <option value="">선택하세요</option>
                         <option value="기술이전기업">기술이전기업</option>
                         <option value="일반기업">일반기업</option>
                     </select>
@@ -386,7 +430,7 @@
                 <th>투자기업실사</th>
                 <td colspan="3">
                     <select class="form-control" id="dueDiligence" disabled>
-                        <option value="">선택하세요.</option>
+                        <option value="">선택하세요</option>
                         <option value="미실사기업">미실사기업</option>
                         <option value="실사기업">실사기업</option>
                         <option value="실사보완중">실사보완중</option>
@@ -395,7 +439,7 @@
                 <th>상장여부</th>
                 <td colspan="2">
                     <select class="form-control" id="listingStatus" disabled>
-                        <option value="">선택하세요.</option>
+                        <option value="">선택하세요</option>
                         <option value="비상장기업">비상장기업</option>
                         <option value="상장기업">상장기업</option>
                     </select>
@@ -413,7 +457,7 @@
                 <th>BIZ SECTOR 구분</th>
                 <td colspan="9">
                     <select class="form-control" id="investmentSector" disabled>
-                        <option value="">선택하세요.</option>
+                        <option value="">선택하세요</option>
                         <option value="기계/소재/화학">기계/소재/화학</option>
                         <option value="전기전자정보통신">전기전자정보통신</option>
                         <option value="바이오/의료">바이오/의료</option>

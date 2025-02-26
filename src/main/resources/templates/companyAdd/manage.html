@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>사후관리 입력</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script defer th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/slimTable.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 
     <script>
@@ -69,11 +73,11 @@
                         return response.text();
                     })
                     .then(data => {
-                        alert("✅ 사후관리 정보가 저장되었습니다!");
-                        document.getElementById("manageForm").reset(); // 입력 필드 초기화
+                        alert("저장이 완료되었습니다! 화면을 종료합니다.");
+                        window.close(); // 팝업 화면 종료
                     })
                     .catch(error => {
-                        alert("❌ 저장 중 오류 발생: " + error.message);
+                        alert("오류발생, 입력데이터를 확인해주세요. " + error.message);
                     });
             });
         });
@@ -88,84 +92,72 @@
     <input type="hidden" id="companyId" name="companyId" th:value="${companyId}" />
     <!--    <input type="hidden" id="createUser" name="createUser" th:value="${loggedInUser}" />-->
     <!--    <input type="hidden" id="updateUser" name="updateUser" th:value="${loggedInUser}" />-->
-
-    <div class="mb-3">
-        <label class="form-label">연도</label>
-            <input type="text" class="form-control" id="manageYear" placeholder="예: 2023">
-        </select>
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label">반기</label>
-        <select class="form-control" id="halfYear">
-            <option value="">선택하세요</option>
-            <option value="1">상반기</option>
-            <option value="2">하반기</option>
-        </select>
-    </div>
-
-    <!-- 평가 등급 -->
-    <div class="mb-3">
-        <label class="form-label">평가 등급</label>
-        <select class="form-control" id="evalGrade">
-            <option value="">선택하세요</option>
-            <option value="정상투자 A">정상투자 A</option>
-            <option value="정상투자 B">정상투자 B</option>
-            <option value="요주의 C">요주의 C</option>
-            <option value="주의 D">주의 D</option>
-            <option value="투자종료/주식매각">투자종료/주식매각</option>
-            <option value="투자종료/회사청산">투자종료/회사청산</option>
-        </select>
-    </div>
-
-    <!-- 사업 진행 현황 -->
-    <div class="mb-3">
-        <label class="form-label">사업 진행 현황 1</label>
-        <input type="text" class="form-control" id="businessProgress1">
-    </div>
-    <div class="mb-3">
-        <label class="form-label">사업 진행 현황 2</label>
-        <input type="text" class="form-control" id="businessProgress2">
-    </div>
-    <div class="mb-3">
-        <label class="form-label">사업 진행 현황 3</label>
-        <input type="text" class="form-control" id="businessProgress3">
-    </div>
-
-    <!-- 사후관리 현황 -->
-    <div class="mb-3">
-        <label class="form-label">사후관리 현황 1</label>
-        <input type="text" class="form-control" id="managementStatus1">
-    </div>
-    <div class="mb-3">
-        <label class="form-label">사후관리 현황 2</label>
-        <input type="text" class="form-control" id="managementStatus2">
-    </div>
-    <div class="mb-3">
-        <label class="form-label">사후관리 현황 3</label>
-        <input type="text" class="form-control" id="managementStatus3">
-    </div>
-
-    <!-- Exit 방안 1 -->
-    <div class="mb-3">
-        <label class="form-label">EXIT 방안 1</label>
-        <input type="text" class="form-control" id="exitPlan1" value="(구주매각) " onfocus="moveCursorToEnd(this)">
-    </div>
-
-    <!-- Exit 방안 2 -->
-    <div class="mb-3">
-        <label class="form-label">EXIT 방안 2</label>
-        <input type="text" class="form-control" id="exitPlan2" value="(MNA IPO) " onfocus="moveCursorToEnd(this)">
-    </div>
-
-    <!-- Exit 예상 -->
-    <div class="mb-3">
-        <label class="form-label">EXIT 예상</label>
-        <input type="text" class="form-control" id="exitEstimation">
-    </div>
-
+    <table class="table table-bordered text-center">
+        <tbody>
+        <tr>
+            <th>연도</th>
+            <td><input type="text" class="form-control" id="manageYear" ></td>
+            <th>반기</th>
+            <td>
+                <select class="form-control" id="halfYear">
+                    <option value="">선택하세요</option>
+                    <option value="1">상반기</option>
+                    <option value="2">하반기</option>
+                </select>
+            </td>
+            <th>평가 등급</th>
+            <td>
+                <select class="form-control" id="evalGrade">
+                    <option value="">선택하세요</option>
+                    <option value="정상투자 A">정상투자 A</option>
+                    <option value="정상투자 B">정상투자 B</option>
+                    <option value="요주의 C">요주의 C</option>
+                    <option value="주의 D">주의 D</option>
+                    <option value="투자종료/주식매각">투자종료/주식매각</option>
+                    <option value="투자종료/회사청산">투자종료/회사청산</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>사업 진행 현황 1</th>
+            <td colspan="5"><input type="text" class="form-control" id="businessProgress1"></td>
+        </tr>
+        <tr>
+            <th>사업 진행 현황 2</th>
+            <td colspan="5"><input type="text" class="form-control" id="businessProgress2"></td>
+        </tr>
+        <tr>
+            <th>사업 진행 현황 3</th>
+            <td colspan="5"><input type="text" class="form-control" id="businessProgress3"></td>
+        </tr>
+        <tr>
+            <th>사후관리 현황 1</th>
+            <td colspan="5"><input type="text" class="form-control" id="managementStatus1"></td>
+        </tr>
+        <tr>
+            <th>사후관리 현황 2</th>
+            <td colspan="5"><input type="text" class="form-control" id="managementStatus2"></td>
+        </tr>
+        <tr>
+            <th>사후관리 현황 3</th>
+            <td colspan="5"><input type="text" class="form-control" id="managementStatus3"></td>
+        </tr>
+        <tr>
+            <th>EXIT 방안 1</th>
+            <td colspan="5"><input type="text" class="form-control" id="exitPlan1" value="(구주매각) " onfocus="moveCursorToEnd(this)"></td>
+        </tr>
+        <tr>
+            <th>EXIT 방안 2</th>
+            <td colspan="5"><input type="text" class="form-control" id="exitPlan2" value="(MNA IPO) " onfocus="moveCursorToEnd(this)"></td>
+        </tr>
+        <tr>
+            <th>EXIT 예상</th>
+            <td colspan="5"><input type="text" class="form-control" id="exitEstimation"></td>
+        </tr>
+        </tbody>
+    </table>
     <!-- 저장 버튼 -->
-    <div class="text-end">
+    <div class="button-container">
         <button type="submit" class="btn btn-primary">저장</button>
     </div>
 </form>

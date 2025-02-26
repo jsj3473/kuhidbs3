@@ -25,6 +25,12 @@
         }
 
         function updateFundInfo(data) {
+            console.log("받아온 데이터:", data);
+
+            // 데이터의 모든 요소를 개별적으로 출력
+            Object.entries(data).forEach(([key, value]) => {
+                console.log(`${key}:`, value);
+            });
             document.getElementById("fundId").value = data.fundId || "";
             document.getElementById("liquidationStatus").value = data.liquidationStatus || "";
             document.getElementById("liquidationDate").value = data.liquidationDate || "";
@@ -37,8 +43,8 @@
             document.getElementById("investmentDuration").value = data.investmentDuration || "";
             document.getElementById("investmentStartDate").value = data.investmentStartDate || "";
             document.getElementById("investmentEndDate").value = data.investmentEndDate || "";
-            document.getElementById("committedTotalPrice").value = formatNumber(data.committedTotalPrice);
-            document.getElementById("unitPrice").value = formatNumber(data.unitPrice);
+            document.getElementById("committedTotalPrice").value = data.committedTotalPrice;
+            document.getElementById("unitPrice").value = data.unitPrice;
             document.getElementById("fundOrganizationType").value = data.fundOrganizationType || "";
             document.getElementById("paymentType").value = data.paymentType || "";
             document.getElementById("currentStaff").value = data.currentStaff || "";
@@ -46,8 +52,8 @@
             document.getElementById("auditorDate").value = data.auditorDate || "";
             document.getElementById("trusteeCorporation").value = data.trusteeCorporation || "";
             document.getElementById("administrationCorporation").value = data.administrationCorporation || "";
-            document.getElementById("targetReturnRate").value = data.targetReturnRate || "";
-            document.getElementById("performanceFeeRate").value = data.performanceFeeRate || "";
+            document.getElementById("targetReturnRate").value = data.targetReturnRate;
+            document.getElementById("performanceFeeRate").value = data.performanceFeeRate;
             document.getElementById("managementFeeInvestmentPeriod").value = data.managementFeeInvestmentPeriod || "";
             document.getElementById("managementFeeManagementPeriod").value = data.managementFeeManagementPeriod || "";
             // document.getElementById("agreementCriteria").value = data.agreementCriteria || "";
@@ -66,7 +72,7 @@
                 const row = `<tr>
             <td>${member.memberName || ""}</td>
             <td>${member.memberType || ""}</td>
-            <td>${formatNumber(member.committedUnitPrice)}</td>
+            <td>${member.committedUnitPrice}</td>
             <td>${member.contact || ""}</td>
             <td>${member.address || ""}</td>
             <td>${member.businessRegNo || ""}</td>
@@ -177,58 +183,58 @@
                 <td colspan="2"><input type="text" class="form-control" name="fundId" id="fundId" readonly></td>
                 <th>청산여부</th>
                 <td>
-                    <select class="form-control" name="liquidationStatus" disabled>
-                        <option value="">선택하세요.</option>
+                    <select class="form-control" id="liquidationStatus" disabled>
+                        <option value="">선택하세요</option>
                         <option value="Y">Y</option>
                         <option value="N">N</option>
                     </select>
                 </td>
                 <th>청산일자</th>
-                <td><input type="date" class="form-control" name="liquidationDate" readonly></td>
+                <td><input type="date" class="form-control" id="liquidationDate" readonly></td>
             </tr>
             <tr>
                 <th>세부조합명</th>
-                <td colspan="2"><input type="text" class="form-control" name="fundNameDetail" readonly></td>
+                <td colspan="2"><input type="text" class="form-control" id="fundNameDetail" readonly></td>
                 <th>조합명</th>
-                <td><input type="text" class="form-control" name="fundName" readonly></td>
+                <td><input type="text" class="form-control" id="fundName" readonly></td>
                 <th>설립일자</th>
-                <td><input type="date" class="form-control" name="establishmentDate" readonly></td>
+                <td><input type="date" class="form-control" id="establishmentDate" readonly></td>
             </tr>
             <tr>
                 <th>존속기간(년)</th>
-                <td colspan="2"><input type="number" class="form-control" name="duration" readonly></td>
+                <td colspan="2"><input type="number" class="form-control" id="duration" readonly></td>
                 <th>존속기간 시작일</th>
-                <td><input type="date" class="form-control" name="durationStartDate" readonly></td>
+                <td><input type="date" class="form-control" id="durationStartDate" readonly></td>
                 <th>존속기간 종료일</th>
-                <td><input type="date" class="form-control" name="durationEndDate" readonly></td>
+                <td><input type="date" class="form-control" id="durationEndDate" readonly></td>
             </tr>
             <tr>
                 <th>투자기간(년)</th>
-                <td colspan="2"><input type="number" class="form-control" name="investmentDuration" readonly></td>
+                <td colspan="2"><input type="number" class="form-control" id="investmentDuration" readonly></td>
                 <th>투자기간 시작일</th>
-                <td><input type="date" class="form-control" name="investmentStartDate" readonly></td>
+                <td><input type="date" class="form-control" id="investmentStartDate" readonly></td>
                 <th>투자기간 종료일</th>
-                <td><input type="date" class="form-control" name="investmentEndDate" readonly></td>
+                <td><input type="date" class="form-control" id="investmentEndDate" readonly></td>
             </tr>
             <tr>
                 <th>약정 총액</th>
-                <td colspan="2"><input type="number" class="form-control" name="committedTotalPrice" readonly></td>
+                <td colspan="2"><input type="number" class="form-control" id="committedTotalPrice" readonly></td>
                 <th>1좌당 금액</th>
-                <td colspan="3"><input type="number" class="form-control" name="unitPrice" readonly></td>
+                <td colspan="3"><input type="number" class="form-control" id="unitPrice" readonly></td>
             </tr>
             <tr>
                 <th>투자기구 유형</th>
                 <td colspan="2">
-                    <select class="form-control" name="fundOrganizationType" disabled>
-                        <option value="">선택하세요.</option>
+                    <select class="form-control" id="fundOrganizationType" disabled>
+                        <option value="">선택하세요</option>
                         <option value="개인투자조합">개인투자조합</option>
                         <option value="벤처투자조합">벤처투자조합</option>
                     </select>
                 </td>
                 <th>납입방법</th>
                 <td colspan="3">
-                    <select class="form-control" name="paymentType" disabled>
-                        <option value="">선택하세요.</option>
+                    <select class="form-control" id="paymentType" disabled>
+                        <option value="">선택하세요</option>
                         <option value="수시납">수시납</option>
                         <option value="일시납">일시납</option>
                     </select>
@@ -236,70 +242,70 @@
             </tr>
             <tr>
                 <th>운용인력 전원</th>
-                <td colspan="6"><input type="text" class="form-control" name="currentStaff" readonly></td>
+                <td colspan="6"><input type="text" class="form-control" id="currentStaff" readonly></td>
             </tr>
             <tr>
                 <th>회계감사인명</th>
-                <td colspan="2"><input type="text" class="form-control" name="auditorName" readonly></td>
+                <td colspan="2"><input type="text" class="form-control" id="auditorName" readonly></td>
                 <th>회계감사인 변경일자</th>
-                <td colspan="3"><input type="date" class="form-control" name="auditorDate" readonly></td>
+                <td colspan="3"><input type="date" class="form-control" id="auditorDate" readonly></td>
             </tr>
             <tr>
                 <th>업무수탁법인</th>
-                <td colspan="2"><input type="text" class="form-control" name="trusteeCorporation" readonly></td>
+                <td colspan="2"><input type="text" class="form-control" id="trusteeCorporation" readonly></td>
                 <th>사무수탁법인</th>
-                <td colspan="3"><input type="text" class="form-control" name="administrationCorporation" readonly></td>
+                <td colspan="3"><input type="text" class="form-control" id="administrationCorporation" readonly></td>
             </tr>
 
             <tr><th colspan="7">투자조합 보수조건</th></tr>
             <tr>
                 <th>기준수익률(%)</th>
-                <td colspan="2"><input type="number" step="0.01" class="form-control" name="targetReturnRate" readonly></td>
+                <td colspan="2"><input type="number" step="0.01" class="form-control" id="targetReturnRate" readonly></td>
                 <th>성과보수율(%)</th>
-                <td colspan="3"><input type="number" step="0.01" class="form-control" name="performanceFeeRate" placeholder="없을 경우 0.0%" readonly></td>
+                <td colspan="3"><input type="number" step="0.01" class="form-control" id="performanceFeeRate" readonly></td>
             </tr>
             <tr>
                 <th>투자기간 관리보수(%)</th>
-                <td colspan="2"><input type="number" step="0.01" class="form-control" name="managementFeeInvestmentPeriod" readonly></td>
+                <td colspan="2"><input type="number" step="0.01" class="form-control" id="managementFeeInvestmentPeriod" readonly></td>
                 <th>운영기간 관리보수(%)</th>
-                <td colspan="3"><input type="number" step="0.01" class="form-control" name="managementFeeManagementPeriod" readonly></td>
+                <td colspan="3"><input type="number" step="0.01" class="form-control" id="managementFeeManagementPeriod" readonly></td>
             </tr>
             <tr>
                 <th>인센티브 조건</th>
-                <td colspan="6"><input type="text" class="form-control" name="incentiveCondition" readonly></td>
+                <td colspan="6"><input type="text" class="form-control" id="incentiveCondition" readonly></td>
             </tr>
             <tr>
                 <th>우선손실충당 GP</th>
-                <td colspan="6"><input type="text" class="form-control" name="priorLossGP" readonly></td>
+                <td colspan="6"><input type="text" class="form-control" id="priorLossGP" readonly></td>
             </tr>
             <tr>
                 <th>우선손실충당 LP</th>
-                <td colspan="6"><input type="text" class="form-control" name="priorLossLP" readonly></td>
+                <td colspan="6"><input type="text" class="form-control" id="priorLossLP" readonly></td>
             </tr>
             <tr><th colspan="7">투자조합 의무투자조건 - 주목적/특수목적 투자조건</th></tr>
             <tr>
                 <th>의무투자 1</th>
-                <td colspan="2"><input type="text" class="form-control" name="mandatoryInvestment1" readonly></td>
+                <td colspan="2"><input type="text" class="form-control" id="mandatoryInvestment1" readonly></td>
                 <th>의무투자 2</th>
-                <td colspan="3"><input type="text" class="form-control" name="mandatoryInvestment2" readonly></td>
+                <td colspan="3"><input type="text" class="form-control" id="mandatoryInvestment2" readonly></td>
             </tr>
             <tr>
                 <th>주목적투자 1</th>
-                <td colspan="2"><input type="text" class="form-control" name="primaryInvestment1" readonly></td>
+                <td colspan="2"><input type="text" class="form-control" id="primaryInvestment1" readonly></td>
                 <th>주목적투자 2</th>
-                <td colspan="3"><input type="text" class="form-control" name="primaryInvestment2" readonly></td>
+                <td colspan="3"><input type="text" class="form-control" id="primaryInvestment2" readonly></td>
             </tr>
             <tr>
                 <th>특수목적투자 1</th>
-                <td colspan="2"><input type="text" class="form-control" name="specialPurposeInvestment1" readonly></td>
+                <td colspan="2"><input type="text" class="form-control" id="specialPurposeInvestment1" readonly></td>
                 <th>특수목적투자 2</th>
-                <td colspan="3"><input type="text" class="form-control" name="specialPurposeInvestment2" readonly></td>
+                <td colspan="3"><input type="text" class="form-control" id="specialPurposeInvestment2" readonly></td>
             </tr>
             <tr>
                 <th>특수목적투자 3</th>
-                <td colspan="2"><input type="text" class="form-control" name="specialPurposeInvestment3" readonly></td>
+                <td colspan="2"><input type="text" class="form-control" id="specialPurposeInvestment3" readonly></td>
                 <th>특수목적투자 기타</th>
-                <td colspan="3"><input type="text" class="form-control" name="specialPurposeInvestment4" readonly></td>
+                <td colspan="3"><input type="text" class="form-control" id="specialPurposeInvestment4" readonly></td>
             </tr>
             </tbody>
 

@@ -158,7 +158,7 @@ public class HomeController {
         return "companyAdd/followupInvestment"; // followupInvestment.html
     }
 
-    // 투자감액/복원 입력 팝업
+    // 투자감액/환입 입력 팝업
     @GetMapping("/companyAdd/shareUp/{companyId}/{investmentId}")
     public String shareUp(@PathVariable("companyId") String companyId,
                           @PathVariable("investmentId") String investmentId, Model model) {
@@ -200,6 +200,15 @@ public class HomeController {
         model.addAttribute("investmentId", investmentId);
         return "companyAdd/stockUp"; // stockUp.html
     }
+    // 투자감액/환입 입력 팝업
+    @GetMapping("/companyAdd/dueDiligence/{companyId}/{investmentId}")
+    public String dueDiligence(@PathVariable("companyId") String companyId,
+                          @PathVariable("investmentId") String investmentId, Model model) {
+        model.addAttribute("companyId", companyId);
+        model.addAttribute("investmentId", investmentId);
+        return "companyAdd/dueDiligence"; // dueDiligence.html
+    }
+
     // 투자상태 입력 팝업
     @GetMapping("/companyAdd/investmentStatus/{id}")
     public String investmentStatus(@PathVariable("id") String id, Model model) {

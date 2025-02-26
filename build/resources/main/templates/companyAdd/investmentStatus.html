@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>투자 상태 입력</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script defer th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/slimTable.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <script>
         function submitStatusForm() {
@@ -45,25 +49,26 @@
 
     <!--<input type="hidden" name="createUser" th:value="${loggedInUser}" />
     <input type="hidden" name="updateUser" th:value="${loggedInUser}" />-->
-
-    <div class="mb-3">
-        <label class="form-label">투자 상태</label>
-        <select class="form-control" id="status" name="status" required>
-            <option value="">선택하세요</option>
-            <option value="정상투자 A">정상투자 A</option>
-            <option value="정상투자 B">정상투자 B</option>
-            <option value="요주의 C">요주의 C</option>
-            <option value="주의 D">주의 D</option>
-            <option value="투자종료/주식매각">투자종료/주식매각</option>
-            <option value="투자종료/회사청산">투자종료/회사청산</option>
-        </select>
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label">기타 정보</label>
-        <textarea class="form-control" id="additionalInfo" name="additionalInfo" rows="3"></textarea>
-    </div>
-
+    <table class="table table-bordered text-center">
+        <tbody>
+        <tr>
+            <th>투자 상태</th>
+            <td>
+                <select class="form-control" id="status" name="status" required>
+                    <option value="">선택하세요</option>
+                    <option value="정상투자 A">정상투자 A</option>
+                    <option value="정상투자 B">정상투자 B</option>
+                    <option value="요주의 C">요주의 C</option>
+                    <option value="주의 D">주의 D</option>
+                    <option value="투자종료/주식매각">투자종료/주식매각</option>
+                    <option value="투자종료/회사청산">투자종료/회사청산</option>
+                </select>
+            </td>
+            <th>기타 정보</th>
+            <td><textarea class="form-control" id="additionalInfo" name="additionalInfo" rows="3"></textarea></td>
+        </tr>
+        </tbody>
+    </table>
     <div class="text-end">
         <button type="submit" class="btn btn-primary">저장</button>
     </div>

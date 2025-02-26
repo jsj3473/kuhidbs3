@@ -4,14 +4,10 @@
     <meta charset="UTF-8">
     <title>후속 투자 정보 입력</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <style>
-        input {
-            width: 100%;
-            border: none;
-            text-align: left;
-        }
-    </style>
-
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script defer th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/slimTable.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
 
 
     <script>
@@ -96,9 +92,11 @@
                 alert("폼을 찾을 수 없습니다.");
                 return;
             }
-
             let formData = new FormData(form);
-
+            for (let pair of formData.entries()) {
+                console.log(pair[0] + ": " + pair[1]);  // 폼 데이터 확인
+            }
+            console.log(formData)
             fetch("/api/companies/createFollowup", {  // ✅ 절대 경로 사용
                 method: "POST",
                 body: formData
@@ -152,52 +150,47 @@
     <input type="hidden" name="companyId" th:value="${companyId}">
     <!--    <input type="hidden" name="followupEmployee" th:value="${session.loggedInUserName}">-->
     <h2 class="mb-4">후속 투자 정보 입력</h2>
-    <div class="mb-3"><label class="form-label">투자 기관</label>
-        <input type="text" class="form-control" name="followupCompanyName" placeholder="투자 기관 입력">
-    </div>
+    <table class="table table-bordered">
+        <tbody>
+        <tr>
+            <th>투자 기관</th>
+            <td><input type="text" class="form-control" name="followupCompanyName" placeholder=""></td>
+            <th>투자 상품</th>
+            <td>
+                <select class="form-control" name="followupProduct">
+                    <option value="">선택하세요</option>
+                    <option value="보통주(CS)">보통주(CS)</option>
+                    <option value="상환전환우선주(RCPS)">상환전환우선주(RCPS)</option>
+                    <option value="전환우선주(CPS)">전환우선주(CPS)</option>
+                    <option value="전환사채(CB)">전환사채(CB)</option>
+                    <option value="신주인수권부사채(BW)">신주인수권부사채(BW)</option>
+                    <option value="교환사채(EB)">교환사채(EB)</option>
+                    <option value="컨버터블노트(CN)">컨버터블노트(CN)</option>
+                    <option value="세이프(SAFE)">세이프(SAFE)</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>투자 날짜</th>
+            <td><input type="date" class="form-control" name="followupStartDate"></td>
+            <th>투자 단가 (원)</th>
+            <td><input type="number" class="form-control" name="followupUnitPrice" oninput="updateInvestmentAmount()"></td>
+        </tr>
+        <tr>
+            <th>주식 수량 (주)</th>
+            <td><input type="number" class="form-control" name="followupShareCount" oninput="updateInvestmentAmount()"></td>
+            <th>투자 금액 (원)</th>
+            <td><input type="number" class="form-control" name="followupSumPrice" readonly></td>
+        </tr>
+        </tbody>
+    </table>
 
-    <div class="mb-3"><label class="form-label">투자 상품</label>
-        <select class="form-control" name="followupProduct">
-            <option value="">선택하세요</option>
-            <option value="EQUITY,CS">보통주(CS)</option>
-            <option value="RCPS">상환전환우선주(RCPS)</option>
-            <option value="CPS">전환우선주(CPS)</option>
-            <option value="CB">전환사채(CB)</option>
-            <option value="BW">신주인수권부사채(BW)</option>
-            <option value="EB">교환사채(EB)</option>
-            <option value="CN">컨버터블노트(CN)</option>
-            <option value="SAFE">세이프(SAFE)</option>
-        </select>
-    </div>
-
-    <div class="mb-3">
-        <label class="form-label">투자 날짜</label>
-        <input type="date" class="form-control" name="followupStartDate">
-    </div>
-
-    <div class="mb-3"><label class="form-label">투자 단가 (단위: 원)</label>
-        <input type="number" class="form-control" name="followupUnitPrice" oninput="updateInvestmentAmount()">
-    </div>
-
-    <div class="mb-3"><label class="form-label">주식 수량 (단위: 주)</label>
-        <input type="number" class="form-control" name="followupShareCount" oninput="updateInvestmentAmount()">
-    </div>
-
-    <div class="mb-3"><label class="form-label">투자 금액 (단위: 원)</label>
-        <input type="number" class="form-control" name="followupSumPrice" readonly>
-    </div>
-
-
-
-    <div class="mt-4">
-        <button type="button" class="btn btn-primary" onclick="submitFirstForm()">추가 생성</button>
+    <div class="button-container">
+        <button type="button" class="btn btn-primary" onclick="submitFirstForm()">저장</button>
     </div>
 </form>
-<hr>
 
-<br>
-<br>
-<h4 class="mb-3">주주구성 입력</h4>
+<h4 class="mb-3">주주구성 변경</h4>
 <table class="table table-bordered text-center">
     <tr>
         <th>주주명 1</th>
@@ -244,9 +237,9 @@
         <td><input type="text" class="form-control" id="totalEquityRate" th:value="|${shrDTO.shareholderRate8} %|" readonly></td>
     </tr>
 </table>
-
-<br>
-<button class="btn btn-primary" onclick="submitData()">저장</button>
+<div class="button-container">
+    <button class="btn btn-primary" onclick="submitData()">저장</button>
+</div>
 
 <script>
 
@@ -297,10 +290,11 @@
                 return response.text();
             })
             .then(data => {
-                alert("저장이 완료되었습니다!");
+                alert("저장이 완료되었습니다! 화면을 종료합니다.");
+                window.close(); // 팝업 화면 종료
             })
             .catch(error => {
-                alert("저장 중 오류 발생: " + error.message);
+                alert("저장 중 오류 발생: " + error.message + ", 값을 확인해주세요.");
             });
     }
 </script>

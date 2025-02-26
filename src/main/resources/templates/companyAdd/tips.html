@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>TIPS 관리</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script defer th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/slimTable.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <script>
         function submitTipsForm(event) {
@@ -64,94 +68,80 @@
     <input type="hidden" id="companyId" name="companyId" th:value="${companyId}" />
 <!--    <input type="hidden" id="createUser" name="createUser" th:value="${loggedInUser}" />-->
 <!--    <input type="hidden" id="updateUser" name="updateUser" th:value="${loggedInUser}" />-->
-
+    http://localhost:8080/companyAdd/tips/2024001
     <!-- 팁스 종류 -->
-    <div class="mb-3">
-        <label class="form-label">팁스 종류</label>
-        <select class="form-control" id="tipsSelectionType">
-            <option value="">선택하세요</option>
-            <option value="일반팁스">일반팁스</option>
-            <option value="딥테크팁스">딥테크팁스</option>
-        </select>
-    </div>
-
-    <!-- 선정여부 -->
-    <div class="mb-3">
-        <label class="form-label">선정여부</label>
-        <select class="form-control" id="selectionYesNo">
-            <option value="">선택하세요</option>
-            <option value="선정 성공">선정 성공</option>
-            <option value="선정 실패">선정 실패</option>
-        </select>
-    </div>
-
-    <!-- 선정일자 -->
-    <div class="mb-3">
-        <label class="form-label">선정일자</label>
-        <input type="date" class="form-control" id="tipsSelectionDate">
-    </div>
-
-    <!-- 시작일자 -->
-    <div class="mb-3">
-        <label class="form-label">시작일자</label>
-        <input type="date" class="form-control" id="executionStartDate">
-    </div>
-
-    <!-- 종료일자 -->
-    <div class="mb-3">
-        <label class="form-label">종료일자</label>
-        <input type="date" class="form-control" id="executionEndDate">
-    </div>
-
-    <!-- 성공여부 -->
-    <div class="mb-3">
-        <label class="form-label">성공여부</label>
-        <select class="form-control" id="successYesNo">
-            <option value="">선택하세요</option>
-            <option value="성공">성공</option>
-            <option value="실패">실패</option>
-            <option value="사후관리">사후관리</option>
-        </select>
-    </div>
-
-    <!-- 성공정량지표 -->
-    <div class="mb-3">
-        <label class="form-label">성공정량지표</label>
-        <select class="form-control" id="kips">
-            <option value="">선택하세요</option>
-            <option value="후속투자">후속투자</option>
-            <option value="국내매출">국내매출</option>
-            <option value="해외매출">해외매출</option>
-            <option value="고용인력">고용인력</option>
-            <option value="IPO">IPO</option>
-            <option value="M&A">M&A</option>
-        </select>
-    </div>
-
-    <!-- 사후종료일자 -->
-    <div class="mb-3">
-        <label class="form-label">사후종료일자</label>
-        <input type="date" class="form-control" id="tipsManagementEndDate">
-    </div>
-
-    <!-- 사후성공여부 -->
-    <div class="mb-3">
-        <label class="form-label">사후성공여부</label>
-        <select class="form-control" id="followTips">
-            <option value="">선택하세요</option>
-            <option value="성실실패">성실실패</option>
-            <option value="실패">실패</option>
-        </select>
-    </div>
-
-    <!-- 입력내용 -->
-    <div class="mb-3">
-        <label class="form-label">입력내용</label>
-        <textarea class="form-control" id="tipsComment" rows="3"></textarea>
-    </div>
+    <table class="table table-bordered">
+        <tbody>
+        <tr>
+            <th>팁스종류</th>
+            <td>
+                <select class="form-control" id="tipsSelectionType">
+                    <option value="">선택하세요</option>
+                    <option value="일반팁스">일반팁스</option>
+                    <option value="딥테크팁스">딥테크팁스</option>
+                </select>
+            </td>
+            <th>선정여부</th>
+            <td>
+                <select class="form-control" id="selectionYesNo">
+                    <option value="">선택하세요</option>
+                    <option value="선정 성공">선정 성공</option>
+                    <option value="선정 실패">선정 실패</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>선정일자</th>
+            <td><input type="date" class="form-control" id="tipsSelectionDate"></td>
+            <th>시작일자</th>
+            <td><input type="date" class="form-control" id="executionStartDate"></td>
+        </tr>
+        <tr>
+            <th>종료일자</th>
+            <td><input type="date" class="form-control" id="executionEndDate"></td>
+            <th>성공여부</th>
+            <td>
+                <select class="form-control" id="successYesNo">
+                    <option value="">선택하세요</option>
+                    <option value="성공">성공</option>
+                    <option value="실패">실패</option>
+                    <option value="사후관리">사후관리</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>성공정량지표</th>
+            <td>
+                <select class="form-control" id="kips">
+                    <option value="">선택하세요</option>
+                    <option value="후속투자">후속투자</option>
+                    <option value="국내매출">국내매출</option>
+                    <option value="해외매출">해외매출</option>
+                    <option value="고용인력">고용인력</option>
+                    <option value="IPO">IPO</option>
+                    <option value="M&A">M&A</option>
+                </select>
+            </td>
+            <th>사후종료일자</th>
+            <td><input type="date" class="form-control" id="tipsManagementEndDate"></td>
+        </tr>
+        <tr>
+            <th>사후성공여부</th>
+            <td>
+                <select class="form-control" id="followTips">
+                    <option value="">선택하세요</option>
+                    <option value="성실실패">성실실패</option>
+                    <option value="실패">실패</option>
+                </select>
+            </td>
+            <th>입력내용</th>
+            <td><textarea class="form-control" id="tipsComment" rows="3"></textarea></td>
+        </tr>
+        </tbody>
+    </table>
 
     <!-- 저장 버튼 -->
-    <div class="text-end">
+    <div class="button-container">
         <button type="submit" class="btn btn-primary">저장</button>
     </div>
 </form>

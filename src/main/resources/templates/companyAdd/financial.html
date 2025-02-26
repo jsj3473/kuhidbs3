@@ -3,6 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <title>재무 정보 입력</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script defer th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/slimTable.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <script>
         function submitFinancialForm(event) {
@@ -38,10 +42,11 @@
                     return response.text();
                 })
                 .then(data => {
-                    alert("재무 정보가 저장되었습니다!");
+                    alert("저장이 완료되었습니다! 화면을 종료합니다.");
+                    window.close(); // 팝업 화면 종료
                 })
                 .catch(error => {
-                    alert("저장 중 오류 발생: " + error.message);
+                    alert("오류발생, 입력데이터를 확인해주세요. " + error.message);
                 });
         }
 
@@ -59,73 +64,50 @@
     <input type="hidden" id="companyId" name="companyId" th:value="${companyId}" />
     <!--    <input type="hidden" id="createUser" name="createUser" th:value="${loggedInUser}" />-->
     <!--    <input type="hidden" id="updateUser" name="updateUser" th:value="${loggedInUser}" />-->
+    <table class="table table-bordered text-center">
+        <tbody>
+        <tr>
+            <th>회계연도</th>
+            <td><input type="text" class="form-control" id="financialYear" placeholder=""></td>
+            <th>반기</th>
+            <td>
+                <select class="form-control" id="financialHalf">
+                    <option value="">선택하세요</option>
+                    <option value="상반기">상반기</option>
+                    <option value="하반기">하반기</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <th>매출액(백만 원)</th>
+            <td><input type="number" class="form-control" id="revenue" placeholder=""></td>
+            <th>영업이익(백만 원)</th>
+            <td><input type="number" class="form-control" id="operatingProfit" placeholder=""></td>
+        </tr>
+        <tr>
+            <th>당기순이익(백만 원)</th>
+            <td><input type="number" class="form-control" id="netIncome" placeholder=""></td>
+            <th>자산총계(백만 원)</th>
+            <td><input type="number" class="form-control" id="totalAssets" placeholder=""></td>
+        </tr>
+        <tr>
+            <th>자본총계(백만 원)</th>
+            <td><input type="number" class="form-control" id="totalCapital" placeholder=""></td>
+            <th>부채총계(백만 원)</th>
+            <td><input type="number" class="form-control" id="totalDebt" placeholder=""></td>
+        </tr>
+        <tr>
+            <th>자본금(백만 원)</th>
+            <td><input type="number" class="form-control" id="capital" placeholder=""></td>
+            <th>고용인력</th>
+            <td><input type="number" class="form-control" id="employeeCount" placeholder=""></td>
+        </tr>
+        </tbody>
+    </table>
 
-    <!-- 연도 -->
-    <div class="mb-3">
-        <label class="form-label">연도</label>
-        <input type="text" class="form-control" id="financialYear" placeholder="예: 2023">
-    </div>
-
-    <!-- 반기 -->
-    <div class="mb-3">
-        <label class="form-label">반기</label>
-        <select class="form-control" id="financialHalf">
-            <option value="">선택하세요</option>
-            <option value="상반기">상반기</option>
-            <option value="하반기">하반기</option>
-        </select>
-    </div>
-
-    <!-- 매출액 -->
-    <div class="mb-3">
-        <label class="form-label">매출액 (단위: 백만 원)</label>
-        <input type="number" class="form-control" id="revenue" placeholder="예: 100000">
-    </div>
-
-    <!-- 영업이익 -->
-    <div class="mb-3">
-        <label class="form-label">영업이익 (단위: 백만 원)</label>
-        <input type="number" class="form-control" id="operatingProfit" placeholder="예: 15000">
-    </div>
-
-    <!-- 당기순이익 -->
-    <div class="mb-3">
-        <label class="form-label">당기순이익 (단위: 백만 원)</label>
-        <input type="number" class="form-control" id="netIncome" placeholder="예: 12000">
-    </div>
-
-    <!-- 자산총계 -->
-    <div class="mb-3">
-        <label class="form-label">자산총계 (단위: 백만 원)</label>
-        <input type="number" class="form-control" id="totalAssets" placeholder="예: 500000">
-    </div>
-
-    <!-- 자본총계 -->
-    <div class="mb-3">
-        <label class="form-label">자본총계 (단위: 백만 원)</label>
-        <input type="number" class="form-control" id="totalCapital" placeholder="예: 300000">
-    </div>
-
-    <!-- 부채총계 -->
-    <div class="mb-3">
-        <label class="form-label">부채총계 (단위: 백만 원)</label>
-        <input type="number" class="form-control" id="totalDebt" placeholder="예: 200000">
-    </div>
-
-    <!-- 자본금 -->
-    <div class="mb-3">
-        <label class="form-label">자본금 (단위: 백만 원)</label>
-        <input type="number" class="form-control" id="capital" placeholder="예: 50000">
-    </div>
-
-    <!-- 고용 인력 -->
-    <div class="mb-3">
-        <label class="form-label">고용 인력</label>
-        <input type="number" class="form-control" id="employeeCount" placeholder="예: 250">
-    </div>
 
     <!-- 저장 버튼 -->
-    <div class="text-end">
+    <div class="button-container">
         <button type="submit" class="btn btn-primary">저장</button>
     </div>
 </form>
