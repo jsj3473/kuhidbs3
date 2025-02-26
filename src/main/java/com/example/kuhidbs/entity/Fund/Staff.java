@@ -26,15 +26,15 @@ public class Staff extends BaseEntity {
     @Column(name = "CHNG_DT", length = 10)
     private String changeDate; // 변경일자 (YYYY-MM-DD)
 
-    @Column(name = "PREV_STAFF", length = 8)
+    @Column(name = "PREV_STAFF", length = 800)
     private String previousStaff; // 변경 전 운용인력
 
-    @Column(name = "CURR_STAFF", length = 8)
+    @Column(name = "CURR_STAFF", length = 800)
     private String currentStaff; // 변경 후 운용인력
 
     @Column(name = "RESIGN_DATE", length = 10)
     private String resignDate; // 퇴사일자 (YYYY-MM-DD)
 
-    @Column(name = "RESN_SANCT", length = 200)
+    @Column(name = "RESN_SANCT", length = 2000)
     private String reasonAndSanction; // 사유 및 제재 내역
 }

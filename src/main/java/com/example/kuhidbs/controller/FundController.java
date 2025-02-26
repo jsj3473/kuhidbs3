@@ -125,7 +125,7 @@ public class FundController {
         return ResponseEntity.ok(dtos);
     }
 
-    @GetMapping("/{fundId}")
+    @GetMapping("info/{fundId}")
     public ResponseEntity<RFundDTO> getFundById(@PathVariable String fundId) {
         RFundDTO fundDTO = fundService.getFundById(fundId);
         List<RFundMemDTO> fundMems = fundMemService.getActiveFundMembersByFundId(fundId);

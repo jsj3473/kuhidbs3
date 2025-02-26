@@ -28,6 +28,8 @@
         <th rowspan="2">투자일자</th>
         <th colspan="2">고용인력</th>
         <th colspan="2">회수 정보</th>
+        <th rowspan="2">기준 년도</th>
+        <th rowspan="2">기준 반기</th>
     </tr>
     <tr>
         <th>최초인력수</th>
@@ -38,12 +40,14 @@
     </thead>
     <tbody>
     <tr th:each="employment : ${rEmploymentDTOS}">
-        <td th:text="${employment.investmentCompany}"></td>
-        <td th:text="${employment.investmentDate}"></td>
+        <td th:text="${employment.companyNm}"></td>
+        <td th:text="${employment.initialInvestmentDate}"></td>
         <td th:text="${#numbers.formatInteger(employment.initialEmployeeCount, 3, 'COMMA')} + ' 명'"></td>
-        <td th:text="${#numbers.formatInteger(employment.referenceEmployeeCount, 3, 'COMMA')} + ' 명'"></td>
+        <td th:text="${#numbers.formatInteger(employment.latestEmployeeCount, 3, 'COMMA')} + ' 명'"></td>
         <td th:text="${employment.finalRecoveryDate}"></td>
-        <td th:text="${#numbers.formatInteger(employment.recoveryEmployeeCount, 3, 'COMMA')} + ' 명'"></td>
+        <td th:text="${#numbers.formatInteger(employment.finalEmployeeCount, 3, 'COMMA')} + ' 명'"></td>
+        <td th:text="${employment.financialYear}"></td>
+        <td th:text="${employment.financialHalf}"></td>
     </tr>
     </tbody>
 </table>
