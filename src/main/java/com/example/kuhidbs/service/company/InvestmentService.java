@@ -100,6 +100,7 @@ public class InvestmentService {
                     .investmentDate(dto.getInvestmentDate())
                     .investmentCompany(company.getCompanyName())
                     .evaluationMethod(dto.getEvaluationMethod())
+                    .remainingAssetValuation(dto.getInvestmentSumPrice())
                     .managementFeeTarget(dto.getManagementFeeTarget())
                     .build();
 
