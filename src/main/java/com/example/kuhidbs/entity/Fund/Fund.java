@@ -106,4 +106,14 @@ public class Fund extends BaseEntity {
 
     @Column(name = "IVT_RATIO", precision = 5, scale = 2)
     private BigDecimal ivtRatio; // 고려대 출자비율(약정비율)
+
+    // ✅ 추가된 컬럼들
+    @Column(name = "ALLOC_PRINCIPAL")
+    private Integer allocPrincipal; // 배분원금
+
+    @Column(name = "ALLOC_PROFIT")
+    private Integer allocProfit; // 배분이익
+
+    @Column(name = "ALLOC_TOTAL")
+    private Integer allocTotal; // 배분총액
 }
