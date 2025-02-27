@@ -28,7 +28,7 @@ public class RFundDTO {
     private String fundOrganizationType; // 투자기구 유형
     private String paymentType; // 납입방법
     private String currentStaff; //운용인력 전원  ex) 송승용(대펀),홍승표 (반기보고서 참조)
-    private String auditorName; //회계감사법인
+    private String auditorName; //회계감사인명
     private String trusteeCorporation; // 업무수탁법인
     private String administrationCorporation; // 사무수탁법인
     private BigDecimal targetReturnRate; // 기준 수익률

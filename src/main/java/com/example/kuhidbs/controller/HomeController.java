@@ -397,6 +397,8 @@ public class HomeController {
     @GetMapping("/fundAdd/member/{id}")
     public String member(@PathVariable("id") String id, Model model) {
         model.addAttribute("fundId", id);
+        List<RFundMemDTO> fundMems = Optional.ofNullable(fundMemService.getActiveFundMembersByFundId(id)).orElseGet(ArrayList::new);
+        model.addAttribute("fundMems", fundMems);
         return "fundAdd/member"; // member.html
     }
     // 조합재무제표 입력 팝업

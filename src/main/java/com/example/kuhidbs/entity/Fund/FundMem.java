@@ -14,7 +14,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class FundMem extends BaseEntity {
+public class FundMem  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
