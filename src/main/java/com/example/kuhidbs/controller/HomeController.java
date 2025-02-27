@@ -76,6 +76,7 @@ public class HomeController {
     private EmploymentService employmentService;
 
 
+
     //공통 데이터 설정
     @ModelAttribute
     public void addCommonAttributes(Model model, HttpSession session) {
@@ -397,8 +398,8 @@ public class HomeController {
     @GetMapping("/fundAdd/member/{id}")
     public String member(@PathVariable("id") String id, Model model) {
         model.addAttribute("fundId", id);
-        List<RFundMemDTO> fundMems = Optional.ofNullable(fundMemService.getActiveFundMembersByFundId(id)).orElseGet(ArrayList::new);
-        model.addAttribute("fundMems", fundMems);
+        List<RFundMemDTO> rFundMemDTOS = fundMemService.getActiveFundMembersByFundId(id);
+        model.addAttribute("rFundMemDTOS", rFundMemDTOS);
         return "fundAdd/member"; // member.html
     }
     // 조합재무제표 입력 팝업
@@ -435,12 +436,12 @@ public class HomeController {
         return "fundShow/financialsByFund"; // financialsByFund.html
     }
 
-    // 투자조합원명부 조회 팝업
+    // 조합원 명부 구성 조회 팝업
     @GetMapping("/fundShow/membersByFund/{id}")
     public String membersByFund(@PathVariable("id") String id, Model model) {
         model.addAttribute("fundId", id);
-        List<RFundMemDTO> rFundMemDTOS = fundMemService.getActiveFundMembersByFundId(id);
-        model.addAttribute("rFundMemDTOS", rFundMemDTOS);
+//        List<RMemtypeDTO> rMemtypeDTOS = fundMemService.getActiveFundMembersByFundId(id);
+//        model.addAttribute("rFundMemDTOS", rFundMemDTOS);
         return "fundShow/membersByFund"; // membersByFund.html
     }
 

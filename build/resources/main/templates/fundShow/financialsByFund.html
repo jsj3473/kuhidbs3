@@ -49,24 +49,24 @@
   <tbody>
   <tr th:each="financial : ${rFundFinancialDTOS}">
     <td th:text="${financial.financialYear} + '년'"></td>
-    <td th:text="${#numbers.formatInteger(financial.ventureAssets, 3, 'COMMA')} + ' 원'" ></td>
-    <td th:text="${#numbers.formatInteger(financial.otherAssets, 3, 'COMMA')} + ' 원'" ></td>
-    <td th:text="${#numbers.formatInteger(financial.totalAssets, 3, 'COMMA')} + ' 원'" ></td>
-    <td th:text="${#numbers.formatInteger(financial.currentLiabilities, 3, 'COMMA')} + ' 원'" ></td>
-    <td th:text="${#numbers.formatInteger(financial.otherLiabilities, 3, 'COMMA')} + ' 원'" ></td>
-    <td th:text="${#numbers.formatInteger(financial.totalLiabilities, 3, 'COMMA')} + ' 원'" ></td>
-    <td th:text="${#numbers.formatInteger(financial.capital, 3, 'COMMA')} + ' 원'" ></td>
-    <td th:text="${#numbers.formatInteger(financial.retainedEarnings, 3, 'COMMA')} + ' 원'" ></td>
-    <td th:text="${#numbers.formatInteger(financial.totalCapital, 3, 'COMMA')} + ' 원'" ></td>
-    <td th:text="${#numbers.formatInteger(financial.operatingRevenue, 3, 'COMMA')} + ' 원'" ></td>
-    <td th:text="${#numbers.formatInteger(financial.operatingExpense, 3, 'COMMA')} + ' 원'" ></td>
-    <td th:text="${#numbers.formatInteger(financial.netProfit, 3, 'COMMA')} + ' 원'" ></td>
-    <td th:text="${#numbers.formatDecimal(financial.investmentImpairmentLoss,  3, 'COMMA')} + ' 원'" ></td>
-    <td th:text="${#numbers.formatDecimal(financial.managementFee, 3, 'COMMA')} + ' 원'" ></td>
-    <td th:text="${#numbers.formatDecimal(financial.performanceFee, 3, 'COMMA')} + ' 원'" ></td>
-    <td th:text="${#numbers.formatDecimal(financial.custodyManagementFee, 3, 'COMMA')} + ' 원'" ></td>
-    <td th:text="${#numbers.formatDecimal(financial.auditFee, 3, 'COMMA')} + ' 원'" ></td>
-    <td th:text="${#numbers.formatDecimal(financial.miscExpense, 3, 'COMMA')} + ' 원'" ></td>
+    <td th:text="${#numbers.formatInteger(financial.ventureAssets != null ? financial.ventureAssets : 0, 0, 'COMMA')} + ' 원'"></td>
+    <td th:text="${#numbers.formatInteger(financial.otherAssets != null ? financial.otherAssets : 0, 0, 'COMMA')} + ' 원'"></td>
+    <td th:text="${#numbers.formatInteger(financial.totalAssets != null ? financial.totalAssets : 0, 0, 'COMMA')} + ' 원'"></td>
+    <td th:text="${#numbers.formatInteger(financial.currentLiabilities != null ? financial.currentLiabilities : 0, 0, 'COMMA')} + ' 원'"></td>
+    <td th:text="${#numbers.formatInteger(financial.otherLiabilities != null ? financial.otherLiabilities : 0, 0, 'COMMA')} + ' 원'"></td>
+    <td th:text="${#numbers.formatInteger(financial.totalLiabilities != null ? financial.totalLiabilities : 0, 0, 'COMMA')} + ' 원'"></td>
+    <td th:text="${#numbers.formatInteger(financial.capital != null ? financial.capital : 0, 0, 'COMMA')} + ' 원'"></td>
+    <td th:text="${#numbers.formatInteger(financial.retainedEarnings != null ? financial.retainedEarnings : 0, 0, 'COMMA')} + ' 원'"></td>
+    <td th:text="${#numbers.formatInteger(financial.totalCapital != null ? financial.totalCapital : 0, 0, 'COMMA')} + ' 원'"></td>
+    <td th:text="${#numbers.formatInteger(financial.operatingRevenue != null ? financial.operatingRevenue : 0, 0, 'COMMA')} + ' 원'"></td>
+    <td th:text="${#numbers.formatInteger(financial.operatingExpense != null ? financial.operatingExpense : 0, 0, 'COMMA')} + ' 원'"></td>
+    <td th:text="${#numbers.formatInteger(financial.netProfit != null ? financial.netProfit : 0, 0, 'COMMA')} + ' 원'"></td>
+    <td th:text="${#numbers.formatInteger(financial.investmentImpairmentLoss != null ? financial.investmentImpairmentLoss : 0, 0, 'COMMA')} + ' 원'"></td>
+    <td th:text="${#numbers.formatInteger(financial.managementFee != null ? financial.managementFee : 0, 0, 'COMMA')} + ' 원'"></td>
+    <td th:text="${#numbers.formatInteger(financial.performanceFee != null ? financial.performanceFee : 0, 0, 'COMMA')} + ' 원'"></td>
+    <td th:text="${#numbers.formatInteger(financial.custodyManagementFee != null ? financial.custodyManagementFee : 0, 0, 'COMMA')} + ' 원'"></td>
+    <td th:text="${#numbers.formatInteger(financial.auditFee != null ? financial.auditFee : 0, 0, 'COMMA')} + ' 원'"></td>
+    <td th:text="${#numbers.formatInteger(financial.miscExpense != null ? financial.miscExpense : 0, 0, 'COMMA')} + ' 원'"></td>
   </tr>
   </tbody>
 </table>
