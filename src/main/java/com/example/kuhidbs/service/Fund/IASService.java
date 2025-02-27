@@ -1,13 +1,17 @@
 package com.example.kuhidbs.service.Fund;
 
 import com.example.kuhidbs.dto.Fund.RIASDTO;
+import com.example.kuhidbs.entity.Fund.Fund;
 import com.example.kuhidbs.entity.InvestmentAssetSummary;
 import com.example.kuhidbs.entity.company.Account;
+import com.example.kuhidbs.repository.Fund.FundRepository;
 import com.example.kuhidbs.repository.InvestmentAssetSummaryRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -15,6 +19,7 @@ import java.util.stream.Collectors;
 public class IASService {
 
     private final InvestmentAssetSummaryRepository investmentAssetSummaryRepository;
+    private final FundRepository fundRepository;
 
     // 특정 펀드 ID에 해당하는 투자자산총괄 데이터를 조회하여 DTO로 변환
     public List<RIASDTO> getInvestmentAssetSummaryByFundId(String fundId) {
@@ -65,5 +70,33 @@ public class IASService {
             summary.setMultiple(0.0);
         }
         investmentAssetSummaryRepository.save(summary);
+    }
+
+    @Transactional
+    public void updateFundAllocation(String fundId) {
+        // 투자 자산 요약에서 해당 펀드의 배분 원금과 배분 이익 합산 조회
+        Integer totalRecoveredPrincipal = investmentAssetSummaryRepository.sumRecoveredPrincipalByFundId(fundId);
+        Integer totalRecoveredProfit = investmentAssetSummaryRepository.sumRecoveredProfitByFundId(fundId);
+
+        // NULL 방지 (값이 없을 경우 0으로 처리)
+        totalRecoveredPrincipal = (totalRecoveredPrincipal != null) ? totalRecoveredPrincipal : 0;
+        totalRecoveredProfit = (totalRecoveredProfit != null) ? totalRecoveredProfit : 0;
+
+        // 펀드 엔티티 조회
+        Optional<Fund> optionalFund = fundRepository.findById(fundId);
+
+        if (optionalFund.isPresent()) {
+            Fund fund = optionalFund.get();
+
+            // 배분 원금과 배분 이익 업데이트
+            fund.setAllocPrincipal(totalRecoveredPrincipal);
+            fund.setAllocProfit(totalRecoveredProfit);
+            fund.setAllocTotal(totalRecoveredPrincipal + totalRecoveredProfit);
+
+            // 저장
+            fundRepository.save(fund);
+        } else {
+            throw new RuntimeException("Fund not found with ID: " + fundId);
+        }
     }
 }

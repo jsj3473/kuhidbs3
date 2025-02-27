@@ -64,7 +64,7 @@ public class RecoveryService {
             if (!Objects.equals(investment.getFund().getFundId(), "고유계정")) {
                 // 고유계정 아닌 경우 계산
                 recoveryReturn = BigDecimal.valueOf(fundReturn)
-                        .multiply(BigDecimal.valueOf(0.3))
+                        .multiply(investment.getFund().getIvtRatio())
                         .setScale(0, RoundingMode.HALF_UP)
                         .longValue();
 
@@ -141,6 +141,7 @@ public class RecoveryService {
             ias.setRecoveredPrincipal(ias.getRecoveredPrincipal()+recoveredPrincipal);
             ias.setRecoveredProfit(ias.getRecoveredProfit()+recoveredProfit);
             investmentAssetSummaryRepository.save(ias);
+            iasService.updateFundAllocation(investment.getFund().getFundId());
 
             System.out.println("✅ 회수 데이터 저장 완료 - 원금: " + recoveredPrincipal + ", 수익: " + recoveredProfit);
 

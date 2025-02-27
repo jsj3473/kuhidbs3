@@ -13,7 +13,9 @@ import com.example.kuhidbs.dto.company.팁스.RTIPSDTO;
 import com.example.kuhidbs.dto.company.회수.RstcupDTO;
 import com.example.kuhidbs.dto.company.후속투자.RFolDTO;
 import com.example.kuhidbs.dto.user.UserDTO;
+import com.example.kuhidbs.entity.Fund.Fund;
 import com.example.kuhidbs.entity.User;
+import com.example.kuhidbs.repository.Fund.FundRepository;
 import com.example.kuhidbs.service.Fund.*;
 import com.example.kuhidbs.service.UserService;
 import com.example.kuhidbs.service.company.*;
@@ -74,6 +76,8 @@ public class HomeController {
     private DueDiligenceService dueDiligenceService;
     @Autowired
     private EmploymentService employmentService;
+    @Autowired
+    private FundRepository fundRepository;
 
 
 
@@ -436,15 +440,6 @@ public class HomeController {
         return "fundShow/financialsByFund"; // financialsByFund.html
     }
 
-    // 조합원 명부 구성 조회 팝업
-    @GetMapping("/fundShow/membersByFund/{id}")
-    public String membersByFund(@PathVariable("id") String id, Model model) {
-        model.addAttribute("fundId", id);
-//        List<RMemtypeDTO> rMemtypeDTOS = fundMemService.getActiveFundMembersByFundId(id);
-//        model.addAttribute("rFundMemDTOS", rFundMemDTOS);
-        return "fundShow/membersByFund"; // membersByFund.html
-    }
-
     // 투자자산총괄표 조회 팝업
     @GetMapping("/fundShow/IASByfund/{id}")
     public String IASByfund(@PathVariable("id") String id, Model model) {
@@ -478,10 +473,24 @@ public class HomeController {
         model.addAttribute("fundId", id);
         return "fundShow"; // fundShow.html
     }
+
 //    // 펀드 조합후속관리 페이지
 //    @GetMapping("/fundManage/{id}")
 //    public String fundManage(@PathVariable("id") String id, Model model) {
 //        model.addAttribute("fundId", id);
 //        return "fundManage"; // fundManage.html
 //    }
+
+    // 조합원 명부 구성 조회 팝업
+    @GetMapping("/fundShow/membersByFund/{id}")
+    public String membersByFund(@PathVariable("id") String id, Model model) {
+        List<RMemtypeDTO> rMemtypeDTOS = fundMemService.getActiveFundMembers2ByFundId(id);
+        model.addAttribute("rMemtypeDTOS", rMemtypeDTOS);
+// 펀드 정보 조회
+        Fund fund = fundRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("펀드를 찾을 수 없습니다. ID: " + id));
+        model.addAttribute("fund", fund);
+
+        return "fundShow/membersByFund"; // membersByFund.html
+    }
 }

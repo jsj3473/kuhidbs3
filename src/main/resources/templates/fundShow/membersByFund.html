@@ -21,31 +21,64 @@
 <table class="table table-bordered text-center">
     <thead>
     <tr>
-        <th rowspan="2">No</th>
         <th rowspan="2">조합원명</th>
         <th colspan="2">출자약정액</th>
+        <th colspan="4">배분액</th>
+        <th rowspan="1">출자잔액</th>
         <th rowspan="2">조합원유형</th>
+        <th rowspan="1">배분순위</th>
     </tr>
     <tr>
         <th>금액</th>
         <th>비율</th>
+        <th>원금</th>
+        <th>이익</th>
+        <th>총액</th>
+        <th>비율</th>
     </tr>
     </thead>
     <tbody>
-    <tr th:each="member : ${rFundMemDTOS}">
+    <tr th:each="member : ${rMemtypeDTOS}">
         <td th:text="${member.memberName}"></td>
         <td th:text="${#numbers.formatInteger(member.committedUnitPrice, 3, 'COMMA')} + ' 원'"></td>
-        <td th:text="${#numbers.formatDecimal(member.contributionRate, 1, 2, 'POINT')} + ' %'"></td>
+        <td th:text="${#numbers.formatDecimal(member.contributionRate ?: 0, 1, 2, 'POINT')} + ' %'"></td>
+
+        <!-- 배분 원금 * 출자비율 -->
+        <td th:text="${#numbers.formatInteger(((fund.allocPrincipal ?: 0) * (member.contributionRate ?: 0) / 100), 3, 'COMMA')} + ' 원'"></td>
+
+        <!-- 배분 이익 * 출자비율 -->
+        <td th:text="${#numbers.formatInteger(((fund.allocProfit ?: 0) * (member.contributionRate ?: 0) / 100), 3, 'COMMA')} + ' 원'"></td>
+
+        <!-- 배분 총액 * 출자비율 -->
+        <td th:text="${#numbers.formatInteger(((fund.allocTotal ?: 0) * (member.contributionRate ?: 0) / 100), 3, 'COMMA')} + ' 원'"></td>
+
+        <td>-</td>
+        <td>-</td>
         <td th:text="${member.memberType}"></td>
+        <td>-</td>
     </tr>
+
+
     </tbody>
     <tfoot>
     <tr>
-        <th colspan="2">합계</th>
-        <td id="totalCommittedUnitPrice">0</td>
-        <td id="totalContributionRate">0 %</td>
+        <th>합계</th>
+        <td  th:text="${fund.getCommittedTotalPrice()}"></td> <!-- 출자 총액 -->
+        <td >100 %</td> <!-- 출자 비율 총합 -->
+
+        <!-- 배분 원금, 배분 이익, 배분 총액 -->
+        <td th:text="${#numbers.formatInteger(fund.allocPrincipal, 3, 'COMMA')}">0</td>
+        <td th:text="${#numbers.formatInteger(fund.allocProfit, 3, 'COMMA')}">0</td>
+        <td th:text="${#numbers.formatInteger(fund.allocTotal, 3, 'COMMA')}">0</td>
+
+        <!-- 배분 비율 (배분 총액 / 출자 총액 * 100) -->
+        <td th:text="${fund.getCommittedTotalPrice() != 0 ? #numbers.formatDecimal(fund.allocTotal / fund.getCommittedTotalPrice() * 100, 1, 2, 'POINT') + ' %' : '0 %'}"></td>
+
+        <th></th>
+        <th></th>
         <th></th>
     </tr>
+
     </tfoot>
 </table>
 

@@ -1,6 +1,7 @@
 package com.example.kuhidbs.repository.Fund;
 
 import com.example.kuhidbs.dto.Fund.RFundMemDTO;
+import com.example.kuhidbs.dto.Fund.RMemtypeDTO;
 import com.example.kuhidbs.entity.Fund.FundMem;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -19,6 +20,12 @@ public interface FundMemRepository extends JpaRepository<FundMem, Long> {
             "FROM FundMem fm " +
             "WHERE fm.fund.fundId = :fundId")
     List<RFundMemDTO> findFundMembersByFundId(@Param("fundId") String fundId);
+
+    @Query("SELECT new com.example.kuhidbs.dto.Fund.RMemtypeDTO(fm.fund.fundId, fm.memberName, " +
+            " fm.committedUnitPrice, fm.contributionRate, fm.memberType) " +
+            "FROM FundMem fm " +
+            "WHERE fm.fund.fundId = :fundId")
+    List<RMemtypeDTO> findFundMembers2ByFundId(@Param("fundId") String fundId);
 
 
     void deleteByFund_FundId(String fundFundId);
