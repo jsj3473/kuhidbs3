@@ -1,32 +1,31 @@
-
-
 .navbar {
     background-color: #f8f9fa; /* 네비게이션 바 배경색 */
-    /*padding: 10px 20px;*/
     border-bottom: 1px solid #dee2e6;
     width: 100%; /* 네비게이션 바 전체 너비 */
-    height: 85px;
+    height: 68px; /* 기존 85px → 80% 축소 */
+    padding: 5px 20px; /* 상하 패딩 줄이기 */
 }
 .logo {
     display: flex; /* Flexbox 활성화 */
     align-items: center; /* 수직 중앙 정렬 */
     text-align: center;
     justify-content: flex-start; /* 왼쪽 정렬 */
-    padding: 15px; /* 여백 설정 */
+    padding-right: 20px; /* 여백 설정 */
     /*border-bottom: 1px solid #dee2e6; !* 로고와 메뉴 구분선 *!*/
 }
 
 .logo-img {
-    width: 30px; /* 이미지 크기 */
-    height: auto; /* 비율 유지 */
-    margin-right: 10px; /* 이미지와 텍스트 간격 */
+    width: 25px; /* 기존 30px → 25px로 축소 */
+    height: auto;
+    margin-right: 8px; /* 기존 10px → 8px로 축소 */
 }
 
 .logo-text {
-    font-size: 27px; /* 텍스트 크기 */
+    font-size: 27px; /* 기존 크기 그대로 유지 */
     font-weight: bold;
-    color: #4E0719; /* 로고 텍스트 색상 */
+    color: #720A24; /* 기존 색상 유지 */
     white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+    padding-top: 5px;
 }
 
 
@@ -42,3 +41,14 @@
     text-align: right; /* 텍스트 오른쪽 정렬 */
 }
 
+.sub-navbar {
+    background: linear-gradient(to right, #4B000A, #850719); /* 좌측 #720A24 → 우측 #9C0E30 */
+    color: white; /* 흰색 글씨 */
+    text-align: left; /* 왼쪽 정렬 */
+    padding: 10px 20px;
+    font-size: 10px;
+    width: 100%;
+    height: 15px; /* 높이 설정 */
+    display: flex;
+    align-items: center;
+}

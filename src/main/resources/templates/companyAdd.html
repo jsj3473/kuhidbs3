@@ -127,7 +127,7 @@
                     ? `/companyAdd/kuhInvestment/${companyId}`
                     : `/companyAdd/combine/${companyId}`;
 
-                window.open(url, "popupWindow", "width=1000,height=600,scrollbars=yes");
+                window.open(url, "popupWindow", "width=800,height=750,scrollbars=yes");
             };
         });
 
@@ -151,7 +151,7 @@
 
     <!-- 📌 메인 콘텐츠 영역 -->
     <div class="content">
-        <h2>🏢 기업 정보 입력</h2>
+        <h2>기업 정보 입력</h2>
 
         <form id="companyForm" th:action="@{/api/companies/createCompany}" method="post">
 

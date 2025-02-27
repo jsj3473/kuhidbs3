@@ -8,46 +8,46 @@
   <script defer th:src="@{/js/bootstrap.bundle.min.js}"></script>
   <link rel="stylesheet" th:href="@{/css/slimTable.css}">
   <link rel="stylesheet" th:href="@{/css/common.css}">
+  <link rel="stylesheet" th:href="@{/css/popUpNavbar.css}">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
 
-<body>
-<div class="container">
-  <h2 class="mb-4">투자실사 입력</h2>
+<body class="container mt-4">
+<div th:replace="fragments/popUpNavbar :: navbar"></div>
+<h2 class="mb-4">투자실사 등록</h2>
 
-  <form id="dueDiligenceForm">
-    <input type="hidden" name="companyId" th:value="${companyId}">
-    <input type="hidden" name="investmentId" th:value="${investmentId}">
+<form id="dueDiligenceForm">
+  <input type="hidden" name="companyId" th:value="${companyId}">
+  <input type="hidden" name="investmentId" th:value="${investmentId}">
 
-    <table class="table table-bordered text-center">
-      <tbody>
-      <tr>
-        <th>실사대상</th>
-        <td><input type="text" class="form-control" name="target"></td>
+  <table class="table table-bordered text-center">
+    <tbody>
+    <tr>
+      <th>실사대상</th>
+      <td><input type="text" class="form-control" name="target"></td>
 
-        <th>실시여부</th>
-        <td>
-          <select class="form-control" name="status">
-            <option value="">선택하세요</option>
-            <option value="Seed">Y</option>
-            <option value="Pre-A">N</option>
-          </select>
-        </td>
-        <th>실사일자</th>
-        <td><input type="date" class="form-control" name="inspectionDate"></td>
-      </tr>
-      <tr>
-        <th>문제점발견</th>
-        <td colspan="5"><input type="text" class="form-control" name="issues"></td>
-      </tr>
-      </tbody>
-    </table>
+      <th>실시여부</th>
+      <td>
+        <select class="form-control" name="status">
+          <option value="">선택하세요</option>
+          <option value="Seed">Y</option>
+          <option value="Pre-A">N</option>
+        </select>
+      </td>
+      <th>실사일자</th>
+      <td><input type="date" class="form-control" name="inspectionDate"></td>
+    </tr>
+    <tr>
+      <th>문제점발견</th>
+      <td colspan="5"><input type="text" class="form-control" name="issues"></td>
+    </tr>
+    </tbody>
+  </table>
 
-    <div class="button-container">
-      <button type="submit" class="btn btn-primary">저장</button>
-    </div>
-  </form>
-</div>
+  <div class="button-container">
+    <button type="submit" class="btn btn-primary">저장</button>
+  </div>
+</form>
 
 <!-- JavaScript -->
 <script>

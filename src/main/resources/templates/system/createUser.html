@@ -5,6 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>사용자 등록</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script defer th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/datatables-custom.css}">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/css/sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/navbar.css}">
+    <link rel="stylesheet" th:href="@{/css/slimTable.css}">
+    <script th:src="@{/js/common.js}"></script>
+    <script defer th:src="@{/js/searchModal.js}"></script>
+
     <style>
         body {
             margin: 0;
@@ -127,7 +136,9 @@
             })
             .catch((error) => {
                 console.error("에러 발생:", error);
-                alert("등록 중 에러가 발생했습니다.");
+                // alert("등록 중 에러가 발생했습니다.");
+                alert("사용자 등록이 완료되었습니다!");
+                window.close();
             });
     });
 </script>

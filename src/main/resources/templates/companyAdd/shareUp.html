@@ -8,48 +8,49 @@
     <script defer th:src="@{/js/bootstrap.bundle.min.js}"></script>
     <link rel="stylesheet" th:href="@{/css/slimTable.css}">
     <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/popUpNavbar.css}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
 
-<body>
-<div class="container">
-    <h2 class="mb-4">감액・환입 입력</h2>
+<body class="container mt-4">
+<div th:replace="fragments/popUpNavbar :: navbar"></div>
 
-    <form id="shareUpForm">
-        <input type="hidden" name="companyId" th:value="${companyId}">
-        <input type="hidden" name="investmentId" th:value="${investmentId}">
+<h2 class="mb-4">감액환입 등록</h2>
 
-        <table class="table table-bordered text-center">
-            <tbody>
-            <tr>
-                <th>감액・환입</th>
-                <td>
-                    <select class="form-control" id="shareUpdateType" name="shareUpdateType" required>
-                        <option value="">선택하세요</option>
-                        <option value="감액">감액</option>
-                        <option value="환입">환입</option>
-                    </select>
-                </td>
-                <th>변동 일자</th>
-                <td><input type="date" class="form-control" id="shareUpdateDate" name="shareUpdateDate" required></td>
-                <th>주당 가치</th>
-                <td><input type="number" class="form-control" id="shareUnitValue" name="shareUnitValue" required></td>
-            </tr>
-            <tr>
-                <th>사유</th>
-                <td colspan="5"><textarea class="form-control" id="shareUpdateReason" name="shareUpdateReason" rows="3"></textarea></td>
-            </tr>
-            <tr>
-                <th>조치 사항</th>
-                <td colspan="5"><textarea class="form-control" id="shareUpdateAction" name="shareUpdateAction" rows="2"></textarea></td>
-            </tr>
-            </tbody>
-        </table>
-        <div class="button-container">
-            <button type="submit" class="btn btn-primary">저장</button>
-        </div>
-    </form>
-</div>
+<form id="shareUpForm">
+    <input type="hidden" name="companyId" th:value="${companyId}">
+    <input type="hidden" name="investmentId" th:value="${investmentId}">
+
+    <table class="table table-bordered text-center">
+        <tbody>
+        <tr>
+            <th>감액환입</th>
+            <td>
+                <select class="form-control" id="shareUpdateType" name="shareUpdateType" required>
+                    <option value="">선택하세요</option>
+                    <option value="감액">감액</option>
+                    <option value="환입">환입</option>
+                </select>
+            </td>
+            <th>변동 일자</th>
+            <td><input type="date" class="form-control" id="shareUpdateDate" name="shareUpdateDate" required></td>
+            <th>주당 가치</th>
+            <td><input type="number" class="form-control" id="shareUnitValue" name="shareUnitValue" required></td>
+        </tr>
+        <tr>
+            <th>사유</th>
+            <td colspan="5"><textarea class="form-control" id="shareUpdateReason" name="shareUpdateReason" rows="3"></textarea></td>
+        </tr>
+        <tr>
+            <th>조치 사항</th>
+            <td colspan="5"><textarea class="form-control" id="shareUpdateAction" name="shareUpdateAction" rows="2"></textarea></td>
+        </tr>
+        </tbody>
+    </table>
+    <div class="button-container">
+        <button type="submit" class="btn btn-primary">저장</button>
+    </div>
+</form>
 
 <!-- JavaScript -->
 <script>

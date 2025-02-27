@@ -8,16 +8,19 @@
 
 </head>
 <body>
+<div th:fragment="navbar">
 
 <!-- 네비게이션 바 -->
-<nav class="navbar navbar-expand-lg navbar-light" th:fragment="navbar">
+<nav class="navbar navbar-expand-lg navbar-light" >
     <div class="container-fluid d-flex align-items-center">
 
         <!-- 좌측 로고 -->
-        <div class="logo">
-            <img src="/images/KuLogo2.gif" alt="프로그램 로고" class="logo-img">
-            <h1 class="logo-text">KUH IDBS</h1>
-        </div>
+        <a class="nav-link" href="/main">
+            <div class="logo">
+                <img src="/images/KuLogo2.gif" alt="프로그램 로고" class="logo-img">
+                <h1 class="logo-text">KUH IDBS</h1>
+            </div>
+        </a>
 
         <!-- 네비게이션 메뉴 (왼쪽 정렬) -->
         <ul class="navbar-nav me-auto">
@@ -62,9 +65,9 @@
                     시스템관리
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="systemDropdown">
-                    <li><a class="dropdown-item" href="#">사용자관리</a></li>
-                    <li><a class="dropdown-item" href="#">권한설정</a></li>
-                    <li><a class="dropdown-item" href="#">로그조회</a></li>
+                    <li><a class="dropdown-item" href="/system/userManage">사용자관리</a></li>
+<!--                    <li><a class="dropdown-item" href="#">권한설정</a></li>-->
+<!--                    <li><a class="dropdown-item" href="#">로그조회</a></li>-->
                 </ul>
             </li>
         </ul>
@@ -79,7 +82,14 @@
         </div>
 
     </div>
+
 </nav>
+<!-- 보조 네비 바 -->
+<div class="sub-navbar">
+    <span id="currentPage"></span>
+</div>
+
+</div>
 
 </body>
 </html>

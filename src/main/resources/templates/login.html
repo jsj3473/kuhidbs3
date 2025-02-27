@@ -142,13 +142,17 @@
     </style>
 </head>
 <body>
-
 <div class="login-card">
     <!-- 로고 -->
     <img src="/images/KuLogo2.gif" alt="로고" class="logo">
 
     <!-- 타이틀 -->
     <p class="title">KUH IDBS</p>
+
+    <!-- 로그인 실패 메시지 (3초 후 자동 사라짐) -->
+    <div id="error-message" class="alert alert-danger fade show text-center" role="alert" style="display: none;">
+        입력 정보를 확인하세요.
+    </div>
 
     <!-- 입력 필드 -->
     <form th:action="@{/api/users/login}" method="post">
@@ -164,8 +168,28 @@
         <!-- 로그인 버튼 -->
         <button type="submit" class="btn login-button">로그인</button>
     </form>
-
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // URL에서 error 파라미터 확인
+        const urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.has("error")) {
+            const errorMessage = document.getElementById("error-message");
+            errorMessage.style.display = "block"; // 메시지 표시
+
+            // 3초 후에 서서히 사라지게 설정
+            setTimeout(() => {
+                errorMessage.classList.remove("show"); // Bootstrap fade 효과
+                errorMessage.classList.add("fade"); // 페이드 아웃 적용
+                setTimeout(() => {
+                    errorMessage.style.display = "none"; // 완전히 제거
+                }, 500); // 페이드 아웃 후 제거 (0.5초 후)
+            }, 1000); // 3초 후 실행
+        }
+    });
+</script>
+
 
 <!-- 비밀번호 변경 모달 -->
 <div class="modal fade" id="passwordModal" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true">

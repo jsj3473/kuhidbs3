@@ -7,8 +7,10 @@
     <script defer th:src="@{/js/bootstrap.bundle.min.js}"></script>
     <link rel="stylesheet" th:href="@{/css/slimTable.css}">
     <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/popUpNavbar.css}">
 </head>
 <body class="container mt-4">
+<div th:replace="fragments/popUpNavbar :: navbar"></div>
 
 <h2 class="mb-4">조합원 관리</h2>
 

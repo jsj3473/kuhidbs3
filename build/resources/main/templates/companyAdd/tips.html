@@ -7,6 +7,7 @@
     <script defer th:src="@{/js/bootstrap.bundle.min.js}"></script>
     <link rel="stylesheet" th:href="@{/css/slimTable.css}">
     <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/popUpNavbar.css}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <script>
         function submitTipsForm(event) {
@@ -61,6 +62,7 @@
 </head>
 <body class="container mt-4">
 
+<div th:replace="fragments/popUpNavbar :: navbar"></div>
 <h2 class="mb-4">TIPS 관리</h2>
 
 <form id="tipsForm">
@@ -68,7 +70,6 @@
     <input type="hidden" id="companyId" name="companyId" th:value="${companyId}" />
 <!--    <input type="hidden" id="createUser" name="createUser" th:value="${loggedInUser}" />-->
 <!--    <input type="hidden" id="updateUser" name="updateUser" th:value="${loggedInUser}" />-->
-    http://localhost:8080/companyAdd/tips/2024001
     <!-- 팁스 종류 -->
     <table class="table table-bordered">
         <tbody>

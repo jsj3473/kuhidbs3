@@ -8,6 +8,7 @@
     <script defer th:src="@{/js/bootstrap.bundle.min.js}"></script>
     <link rel="stylesheet" th:href="@{/css/slimTable.css}">
     <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/popUpNavbar.css}">
 
 
     <script>
@@ -145,6 +146,7 @@
 </head>
 <body class="container mt-4">
 
+<div th:replace="fragments/popUpNavbar :: navbar"></div>
 <form id="firstForm" th:action="@{/api/companies/followupInvestment}" method="post">
 
     <input type="hidden" name="companyId" th:value="${companyId}">
@@ -163,9 +165,9 @@
                     <option value="상환전환우선주(RCPS)">상환전환우선주(RCPS)</option>
                     <option value="전환우선주(CPS)">전환우선주(CPS)</option>
                     <option value="전환사채(CB)">전환사채(CB)</option>
-                    <option value="신주인수권부사채(BW)">신주인수권부사채(BW)</option>
-                    <option value="교환사채(EB)">교환사채(EB)</option>
-                    <option value="컨버터블노트(CN)">컨버터블노트(CN)</option>
+<!--                    <option value="신주인수권부사채(BW)">신주인수권부사채(BW)</option>-->
+<!--                    <option value="교환사채(EB)">교환사채(EB)</option>-->
+<!--                    <option value="컨버터블노트(CN)">컨버터블노트(CN)</option>-->
                     <option value="세이프(SAFE)">세이프(SAFE)</option>
                 </select>
             </td>

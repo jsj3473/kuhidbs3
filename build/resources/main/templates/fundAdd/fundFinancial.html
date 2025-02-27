@@ -8,8 +8,10 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" th:href="@{/css/slimTable.css}">
     <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/popUpNavbar.css}">
 </head>
 <body class="container mt-4">
+<div th:replace="fragments/popUpNavbar :: navbar"></div>
 
 <h2 class="mb-4">조합 재무정보 관리</h2>
 
@@ -23,7 +25,7 @@
             <td colspan="3"><input type="month" class="form-control" id="financialYear"></td>
         </tr>
         <tr>
-            <th colspan="4" class="text-center bg-light">재무 상태</th>
+            <th colspan="4" class="text-center bg-light">재무상태</th>
         </tr>
         <tr>
             <th>창투자산</th>
@@ -54,7 +56,7 @@
             <td colspan="3"><input type="text" class="form-control number-format" id="totalCapital"></td>
         </tr>
         <tr>
-            <th colspan="4" class="text-center bg-light">손익 계산</th>
+            <th colspan="4" class="text-center bg-light">손익계산</th>
         </tr>
         <tr>
             <th>영업수익</th>
@@ -89,55 +91,6 @@
         </tr>
         </tbody>
     </table>
-<!--    <div class="mb-3">-->
-<!--        <label class="form-label">회계연도</label>-->
-<!--        <input type="month" class="form-control" id="financialYear">-->
-<!--    </div>-->
-
-<!--    &lt;!&ndash; 재무 상태 &ndash;&gt;-->
-<!--    <div class="card mt-4">-->
-<!--        <div class="card-header">재무 상태</div>-->
-<!--        <div class="card-body">-->
-<!--            <table class="table">-->
-<!--                <tr><td>창투자산</td><td><input type="text" class="form-control number-format" id="ventureAssets"></td></tr>-->
-<!--                <tr><td>기타자산</td><td><input type="text" class="form-control number-format" id="otherAssets"></td></tr>-->
-<!--                <tr><td>자산총계</td><td><input type="text" class="form-control number-format" id="totalAssets"></td></tr>-->
-<!--                <tr><td>유동부채</td><td><input type="text" class="form-control number-format" id="currentLiabilities"></td></tr>-->
-<!--                <tr><td>기타부채</td><td><input type="text" class="form-control number-format" id="otherLiabilities"></td></tr>-->
-<!--                <tr><td>부채총계</td><td><input type="text" class="form-control number-format" id="totalLiabilities"></td></tr>-->
-<!--                <tr><td>출자금</td><td><input type="text" class="form-control number-format" id="capital"></td></tr>-->
-<!--                <tr><td>이익잉여</td><td><input type="text" class="form-control number-format" id="retainedEarnings"></td></tr>-->
-<!--                <tr><td>자본총계</td><td><input type="text" class="form-control number-format" id="totalCapital"></td></tr>-->
-<!--            </table>-->
-<!--        </div>-->
-<!--    </div>-->
-
-<!--    &lt;!&ndash; 손익 계산 &ndash;&gt;-->
-<!--    <div class="card mt-4">-->
-<!--        <div class="card-header">손익 계산</div>-->
-<!--        <div class="card-body">-->
-<!--            <table class="table">-->
-<!--                <tr><td>영업수익</td><td><input type="text" class="form-control number-format" id="operatingRevenue"></td></tr>-->
-<!--                <tr><td>영업비용</td><td><input type="text" class="form-control number-format" id="operatingExpense"></td></tr>-->
-<!--                <tr><td>당기순이익</td><td><input type="text" class="form-control number-format" id="netProfit"></td></tr>-->
-<!--            </table>-->
-<!--        </div>-->
-<!--    </div>-->
-
-<!--    &lt;!&ndash; 영업비용 상세 &ndash;&gt;-->
-<!--    <div class="card mt-4">-->
-<!--        <div class="card-header">영업비용 상세</div>-->
-<!--        <div class="card-body">-->
-<!--            <table class="table">-->
-<!--                <tr><td>투자주식손상차손</td><td><input type="text" class="form-control number-format" id="investmentImpairmentLoss"></td></tr>-->
-<!--                <tr><td>관리보수</td><td><input type="text" class="form-control number-format" id="managementFee"></td></tr>-->
-<!--                <tr><td>성과보수</td><td><input type="text" class="form-control number-format" id="performanceFee"></td></tr>-->
-<!--                <tr><td>수탁관리보수</td><td><input type="text" class="form-control number-format" id="custodyManagementFee"></td></tr>-->
-<!--                <tr><td>회계감사수수료</td><td><input type="text" class="form-control number-format" id="auditFee"></td></tr>-->
-<!--                <tr><td>기타 비용</td><td><input type="text" class="form-control number-format" id="miscExpense"></td></tr>-->
-<!--            </table>-->
-<!--        </div>-->
-<!--    </div>-->
 
     <div class="button-container">
         <button type="submit" class="btn btn-primary">저장</button>

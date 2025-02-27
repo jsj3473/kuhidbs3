@@ -1,3 +1,12 @@
+
+
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
@@ -5,34 +14,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>사용자 관리</title>
     <!-- DataTables 공통 CSS -->
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script defer th:src="@{/js/bootstrap.bundle.min.js}"></script>
     <link rel="stylesheet" th:href="@{/css/datatables-custom.css}">
-
-    <!-- Bootstrap CSS -->
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <link rel="stylesheet" th:href="@{/css/sidebar.css}">
     <link rel="stylesheet" th:href="@{/css/navbar.css}">
-    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <script th:src="@{/js/common.js}"></script>
+    <script defer th:src="@{/js/searchModal.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/slimTable.css}">
+
     <style>
-        body {
-            margin: 0;
-            display: flex;
-            height: 100vh;
-        }
-
-        .main {
-            flex-grow: 1; /* 메인 영역 전체 너비 차지 */
-            display: flex;
-            flex-direction: column; /* 세로 정렬 */
-            width: 100%; /* 네비게이션 바와 동일한 너비 */
-        }
-
-        .main-content {
-            flex-grow: 1;
-            padding: 20px;
-            overflow: auto;
-            width: 100%; /* 좌측 뭉침 방지 */
-        }
-
         .button-container {
               display: flex;
               justify-content: flex-end; /* 버튼을 오른쪽 정렬 */
@@ -42,23 +34,46 @@
         .button-container button {
             margin-left: 10px;
         }
-    </style>
+        .userbtn button {
+            white-space: nowrap; /* 버튼 내부 텍스트 줄바꿈 방지 */
+            font-size: 12px; /* 버튼 폰트 크기 */
+            background-color: #f8f9fa; /* 연한 회색 배경 */
+            color: #495057; /* 다크 그레이 글씨 */
+            border: 1px solid #ced4da; /* 얇은 보더 */
+            padding: 5px 10px;
+            border-radius: 0;
+            transition: background-color 0.2s ease-in-out;
+        }
 
-    <div th:replace="fragments/datatables.html :: datatables-head"></div>
+        .userbtn button:hover {
+            background-color: #e9ecef;
+            border-color: #adb5bd;
+            color: #495057;
+        }
+    </style>
 
 </head>
 <body>
-<div th:replace="fragments/sidebar :: sidebar"></div>
 
-<div class="main">
+<!-- DataTables 공통 JS -->
+<div th:replace="fragments/datatables.html :: datatables-head"></div>
+<div th:replace="fragments/datatables.html :: datatables-body"></div>
 
-    <div th:replace="fragments/navbar :: navbar"></div>
+<div th:replace="fragments/navbar :: navbar"></div>
+<div th:replace="fragments/searchModal :: searchModal"></div>
 
-    <div class="main-content">
+<div class="wrapper">
+    <!-- 📌 좌측 사이드바 -->
+    <nav class="sidebar">
+        <a href="#">🙍🏻‍♀️ 사용자 관리</a>
+    </nav>
+
+    <!-- 📌 메인 콘텐츠 영역 -->
+    <div class="content">
         <table id="userTable" class="datatable table-hover" style="width:100%">
             <thead>
             <tr>
-<!--                <th><input type="checkbox" id="selectAll"></th> &lt;!&ndash; 체크박스 헤더 &ndash;&gt;-->
+                <!--                <th><input type="checkbox" id="selectAll"></th> &lt;!&ndash; 체크박스 헤더 &ndash;&gt;-->
                 <th>사원번호</th>
                 <th>성명</th>
                 <th>권한</th>
@@ -68,7 +83,7 @@
             </thead>
             <tbody>
             <tr th:each="user : ${users}">
-<!--                <td><input type="checkbox" class="rowCheckbox"></td>-->
+                <!--                <td><input type="checkbox" class="rowCheckbox"></td>-->
                 <td th:text="${user.Id}"></td>
                 <td th:text="${user.name}"></td>
                 <td th:text="${user.role}"></td>
@@ -77,21 +92,16 @@
             </tr>
             </tbody>
         </table>
-        <!-- 버튼 영역 -->
-        <div class="button-container">
-            <button id="createButton" class="btn btn-dark">사용자 생성</button>
-            <button id="resetButton" class="btn btn-dark">비밀번호 초기화</button>
-            <button id="retireButton" class="btn btn-dark">퇴직처리</button>
+        <div class="button-container userbtn">
+            <button id="createButton" class="btn">사용자 생성</button>
+            <button id="resetButton" class="btn">비밀번호 초기화</button>
+            <button id="retireButton" class="btn">퇴직처리</button>
         </div>
+
     </div>
 
 </div>
 
-<!-- DataTables 공통 JS -->
-<div th:replace="fragments/datatables.html :: datatables-body"></div>
-<!-- Bootstrap JS -->
-<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
-<script th:src="@{/js/common.js}"></script>
 <script>
     $(document).ready(function () {
         // 사용자 생성 버튼 클릭 이벤트

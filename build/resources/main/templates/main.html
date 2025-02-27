@@ -15,7 +15,16 @@
     <script defer th:src="@{/js/searchModal.js}"></script>
 
     <style>
-
+        .main-image {
+            width: 90%; /* 부모 div에 맞게 자동 조정 */
+            /*max-width: 600px; !* 최대 크기 제한 *!*/
+            height: auto; /* 비율 유지 */
+            display: block; /* 인라인 요소 제거 & 블록 요소로 정렬 */
+            margin: 0 auto; /* 중앙 정렬 */
+            margin-top: 10px;
+            margin-bottom: 30px;
+            border-radius: 10px; /* 모서리를 둥글게 (선택 사항) */
+        }
     </style>
 
 </head>
@@ -35,23 +44,12 @@
 
     <!-- 📌 메인 콘텐츠 영역 -->
     <div class="content">
-        <h2>📌 현재 페이지 내용 표시</h2>
-        <p> 페이지별 내용!</p>
+<!--        <h2>실시간 투자현황</h2>-->
+<!--        <p> 페이지별 내용!</p>-->
+        <img src="/images/mainImg1.png" alt="메인 이미지" class="main-image">
+        <img src="/images/mainImg2.png" alt="메인 이미지" class="main-image">
     </div>
 
-</div>
-
-<!-- 🔍 검색 모달 -->
-<div class="modal fade" id="searchModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-sm">
-        <div class="modal-content">
-            <div class="modal-body p-2 d-flex align-items-center">
-                <input type="text" id="companyIdInput" class="form-control me-2" placeholder="고유번호 입력" style="flex: 1; min-width: 120px;">
-                <button type="button" class="btn btn-primary btn-sm" id="searchButton">검색</button>
-                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-            </div>
-        </div>
-    </div>
 </div>
 
 </body>
