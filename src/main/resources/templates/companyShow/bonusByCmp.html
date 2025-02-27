@@ -17,17 +17,17 @@
 <table class="table table-bordered text-center">
     <thead class="table-light">
     <tr>
-        <th>증자 일자</th>
-        <th>변경된 주식 수량</th>
-        <th>주당 가격</th>
+        <th>증자일자</th>
+        <th>변경주식수량</th>
+        <th>주당가격</th>
     </tr>
     </thead>
     <tbody>
     <!-- ✅ Thymeleaf 반복문을 사용하여 무상증자 내역 출력 -->
     <tr th:each="bonus : ${rBonusDTOS}">
         <td th:text="${bonus.bonusDate}"></td>
-        <td th:text="${bonus.changedShareCount}"></td>
-        <td th:text="${bonus.unitPrice}"></td>
+        <td class="text-end" th:text="${#numbers.formatInteger(bonus.changedShareCount, 3, 'COMMA')}"></td>
+        <td class="text-end" th:text="${#numbers.formatInteger(bonus.unitPrice, 3, 'COMMA')}"></td>
     </tr>
     </tbody>
 </table>

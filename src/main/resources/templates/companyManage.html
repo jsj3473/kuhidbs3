@@ -14,8 +14,110 @@
     <script th:src="@{/js/common.js}"></script>
     <script defer th:src="@{/js/searchModal.js}"></script>
     <link rel="stylesheet" th:href="@{/css/slimTable.css}">
+    <style>
 
-    <style></style>
+        .input-group-inline {
+            display: flex;
+            align-items: center; /* 수직 중앙 정렬 */
+            gap: 8px; /* input과 버튼 사이 간격 */
+        }
+
+        .input-group-inline input {
+            flex: 1; /* 남은 공간을 모두 차지 */
+            min-width: 0; /* flex 사용 시 길이 제한 방지 */
+        }
+
+        .input-group-inline button {
+            white-space: nowrap; /* 버튼 내부 텍스트 줄바꿈 방지 */
+            font-size: 12px; /* 버튼 폰트 크기 */
+            background-color: #f8f9fa; /* 연한 회색 배경 */
+            color: #495057; /* 다크 그레이 글씨 */
+            border: 1px solid #ced4da; /* 얇은 보더 */
+            padding: 5px 10px;
+            border-radius: 0;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .input-group-inline button:hover {
+            background-color: #e9ecef;
+            border-color: #adb5bd;
+            color: #495057;
+        }
+
+
+    </style>
+
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+            function updateCompanyInfo(endpoint, payload) {
+                console.log("📡 요청 보낼 API:", "/api/companies" + endpoint);
+                console.log("📦 요청 데이터:", JSON.stringify(payload, null, 2)); // JSON 데이터 콘솔 출력
+
+                fetch("/api/companies" + endpoint, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(payload),
+                })
+                    .then(response => response.text())
+                    .then(data => {
+                        console.log("✅ 응답 데이터:", data); // 응답 데이터 콘솔 출력
+                        alert(data);
+                        location.reload(); // 페이지 새로고침
+                    })
+                    .catch(error => console.error("❌ 오류 발생:", error));
+            }
+
+            // 🔥 버튼에 클릭 이벤트 리스너 추가
+            document.getElementById("updateCompanyNameBtn").addEventListener("click", function () {
+                updateCompanyInfo("/updateCompanyName", {
+                    companyId: document.getElementById("companyId").value,
+                    companyName: document.getElementById("newCompanyName").value
+                });
+            });
+
+            document.getElementById("updateCeoNameBtn").addEventListener("click", function () {
+                updateCompanyInfo("/updateCeoName", {
+                    companyId: document.getElementById("companyId").value,
+                    ceoName: document.getElementById("newCeoName").value
+                });
+            });
+
+            document.getElementById("updateCompanyAddressBtn").addEventListener("click", function () {
+                updateCompanyInfo("/updateCompanyAddress", {
+                    companyId: document.getElementById("companyId").value,
+                    companyAddress: document.getElementById("newCompanyAddress").value
+                });
+            });
+
+            document.getElementById("updateCompanyPostalCodeBtn").addEventListener("click", function () {
+                updateCompanyInfo("/updateCompanyPostalCode", {
+                    companyId: document.getElementById("companyId").value,
+                    companyPostalCode: document.getElementById("newCompanyPostalCode").value
+                });
+            });
+
+            document.getElementById("updateListingDateBtn").addEventListener("click", function () {
+                updateCompanyInfo("/updateListingDate", {
+                    companyId: document.getElementById("companyId").value,
+                    listingDate: document.getElementById("newListingDate").value
+                });
+            });
+
+            document.getElementById("updateListingStatusBtn").addEventListener("click", function () {
+                updateCompanyInfo("/updateListingStatus", {
+                    companyId: document.getElementById("companyId").value,
+                    listingStatus: document.getElementById("newListingStatus").value
+                });
+            });
+
+        });
+
+    </script>
+
     <script>
         let companyId = /*[[${companyId}]]*/ '';
         // console.log("companyId:", companyId);
@@ -42,6 +144,7 @@
             document.getElementById("establishmentDate").value = data.establishmentDate || "";
             document.getElementById("ceoName").value = data.ceoName || "";
             document.getElementById("companyAddress").value = data.companyAddress || "";
+            document.getElementById("companyPostalCode").value = data.companyPostalCode || "";
             document.getElementById("businessRegistrationNumber").value = data.businessRegistrationNumber || "";
             document.getElementById("corporateRegistrationNumber").value = data.corporateRegistrationNumber || "";
             document.getElementById("industryCode").value = data.industryCode || "";
@@ -68,6 +171,7 @@
             document.getElementById("publicTechnologyTransfer").value = data.publicTechnologyTransfer || "";
             document.getElementById("dueDiligence").value = data.dueDiligence || "";
             document.getElementById("listingStatus").value = data.listingStatus || "";
+            document.getElementById("listingDate").value = data.listingDate || "";
 
             document.getElementById("investmentSector").value = data.investmentSector || "";
             document.getElementById("mainProducts").value = data.mainProducts || "";
@@ -168,6 +272,9 @@
     <!-- 📌 메인 콘텐츠 영역 -->
     <div class="content">
         <h2>🏢 투자 후속 관리</h2>
+
+
+
         <!-- 1. 회사 기본 정보 -->
         <table class="table table-bordered text-center">
             <thead>
@@ -182,15 +289,37 @@
             </tr>
             <tr>
                 <th>투자회사</th>
-                <td colspan="3"><input type="text" class="form-control" id="companyName" readonly></td>
+                <td colspan="3">
+                    <div class="input-group-inline">
+                        <input type="text" class="form-control" id="companyName" readonly>
+                        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#updateCompanyNameModal">수정</button>
+                    </div>
+                </td>
                 <th>설립일자</th>
                 <td colspan="2"><input type="date" class="form-control" id="establishmentDate" readonly></td>
                 <th>대표이사</th>
-                <td colspan="3"><input type="text" class="form-control" id="ceoName" readonly></td>
+                <td colspan="3">
+                    <div class="input-group-inline">
+                        <input type="text" class="form-control" id="ceoName" readonly>
+                        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#updateCeoNameModal">수정</button>
+                    </div>
+                </td>
             </tr>
             <tr>
-                <th>회사 주소</th>
-                <td colspan="9"><input type="text" class="form-control" id="companyAddress" readonly></td>
+                <th>회사주소</th>
+                <td colspan="6">
+                    <div class="input-group-inline">
+                        <input type="text" class="form-control" id="companyAddress" readonly>
+                        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#updateCompanyAddressModal">수정</button>
+                    </div>
+                </td>
+                <th>우편번호</th>
+                <td colspan="2">
+                    <div class="input-group-inline">
+                        <input type="text" class="form-control" id="companyPostalCode" readonly>
+                        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#updateCompanyPostalCodeModal">수정</button>
+                    </div>
+                </td>
             </tr>
             <tr>
                 <th>사업자 등록번호</th>
@@ -308,14 +437,22 @@
                 </td>
                 <th>상장여부</th>
                 <td colspan="2">
-                    <select class="form-control" id="listingStatus" disabled>
-                        <option value="">선택하세요</option>
-                        <option value="비상장기업">비상장기업</option>
-                        <option value="상장기업">상장기업</option>
-                    </select>
+                    <div class="input-group-inline">
+                        <select class="form-control" id="listingStatus" disabled>
+                            <option value="">선택하세요</option>
+                            <option value="비상장기업">비상장기업</option>
+                            <option value="상장기업">상장기업</option>
+                        </select>
+                        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#updateListingStatusModal">수정</button>
+                    </div>
                 </td>
                 <th>상장일자</th>
-                <td colspan="3"><input type="date" class="form-control" id="listingDate" readonly></td>
+                <td colspan="3">
+                    <div class="input-group-inline">
+                        <input type="date" class="form-control" id="listingDate" readonly>
+                        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#updateListingDateModal">수정</button>
+                    </div>
+                </td>
             </tr>
 
 
@@ -375,6 +512,117 @@
             </tbody>
         </table>
 
+    </div>
+</div>
+<!-- 회사명 수정 모달 -->
+<div class="modal fade" id="updateCompanyNameModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">회사명 수정</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="newCompanyName" class="form-control" placeholder="새로운 회사명 입력">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="updateCompanyNameBtn">저장</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 대표이사 수정 모달 -->
+<div class="modal fade" id="updateCeoNameModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">대표이사 수정</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="newCeoName" class="form-control" placeholder="새로운 대표이사 입력">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="updateCeoNameBtn">저장</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 주소 수정 모달 -->
+<div class="modal fade" id="updateCompanyAddressModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">주소 수정</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="newCompanyAddress" class="form-control" placeholder="새로운 주소 입력">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="updateCompanyAddressBtn">저장</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 우편번호 수정 모달 -->
+<div class="modal fade" id="updateCompanyPostalCodeModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">우편번호 수정</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="text" id="newCompanyPostalCode" class="form-control" placeholder="새로운 우편번호 입력">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="updateCompanyPostalCodeBtn">저장</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 상장일자 수정 모달 -->
+<div class="modal fade" id="updateListingDateModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">상장일자 수정</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <input type="date" id="newListingDate" class="form-control">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="updateListingDateBtn">저장</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 상장여부 수정 모달 -->
+<div class="modal fade" id="updateListingStatusModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h6 class="modal-title">상장여부 수정</h6>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <select id="newListingStatus" class="form-control">
+                    <option value="">선택하세요</option>
+                    <option value="비상장기업">비상장기업</option>
+                    <option value="상장기업">상장기업</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="updateListingStatusBtn">저장</button>
+            </div>
+        </div>
     </div>
 </div>
 

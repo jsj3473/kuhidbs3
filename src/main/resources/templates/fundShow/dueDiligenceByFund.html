@@ -35,7 +35,7 @@
     <td th:text="${dueDiligence.companyNm}"></td>
     <td th:text="${dueDiligence.investmentDate}"></td>
     <td th:text="${dueDiligence.investmentProduct}"></td>
-    <td th:text="${#numbers.formatInteger(dueDiligence.investmentSumPrice, 3, 'COMMA')} + ' 원'"></td>
+    <td class="text-end" th:text="${#numbers.formatInteger(dueDiligence.investmentSumPrice, 3, 'COMMA')}"></td>
     <td th:text="${dueDiligence.target}"></td>
     <td th:text="${dueDiligence.status == 'Y' ? '실시 완료' : '미실시'}"></td>
     <td th:text="${dueDiligence.inspectionDate}"></td>

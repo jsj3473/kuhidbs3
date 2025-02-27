@@ -224,6 +224,7 @@ public class CompanyService {
                 .publicTechnologyTransfer(company.getPublicTechnologyTransfer())
                 .smeStatus(company.getSmeStatus())
                 .listingStatus(company.getListingStatus())
+                .listingDate(company.getListingDate())
                 .companyPostalCode(company.getCompanyPostalCode())
 
                 // 최근 2개 재무제표

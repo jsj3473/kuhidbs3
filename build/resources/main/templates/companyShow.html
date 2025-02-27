@@ -42,6 +42,7 @@
             document.getElementById("establishmentDate").value = data.establishmentDate || "";
             document.getElementById("ceoName").value = data.ceoName || "";
             document.getElementById("companyAddress").value = data.companyAddress || "";
+            document.getElementById("companyPostalCode").value = data.companyPostalCode || "";
             document.getElementById("businessRegistrationNumber").value = data.businessRegistrationNumber || "";
             document.getElementById("corporateRegistrationNumber").value = data.corporateRegistrationNumber || "";
             document.getElementById("industryCode").value = data.industryCode || "";
@@ -68,6 +69,7 @@
             document.getElementById("publicTechnologyTransfer").value = data.publicTechnologyTransfer || "";
             document.getElementById("dueDiligence").value = data.dueDiligence || "";
             document.getElementById("listingStatus").value = data.listingStatus || "";
+            document.getElementById("listingDate").value = data.listingDate || "";
 
             document.getElementById("investmentSector").value = data.investmentSector || "";
             document.getElementById("mainProducts").value = data.mainProducts || "";
@@ -231,6 +233,7 @@
                 } else if (type === "recoveryByCmp") {
                     height = 500;
                 } else if (type === "bonusByCmp") {
+                    width = 600;
                     height = 500;
                 } else if (type === "tipsByCmp") {
                     width = 1050;
@@ -319,8 +322,10 @@
                 <td colspan="3"><input type="text" class="form-control" id="ceoName" readonly></td>
             </tr>
             <tr>
-                <th>회사 주소</th>
-                <td colspan="9"><input type="text" class="form-control" id="companyAddress" readonly></td>
+                <th>회사주소</th>
+                <td colspan="6"><input type="text" class="form-control" id="companyAddress" readonly></td>
+                <th>우편번호</th>
+                <td colspan="2"><input type="text" class="form-control" id="companyPostalCode" readonly></td>
             </tr>
             <tr>
                 <th>사업자 등록번호</th>

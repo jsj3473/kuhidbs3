@@ -15,6 +15,9 @@
 
 <!-- ✅ 재무제표 테이블 -->
 <table class="table table-bordered text-center">
+    <caption class="text-end">
+        (단위: 백만 원, 명)
+    </caption>
     <thead class="table-light">
     <tr>
         <th>연도</th>
@@ -32,13 +35,13 @@
     <tr th:each="financial : ${rFncDTOS}">
         <td th:text="${financial.financialYear} + '년'"></td>
         <td th:text="${financial.financialHalf}"></td>
-        <td th:text="${#numbers.formatInteger(financial.revenue, 3, 'COMMA')} + ' 원'"></td>
-        <td th:text="${#numbers.formatInteger(financial.operatingProfit, 3, 'COMMA')} + ' 원'"></td>
-        <td th:text="${#numbers.formatInteger(financial.netIncome, 3, 'COMMA')} + ' 원'"></td>
-        <td th:text="${#numbers.formatInteger(financial.totalAssets, 3, 'COMMA')} + ' 원'"></td>
-        <td th:text="${#numbers.formatInteger(financial.totalCapital, 3, 'COMMA')} + ' 원'"></td>
-        <td th:text="${#numbers.formatInteger(financial.capital, 3, 'COMMA')} + ' 원'"></td>
-        <td th:text="${#numbers.formatInteger(financial.employeeCount, 3, 'COMMA')} + ' 명'"></td>
+        <td class="text-end" th:text="${#numbers.formatInteger(financial.revenue, 3, 'COMMA')}"></td>
+        <td class="text-end" th:text="${#numbers.formatInteger(financial.operatingProfit, 3, 'COMMA')}"></td>
+        <td class="text-end" th:text="${#numbers.formatInteger(financial.netIncome, 3, 'COMMA')}"></td>
+        <td class="text-end" th:text="${#numbers.formatInteger(financial.totalAssets, 3, 'COMMA')}"></td>
+        <td class="text-end" th:text="${#numbers.formatInteger(financial.totalCapital, 3, 'COMMA')}"></td>
+        <td class="text-end" th:text="${#numbers.formatInteger(financial.capital, 3, 'COMMA')}"></td>
+        <td class="text-end" th:text="${#numbers.formatInteger(financial.employeeCount, 3, 'COMMA')}"></td>
     </tr>
     </tbody>
 </table>

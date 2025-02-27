@@ -16,6 +16,7 @@
     <script defer th:src="@{/js/searchModal.js}"></script>
 
     <style></style>
+
     <script>
         function fetchFundInfo(fundId) {
             fetch(`/api/funds/info/${fundId}`)
@@ -43,8 +44,8 @@
             document.getElementById("investmentDuration").value = data.investmentDuration || "";
             document.getElementById("investmentStartDate").value = data.investmentStartDate || "";
             document.getElementById("investmentEndDate").value = data.investmentEndDate || "";
-            document.getElementById("committedTotalPrice").value = data.committedTotalPrice;
-            document.getElementById("unitPrice").value = data.unitPrice;
+            document.getElementById("committedTotalPrice").value = Number(data.committedTotalPrice).toLocaleString();
+            document.getElementById("unitPrice").value = Number(data.unitPrice).toLocaleString();
             document.getElementById("fundOrganizationType").value = data.fundOrganizationType || "";
             document.getElementById("paymentType").value = data.paymentType || "";
             document.getElementById("currentStaff").value = data.currentStaff || "";
@@ -63,24 +64,29 @@
 
             updateFundMembersTable(data.fundMems);
         }
-
         function updateFundMembersTable(fundMems) {
             const tableBody = document.getElementById("fundMembersTable");
             tableBody.innerHTML = "";
 
             fundMems.forEach(member => {
-                const row = `<tr>
-            <td>${member.memberName || ""}</td>
-            <td>${member.memberType || ""}</td>
-            <td>${member.committedUnitPrice}</td>
-            <td>${member.contact || ""}</td>
-            <td>${member.address || ""}</td>
-            <td>${member.businessRegNo || ""}</td>
-            <td>${member.residentRegNo || ""}</td>
-        </tr>`;
-                tableBody.innerHTML += row;
+                // null 값이 아닌 경우에만 row 추가
+                if (member.memberName || member.memberType || member.committedUnitPrice || member.contact || member.address || member.businessRegNo || member.residentRegNo) {
+                    const formattedPrice = member.committedUnitPrice ? Number(member.committedUnitPrice).toLocaleString() : ""; // 천단위 콤마 추가
+
+                    const row = `<tr>
+                <td>${member.memberName || ""}</td>
+                <td>${member.memberType || ""}</td>
+                <td>${formattedPrice}</td>
+                <td>${member.contact || ""}</td>
+                <td>${member.address || ""}</td>
+                <td>${member.businessRegNo || ""}</td>
+                <td>${member.residentRegNo || ""}</td>
+            </tr>`;
+                    tableBody.innerHTML += row;
+                }
             });
         }
+
 
         function formatNumber(value) {
             if (!value) return "";
@@ -258,9 +264,9 @@
             </tr>
             <tr>
                 <th>약정 총액</th>
-                <td colspan="2"><input type="number" class="form-control" id="committedTotalPrice" readonly></td>
+                <td colspan="2"><input type="text" class="form-control" id="committedTotalPrice" readonly></td>
                 <th>1좌당 금액</th>
-                <td colspan="3"><input type="number" class="form-control" id="unitPrice" readonly></td>
+                <td colspan="3"><input type="text" class="form-control" id="unitPrice" readonly></td>
             </tr>
             <tr>
                 <th>투자기구 유형</th>

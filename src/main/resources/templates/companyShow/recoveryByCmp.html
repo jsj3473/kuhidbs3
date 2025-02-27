@@ -30,10 +30,10 @@
     <tr th:each="recovery : ${rstcupDTOS}">
         <td th:text="${recovery.investmentId}"></td>
         <td th:text="${recovery.recoveryDate}"></td>
-        <td th:text="${recovery.recoveryCount}"></td>
-        <td th:text="${recovery.recoveryUnitPrice}"></td>
-        <td th:text="${recovery.fundReturn}"></td>
-        <td th:text="${recovery.kuhReturn}"></td>
+        <td class="text-end" th:text="${#numbers.formatInteger(recovery.recoveryCount, 3, 'COMMA')}"></td>
+        <td class="text-end" th:text="${#numbers.formatInteger(recovery.recoveryUnitPrice, 3, 'COMMA')}"></td>
+        <td class="text-end" th:text="${#numbers.formatInteger(recovery.fundReturn, 3, 'COMMA')}"></td>
+        <td class="text-end" th:text="${#numbers.formatInteger(recovery.kuhReturn, 3, 'COMMA')}"></td>
     </tr>
     </tbody>
 </table>

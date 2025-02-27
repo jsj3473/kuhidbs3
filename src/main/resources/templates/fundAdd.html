@@ -17,6 +17,7 @@
     <script defer>
         document.addEventListener("DOMContentLoaded", function () {
             const fundForm = document.getElementById("fundForm");
+            const memberLink = document.getElementById("memberLink");
             let fundId = null;
 
             fundForm.addEventListener("submit", function (event) {
@@ -34,7 +35,12 @@
                 })
                     .then(response => {
                         if (response.ok) {
-                            alert("저장이 완료되었습니다! 추가 작업을 진행하세요.");
+                            alert("저장이 완료되었습니다. 조합원 명부를 등록하세요.");
+                            memberLink.href = "#";
+                            window.scrollTo(0, 0);
+
+                            memberLink.style.pointerEvents = "auto"; // 클릭 가능
+                            memberLink.style.color = "#007bff"; // 파란색 활성화
                         } else {
                             alert("저장 실패. 다시 시도해주세요.");
                         }
@@ -53,8 +59,8 @@
                 }
 
                 let url = type === "이동할 페이지"
-                    ? `/fundShow/membersByFund/${fundId}`
-                    : `/fundShow/membersByFund/${fundId}`;
+                    ? `/fundAdd/member/${fundId}`
+                    : `/fundAdd/member/${fundId}`;
 
                 window.open(url, "popupWindow", "width=1000,height=600,scrollbars=yes");
             };
@@ -70,7 +76,7 @@
 
     <!-- 📌 좌측 사이드바 -->
     <nav class="sidebar">
-        <a href="#" id="membersByFund" onclick="openPopup('membersByFund')">📊 조합원명부 등록</a>
+        <a href="#" id="memberLink" onclick="openPopup('member')">📊 조합원명부 등록</a>
     </nav>
 
     <div class="content">
@@ -185,7 +191,7 @@
                 </tr>
                 </tbody>
             </table>
-            <div class="mt-4">
+            <div class="button-container text-end">
                 <button type="submit" class="btn btn-primary">저장</button>
             </div>
         </form>

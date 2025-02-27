@@ -61,6 +61,8 @@ public class RCmpInf2DTO {
 
     private String listingStatus; //상장여부
 
+    private String listingDate; //상장일자
+
     private String investmentSector; //biz sector 구분
 
     private String mainProducts; //주요제품내용

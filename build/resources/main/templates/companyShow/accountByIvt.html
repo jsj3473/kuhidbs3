@@ -14,35 +14,35 @@
 <h2 class="mb-4">투자별 계좌 조회</h2>
 
 <!-- 투자 ID 정보 -->
-<p>투자 ID: <span th:text="${investmentId}"></span></p>
+<!--<p>투자 ID: <span th:text="${investmentId}"></span></p>-->
 
 <!-- ✅ 계좌 내역 테이블 -->
 <table class="table table-bordered text-center">
     <thead>
     <tr>
-        <th>변동 일자</th>
-        <th>투자 단가</th>
-        <th>보유 주식 수</th>
-        <th>투자 원금</th>
-        <th>실행 함수</th>
-        <th>KUH 지분율</th>
-        <th>현재 단가</th>
+        <th>변동일자</th>
+        <th>투자단가</th>
+        <th>보유주식수</th>
+        <th>투자원금</th>
+        <th>실행함수</th>
+        <th>KUH지분율</th>
+        <th>현재단가</th>
         <th>post value</th>
-        <th>발행 총 주식수</th>
+        <th>발행총주식수</th>
     </tr>
     </thead>
     <tbody>
     <!-- ✅ Thymeleaf 반복문을 사용하여 계좌 내역 출력 -->
     <tr th:each="account : ${rAccountDTOS}">
         <td th:text="${account.accountDate}"></td>
-        <td th:text="${account.unitPrice}"></td>
-        <td th:text="${account.heldShareCount}"></td>
-        <td th:text="${account.totalPrincipal}"></td>
+        <td class="text-end" th:text="${#numbers.formatInteger(account.unitPrice, 3, 'COMMA')}"></td>
+        <td class="text-end" th:text="${#numbers.formatInteger(account.heldShareCount, 3, 'COMMA')}"></td>
+        <td class="text-end" th:text="${#numbers.formatInteger(account.totalPrincipal, 3, 'COMMA')}"></td>
         <td th:text="${account.functionType}"></td>
-        <td th:text="${account.kuhEquityRate}"></td>
-        <td th:text="${account.curUnitPrice}"></td>
-        <td th:text="${account.postValue}"></td>
-        <td th:text="${account.totalShareCount}"></td>
+        <td class="text-end" th:text="${account.kuhEquityRate}"></td>
+        <td class="text-end" th:text="${#numbers.formatInteger(account.curUnitPrice, 3, 'COMMA')}"></td>
+        <td class="text-end" th:text="${#numbers.formatInteger(account.postValue, 3, 'COMMA')}"></td>
+        <td class="text-end" th:text="${#numbers.formatInteger(account.totalShareCount, 3, 'COMMA')}"></td>
     </tr>
     </tbody>
 </table>

@@ -184,15 +184,16 @@
         <td th:text="${investment.investmentDate}"></td>
         <td th:text="${investment.investmentProduct}"></td>
         <td th:text="${investment.fundId}"></td>
-        <td th:text="${investment.investmentSumPrice}"></td>
-        <td th:text="${investment.investmentUnitPrice}"></td>
-        <td th:text="${investment.shareCount}"></td>
-        <td th:text="${investment.equityRate}"></td>
-        <td th:text="${investment.totalShares}"></td>
-        <td th:text="${investment.investmentValue}"></td>
+        <td class="text-end" th:text="${#numbers.formatInteger(investment.investmentSumPrice, 3, 'COMMA')}"></td>
+        <td class="text-end" th:text="${#numbers.formatInteger(investment.investmentUnitPrice, 3, 'COMMA')}"></td>
+        <td class="text-end" th:text="${#numbers.formatInteger(investment.shareCount, 3, 'COMMA')}"></td>
+        <td class="text-end" th:text="${investment.equityRate}"></td>
+        <td class="text-end" th:text="${#numbers.formatInteger(investment.totalShares, 3, 'COMMA')}"></td>
+        <td class="text-end" th:text="${#numbers.formatInteger(investment.investmentValue, 3, 'COMMA')}"></td>
         <td th:text="${investment.investmentStep}"></td>
         <td th:text="${investment.tangibleInvestment}"></td>
         <td th:text="${investment.investmentEmployee}"></td>
+    </tr>
     </tr>
     </tbody>
 </table>
