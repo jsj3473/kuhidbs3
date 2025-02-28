@@ -21,6 +21,9 @@
 
 <!-- ✅ 조합원 테이블 -->
 <table class="table table-bordered text-center">
+    <caption class="text-end">
+        (단위: 원, %)
+    </caption>
     <thead>
     <tr>
         <th rowspan="2">조합원명</th>
@@ -56,7 +59,9 @@
         <!-- 배분 총액 * 출자비율 -->
         <td class="text-end" th:text="${fund.allocTotal != null and fund.allocTotal != 0 ? #numbers.formatInteger(((fund.allocTotal ?: 0) * (member.contributionRate ?: 0) / 100), 3, 'COMMA') : ''}"></td>
 
-        <td>-</td>
+        <!-- 배분총액 / 약정총액 -->
+        <!-- ✅ 배분총액/약정총액 비율 (개별 조합원 기준) -->
+        <td class="text-end" th:text="${#numbers.formatDecimal((fund.allocTotal / fund.committedTotalPrice) * member.contributionRate, 1, 2, 'POINT')}"></td>
         <td>-</td>
         <td th:text="${member.memberType}"></td>
         <!--        <td>-</td>-->
@@ -69,13 +74,16 @@
         <td class="text-end">100.00</td> <!-- 출자 비율 총합 -->
 
         <!-- 배분 원금, 배분 이익, 배분 총액 -->
-        <!--        <td class="text-end" th:text="${fund.allocPrincipal != null and fund.allocPrincipal != 0 ? #numbers.formatInteger(fund.allocPrincipal, 3, 'COMMA') : ''}"></td>-->
-        <!--        <td class="text-end" th:text="${fund.allocProfit != null and fund.allocProfit != 0 ? #numbers.formatInteger(fund.allocProfit, 3, 'COMMA') : ''}"></td>-->
-        <!--        <td class="text-end" th:text="${fund.allocTotal != null and fund.allocTotal != 0 ? #numbers.formatInteger(fund.allocTotal, 3, 'COMMA') : ''}"></td>-->
+                <td class="text-end" th:text="${fund.allocPrincipal != null and fund.allocPrincipal != 0 ? #numbers.formatInteger(fund.allocPrincipal, 3, 'COMMA') : ''}"></td>
+                <td class="text-end" th:text="${fund.allocProfit != null and fund.allocProfit != 0 ? #numbers.formatInteger(fund.allocProfit, 3, 'COMMA') : ''}"></td>
+                <td class="text-end" th:text="${fund.allocTotal != null and fund.allocTotal != 0 ? #numbers.formatInteger(fund.allocTotal, 3, 'COMMA') : ''}"></td>
 
-        <!-- 배분 비율 (배분 총액 / 출자 총액 * 100) -->
-        <!--        <td class="text-end" th:text="${fund.getCommittedTotalPrice() != null and fund.getCommittedTotalPrice() != 0 ? #numbers.formatDecimal(fund.allocTotal / fund.getCommittedTotalPrice() * 100, 1, 2, 'POINT') : ''}"></td>-->
-        <th colspan="7"></th>
+        <!-- 배분비율 총계 (배분총액 / 약정총액 * 100) -->
+<!--        <td class="text-end" colspan="1" th:text="${fund.committedTotalPrice != null and fund.committedTotalPrice != 0 ? #numbers.formatDecimal((fund.allocTotal / fund.committedTotalPrice) * 100, 1, 2, 'POINT') + ' %' : '0.00 %'}"></td>-->
+        <!-- ✅ 배분총액/약정총액 비율 (전체 합계 기준) -->
+        <td class="text-end" th:text="${#numbers.formatDecimal((fund.allocTotal / fund.committedTotalPrice) * 100, 1, 2, 'POINT')}"></td>
+
+        <th colspan="2"></th>
     </tr>
     </tfoot>
 </table>
