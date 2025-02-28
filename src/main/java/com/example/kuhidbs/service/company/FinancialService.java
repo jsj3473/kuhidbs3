@@ -48,8 +48,8 @@ public class FinancialService {
                 .netIncome(CCmpInfDTO.getNetIncome())
                 .totalAssets(CCmpInfDTO.getTotalAssets())
                 .totalCapital(CCmpInfDTO.getTotalCapital())
-                .capital(CCmpInfDTO.getCapital())
-                .employeeCount(CCmpInfDTO.getEmployeeCount())
+                .capital(CCmpInfDTO.getCapitalFnc())
+                .employeeCount(CCmpInfDTO.getEmployeeCountFnc())
                 .totalDebt(CCmpInfDTO.getTotalDebt())
                 .build();
 

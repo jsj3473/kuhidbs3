@@ -8,12 +8,15 @@ import com.example.kuhidbs.repository.Fund.FundRepository;
 import com.example.kuhidbs.service.Fund.*;
 import com.example.kuhidbs.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/funds")
@@ -30,36 +33,53 @@ public class FundController {
     private final EmploymentService employmentService;
     private final FundRepository fundRepository;
     private final AuditRepository auditRepository;
+    private static final Logger logger = LoggerFactory.getLogger(FundController.class);
 
     // 펀드 생성 API
     @PostMapping("/createFund")
-    public ResponseEntity<Fund> createFund(@ModelAttribute CFundDTO dto) {
+    public ResponseEntity<Void> createFund(@Valid @ModelAttribute CFundDTO dto) {
+        logger.info("펀드 생성 요청: {}", dto);
+
         fundService.createFund(dto);
         auditService.createAuditByFund(dto);
+
+        logger.info("펀드가 성공적으로 생성됨: {}", dto);
         return ResponseEntity.ok().build();
     }
 
     // 회계감사 정보 추가
     @PostMapping("/createAudit")
-    public ResponseEntity<Audit> createAudit(@RequestBody CAuditDTO dto) {
+    public ResponseEntity<Audit> createAudit(@Valid @RequestBody CAuditDTO dto) {
+        logger.info("회계감사 정보 저장 요청: {}", dto);
+
         Audit newAudit = auditService.createAudit(dto);
+
+        logger.info("회계감사 정보가 성공적으로 저장됨: {}", newAudit);
         return ResponseEntity.ok(newAudit);
     }
 
     // 운용인력 정보 추가
     @PostMapping("/createStaff")
-    public ResponseEntity<Staff> createStaff(@RequestBody CStaffDTO dto) {
+    public ResponseEntity<Staff> createStaff(@Valid @RequestBody CStaffDTO dto) {
+        logger.info("운용인력 정보 저장 요청: {}", dto);
+
         Staff newStaff = staffService.createStaff(dto);
+
+        logger.info("운용인력 정보가 성공적으로 저장됨: {}", newStaff);
         return ResponseEntity.ok(newStaff);
     }
 
-    /**
-     * ✅ 재무 정보 생성 API
-     */
+    // 재무 정보 생성 API
     @PostMapping("/createFundFinancial")
-    public FundFinancial createFundFinancial(@RequestBody CFundFinancialDTO dto) {
-        return fundFinancialService.createFundFinancial(dto);
+    public ResponseEntity<FundFinancial> createFundFinancial(@Valid @RequestBody CFundFinancialDTO dto) {
+        logger.info("재무 정보 저장 요청: {}", dto);
+
+        FundFinancial fundFinancial = fundFinancialService.createFundFinancial(dto);
+
+        logger.info("재무 정보가 성공적으로 저장됨: {}", fundFinancial);
+        return ResponseEntity.ok(fundFinancial);
     }
+
 
     // 특정 fundId에 해당하는 모든 Audit 데이터 조회
     @GetMapping("showAuditsByFund/{fundId}")

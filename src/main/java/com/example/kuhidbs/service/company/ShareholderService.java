@@ -82,28 +82,28 @@ public class ShareholderService {
      * "고려대" 주주의 지분율을 찾아 반환
      */
     private BigDecimal findKuhOwnership(CShrDTO shareholderDTO) {
-        if ("고려대".equals(shareholderDTO.getShareholderName1())) {
+        if ("고려대기술지주".equals(shareholderDTO.getShareholderName1())) {
             return shareholderDTO.getShareholderRate1();
         }
-        if ("고려대".equals(shareholderDTO.getShareholderName2())) {
+        if ("고려대기술지주".equals(shareholderDTO.getShareholderName2())) {
             return shareholderDTO.getShareholderRate2();
         }
-        if ("고려대".equals(shareholderDTO.getShareholderName3())) {
+        if ("고려대기술지주".equals(shareholderDTO.getShareholderName3())) {
             return shareholderDTO.getShareholderRate3();
         }
-        if ("고려대".equals(shareholderDTO.getShareholderName4())) {
+        if ("고려대기술지주".equals(shareholderDTO.getShareholderName4())) {
             return shareholderDTO.getShareholderRate4();
         }
-        if ("고려대".equals(shareholderDTO.getShareholderName5())) {
+        if ("고려대기술지주".equals(shareholderDTO.getShareholderName5())) {
             return shareholderDTO.getShareholderRate5();
         }
-        if ("고려대".equals(shareholderDTO.getShareholderName6())) {
+        if ("고려대기술지주".equals(shareholderDTO.getShareholderName6())) {
             return shareholderDTO.getShareholderRate6();
         }
-        if ("고려대".equals(shareholderDTO.getShareholderName7())) {
+        if ("고려대기술지주".equals(shareholderDTO.getShareholderName7())) {
             return shareholderDTO.getShareholderRate7();
         }
-        if ("고려대".equals(shareholderDTO.getShareholderName8())) {
+        if ("고려대기술지주".equals(shareholderDTO.getShareholderName8())) {
             return shareholderDTO.getShareholderRate8();
         }
         return BigDecimal.ZERO; // 고려대가 없을 경우 0 반환

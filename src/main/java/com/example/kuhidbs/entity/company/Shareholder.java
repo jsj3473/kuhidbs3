@@ -23,7 +23,7 @@ public class Shareholder {
     private Company company; // 회사 고유번호 (FK)
 
     // 주주 및 주식 수 정보
-    @Column(name = "SHRHOLD_NM1", length = 8)
+    @Column(name = "SHRHOLD_NM1", length = 200)
     private String shareholderName1;
 
     @Column(name = "SHRHOLD_CNT1")
@@ -32,7 +32,7 @@ public class Shareholder {
     @Column(name = "SHRHOLD_RATE1", precision = 5, scale = 2)
     private BigDecimal shareholderRate1; // 지분율1
 
-    @Column(name = "SHRHOLD_NM2", length = 8)
+    @Column(name = "SHRHOLD_NM2", length = 200)
     private String shareholderName2;
 
     @Column(name = "SHRHOLD_CNT2")
@@ -41,7 +41,7 @@ public class Shareholder {
     @Column(name = "SHRHOLD_RATE2", precision = 5, scale = 2)
     private BigDecimal shareholderRate2; // 지분율2
 
-    @Column(name = "SHRHOLD_NM3", length = 8)
+    @Column(name = "SHRHOLD_NM3", length = 200)
     private String shareholderName3;
 
     @Column(name = "SHRHOLD_CNT3")
@@ -50,7 +50,7 @@ public class Shareholder {
     @Column(name = "SHRHOLD_RATE3", precision = 5, scale = 2)
     private BigDecimal shareholderRate3; // 지분율3
 
-    @Column(name = "SHRHOLD_NM4", length = 8)
+    @Column(name = "SHRHOLD_NM4", length = 200)
     private String shareholderName4;
 
     @Column(name = "SHRHOLD_CNT4")
@@ -59,7 +59,7 @@ public class Shareholder {
     @Column(name = "SHRHOLD_RATE4", precision = 5, scale = 2)
     private BigDecimal shareholderRate4; // 지분율4
 
-    @Column(name = "SHRHOLD_NM5", length = 8)
+    @Column(name = "SHRHOLD_NM5", length = 200)
     private String shareholderName5;
 
     @Column(name = "SHRHOLD_CNT5")
@@ -68,7 +68,7 @@ public class Shareholder {
     @Column(name = "SHRHOLD_RATE5", precision = 5, scale = 2)
     private BigDecimal shareholderRate5; // 지분율5
 
-    @Column(name = "SHRHOLD_NM6", length = 8)
+    @Column(name = "SHRHOLD_NM6", length = 200)
     private String shareholderName6;
 
     @Column(name = "SHRHOLD_CNT6")
@@ -77,7 +77,7 @@ public class Shareholder {
     @Column(name = "SHRHOLD_RATE6", precision = 5, scale = 2)
     private BigDecimal shareholderRate6; // 지분율6
 
-    @Column(name = "SHRHOLD_NM7", length = 8)
+    @Column(name = "SHRHOLD_NM7", length = 200)
     private String shareholderName7;
 
     @Column(name = "SHRHOLD_CNT7")
@@ -86,7 +86,7 @@ public class Shareholder {
     @Column(name = "SHRHOLD_RATE7", precision = 5, scale = 2)
     private BigDecimal shareholderRate7; // 지분율7
 
-    @Column(name = "SHRHOLD_NM8", length = 8)
+    @Column(name = "SHRHOLD_NM8", length = 200)
     private String shareholderName8;
 
     @Column(name = "SHRHOLD_CNT8")

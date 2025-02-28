@@ -84,7 +84,7 @@ public class CompanyController {
     private static final Logger logger = LoggerFactory.getLogger(CompanyController.class);
 
     @PostMapping("/createCompany")
-    public ResponseEntity<Void> createCompany(@ModelAttribute CCmpInfDTO CCmpInfDTO) {
+    public ResponseEntity<Void> createCompany(@Valid @ModelAttribute CCmpInfDTO CCmpInfDTO) {
         System.out.println(CCmpInfDTO);
 
         // 1. 회사 정보 저장 (Company 테이블)
@@ -105,155 +105,150 @@ public class CompanyController {
     }
 
     @PostMapping("/createInvestment")
-    public ResponseEntity<Void> createInvestment(@RequestBody CIvtDTO cIvtDTO) {
-        try {
-            investmentService.saveInvestment(cIvtDTO);
-            statusService.createStatusFirst(
-                    cIvtDTO.getCompanyId(),
-                    cIvtDTO.getInvestmentState(),
-                    cIvtDTO.getInvestmentMemo()
-            );
-            return ResponseEntity.status(HttpStatus.CREATED).build(); // 201 성공 응답
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // 500 에러 응답
-        }
+    public ResponseEntity<Void> createInvestment(@Valid @RequestBody CIvtDTO cIvtDTO) {
+        logger.info("투자 정보 저장 요청: {}", cIvtDTO);
+
+        investmentService.saveInvestment(cIvtDTO);
+        statusService.createStatusFirst(
+                cIvtDTO.getCompanyId(),
+                cIvtDTO.getInvestmentState(),
+                cIvtDTO.getInvestmentMemo()
+        );
+
+        logger.info("투자 정보가 성공적으로 저장됨: {}", cIvtDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
 
-    /**
-     * 후속 투자 정보를 생성하는 API 엔드포인트.
-     *
-     * @param followupDto 후속 투자 정보가 담긴 DTO 객체
-     * @return 저장된 Followup 객체
-     */
     @PostMapping("/createFollowup")
-    public ResponseEntity<Void> createFollowup(@ModelAttribute CFolDTO followupDto) {
-        try {
-            followupService.saveFollowup(followupDto);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // 500 에러 응답
-        }
+    public ResponseEntity<Void> createFollowup(@Valid @ModelAttribute CFolDTO followupDto) {
+        logger.info("후속투자 정보 저장 요청: {}", followupDto);
+
+        followupService.saveFollowup(followupDto);
+
+        logger.info("후속투자가 성공적으로 저장됨: {}", followupDto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
 
-    /**
-     * 감액/복원 데이터 생성
-     */
     @PostMapping("/createShrup")
-    public ResponseEntity<Void> createShrup(@RequestBody CShrupDTO shrupDTO) {
-        try {
-            shrupService.saveShrup(shrupDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // 500 에러 응답
-        }
+    public ResponseEntity<Void> createShrup(@Valid @RequestBody CShrupDTO shrupDTO) {
+        logger.info("감액환입 정보 저장 요청: {}", shrupDTO);
+
+        shrupService.saveShrup(shrupDTO);
+
+        logger.info("감액환입 정보가 성공적으로 저장됨: {}", shrupDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
-    //회수 생성
+
     @PostMapping("/createStcup")
-    public ResponseEntity<Void> createRecovery(@RequestBody CStcupDTO stcupDTO) {
-        try {
-            recoveryService.saveRecovery(stcupDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // 500 에러 응답
-        }
+    public ResponseEntity<Void> createRecovery(@Valid @RequestBody CStcupDTO stcupDTO) {
+        logger.info("회수 정보 저장 요청: {}", stcupDTO);
+
+        recoveryService.saveRecovery(stcupDTO);
+
+        logger.info("회수 정보가 성공적으로 저장됨: {}", stcupDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-
-    // 동반투자 생성
     @PostMapping("/createCombine")
-    public ResponseEntity<Void> createCombine(@RequestBody CComDTO combineDTO) {
-        try {
-            combineService.saveCombine(combineDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // 500 에러 응답
-        }
+    public ResponseEntity<Void> createCombine(@Valid @RequestBody CComDTO combineDTO) {
+        logger.info("동반투자 정보 저장 요청: {}", combineDTO);
+
+        combineService.saveCombine(combineDTO);
+
+        logger.info("동반투자 정보가 성공적으로 저장됨: {}", combineDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    //주주생성
+    // 주주 생성
     @PostMapping("/createShareholder")
-    public ResponseEntity<Void> createShareholder(@RequestBody CShrDTO shareholderDTO) {
-        try {
-            shareholderService.createShareholder(shareholderDTO);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // 500 에러 응답
-        }
+    public ResponseEntity<Void> createShareholder(@Valid @RequestBody CShrDTO shareholderDTO) {
+        logger.info("주주 정보 저장 요청: {}", shareholderDTO);
+
+        shareholderService.createShareholder(shareholderDTO);
+
+        logger.info("주주 정보가 성공적으로 저장됨: {}", shareholderDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    //재무제표생성
+    // 재무제표 생성
     @PostMapping("/createFinancial")
-    public ResponseEntity<Void> createFinancialStatement(@RequestBody CFncDTO dto) {
-        try {financialService.saveFinancialForCFncDTO(dto);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // 500 에러 응답
-        }
+    public ResponseEntity<Void> createFinancialStatement(@Valid @RequestBody CFncDTO dto) {
+        logger.info("재무제표 정보 저장 요청: {}", dto);
+
+        financialService.saveFinancialForCFncDTO(dto);
+
+        logger.info("재무제표 정보가 성공적으로 저장됨: {}", dto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    // 사후관리 정보 생성 API
-    @PostMapping("/createManage")
-    public ResponseEntity<Void> createManage(@RequestBody CMngDTO dto) {
-        try {
-            manageService.createManage(dto);
-            statusService.createStatusByManage(dto);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // 500 에러 응답
-        }
-    }
-
-    // Reviewer 데이터 생성 API
-    @PostMapping("/createReviewer")
-    public ResponseEntity<Void> createReviewer(@RequestBody CRwrDTO dto) {
-        try {
-            reviewerService.createReviewerForCRwrDTO(dto);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // 500 에러 응답
-        }
-    }
 
     // 무상증자 생성 API
     @PostMapping("/createBonus")
-    public ResponseEntity<Void> createBonus(@RequestBody CBonusDTO dto) {
-        try {
-            bonusService.createBonus(dto);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // 500 에러 응답
-        }
+    public ResponseEntity<Void> createBonus(@Valid @RequestBody CBonusDTO dto) {
+        logger.info("무상증자 정보 저장 요청: {}", dto);
+
+        bonusService.createBonus(dto);
+
+        logger.info("무상증자 정보가 성공적으로 저장됨: {}", dto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-    // tips 데이터 생성 API
+    // TIPS 데이터 생성 API
     @PostMapping("/createTIPS")
-    public ResponseEntity<Void> createTIPS(@RequestBody CTIPSDTO dto) {
-        try {
-            tipsService.createTIPS(dto);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // 500 에러 응답
-        }
+    public ResponseEntity<Void> createTIPS(@Valid @RequestBody CTIPSDTO dto) {
+        logger.info("TIPS 정보 저장 요청: {}", dto);
+
+        tipsService.createTIPS(dto);
+
+        logger.info("TIPS 정보가 성공적으로 저장됨: {}", dto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
 
     // 투자상태 데이터 생성 API
     @PostMapping("/createStatus")
-    public ResponseEntity<Void> createStatus(@RequestBody CStatusDTO dto) {
-        try {
-            statusService.createStatus(dto);
-            return ResponseEntity.status(HttpStatus.CREATED).build();
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build(); // 500 에러 응답
-        }
+    public ResponseEntity<Void> createStatus(@Valid @RequestBody CStatusDTO dto) {
+        logger.info("투자상태 정보 저장 요청: {}", dto);
+
+        statusService.createStatus(dto);
+
+        logger.info("투자상태 정보가 성공적으로 저장됨: {}", dto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
 
     //후속투자 정보 조회 api
     @GetMapping("/followup/{companyId}")
     public List<RFolDTO> getFollowupByCompanyId(@PathVariable String companyId) {
         return followupService.getFollowupByCompanyId(companyId);
     }
+
+
+
+    // 팁스 정보 수정 API
+    @PutMapping("/updateTIPS")
+    public ResponseEntity<String> updateTips(@Valid @RequestBody UTIPSDTO dto) {
+        logger.info("TIPS 정보 업데이트 요청: {}", dto);
+
+        tipsService.updateTips(dto);
+
+        logger.info("TIPS 정보가 성공적으로 업데이트됨: {}", dto);
+        return ResponseEntity.ok("TIPS 정보가 업데이트되었습니다.");
+    }
+
+    // 기업 정보 수정 API
+    @PutMapping("/updateCompany")
+    public ResponseEntity<Company> updateCompany(@Valid @RequestBody UCmpInfDTO companyDTO) {
+        logger.info("기업 정보 업데이트 요청: {}", companyDTO);
+
+        Company updatedCompany = companyService.updateCompany(companyDTO);
+
+        logger.info("기업 정보가 성공적으로 업데이트됨: {}", updatedCompany);
+        return ResponseEntity.ok(updatedCompany);
+    }
+
 
     // 회사 기본 정보 조회 API
     @GetMapping("/info/{companyId}")
@@ -269,22 +264,7 @@ public class CompanyController {
         return ResponseEntity.ok(companyInfo);
     }
 
-
-
-    // 팁스 정보 수정 API
-    @PutMapping("/updateTIPS")
-    public ResponseEntity<String> updateTips(@RequestBody UTIPSDTO dto) {
-        tipsService.updateTips(dto);
-        return ResponseEntity.ok("TIPS 정보가 업데이트되었습니다.");
-    }
-
-    // ✅ 기업 정보 수정 API (PUT 요청)
-    @PutMapping("/updateCompany")
-    public ResponseEntity<Company> updateCompany(@RequestBody UCmpInfDTO companyDTO) {
-        Company updatedCompany = companyService.updateCompany(companyDTO);
-        return ResponseEntity.ok(updatedCompany);
-    }
-
+    //헤더에서 회사 검색
     @GetMapping("/searchQueryForCompanyInHeader")
     public ResponseEntity<List<Object[]>> searchQueryForCompanyInHeader(@RequestParam String query) {
         List<Object[]> companyIds = companyRepository.searchCompanies(query);
@@ -327,4 +307,14 @@ public class CompanyController {
         return ResponseEntity.ok("Listing status updated successfully");
     }
 
+    // 특정 companyId로 RCom 데이터 조회
+    @GetMapping("showAllCombineByCmp/{companyId}")
+    public ResponseEntity<List<RComDTO>> getRComByCompanyId(@PathVariable String companyId) {
+        logger.info("RCom 데이터 조회 요청: companyId={}", companyId);
+
+        List<RComDTO> rComDTOS = combineService.getRComByCompanyId(companyId);
+
+        logger.info("RCom 데이터 조회 완료: {}", rComDTOS);
+        return ResponseEntity.ok(rComDTOS);
+    }
 }

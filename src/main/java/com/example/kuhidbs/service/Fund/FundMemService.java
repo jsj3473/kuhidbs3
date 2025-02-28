@@ -55,7 +55,7 @@ public class FundMemService {
 
         // ✅ 특정 조건을 만족하는 데이터 처리 (후처리)
         fundMems.forEach(fundMem -> {
-            if ("고려대학교기술지주주식회사".equals(fundMem.getMemberName())) {
+            if ("고려대기술지주".equals(fundMem.getMemberName())) {
                 Fund fund = fundMem.getFund();
                 fund.setIvtRatio(fundMem.getContributionRate()); // ✅ Fund의 ivtRatio 필드 업데이트
                 fundRepository.save(fund); // ✅ 변경된 Fund 엔티티 저장 (JPA의 변경 감지를 위한 명시적 저장)

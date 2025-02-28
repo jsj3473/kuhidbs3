@@ -87,6 +87,10 @@ public class CCmpInfDTO {
 
     private Integer totalDebt;
 
+    private Integer capitalFnc;
+
+    private Integer employeeCountFnc;
+
     //발굴자,심사자,사후관리담당자
 
     //발굴자
