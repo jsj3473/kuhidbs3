@@ -101,48 +101,82 @@
     </div>
 
 </div>
-
 <script>
-    $(document).ready(function () {
-        // 사용자 생성 버튼 클릭 이벤트
+    document.addEventListener("DOMContentLoaded", function () {
+        // ✅ 사용자 생성 버튼 클릭 이벤트
         document.getElementById("createButton").addEventListener("click", function () {
             const popupUrl = "/system/createUser"; // 팝업 URL
             window.open(popupUrl, "CreateUser", "width=450,height=540,scrollbars=yes,resizable=no");
         });
-        // 초기화 버튼 클릭 이벤트
-        $('#resetButton').on('click', function () {
-            const firstSelectedRow = $('.datatable tbody tr.selected').first();
-            const firstCheckedRow = $('.datatable tbody input.rowCheckbox:checked').first().closest('tr');
-            const rowToReset = firstCheckedRow.length ? firstCheckedRow : firstSelectedRow;
 
-            if (rowToReset.length) {
-                const rowData = rowToReset.find('td').map(function () {
-                    return $(this).text();
-                }).get();
-                alert("초기화 대상: " + rowData[1] + " (" + rowData[2] + ")");
-                // 초기화 로직 추가
-            } else {
-                alert("초기화할 행을 선택하세요.");
+        // ✅ 초기화 버튼 클릭 이벤트
+        document.getElementById("resetButton").addEventListener("click", function () {
+            const rowToReset = getSelectedRow();
+            if (!rowToReset) {
+                alert("초기화할 사용자를 선택하세요.");
+                return;
+            }
+
+            const userId = rowToReset.cells[0].textContent.trim();
+            const userName = rowToReset.cells[1].textContent.trim();
+
+            if (!userId) {
+                alert("사용자 ID를 찾을 수 없습니다.");
+                return;
+            }
+
+            if (confirm(`비밀번호를 초기화하시겠습니까?\n대상: ${userName} (ID: ${userId})`)) {
+                fetch(`/api/users/reset-password/${userId}`, {
+                    method: 'PUT'
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            return response.text().then(text => { throw new Error(text); });
+                        }
+                        alert(`${userName}님의 비밀번호가 '1'로 초기화되었습니다.`);
+                    })
+                    .catch(error => alert(`초기화 실패: ${error.message || "서버 오류 발생"}`));
             }
         });
 
-        // 퇴직 처리 버튼 클릭 이벤트
-        $('#retireButton').on('click', function () {
-            const firstSelectedRow = $('.datatable tbody tr.selected').first();
-            const firstCheckedRow = $('.datatable tbody input.rowCheckbox:checked').first().closest('tr');
-            const rowToRetire = firstCheckedRow.length ? firstCheckedRow : firstSelectedRow;
+        // ✅ 퇴직 처리 버튼 클릭 이벤트
+        document.getElementById("retireButton").addEventListener("click", function () {
+            const rowToRetire = getSelectedRow();
+            if (!rowToRetire) {
+                alert("퇴직 처리할 사용자를 선택하세요.");
+                return;
+            }
 
-            if (rowToRetire.length) {
-                const rowData = rowToRetire.find('td').map(function () {
-                    return $(this).text();
-                }).get();
-                alert("퇴직 처리 대상: " + rowData[1] + " (" + rowData[2] + ")");
-                // 퇴직 처리 로직 추가
-            } else {
-                alert("퇴직 처리할 행을 선택하세요.");
+            const userId = rowToRetire.cells[0].textContent.trim();
+            const userName = rowToRetire.cells[1].textContent.trim();
+
+            if (!userId) {
+                alert("사용자 ID를 찾을 수 없습니다.");
+                return;
+            }
+
+            if (confirm(`퇴직 처리하시겠습니까?\n대상: ${userName} (ID: ${userId})`)) {
+                fetch(`/api/users/retire/${userId}`, {
+                    method: 'PUT'
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            return response.text().then(text => { throw new Error(text); });
+                        }
+                        alert(`${userName}님의 퇴직 처리가 완료되었습니다.`);
+                        rowToRetire.remove(); // 성공 시 행 삭제
+                    })
+                    .catch(error => alert(`퇴직 처리 실패: ${error.message || "서버 오류 발생"}`));
             }
         });
+
+        function getSelectedRow() {
+            const selectedRow = document.querySelector(".datatable tbody tr.selected");
+            const checkedRow = document.querySelector(".datatable tbody input.rowCheckbox:checked");
+            return checkedRow ? checkedRow.closest("tr") : selectedRow;
+        }
     });
+
 </script>
 </body>
 </html>

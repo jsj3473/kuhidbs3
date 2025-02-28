@@ -35,14 +35,14 @@ public class UserController {
     }
 
     //퇴직 처리
-    @PutMapping("/{id}/retire")
+    @PutMapping("/retire/{id}")
     public ResponseEntity<String> retireUser(@PathVariable String id) {
         userService.retireUser(id);
         return ResponseEntity.ok("User with ID " + id + " has been marked as retired.");
     }
 
     // 비밀번호 초기화
-    @PutMapping("/{id}/reset-password")
+    @PutMapping("/reset-password/{id}")
     public ResponseEntity<String> resetPassword(@PathVariable String id) {
         userService.resetPassword(id);
         return ResponseEntity.ok("Password for user with ID " + id + " has been reset to '1'.");

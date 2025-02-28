@@ -34,6 +34,7 @@ public class ReviewerService {
                 .company(company)
                 .managerType("발굴자")
                 .manager(CCmpInfDTO.getManager1())
+                .changeReason("최초등록")
                 .build();
         reviewerRepository.save(manager1);
 
@@ -42,6 +43,7 @@ public class ReviewerService {
                 .company(company)
                 .managerType("심사자")
                 .manager(CCmpInfDTO.getManager2())
+                .changeReason("최초등록")
                 .build();
         reviewerRepository.save(manager2);
 
@@ -50,6 +52,7 @@ public class ReviewerService {
                 .company(company)
                 .managerType("사후관리자")
                 .manager(CCmpInfDTO.getManager3())
+                .changeReason("최초등록")
                 .build();
         reviewerRepository.save(manager3);
     }
