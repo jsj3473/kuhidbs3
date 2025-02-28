@@ -1,5 +1,6 @@
 package com.example.kuhidbs.entity.Fund;
 
+import com.example.kuhidbs.entity.BaseEntity;
 import com.example.kuhidbs.entity.company.Investment;
 import jakarta.persistence.*;
 import lombok.*;
@@ -13,7 +14,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Employment {
+public class Employment extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

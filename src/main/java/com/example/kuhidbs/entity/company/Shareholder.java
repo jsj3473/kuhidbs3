@@ -1,5 +1,6 @@
 package com.example.kuhidbs.entity.company;
 
+import com.example.kuhidbs.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 import java.math.BigDecimal;
@@ -9,9 +10,10 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 @NoArgsConstructor
+@Data
 @AllArgsConstructor
 @Builder
-public class Shareholder {
+public class Shareholder extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

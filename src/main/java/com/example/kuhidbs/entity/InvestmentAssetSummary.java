@@ -11,7 +11,7 @@ import jakarta.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class InvestmentAssetSummary {
+public class InvestmentAssetSummary extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

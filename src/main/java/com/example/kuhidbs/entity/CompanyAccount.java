@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CompanyAccount {
+public class CompanyAccount extends BaseEntity{
 
     @Id
     private String companyId; // FK이면서 PK 역할

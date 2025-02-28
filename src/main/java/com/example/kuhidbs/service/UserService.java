@@ -89,8 +89,7 @@ public class UserService {
                 user.getId(),
                 user.getName(),
                 user.getRole(),
-                user.getRegisteredBy(),
-                user.getCreatedAt()
+                user.getRegisteredBy()
         );
     }
 

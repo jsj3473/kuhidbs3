@@ -66,7 +66,9 @@ public class RecoveryService {
                 recoveryReturn = BigDecimal.valueOf(fundReturn)
                         .multiply(investment.getFund().getIvtRatio())
                         .setScale(0, RoundingMode.HALF_UP)
+                        .divide(BigDecimal.valueOf(100), RoundingMode.HALF_UP)
                         .longValue();
+
 
             } else {
                 recoveryReturn = fundReturn;

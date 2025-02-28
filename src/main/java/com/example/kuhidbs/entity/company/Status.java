@@ -10,10 +10,10 @@ import lombok.Builder;
 
 @Entity
 @Table(name = "INVESTMENT_STATUS_TBL")
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Data
 public class Status extends BaseEntity {
 
     @Id

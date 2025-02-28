@@ -1,5 +1,6 @@
 package com.example.kuhidbs.entity.Fund;
 
+import com.example.kuhidbs.entity.BaseEntity;
 import com.example.kuhidbs.entity.company.Investment;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -13,7 +14,7 @@ import lombok.AllArgsConstructor;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DueDiligence {
+public class DueDiligence extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

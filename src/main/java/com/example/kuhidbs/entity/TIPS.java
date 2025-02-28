@@ -11,7 +11,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class TIPS {
+public class TIPS extends BaseEntity{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 증가 설정

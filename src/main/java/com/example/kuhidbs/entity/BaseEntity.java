@@ -1,35 +1,33 @@
 package com.example.kuhidbs.entity;
 
 import jakarta.persistence.*;
-import java.util.Date;
+import lombok.Getter;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.time.LocalDateTime;
+
+@Getter
 @MappedSuperclass
+@EntityListeners(AuditingEntityListener.class) // Auditing 기능 활성화
 public abstract class BaseEntity {
 
-    @Temporal(TemporalType.TIMESTAMP)
-    @Column(nullable = false, updatable = false)
-    private Date createdAt;
+    @CreatedDate
+    @Column(updatable = false, nullable = false)
+    private LocalDateTime createdAt;
 
-    @Temporal(TemporalType.TIMESTAMP)
+    @LastModifiedDate
     @Column(nullable = false)
-    private Date updatedAt;
+    private LocalDateTime updatedAt;
 
-    @PrePersist
-    protected void onCreate() {
-        this.createdAt = new Date(); // 생성 시 현재 시간 설정
-        this.updatedAt = new Date(); // 생성 시 현재 시간 설정
-    }
+    @CreatedBy
+    @Column(updatable = false, nullable = false)
+    private String createdBy;  // 생성한 사람 (사번)
 
-    @PreUpdate
-    protected void onUpdate() {
-        this.updatedAt = new Date(); // 업데이트 시 현재 시간 설정
-    }
-
-    public Date getCreatedAt() {
-        return createdAt;
-    }
-
-    public Date getUpdatedAt() {
-        return updatedAt;
-    }
+    @LastModifiedBy
+    @Column(nullable = false)
+    private String updatedBy;  // 수정한 사람 (사번)
 }
