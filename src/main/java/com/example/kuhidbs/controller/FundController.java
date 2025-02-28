@@ -34,9 +34,6 @@ public class FundController {
     // 펀드 생성 API
     @PostMapping("/createFund")
     public ResponseEntity<Fund> createFund(@ModelAttribute CFundDTO dto) {
-        System.out.println(dto.getFundId());
-        System.out.println("Fund ID: " + dto.getFundId());
-
         fundService.createFund(dto);
         auditService.createAuditByFund(dto);
         return ResponseEntity.ok().build();
@@ -53,7 +50,6 @@ public class FundController {
     @PostMapping("/createStaff")
     public ResponseEntity<Staff> createStaff(@RequestBody CStaffDTO dto) {
         Staff newStaff = staffService.createStaff(dto);
-        fundService.updateCurrentStaff(dto.getFundId(), dto.getCurrentStaff());
         return ResponseEntity.ok(newStaff);
     }
 

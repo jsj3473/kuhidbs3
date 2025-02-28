@@ -27,14 +27,15 @@ public class RFundDTO {
     private Long unitPrice; // 1좌당 금액
     private String fundOrganizationType; // 투자기구 유형
     private String paymentType; // 납입방법
-    private String currentStaff; //운용인력 전원  ex) 송승용(대펀),홍승표 (반기보고서 참조)
+    private String leadFundManager; //대펀
+    private String coreIvtManager; //핵운
     private String auditorName; //회계감사인명
     private String trusteeCorporation; // 업무수탁법인
     private String administrationCorporation; // 사무수탁법인
     private BigDecimal targetReturnRate; // 기준 수익률
     private BigDecimal performanceFeeRate; // 성과 보수율
-    private BigDecimal managementFeeInvestmentPeriod; // 관리보수 (투자기간)
-    private BigDecimal managementFeeManagementPeriod; // 관리보수 (운영기간)
+    private String managementFeeInvestmentPeriod; // 관리보수 (투자기간)
+    private String managementFeeManagementPeriod; // 관리보수 (운영기간)
     private String incentiveCondition; // 인센티브 조건
     private String priorLossGP; // 우선손실충당 GP
     private String priorLossLP; // 우선손실충당 LP

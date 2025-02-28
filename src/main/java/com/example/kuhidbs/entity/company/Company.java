@@ -17,7 +17,7 @@ import java.util.List;
 public class Company extends BaseEntity {
 
     @Id
-    @Column(name = "CMP_ID", length = 8, nullable = false)
+    @Column(name = "CMP_ID", length = 80, nullable = false)
     private String companyId;
 
     @OneToMany(mappedBy = "company", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

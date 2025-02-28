@@ -37,7 +37,7 @@ public class CompanyService {
     private final StatusService statusService;
 
     public void saveCompany(CCmpInfDTO CCmpInfDTO) {
-
+System.out.println(CCmpInfDTO);
         Company company = Company.builder()
                 .companyId(CCmpInfDTO.getCompanyId())
                 .companyName(CCmpInfDTO.getCompanyName())

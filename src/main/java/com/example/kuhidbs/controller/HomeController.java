@@ -404,6 +404,10 @@ public class HomeController {
         model.addAttribute("fundId", id);
         List<RFundMemDTO> rFundMemDTOS = fundMemService.getActiveFundMembersByFundId(id);
         model.addAttribute("rFundMemDTOS", rFundMemDTOS);
+        // 펀드 정보 조회
+        Fund fund = fundRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("펀드를 찾을 수 없습니다. ID: " + id));
+        model.addAttribute("fund", fund);
         return "fundAdd/member"; // member.html
     }
     // 조합재무제표 입력 팝업

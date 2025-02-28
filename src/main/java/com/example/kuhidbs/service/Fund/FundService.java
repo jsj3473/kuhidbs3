@@ -36,7 +36,8 @@ public class FundService {
                 .unitPrice(dto.getUnitPrice()) // 1좌당 금액
                 .fundOrganizationType(dto.getFundOrganizationType()) // 투자기구 유형
                 .paymentType(dto.getPaymentType()) // 납입방법
-                .currentStaff(dto.getCurrentStaff()) // 운용인력 전원
+                .leadFundManager(dto.getLeadFundManager())//대펀
+                .coreIvtManager(dto.getCoreIvtManager())//핵운
                 .trusteeCorporation(dto.getTrusteeCorporation()) // 업무수탁법인
                 .administrationCorporation(dto.getAdministrationCorporation()) // 사무수탁법인
                 .targetReturnRate(dto.getTargetReturnRate()) // 기준 수익률
@@ -63,10 +64,7 @@ public class FundService {
     }
 
 
-    @Transactional
-    public void updateCurrentStaff(String fundId, String currentStaff) {
-        fundRepository.updateCurrentStaffByFundId(fundId, currentStaff);
-    }
+
 
     public RFundDTO getFundById(String fundId) {
         Fund fund = fundRepository.findById(fundId)
@@ -87,7 +85,8 @@ public class FundService {
                 .unitPrice(fund.getUnitPrice())
                 .fundOrganizationType(fund.getFundOrganizationType())
                 .paymentType(fund.getPaymentType())
-                .currentStaff(fund.getCurrentStaff())
+                .leadFundManager(fund.getLeadFundManager())
+                .coreIvtManager(fund.getCoreIvtManager())
                 .trusteeCorporation(fund.getTrusteeCorporation())
                 .administrationCorporation(fund.getAdministrationCorporation())
                 .targetReturnRate(fund.getTargetReturnRate())

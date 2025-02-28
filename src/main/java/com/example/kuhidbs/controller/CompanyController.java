@@ -17,8 +17,11 @@ import com.example.kuhidbs.dto.company.후속투자.*;
 import com.example.kuhidbs.entity.company.*;
 import com.example.kuhidbs.repository.company.CompanyRepository;
 import com.example.kuhidbs.service.Fund.DueDiligenceService;
+import jakarta.validation.Valid;
 import com.example.kuhidbs.service.Fund.FundService;
 import com.example.kuhidbs.service.company.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -78,9 +81,11 @@ public class CompanyController {
 
     @Autowired
     private CompanyRepository companyRepository;
+    private static final Logger logger = LoggerFactory.getLogger(CompanyController.class);
 
     @PostMapping("/createCompany")
     public ResponseEntity<Void> createCompany(@ModelAttribute CCmpInfDTO CCmpInfDTO) {
+        System.out.println(CCmpInfDTO);
 
         // 1. 회사 정보 저장 (Company 테이블)
         companyService.saveCompany(CCmpInfDTO);
@@ -94,6 +99,7 @@ public class CompanyController {
         // 4. 피투자기업 실무자 정보 저장 (Client 테이블)
         clientService.saveClient(CCmpInfDTO);
 
+        logger.info("새로운 회사 정보가 성공적으로 저장되었습니다: {}", CCmpInfDTO);
         // 요청이 성공적으로 처리된 경우 HTTP 201 응답 반환
         return ResponseEntity.status(201).build();
     }

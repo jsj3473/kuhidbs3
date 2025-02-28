@@ -59,11 +59,11 @@ public class Fund extends BaseEntity {
     @Column(name = "PFMC_FEE_RATE", precision = 5, scale = 2)
     private BigDecimal performanceFeeRate; // 성과 보수율
 
-    @Column(name = "MNG_FEE_INV", precision = 5, scale = 2)
-    private BigDecimal managementFeeInvestmentPeriod; // 관리보수 (투자기간)
+    @Column(name = "MNG_FEE_INV", length = 200)
+    private String managementFeeInvestmentPeriod; // 관리보수 (투자기간)
 
-    @Column(name = "MNG_FEE_MNG", precision = 5, scale = 2)
-    private BigDecimal managementFeeManagementPeriod; // 관리보수 (운영기간)
+    @Column(name = "MNG_FEE_MNG", length = 200)
+    private String managementFeeManagementPeriod; // 관리보수 (운영기간)
 
     @Column(name = "INCENTIVE", length = 200)
     private String incentiveCondition; // 인센티브 조건
@@ -98,8 +98,11 @@ public class Fund extends BaseEntity {
     @Column(name = "INVESTMENT_DURATION")
     private Integer investmentDuration; // 투자기간
 
-    @Column(name = "CURR_STAFF", length = 800)
-    private String currentStaff; // 운용인력
+    @Column(name = "LEAD_FUND_MNG", length = 800)
+    private String leadFundManager; // 대펀
+
+    @Column(name = "CORE_IVT_MNG", length = 800)
+    private String coreIvtManager; // 핵운
 
     @Column(name = "ALLOC_RATIO", precision = 5, scale = 2)
     private BigDecimal allocRatio; // 배분비율

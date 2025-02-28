@@ -13,11 +13,6 @@ import java.util.List;
 @Repository
 public interface FundRepository extends JpaRepository<Fund, String> {
 
-    @Transactional
-    @Modifying
-    @Query("UPDATE Fund f SET f.currentStaff = :currentStaff WHERE f.fundId = :fundId")
-    void updateCurrentStaffByFundId(@Param("fundId") String fundId, @Param("currentStaff") String currentStaff);
-
     // ✅ 모든 fundId와 fundName을 조회하는 메서드
     @Query("SELECT f.fundId, f.fundName FROM Fund f")
     List<Object[]> findAllFundIdAndName();
