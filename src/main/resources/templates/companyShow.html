@@ -119,8 +119,8 @@
                 <td><input type="text" class="form-control number-format" value="${financial.totalAssets?.toLocaleString() || ""}" readonly></td>
                 <td><input type="text" class="form-control number-format" value="${financial.totalDebt?.toLocaleString() || ""}" readonly></td>
                 <td><input type="text" class="form-control number-format" value="${financial.totalCapital?.toLocaleString() || ""}" readonly></td>
-                <td><input type="text" class="form-control number-format" value="${financial.capitalFnc?.toLocaleString() || ""}" readonly></td>
-                <td><input type="text" class="form-control number-format" value="${financial.employeeCountFnc?.toLocaleString() || ""}" readonly></td>
+                <td><input type="text" class="form-control number-format" value="${financial.capital?.toLocaleString() || ""}" readonly></td>
+                <td><input type="text" class="form-control number-format" value="${financial.employeeCount?.toLocaleString() || ""}" readonly></td>
             </tr>`;
                 tableBody.innerHTML += row;
             });

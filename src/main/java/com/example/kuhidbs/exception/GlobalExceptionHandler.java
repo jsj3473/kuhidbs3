@@ -9,6 +9,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,6 +42,17 @@ public class GlobalExceptionHandler {
     public ResponseEntity<String> handleDataIntegrityViolationException(org.springframework.dao.DataIntegrityViolationException ex) {
         logger.error("데이터 무결성 위반 오류 발생: {}", ex.getMessage(), ex);
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("데이터 무결성 위반: " + ex.getMessage());
+    }
+
+    // ✅ favicon.ico 요청이 없을 때 발생하는 예외 무시
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<Void> handleNoResourceFoundException(NoResourceFoundException e) {
+        if (e.getMessage().contains("favicon.ico")) {
+            logger.warn("파비콘 요청 무시: {}", e.getMessage());
+            return ResponseEntity.notFound().build(); // 404 응답을 반환
+        }
+        logger.error("리소스를 찾을 수 없음: {}", e.getMessage());
+        return ResponseEntity.status(404).build();
     }
 
     /**

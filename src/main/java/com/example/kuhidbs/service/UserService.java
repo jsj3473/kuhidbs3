@@ -34,16 +34,20 @@ public class UserService {
 
     @Transactional
     public void retireUser(String id) {
-        // 사용자 조회 및 재직 여부 업데이트
-        User user = userRepository.findById(id).get(); // 사용자 조회
+        // 사용자 조회 및 예외 처리
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 ID의 사용자를 찾을 수 없습니다: " + id));
+
         user.setEmployed(false); // 재직 여부를 false로 설정
         userRepository.save(user); // 변경 사항 저장
     }
 
     @Transactional
     public void resetPassword(String id) {
-        // 사용자 조회
-        User user = userRepository.findById(id).get(); // 사용자 조회
+        // 사용자 조회 및 예외 처리
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 ID의 사용자를 찾을 수 없습니다: " + id));
+
         user.setPassword("1"); // 비밀번호 초기화
         userRepository.save(user); // 변경 사항 저장
     }
@@ -51,7 +55,8 @@ public class UserService {
     @Transactional
     public String updatePassword(String id, String currentPassword, String newPassword) {
         // 사번으로 사용자 조회
-        User user = userRepository.findById(id).orElse(null);
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 ID의 사용자를 찾을 수 없습니다: " + id));
 
         if (user == null) {
             return "사번과 비밀번호를 확인해주세요"; // 사번이 존재하지 않는 경우

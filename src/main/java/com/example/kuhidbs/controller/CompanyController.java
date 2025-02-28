@@ -195,6 +195,28 @@ public class CompanyController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
+    // 사후관리 생성 API
+    @PostMapping("/createManage")
+    public ResponseEntity<Void> createManage(@Valid @RequestBody CMngDTO dto) {
+        logger.info("사후관리 정보 저장 요청: {}", dto);
+
+        manageService.createManage(dto);
+
+        logger.info("사후관리 정보가 성공적으로 저장됨: {}", dto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    // 사후관리담당자 생성 API
+    @PostMapping("/createReviewer")
+    public ResponseEntity<Void> createReviewer(@Valid @RequestBody CRwrDTO dto) {
+        logger.info("사후관리담당자 정보 저장 요청: {}", dto);
+
+        reviewerService.createReviewerForCRwrDTO(dto);
+
+        logger.info("사후관리담당자 정보가 성공적으로 저장됨: {}", dto);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
     // TIPS 데이터 생성 API
     @PostMapping("/createTIPS")
     public ResponseEntity<Void> createTIPS(@Valid @RequestBody CTIPSDTO dto) {
@@ -218,15 +240,6 @@ public class CompanyController {
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
-
-    //후속투자 정보 조회 api
-    @GetMapping("/followup/{companyId}")
-    public List<RFolDTO> getFollowupByCompanyId(@PathVariable String companyId) {
-        return followupService.getFollowupByCompanyId(companyId);
-    }
-
-
-
     // 팁스 정보 수정 API
     @PutMapping("/updateTIPS")
     public ResponseEntity<String> updateTips(@Valid @RequestBody UTIPSDTO dto) {
@@ -249,6 +262,11 @@ public class CompanyController {
         return ResponseEntity.ok(updatedCompany);
     }
 
+    //후속투자 정보 조회 api
+    @GetMapping("/followup/{companyId}")
+    public List<RFolDTO> getFollowupByCompanyId(@PathVariable String companyId) {
+        return followupService.getFollowupByCompanyId(companyId);
+    }
 
     // 회사 기본 정보 조회 API
     @GetMapping("/info/{companyId}")

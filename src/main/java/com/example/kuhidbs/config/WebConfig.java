@@ -25,7 +25,6 @@ public class WebConfig implements WebMvcConfigurer {
 //                        "/css/**",         // CSS 파일 제외
 //                        "/images/**",      // 이미지 파일 제외
 //                        "/webjars/**",     // WebJars 리소스 제외
-//                        "/favicon.ico"     // Favicon 제외
 //                );
 //    }
 }
