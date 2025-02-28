@@ -174,9 +174,9 @@
                 </tr>
                 <tr>
                     <th>회사주소</th>
-                    <td colspan="6"><input type="text" class="form-control" id="companyAddress"></td>
+                    <td colspan="6"><input type="text" class="form-control" name="companyAddress"></td>
                     <th>우편번호</th>
-                    <td colspan="2"><input type="text" class="form-control" id="companyPostalCode"></td>
+                    <td colspan="2"><input type="text" class="form-control" name="companyPostalCode"></td>
                 </tr>
                 <tr>
                     <th>사업자등록번호</th>
@@ -188,9 +188,9 @@
                 </tr>
                 <tr>
                     <th>자본금</th>
-                    <td colspan="3"><input type="text" class="form-control number-format" name="capital"></td>
+                    <td colspan="3"><input type="text" class="form-control number-format" name="capital" placeholder="단위: 원"></td>
                     <th>액면가</th>
-                    <td colspan="2"><input type="text" class="form-control number-format" name="parValue"></td>
+                    <td colspan="2"><input type="text" class="form-control number-format" name="parValue" placeholder="단위: 원"></td>
                     <th>임직원수</th>
                     <td colspan="3"><input type="text" class="form-control number-format" name="employeeCount"></td>
                 </tr>
@@ -336,7 +336,7 @@
                 </tr>
 
                 <tr>
-                    <th colspan="10">재무제표</th>
+                    <th colspan="10">재무제표 (단위: 백만 원, 명)</th>
                 </tr>
                 <tr>
                     <th>회계연도</th>
@@ -352,7 +352,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <input type="text" class="form-control" name="financialYear" placeholder="연도">
+                        <input type="text" class="form-control" name="financialYear">
                     </td>
                     <td>
                         <select class="form-control mt-1" name="financialHalf">
@@ -361,14 +361,14 @@
                             <option value="하반기">하반기</option>
                         </select>
                     </td>
-                    <td><input type="text" class="form-control number-format" name="revenue"></td>
-                    <td><input type="text" class="form-control number-format" name="operatingProfit"></td>
-                    <td><input type="text" class="form-control number-format" name="netIncome"></td>
-                    <td><input type="text" class="form-control number-format" name="totalAssets"></td>
-                    <td><input type="text" class="form-control number-format" name="totalDebt"></td>
-                    <td><input type="text" class="form-control number-format" name="totalCapital"></td>
-                    <td><input type="text" class="form-control number-format" name="capitalFnc"></td>
-                    <td><input type="text" class="form-control number-format" name="employeeCountFnc"></td>
+                    <td><input type="text" class="form-control number-format" name="revenue" placeholder="단위: 백만 원"></td>
+                    <td><input type="text" class="form-control number-format" name="operatingProfit" placeholder="단위: 백만 원"></td>
+                    <td><input type="text" class="form-control number-format" name="netIncome" placeholder="단위: 백만 원"></td>
+                    <td><input type="text" class="form-control number-format" name="totalAssets" placeholder="단위: 백만 원"></td>
+                    <td><input type="text" class="form-control number-format" name="totalDebt" placeholder="단위: 백만 원"></td>
+                    <td><input type="text" class="form-control number-format" name="totalCapital" placeholder="단위: 백만 원"></td>
+                    <td><input type="text" class="form-control number-format" name="capitalFnc" placeholder="단위: 백만 원"></td>
+                    <td><input type="text" class="form-control number-format" name="employeeCountFnc" placeholder=""></td>
                 </tr>
 
 

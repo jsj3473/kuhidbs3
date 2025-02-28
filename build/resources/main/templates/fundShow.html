@@ -48,7 +48,8 @@
             document.getElementById("unitPrice").value = Number(data.unitPrice).toLocaleString();
             document.getElementById("fundOrganizationType").value = data.fundOrganizationType || "";
             document.getElementById("paymentType").value = data.paymentType || "";
-            document.getElementById("currentStaff").value = data.currentStaff || "";
+            document.getElementById("leadFundManager").value = data.leadFundManager || "";
+            document.getElementById("coreIvtManager").value = data.coreIvtManager || "";
             document.getElementById("auditorName").value = data.auditorName || "";
             document.getElementById("auditorDate").value = data.auditorDate || "";
             document.getElementById("trusteeCorporation").value = data.trusteeCorporation || "";
@@ -78,9 +79,8 @@
                 <td>${member.memberType || ""}</td>
                 <td>${formattedPrice}</td>
                 <td>${member.contact || ""}</td>
-                <td>${member.address || ""}</td>
-                <td>${member.businessRegNo || ""}</td>
-                <td>${member.residentRegNo || ""}</td>
+                <td colspan="2">${member.address || ""}</td>
+                <td>${member.regNo || ""}</td>
             </tr>`;
                     tableBody.innerHTML += row;
                 }
@@ -137,6 +137,7 @@
                 } else if (type === "fundFinancial") {
                     height = 750;
                 } else if (type === "member") {
+                    width = 1350;
                     height = 800;
                 }
 
@@ -165,6 +166,7 @@
                     width = 900;
                     height = 500;
                 } else if (type === "membersByFund") {
+                    // width = 1350;
                     height = 800;
                 } else if (type === "IASByfund") {
                     width = 1350;
@@ -201,7 +203,7 @@
         <a href="#" onclick="openPopup('member')">👤 조합원명부 관리</a>
         <a href="#" onclick="openViewPopup('membersByFund')">👤 조합원명부 조회</a>
         <a href="#" onclick="openViewPopup('IASByfund')">💰 투자자산총괄표 조회</a>
-<!--        <a href="#" onclick="openViewPopup('#')">🪪 투자조합평가결과 조회</a>-->
+        <!--        <a href="#" onclick="openViewPopup('#')">🪪 투자조합평가결과 조회</a>-->
         <a href="#" onclick="openViewPopup('dueDiligenceByFund')">🔍 투자기업실사 조회</a>
         <a href="#" onclick="openViewPopup('empChangeByFund')">👥 고용인력 이력조회</a>
     </nav>
@@ -221,7 +223,7 @@
         <!-- 1. 회사 기본 정보 -->
         <table class="table table-bordered text-center">
             <thead>
-            <tr><th colspan="7">투자조합 고유정보</th></tr>
+            <tr><th colspan="8">투자조합 고유정보</th></tr>
             </thead>
             <tbody>
             <tr>
@@ -236,15 +238,15 @@
                     </select>
                 </td>
                 <th>청산일자</th>
-                <td><input type="date" class="form-control" id="liquidationDate" readonly></td>
+                <td colspan="2"><input type="date" class="form-control" id="liquidationDate" readonly></td>
             </tr>
             <tr>
                 <th>세부조합명</th>
                 <td colspan="2"><input type="text" class="form-control" id="fundNameDetail" readonly></td>
                 <th>조합명</th>
                 <td><input type="text" class="form-control" id="fundName" readonly></td>
-                <th>설립일자</th>
-                <td><input type="date" class="form-control" id="establishmentDate" readonly></td>
+                <th>결성총액일</th>
+                <td colspan="2"><input type="date" class="form-control" id="establishmentDate" readonly></td>
             </tr>
             <tr>
                 <th>존속기간(년)</th>
@@ -252,7 +254,7 @@
                 <th>존속기간 시작일</th>
                 <td><input type="date" class="form-control" id="durationStartDate" readonly></td>
                 <th>존속기간 종료일</th>
-                <td><input type="date" class="form-control" id="durationEndDate" readonly></td>
+                <td colspan="2"><input type="date" class="form-control" id="durationEndDate" readonly></td>
             </tr>
             <tr>
                 <th>투자기간(년)</th>
@@ -260,13 +262,13 @@
                 <th>투자기간 시작일</th>
                 <td><input type="date" class="form-control" id="investmentStartDate" readonly></td>
                 <th>투자기간 종료일</th>
-                <td><input type="date" class="form-control" id="investmentEndDate" readonly></td>
+                <td colspan="2"><input type="date" class="form-control" id="investmentEndDate" readonly></td>
             </tr>
             <tr>
                 <th>약정 총액</th>
                 <td colspan="2"><input type="text" class="form-control" id="committedTotalPrice" readonly></td>
                 <th>1좌당 금액</th>
-                <td colspan="3"><input type="text" class="form-control" id="unitPrice" readonly></td>
+                <td colspan="4"><input type="text" class="form-control" id="unitPrice" readonly></td>
             </tr>
             <tr>
                 <th>투자기구 유형</th>
@@ -278,7 +280,7 @@
                     </select>
                 </td>
                 <th>납입방법</th>
-                <td colspan="3">
+                <td colspan="4">
                     <select class="form-control" id="paymentType" disabled>
                         <option value="">선택하세요</option>
                         <option value="수시납">수시납</option>
@@ -287,85 +289,89 @@
                 </td>
             </tr>
             <tr>
-                <th>운용인력 전원</th>
-                <td colspan="6"><input type="text" class="form-control" id="currentStaff" readonly></td>
+                <th>대표펀드매니저</th>
+                <td colspan="2"><input type="text" class="form-control" id="leadFundManager" readonly></td>
+                <th>핵심운용인력</th>
+                <td colspan="4"><input type="text" class="form-control" id="coreIvtManager" readonly></td>
             </tr>
             <tr>
                 <th>회계감사인명</th>
                 <td colspan="2"><input type="text" class="form-control" id="auditorName" readonly></td>
                 <th>회계감사인 변경일자</th>
-                <td colspan="3"><input type="date" class="form-control" id="auditorDate" readonly></td>
+                <td colspan="4"><input type="date" class="form-control" id="auditorDate" readonly></td>
             </tr>
             <tr>
-                <th>업무수탁법인</th>
+                <th>수탁회사(은행)</th>
                 <td colspan="2"><input type="text" class="form-control" id="trusteeCorporation" readonly></td>
                 <th>사무수탁법인</th>
-                <td colspan="3"><input type="text" class="form-control" id="administrationCorporation" readonly></td>
+                <td colspan="4"><input type="text" class="form-control" id="administrationCorporation" readonly></td>
             </tr>
 
-            <tr><th colspan="7">투자조합 보수조건</th></tr>
+            <tr><th colspan="8">투자조합 보수조건</th></tr>
             <tr>
                 <th>기준수익률(%)</th>
                 <td colspan="2"><input type="number" step="0.01" class="form-control" id="targetReturnRate" readonly></td>
                 <th>성과보수율(%)</th>
-                <td colspan="3"><input type="number" step="0.01" class="form-control" id="performanceFeeRate" readonly></td>
+                <td colspan="4"><input type="number" step="0.01" class="form-control" id="performanceFeeRate" readonly></td>
             </tr>
             <tr>
-                <th>투자기간 관리보수(%)</th>
-                <td colspan="2"><input type="number" step="0.01" class="form-control" id="managementFeeInvestmentPeriod" readonly></td>
-                <th>운영기간 관리보수(%)</th>
-                <td colspan="3"><input type="number" step="0.01" class="form-control" id="managementFeeManagementPeriod" readonly></td>
+                <th>투자기간 관리보수</th>
+                <td colspan="7"><input type="text" step="0.01" class="form-control" id="managementFeeInvestmentPeriod" readonly></td>
+            </tr>
+            <tr>
+                <th>운영기간 관리보수</th>
+                <td colspan="7"><input type="text" step="0.01" class="form-control" id="managementFeeManagementPeriod" readonly></td>
             </tr>
             <tr>
                 <th>인센티브 조건</th>
-                <td colspan="6"><input type="text" class="form-control" id="incentiveCondition" readonly></td>
+                <td colspan="7"><input type="text" class="form-control" id="incentiveCondition" readonly></td>
             </tr>
             <tr>
                 <th>우선손실충당 GP</th>
-                <td colspan="6"><input type="text" class="form-control" id="priorLossGP" readonly></td>
+                <td colspan="7"><input type="text" class="form-control" id="priorLossGP" readonly></td>
             </tr>
             <tr>
                 <th>우선손실충당 LP</th>
-                <td colspan="6"><input type="text" class="form-control" id="priorLossLP" readonly></td>
+                <td colspan="7"><input type="text" class="form-control" id="priorLossLP" readonly></td>
             </tr>
-            <tr><th colspan="7">투자조합 의무투자조건 - 주목적/특수목적 투자조건</th></tr>
+            <tr><th colspan="8">투자조합 의무투자조건 - 주목적/특수목적 투자조건</th></tr>
             <tr>
                 <th>의무투자 1</th>
                 <td colspan="2"><input type="text" class="form-control" id="mandatoryInvestment1" readonly></td>
                 <th>의무투자 2</th>
-                <td colspan="3"><input type="text" class="form-control" id="mandatoryInvestment2" readonly></td>
+                <td colspan="4"><input type="text" class="form-control" id="mandatoryInvestment2" readonly></td>
             </tr>
             <tr>
                 <th>주목적투자 1</th>
                 <td colspan="2"><input type="text" class="form-control" id="primaryInvestment1" readonly></td>
                 <th>주목적투자 2</th>
-                <td colspan="3"><input type="text" class="form-control" id="primaryInvestment2" readonly></td>
+                <td colspan="4"><input type="text" class="form-control" id="primaryInvestment2" readonly></td>
             </tr>
             <tr>
                 <th>특수목적투자 1</th>
                 <td colspan="2"><input type="text" class="form-control" id="specialPurposeInvestment1" readonly></td>
                 <th>특수목적투자 2</th>
-                <td colspan="3"><input type="text" class="form-control" id="specialPurposeInvestment2" readonly></td>
+                <td colspan="4"><input type="text" class="form-control" id="specialPurposeInvestment2" readonly></td>
             </tr>
             <tr>
                 <th>특수목적투자 3</th>
                 <td colspan="2"><input type="text" class="form-control" id="specialPurposeInvestment3" readonly></td>
                 <th>특수목적투자 기타</th>
-                <td colspan="3"><input type="text" class="form-control" id="specialPurposeInvestment4" readonly></td>
+                <td colspan="4"><input type="text" class="form-control" id="specialPurposeInvestment4" readonly></td>
             </tr>
             </tbody>
 
             <!-- 투자조합원 명부 -->
             <thead>
-            <tr><th colspan="7">투자조합 조합원 명부</th></tr>
+            <tr><th colspan="8">투자조합 조합원 명부</th></tr>
             <tr>
                 <th>조합원</th>
                 <th>조합원유형</th>
                 <th>출자약정액</th>
                 <th>연락처</th>
-                <th>주소</th>
-                <th>사업자등록번호</th>
-                <th>주민등록번호</th>
+                <th colspan="2">주소</th>
+                <th>사업자・주민등록번호</th>
+<!--                <th>주민등록번호</th>-->
             </tr>
             </thead>
             <tbody id="fundMembersTable"></tbody>

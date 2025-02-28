@@ -35,7 +35,7 @@
             <th>변동 일자</th>
             <td><input type="date" class="form-control" id="shareUpdateDate" name="shareUpdateDate" required></td>
             <th>주당 가치</th>
-            <td><input type="number" class="form-control" id="shareUnitValue" name="shareUnitValue" required></td>
+            <td><input type="text" class="form-control number-format" id="shareUnitValue" name="shareUnitValue" required></td>
         </tr>
         <tr>
             <th>사유</th>
@@ -54,42 +54,84 @@
 
 <!-- JavaScript -->
 <script>
-    document.getElementById("shareUpForm").addEventListener("submit", function(event) {
-        event.preventDefault(); // 기본 제출 방지
+    document.addEventListener("DOMContentLoaded", function () {
+        // ✅ 숫자 입력 필드 천단위 콤마 자동 적용
+        applyNumberFormatting(".number-format");
 
-        let form = document.getElementById("shareUpForm");
-        let formData = new FormData(form);
-        let jsonData = {};
+        document.getElementById("shareUpForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // 기본 제출 방지
 
-        // FormData를 JSON 객체로 변환
-        formData.forEach((value, key) => {
-            jsonData[key] = value;
+            // ✅ 전송 전에 콤마 제거
+            removeCommasFromNumberFields("#shareUpForm", ".number-format");
+
+            let form = document.getElementById("shareUpForm");
+            let formData = new FormData(form);
+            let jsonData = {};
+
+            // FormData를 JSON 객체로 변환
+            formData.forEach((value, key) => {
+                jsonData[key] = value;
+            });
+
+            console.log("전송할 데이터:", jsonData); // 디버깅용
+
+            fetch("/api/companies/createShrup", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(jsonData)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("등록 실패");
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    alert("저장이 완료되었습니다! 화면을 종료합니다.");
+                    window.close(); // 팝업 화면 종료
+                })
+                .catch(error => {
+                    alert("저장 중 오류 발생: " + error.message + ", 값을 확인해주세요.");
+                });
         });
 
-        console.log("전송할 데이터:", jsonData); // 디버깅용
-
-        fetch("/api/companies/createShrup", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify(jsonData)
-        })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error("등록 실패");
-                }
-                return response.text();
-            })
-            .then(data => {
-                alert("저장이 완료되었습니다! 화면을 종료합니다.");
-                window.close(); // 팝업 화면 종료
-            })
-            .catch(error => {
-                alert("저장 중 오류 발생: " + error.message + ", 값을 확인해주세요.");
+        // ✅ 천단위 콤마 관련 공통 함수
+        function applyNumberFormatting(selector) {
+            const numberFields = document.querySelectorAll(selector);
+            numberFields.forEach(field => {
+                formatNumberField(field);  // 초기 콤마 적용
+                field.addEventListener("input", formatNumberOnInput);
+                field.addEventListener("blur", formatNumberOnBlur);
             });
+        }
+
+        function formatNumberOnInput(event) {
+            let value = event.target.value.replace(/[^0-9]/g, "");
+            event.target.value = value ? Number(value).toLocaleString() : "";
+        }
+
+        function formatNumberOnBlur(event) {
+            let value = event.target.value.replace(/[^0-9]/g, "");
+            event.target.value = value ? Number(value).toLocaleString() : "";
+        }
+
+        function formatNumberField(field) {
+            let value = field.value.replace(/[^0-9]/g, "");
+            field.value = value ? Number(value).toLocaleString() : "";
+        }
+
+        function removeCommasFromNumberFields(formSelector, fieldSelector) {
+            const form = document.querySelector(formSelector);
+            const numberFields = form.querySelectorAll(fieldSelector);
+            numberFields.forEach(field => {
+                field.value = field.value.replace(/,/g, ""); // 콤마 제거
+            });
+        }
     });
 </script>
+
 
 <!-- Bootstrap JS -->
 <script th:src="@{/js/bootstrap.bundle.min.js}"></script>

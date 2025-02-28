@@ -9,6 +9,7 @@
     <link rel="stylesheet" th:href="@{/css/common.css}">
     <link rel="stylesheet" th:href="@{/css/popUpNavbar.css}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script></script>
 </head>
 <body class="container mt-4">
 
@@ -28,9 +29,9 @@
         </tr>
         <tr>
             <th>투자단가(원)</th>
-            <td><input type="number" name="investmentUnitPrice" class="form-control" required></td>
+            <td><input type="text" name="investmentUnitPrice" class="form-control number-format" required></td>
             <th>투자금액(원)</th>
-            <td><input type="number" name="investmentSumPrice" class="form-control" required></td>
+            <td><input type="text" name="investmentSumPrice" class="form-control number-format" required></td>
         </tr>
         <tr>
             <th>투자상품</th>
@@ -63,7 +64,7 @@
                 </select>
             </td>
             <th>주식수량(주)</th>
-            <td><input type="number" name="shareCount" class="form-control" required></td>
+            <td><input type="text" name="shareCount" class="form-control number-format" required></td>
         </tr>
         <tr>
             <th>비고</th>
@@ -80,6 +81,9 @@
 <script>
     document.getElementById("combineForm").addEventListener("submit", function(event) {
         event.preventDefault(); // 기본 제출 방지
+
+        // 콤마 제거 (전송용)
+        removeCommasFromNumberFields("#combineForm", ".number-format");
 
         let form = document.getElementById("combineForm");
         let formData = new FormData(form);
@@ -112,6 +116,45 @@
                 alert("저장 중 오류 발생: " + error.message + ", 값을 확인해주세요.");
             });
     });
+
+    // ✅ 콤마 제거 함수 추가 (공통으로 쓰기 좋게)
+    function removeCommasFromNumberFields(formSelector, fieldSelector) {
+        const form = document.querySelector(formSelector);
+        const numberFields = form.querySelectorAll(fieldSelector);
+        numberFields.forEach(field => {
+            field.value = field.value.replace(/,/g, ""); // 콤마 제거
+        });
+    }
+
+    // ✅ 천단위 콤마 자동 적용도 유지 (입력 시)
+    document.addEventListener("DOMContentLoaded", function () {
+        applyNumberFormatting(".number-format");
+    });
+
+    function applyNumberFormatting(selector) {
+        const numberFields = document.querySelectorAll(selector);
+        numberFields.forEach(field => {
+            formatNumberField(field);  // 초기 콤마 적용
+            field.addEventListener("input", formatNumberOnInput);
+            field.addEventListener("blur", formatNumberOnBlur);
+        });
+    }
+
+    function formatNumberOnInput(event) {
+        let value = event.target.value.replace(/[^0-9]/g, "");
+        event.target.value = value ? Number(value).toLocaleString() : "";
+    }
+
+    function formatNumberOnBlur(event) {
+        let value = event.target.value.replace(/[^0-9]/g, "");
+        event.target.value = value ? Number(value).toLocaleString() : "";
+    }
+
+    function formatNumberField(field) {
+        let value = field.value.replace(/[^0-9]/g, "");
+        field.value = value ? Number(value).toLocaleString() : "";
+    }
+
 </script>
 
 <!-- Bootstrap JS -->

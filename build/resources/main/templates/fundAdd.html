@@ -13,7 +13,52 @@
     <link rel="stylesheet" th:href="@{/css/slimTable.css}">
     <script th:src="@{/js/common.js}"></script>
     <script defer th:src="@{/js/searchModal.js}"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // 숫자 필드에 천단위 콤마 자동 적용
+            function applyNumberFormatting(selector) {
+                const numberFields = document.querySelectorAll(selector);
+                numberFields.forEach(field => {
+                    formatNumberField(field);  // 초기 콤마 적용
+                    field.addEventListener("input", formatNumberOnInput);
+                    field.addEventListener("blur", formatNumberOnBlur);
+                });
+            }
 
+            // 입력 시 실시간 콤마 처리
+            function formatNumberOnInput(event) {
+                let value = event.target.value.replace(/[^0-9]/g, "");
+                event.target.value = value ? Number(value).toLocaleString() : "";
+            }
+
+            // 포커스 아웃 시 콤마 처리
+            function formatNumberOnBlur(event) {
+                let value = event.target.value.replace(/[^0-9]/g, "");
+                event.target.value = value ? Number(value).toLocaleString() : "";
+            }
+
+            // 초기 렌더링 시 콤마 적용
+            function formatNumberField(field) {
+                let value = field.value.replace(/[^0-9]/g, "");
+                field.value = value ? Number(value).toLocaleString() : "";
+            }
+
+            // 폼 제출 시 콤마 제거 (서버 전송용)
+            function removeCommasBeforeSubmit(formSelector, fieldSelector) {
+                const form = document.querySelector(formSelector);
+                form.addEventListener("submit", function () {
+                    document.querySelectorAll(fieldSelector).forEach(field => {
+                        field.value = field.value.replace(/,/g, "");
+                    });
+                });
+            }
+
+            // 실제 적용 (클래스 네이밍은 상황에 맞게 변경 가능)
+            applyNumberFormatting(".number-format");
+            removeCommasBeforeSubmit("#fundForm", ".number-format");
+        });
+
+    </script>
     <script defer>
         document.addEventListener("DOMContentLoaded", function () {
             const fundForm = document.getElementById("fundForm");
@@ -104,7 +149,7 @@
                     <td colspan="2"><input type="text" class="form-control" name="fundNameDetail"></td>
                     <th>조합명</th>
                     <td><input type="text" class="form-control" name="fundName"></td>
-                    <th>설립일자</th>
+                    <th>결성총액일</th>
                     <td><input type="date" class="form-control" name="establishmentDate"></td>
                 </tr>
                 <tr>
@@ -125,9 +170,9 @@
                 </tr>
                 <tr>
                     <th>약정 총액</th>
-                    <td colspan="2"><input type="number" class="form-control" name="committedTotalPrice"></td>
+                    <td colspan="2"><input type="text" class="form-control number-format"  name="committedTotalPrice"></td>
                     <th>1좌당 금액</th>
-                    <td colspan="3"><input type="number" class="form-control" name="unitPrice"></td>
+                    <td colspan="3"><input type="text" class="form-control number-format"  name="unitPrice"></td>
                 </tr>
                 <tr>
                     <th>투자기구 유형</th>
@@ -148,8 +193,10 @@
                     </td>
                 </tr>
                 <tr>
-                    <th>운용인력 전원</th>
-                    <td colspan="6"><input type="text" class="form-control" name="currentStaff"></td>
+                    <th>대표펀드매니저</th>
+                    <td colspan="2"><input type="text" class="form-control" name="leadFundManager"></td>
+                    <th>핵심운용인력</th>
+                    <td colspan="3"><input type="text" class="form-control" name="coreIvtManager"></td>
                 </tr>
                 <tr>
                     <th>회계감사인명</th>
@@ -158,7 +205,7 @@
                     <td colspan="3"><input type="date" class="form-control" name="auditorDate"></td>
                 </tr>
                 <tr>
-                    <th>업무수탁법인</th>
+                    <th>수탁회사(은행)</th>
                     <td colspan="2"><input type="text" class="form-control" name="trusteeCorporation"></td>
                     <th>사무수탁법인</th>
                     <td colspan="3"><input type="text" class="form-control" name="administrationCorporation"></td>
@@ -172,10 +219,12 @@
                     <td colspan="3"><input type="number" step="0.01" class="form-control" name="performanceFeeRate" placeholder="없을 경우 0.0%"></td>
                 </tr>
                 <tr>
-                    <th>투자기간 관리보수(%)</th>
-                    <td colspan="2"><input type="number" step="0.01" class="form-control" name="managementFeeInvestmentPeriod"></td>
-                    <th>운영기간 관리보수(%)</th>
-                    <td colspan="3"><input type="number" step="0.01" class="form-control" name="managementFeeManagementPeriod"></td>
+                    <th>투자기간 관리보수</th>
+                    <td colspan="6"><input type="text" class="form-control" name="managementFeeInvestmentPeriod"></td>
+                </tr>
+                <tr>
+                    <th>운영기간 관리보수</th>
+                    <td colspan="6"><input type="text" step="0.01" class="form-control" name="managementFeeManagementPeriod"></td>
                 </tr>
                 <tr>
                     <th>인센티브 조건</th>

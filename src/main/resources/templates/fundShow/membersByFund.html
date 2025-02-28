@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>조합원 구성</title>
+    <title>조합원명부 조회</title>
     <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
     <script defer th:src="@{/js/bootstrap.bundle.min.js}"></script>
     <link rel="stylesheet" th:href="@{/css/slimTable.css}">
@@ -14,7 +14,7 @@
 <body class="container mt-4">
 <div th:replace="fragments/popUpNavbar :: navbar"></div>
 
-<h2 class="mb-4">조합원 구성</h2>
+<h2 class="mb-4">조합원명부 조회</h2>
 
 <!-- 조합 ID 정보 -->
 <!--<p style="display: none;"><strong>조합 ID:</strong> <span th:text="${fundId}"></span></p>-->
@@ -28,7 +28,7 @@
         <th colspan="4">배분액</th>
         <th rowspan="2">출자잔액</th>
         <th rowspan="2">조합원유형</th>
-        <th rowspan="2">배분순위</th>
+        <!--        <th rowspan="2">배분순위</th>-->
     </tr>
     <tr>
         <th>금액</th>
@@ -40,7 +40,9 @@
     </tr>
     </thead>
     <tbody>
-    <tr th:each="member : ${rMemtypeDTOS}">
+    <tr th:each="member : ${rMemtypeDTOS}"
+        th:if="${member.memberName != null and member.memberName != ''}">
+
         <td th:text="${member.memberName}"></td>
         <td class="text-end" th:text="${member.committedUnitPrice != null and member.committedUnitPrice != 0 ? #numbers.formatInteger(member.committedUnitPrice, 3, 'COMMA') : ''}"></td>
         <td class="text-end" th:text="${member.contributionRate != null and member.contributionRate != 0 ? #numbers.formatDecimal(member.contributionRate, 1, 2, 'POINT') : ''}"></td>
@@ -57,7 +59,7 @@
         <td>-</td>
         <td>-</td>
         <td th:text="${member.memberType}"></td>
-        <td>-</td>
+        <!--        <td>-</td>-->
     </tr>
     </tbody>
     <tfoot>
@@ -67,13 +69,13 @@
         <td class="text-end">100.00</td> <!-- 출자 비율 총합 -->
 
         <!-- 배분 원금, 배분 이익, 배분 총액 -->
-        <td class="text-end" th:text="${fund.allocPrincipal != null and fund.allocPrincipal != 0 ? #numbers.formatInteger(fund.allocPrincipal, 3, 'COMMA') : ''}"></td>
-        <td class="text-end" th:text="${fund.allocProfit != null and fund.allocProfit != 0 ? #numbers.formatInteger(fund.allocProfit, 3, 'COMMA') : ''}"></td>
-        <td class="text-end" th:text="${fund.allocTotal != null and fund.allocTotal != 0 ? #numbers.formatInteger(fund.allocTotal, 3, 'COMMA') : ''}"></td>
+        <!--        <td class="text-end" th:text="${fund.allocPrincipal != null and fund.allocPrincipal != 0 ? #numbers.formatInteger(fund.allocPrincipal, 3, 'COMMA') : ''}"></td>-->
+        <!--        <td class="text-end" th:text="${fund.allocProfit != null and fund.allocProfit != 0 ? #numbers.formatInteger(fund.allocProfit, 3, 'COMMA') : ''}"></td>-->
+        <!--        <td class="text-end" th:text="${fund.allocTotal != null and fund.allocTotal != 0 ? #numbers.formatInteger(fund.allocTotal, 3, 'COMMA') : ''}"></td>-->
 
         <!-- 배분 비율 (배분 총액 / 출자 총액 * 100) -->
-        <td class="text-end" th:text="${fund.getCommittedTotalPrice() != null and fund.getCommittedTotalPrice() != 0 ? #numbers.formatDecimal(fund.allocTotal / fund.getCommittedTotalPrice() * 100, 1, 2, 'POINT') : ''}"></td>
-        <th colspan="3"></th>
+        <!--        <td class="text-end" th:text="${fund.getCommittedTotalPrice() != null and fund.getCommittedTotalPrice() != 0 ? #numbers.formatDecimal(fund.allocTotal / fund.getCommittedTotalPrice() * 100, 1, 2, 'POINT') : ''}"></td>-->
+        <th colspan="7"></th>
     </tr>
     </tfoot>
 </table>
