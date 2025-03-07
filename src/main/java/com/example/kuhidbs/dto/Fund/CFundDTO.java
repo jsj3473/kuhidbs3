@@ -41,4 +41,33 @@ public class CFundDTO {
     private String priorLossGP; // 우선손실충당 GP
     private String priorLossLP; // 우선손실충당 LP
 
+    // 🔥 의무 투자
+    private Long mandatoryTargetAmount; //기준대상이 기타일시 금액을 입력받아야함
+    private String mandatoryCriteria; //기준대상
+    private Double mandatoryCriteriaRatio; //기준대상에 대한 비율
+
+    // 🔥 주목적 투자 1
+    private Long mainInvest1TargetAmount; //기준대상이 기타일시 금액을 입력받아야함
+    private String mainInvest1Criteria;
+    private Double mainInvest1CriteriaRatio;
+
+    // 🔥 주목적 투자 2
+    private Long mainInvest2TargetAmount; //기준대상이 기타일시 금액을 입력받아야함
+    private String mainInvest2Criteria;
+    private Double mainInvest2CriteriaRatio;
+
+    // 🔥 특수목적 투자 1
+    private Long specialInvest1TargetAmount; //기준대상이 기타일시 금액을 입력받아야함
+    private String specialInvest1Criteria;
+    private Double specialInvest1CriteriaRatio;
+
+    // 🔥 특수목적 투자 2
+    private Long specialInvest2TargetAmount; //기준대상이 기타일시 금액을 입력받아야함
+    private String specialInvest2Criteria;
+    private Double specialInvest2CriteriaRatio;
+
+    // 🔥 특수목적 투자 3
+    private Long specialInvest3TargetAmount; //기준대상이 기타일시 금액을 입력받아야함
+    private String specialInvest3Criteria;
+    private Double specialInvest3CriteriaRatio;
 }

@@ -119,4 +119,5 @@ public class Fund extends BaseEntity {
 
     @Column(name = "ALLOC_TOTAL")
     private Integer allocTotal; // 배분총액
+
 }
