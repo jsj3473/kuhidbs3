@@ -28,12 +28,6 @@
             <td><input type="date" name="investmentStartDate" class="form-control" required></td>
         </tr>
         <tr>
-            <th>투자단가(원)</th>
-            <td><input type="text" name="investmentUnitPrice" class="form-control number-format" required></td>
-            <th>투자금액(원)</th>
-            <td><input type="text" name="investmentSumPrice" class="form-control number-format" required></td>
-        </tr>
-        <tr>
             <th>투자상품</th>
             <td>
                 <select class="form-control" name="investmentProduct">
@@ -42,16 +36,12 @@
                     <option value="상환전환우선주(RCPS)">상환전환우선주(RCPS)</option>
                     <option value="전환우선주(CPS)">전환우선주(CPS)</option>
                     <option value="전환사채(CB)">전환사채(CB)</option>
-<!--                    <option value="신주인수권부사채(BW)">신주인수권부사채(BW)</option>-->
-<!--                    <option value="교환사채(EB)">교환사채(EB)</option>-->
-<!--                    <option value="컨버터블노트(CN)">컨버터블노트(CN)</option>-->
+                    <!--                    <option value="신주인수권부사채(BW)">신주인수권부사채(BW)</option>-->
+                    <!--                    <option value="교환사채(EB)">교환사채(EB)</option>-->
+                    <!--                    <option value="컨버터블노트(CN)">컨버터블노트(CN)</option>-->
                     <option value="세이프(SAFE)">세이프(SAFE)</option>
                 </select>
             </td>
-            <th>지분율(%)</th>
-            <td><input type="text" name="equityRate" class="form-control" required></td>
-        </tr>
-        <tr>
             <th>투자단계</th>
             <td>
                 <select class="form-control" name="investmentStep" required>
@@ -63,8 +53,18 @@
                     <option value="Series C">Series C</option>
                 </select>
             </td>
+        </tr>
+        <tr>
+            <th>투자단가(원)</th>
+            <td><input type="text" name="investmentUnitPrice" class="form-control number-format" required></td>
             <th>주식수량(주)</th>
             <td><input type="text" name="shareCount" class="form-control number-format" required></td>
+        </tr>
+        <tr>
+            <th>투자금액(원)</th>
+            <td><input type="text" name="investmentSumPrice" class="form-control number-format" readonly required></td>
+            <th>지분율(%)</th>
+            <td><input type="text" name="equityRate" class="form-control" required></td>
         </tr>
         <tr>
             <th>비고</th>
@@ -154,6 +154,33 @@
         let value = field.value.replace(/[^0-9]/g, "");
         field.value = value ? Number(value).toLocaleString() : "";
     }
+    // 투자단가 * 주식수량 = 투자금액 자동계산 (콤마 유지)
+    function updateInvestmentAmount() {
+        const unitPriceField = document.querySelector("[name='investmentUnitPrice']");
+        const shareCountField = document.querySelector("[name='shareCount']");
+        const sumPriceField = document.querySelector("[name='investmentSumPrice']");
+
+        // 콤마 제거 후 숫자 변환
+        const unitPrice = parseFloat(unitPriceField.value.replace(/,/g, "")) || 0;
+        const shareCount = parseFloat(shareCountField.value.replace(/,/g, "")) || 0;
+
+        const sumPrice = unitPrice * shareCount;
+
+        // 결과에 콤마 적용해서 표시
+        sumPriceField.value = sumPrice ? sumPrice.toLocaleString() : "";
+    }
+
+    // 초기 로딩 & 입력 시 자동계산 이벤트 추가
+    document.addEventListener("DOMContentLoaded", function () {
+        const unitPriceField = document.querySelector("[name='investmentUnitPrice']");
+        const shareCountField = document.querySelector("[name='shareCount']");
+
+        unitPriceField.addEventListener("input", updateInvestmentAmount);
+        shareCountField.addEventListener("input", updateInvestmentAmount);
+
+        applyNumberFormatting(".number-format"); // 기존 콤마 유지 로직
+    });
+
 
 </script>
 

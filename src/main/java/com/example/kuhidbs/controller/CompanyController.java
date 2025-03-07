@@ -1,6 +1,7 @@
 package com.example.kuhidbs.controller;
 
 import com.example.kuhidbs.dto.Fund.CDueDiligenceDTO;
+import com.example.kuhidbs.dto.company.액분.CStockSplitDto;
 import com.example.kuhidbs.dto.company.투자상태.CStatusDTO;
 import com.example.kuhidbs.dto.company.kuh투자.*;
 import com.example.kuhidbs.dto.company.감액환입.CShrupDTO;
@@ -77,7 +78,7 @@ public class CompanyController {
     private StatusService statusService;
 
     @Autowired
-    private FundService fundService;
+    private StockSplitService stockSplitService;
 
     @Autowired
     private CompanyRepository companyRepository;
@@ -260,6 +261,16 @@ public class CompanyController {
 
         logger.info("기업 정보가 성공적으로 업데이트됨: {}", updatedCompany);
         return ResponseEntity.ok(updatedCompany);
+    }
+
+    @PostMapping("/createStockSplit")
+    public ResponseEntity<StockSplit> createStockSplit(@Valid @RequestBody CStockSplitDto stockSplitDto) {
+        logger.info("액면분할 생성 요청: {}", stockSplitDto);
+
+        StockSplit stockSplit = stockSplitService.createStockSplit(stockSplitDto);
+
+        logger.info("액면분할이 성공적으로 생성됨: {}", stockSplit);
+        return ResponseEntity.ok(stockSplit);
     }
 
     //후속투자 정보 조회 api
