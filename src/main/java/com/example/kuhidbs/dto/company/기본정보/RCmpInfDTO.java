@@ -66,8 +66,6 @@ public class RCmpInfDTO {
 
     private String investmentPoint3;
 
-    private String evaluationEmployee;
-
     private String publicTechnologyTransfer;
 
     private String smeStatus; //중소기업여부

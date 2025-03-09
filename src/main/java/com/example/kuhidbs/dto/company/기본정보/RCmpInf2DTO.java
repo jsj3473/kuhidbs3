@@ -51,6 +51,8 @@ public class RCmpInf2DTO {
 
     private String regionalCompany;  //지방창업구분
 
+    private String isDaechang; //대창창업기업
+
     private String ventureRecognition; //벤처기업구분
 
     private String researchRecognition; //연구소기업구분

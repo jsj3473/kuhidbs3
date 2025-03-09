@@ -14,6 +14,8 @@ import com.example.kuhidbs.entity.company.Client;
 import com.example.kuhidbs.repository.company.ClientRepository;
 import com.example.kuhidbs.repository.company.CompanyRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,7 +26,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class CompanyService {
-
+    private static final Logger logger = LoggerFactory.getLogger(CompanyService.class);
     private final CompanyRepository companyRepository;
     private final ClientRepository clientRepository;
 
@@ -37,7 +39,8 @@ public class CompanyService {
     private final StatusService statusService;
 
     public void saveCompany(CCmpInfDTO CCmpInfDTO) {
-System.out.println(CCmpInfDTO);
+
+        System.out.println(CCmpInfDTO);
         Company company = Company.builder()
                 .companyId(CCmpInfDTO.getCompanyId())
                 .companyName(CCmpInfDTO.getCompanyName())
@@ -73,7 +76,47 @@ System.out.println(CCmpInfDTO);
 
         companyRepository.save(company);
     }
+    @Transactional
+    public UCmpInfDTO updateCompanyInfo(UCmpInfDTO updatedCompanyInfo) {
+        Company company = companyRepository.findById(updatedCompanyInfo.getCompanyId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 회사가 존재하지 않습니다: " + updatedCompanyInfo.getCompanyId()));
 
+        // 기존 회사 정보 업데이트
+        company.setCompanyName(updatedCompanyInfo.getCompanyName());
+        company.setEstablishmentDate(updatedCompanyInfo.getEstablishmentDate());
+        company.setCeoName(updatedCompanyInfo.getCeoName());
+        company.setCompanyAddress(updatedCompanyInfo.getCompanyAddress());
+        company.setCompanyPostalCode(updatedCompanyInfo.getCompanyPostalCode());
+        company.setBusinessRegistrationNumber(updatedCompanyInfo.getBusinessRegistrationNumber());
+        company.setCorporateRegistrationNumber(updatedCompanyInfo.getCorporateRegistrationNumber());
+        company.setIndustryCode(updatedCompanyInfo.getIndustryCode());
+        company.setCapital(updatedCompanyInfo.getCapital());
+        company.setParValue(updatedCompanyInfo.getParValue());
+        company.setEmployeeCount(updatedCompanyInfo.getEmployeeCount());
+        company.setStartupType(updatedCompanyInfo.getStartupType());
+        company.setRegionalCompany(updatedCompanyInfo.getRegionalCompany());
+        company.setKuhStartup(updatedCompanyInfo.getKuhStartup());
+        company.setVentureRecognition(updatedCompanyInfo.getVentureRecognition());
+        company.setResearchRecognition(updatedCompanyInfo.getResearchRecognition());
+        company.setEarlyStartupType(updatedCompanyInfo.getEarlyStartupType());
+        company.setIsDaechang(updatedCompanyInfo.getIsDaechang());
+        company.setKuhSubsidiary(updatedCompanyInfo.getKuhSubsidiary());
+        company.setInvestmentSector(updatedCompanyInfo.getInvestmentSector());
+        company.setDueDiligence(updatedCompanyInfo.getDueDiligence());
+        company.setMainProducts(updatedCompanyInfo.getMainProducts());
+        company.setInvestmentPoint1(updatedCompanyInfo.getInvestmentPoint1());
+        company.setInvestmentPoint2(updatedCompanyInfo.getInvestmentPoint2());
+        company.setInvestmentPoint3(updatedCompanyInfo.getInvestmentPoint3());
+        company.setPublicTechnologyTransfer(updatedCompanyInfo.getPublicTechnologyTransfer());
+        company.setSmeStatus(updatedCompanyInfo.getSmeStatus());
+        company.setListingDate(updatedCompanyInfo.getListingDate());
+        company.setListingStatus(updatedCompanyInfo.getListingStatus());
+
+        companyRepository.save(company);
+        logger.info("[UPDATE] 회사 정보 수정 완료 - companyId: {}", updatedCompanyInfo.getCompanyId());
+
+        return mapToDTO(company);
+    }
     @Transactional(readOnly = true)
     public RCmpInfDTO getCompanyInfo(String companyId) {
         // 1. 회사 기본 정보 조회
@@ -228,6 +271,7 @@ System.out.println(CCmpInfDTO);
                 .listingStatus(company.getListingStatus())
                 .listingDate(company.getListingDate())
                 .companyPostalCode(company.getCompanyPostalCode())
+                .isDaechang(company.getIsDaechang())
 
                 // 최근 2개 재무제표
                 .recentFinancials(recentFinancials)
@@ -315,5 +359,44 @@ System.out.println(CCmpInfDTO);
                 .orElseThrow(() -> new IllegalArgumentException("Company not found with ID: " + companyId));
         company.setListingStatus(listingStatus);
         companyRepository.save(company);
+    }
+
+    /**
+     * Entity → DTO 변환
+     */
+    private UCmpInfDTO mapToDTO(Company company) {
+        return UCmpInfDTO.builder()
+                .companyId(company.getCompanyId())
+                .companyName(company.getCompanyName())
+                .establishmentDate(company.getEstablishmentDate())
+                .ceoName(company.getCeoName())
+                .companyAddress(company.getCompanyAddress())
+                .companyPostalCode(company.getCompanyPostalCode())
+                .businessRegistrationNumber(company.getBusinessRegistrationNumber())
+                .corporateRegistrationNumber(company.getCorporateRegistrationNumber())
+                .industryCode(company.getIndustryCode())
+                .capital(company.getCapital())
+                .parValue(company.getParValue())
+                .employeeCount(company.getEmployeeCount())
+                .startupType(company.getStartupType())
+                .regionalCompany(company.getRegionalCompany())
+                .kuhStartup(company.getKuhStartup())
+                .ventureRecognition(company.getVentureRecognition())
+                .researchRecognition(company.getResearchRecognition())
+                .earlyStartupType(company.getEarlyStartupType())
+                .isDaechang(company.getIsDaechang())
+                .kuhSubsidiary(company.getKuhSubsidiary())
+                .investmentSector(company.getInvestmentSector())
+                .dueDiligence(company.getDueDiligence())
+                .mainProducts(company.getMainProducts())
+                .investmentPoint1(company.getInvestmentPoint1())
+                .investmentPoint2(company.getInvestmentPoint2())
+                .investmentPoint3(company.getInvestmentPoint3())
+                .publicTechnologyTransfer(company.getPublicTechnologyTransfer())
+                .smeStatus(company.getSmeStatus())
+                .listingDate(company.getListingDate())
+                .listingStatus(company.getListingStatus())
+                .isDaechang(company.getIsDaechang())
+                .build();
     }
 }

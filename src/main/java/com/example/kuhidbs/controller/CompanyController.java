@@ -105,6 +105,17 @@ public class CompanyController {
         return ResponseEntity.status(201).build();
     }
 
+    /**
+     * 회사 정보 수정
+     */
+    @PutMapping("/updateCompany")
+    public ResponseEntity<UCmpInfDTO> updateCompanyInfo(
+            @RequestBody UCmpInfDTO updatedCompanyInfo) {
+        logger.info("[PUT] 회사 정보 수정 - companyId: {}", updatedCompanyInfo.getCompanyId());
+        UCmpInfDTO updatedInfo = companyService.updateCompanyInfo(updatedCompanyInfo);
+        return ResponseEntity.ok(updatedInfo);
+    }
+
     @PostMapping("/createInvestment")
     public ResponseEntity<Void> createInvestment(@Valid @RequestBody CIvtDTO cIvtDTO) {
         logger.info("투자 정보 저장 요청: {}", cIvtDTO);
