@@ -57,7 +57,7 @@
             let equityRate = (shareCount / totalShares) * 100;
             document.getElementById("equityRate").value = isNaN(equityRate) ? "" : equityRate.toFixed(2);
 
-            let investmentValue = Math.floor((unitPrice * totalShares) / 100000000);
+            let investmentValue = Math.floor((unitPrice * totalShares));/// 100000000);
             document.getElementById("investmentValue").value = isNaN(investmentValue) ? "" : formatNumberWithCommas(investmentValue);
         }
 
@@ -91,7 +91,7 @@
                 if (["investmentUnitPrice", "shareCount", "investmentSumPrice", "totalShares", "investmentValue"].includes(key)) {
                     jsonData[key] = cleanedValue ? parseInt(cleanedValue, 10) : 0;
                     if (key === "investmentValue") {
-                        jsonData[key] *= 100000000;
+                        //jsonData[key] *= 100000000;
                     }
                 }
                 else if (key === "equityRate") {
@@ -252,7 +252,7 @@
         <tr>
             <th>KUH지분율(%)</th>
             <td><input type="text" class="form-control" id="equityRate" name="equityRate" readonly></td>
-            <th>투자밸류(억 원)</th>
+            <th>투자밸류(원)</th>
             <td><input type="text" data-format="number" class="form-control" id="investmentValue" name="investmentValue" readonly></td>
         </tr>
         <tr>

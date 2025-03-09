@@ -19,7 +19,7 @@
     <input type="hidden" id="fundId" name="fundId" th:value="${fundId}" />
     <table class="table table-bordered">
         <tbody>
-        <tr><th colspan="4" class="text-center bg-light"></th></tr>
+        <tr><th colspan="4" class="text-end bg-light">(단위: 백만 원)</th></tr>
         <tr>
             <th>회계연도</th>
             <td colspan="3"><input type="month" class="form-control" id="financialYear"></td>
@@ -102,11 +102,41 @@
     document.addEventListener("DOMContentLoaded", function () {
         document.querySelectorAll(".number-format").forEach(input => {
             input.addEventListener("input", function () {
-                this.value = this.value.replace(/[^0-9.]/g, "").replace(/(\..*)\./g, "$1");
-                this.value = this.value.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                let value = this.value;
+
+                // ✅ 숫자, 음수(-), 소수점(.)만 허용
+                value = value.replace(/[^0-9.-]/g, "");
+
+                // ✅ 첫 번째 문자 이외의 위치에 있는 '-' 기호 제거
+                value = value.replace(/(?!^)-/g, "");
+
+                // ✅ 소수점이 2개 이상 입력되는 경우 방지
+                value = value.replace(/(\..*)\./g, "$1");
+
+                // ✅ 천 단위 콤마 적용
+                if (value !== "" && value !== "-") {
+                    let parts = value.split(".");
+                    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    this.value = parts.join(".");
+                } else {
+                    this.value = value; // 음수 기호만 입력되었을 경우 허용
+                }
+            });
+
+            // ✅ 입력 필드에서 포커스를 벗어날 때 (천 단위 콤마 유지)
+            input.addEventListener("blur", function () {
+                let value = this.value;
+
+                // ✅ 숫자만 포함된 경우 천 단위 콤마 적용
+                if (value !== "" && value !== "-") {
+                    let parts = value.split(".");
+                    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+                    this.value = parts.join(".");
+                }
             });
         });
 
+        // ✅ 저장 시 콤마 제거 후 서버로 전송
         document.getElementById("fundFinancialAddForm").addEventListener("submit", function (event) {
             event.preventDefault();
 
@@ -141,5 +171,6 @@
                 });
         });
     });
+
 </script>
 </html>

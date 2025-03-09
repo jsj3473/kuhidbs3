@@ -32,7 +32,9 @@
     <!-- ✅ Thymeleaf 반복문을 사용하여 감액/환입 내역 출력 -->
     <tr th:each="shrup : ${shrupDTOS}">
         <td th:text="${shrup.shareUpdateDate}"></td>
-        <td class="text-end" th:text="${#numbers.formatInteger(shrup.shareUnitValue, 3, 'COMMA')}"></td>
+        <td class="text-end"
+            th:text="${shrup.shareUnitValue < 1000 ? shrup.shareUnitValue : #numbers.formatInteger(shrup.shareUnitValue, 3, 'COMMA')}">
+        </td>
         <td th:text="${shrup.shareUpdateType}"></td>
         <td th:text="${shrup.shareUpdateReason}"></td>
         <td th:text="${shrup.shareUpdateAction}"></td>

@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>액면분할 입력</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script defer th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/slimTable.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/popUpNavbar.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+
+<body class="container mt-4">
+<div th:replace="fragments/popUpNavbar :: navbar"></div>
+
+<h2 class="mb-4">액면분할 등록</h2>
+
+<form id="stockSplitForm">
+    <input type="hidden" name="companyId" th:value="${companyId}">
+
+    <table class="table table-bordered text-center">
+        <tbody>
+        <tr>
+            <th>액면분할 일자</th>
+            <td><input type="date" class="form-control" id="splitDate" name="splitDate" required></td>
+            <th>액면분할 전 주당 가격</th>
+            <td><input type="text" class="form-control number-format" id="preSplitUnitPrice" name="preSplitUnitPrice" required></td>
+        </tr>
+        <tr>
+            <th>액면분할 후 주당 가격</th>
+            <td><input type="text" class="form-control number-format" id="postSplitUnitPrice" name="postSplitUnitPrice" required></td>
+            <th>액면분할 비율</th>
+            <td><input type="text" class="form-control decimal-format" id="splitRatio" name="splitRatio" required></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="button-container">
+        <button type="submit" class="btn btn-primary">저장</button>
+    </div>
+</form>
+
+<!-- JavaScript -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // ✅ 숫자 입력 필드 천단위 콤마 자동 적용
+        applyNumberFormatting(".number-format");
+
+        // ✅ 소수 입력 필드 (비율 등) 소수점 허용 적용
+        applyDecimalFormatting(".decimal-format");
+
+        document.getElementById("stockSplitForm").addEventListener("submit", function(event) {
+            event.preventDefault(); // 기본 제출 방지
+
+            // ✅ 전송 전에 콤마 제거
+            removeCommasFromNumberFields("#stockSplitForm", ".number-format");
+
+            let form = document.getElementById("stockSplitForm");
+            let formData = new FormData(form);
+            let jsonData = {};
+
+            // FormData를 JSON 객체로 변환
+            formData.forEach((value, key) => {
+                jsonData[key] = value;
+            });
+
+            console.log("전송할 데이터:", jsonData); // 디버깅용
+
+            fetch("/api/companies/createStockSplit", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(jsonData)
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error("등록 실패");
+                    }
+                    return response.text();
+                })
+                .then(data => {
+                    alert("저장이 완료되었습니다! 화면을 종료합니다.");
+                    window.close(); // 팝업 화면 종료
+                })
+                .catch(error => {
+                    alert("저장 중 오류 발생: " + error.message + ", 값을 확인해주세요.");
+                });
+        });
+
+        // ✅ 천단위 콤마 관련 공통 함수
+        function applyNumberFormatting(selector) {
+            const numberFields = document.querySelectorAll(selector);
+            numberFields.forEach(field => {
+                formatNumberField(field);  // 초기 콤마 적용
+                field.addEventListener("input", formatNumberOnInput);
+                field.addEventListener("blur", formatNumberOnBlur);
+            });
+        }
+
+        function formatNumberOnInput(event) {
+            let value = event.target.value.replace(/[^0-9-]/g, ""); // 음수 허용
+            event.target.value = value ? Number(value).toLocaleString() : "";
+        }
+
+        function formatNumberOnBlur(event) {
+            let value = event.target.value.replace(/[^0-9-]/g, ""); // 음수 허용
+            event.target.value = value ? Number(value).toLocaleString() : "";
+        }
+
+        function formatNumberField(field) {
+            let value = field.value.replace(/[^0-9-]/g, ""); // 음수 허용
+            field.value = value ? Number(value).toLocaleString() : "";
+        }
+
+        function removeCommasFromNumberFields(formSelector, fieldSelector) {
+            const form = document.querySelector(formSelector);
+            const numberFields = form.querySelectorAll(fieldSelector);
+            numberFields.forEach(field => {
+                field.value = field.value.replace(/,/g, ""); // 콤마 제거
+            });
+        }
+
+        // ✅ 소수점 입력 허용 함수 (비율 입력 필드 적용)
+        function applyDecimalFormatting(selector) {
+            const decimalFields = document.querySelectorAll(selector);
+            decimalFields.forEach(field => {
+                field.addEventListener("input", function (event) {
+                    let value = event.target.value.replace(/[^0-9.]/g, ""); // 숫자와 '.'만 허용
+                    let parts = value.split('.');
+                    if (parts.length > 2) {
+                        value = parts[0] + '.' + parts.slice(1).join(''); // 소수점 하나만 허용
+                    }
+                    event.target.value = value;
+                });
+
+                field.addEventListener("blur", function (event) {
+                    let value = event.target.value;
+                    if (value && !isNaN(value)) {
+                        event.target.value = parseFloat(value).toFixed(2); // 두 자리 소수점 적용
+                    }
+                });
+            });
+        }
+    });
+</script>
+
+
+<!-- Bootstrap JS -->
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

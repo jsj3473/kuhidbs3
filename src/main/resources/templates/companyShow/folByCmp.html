@@ -36,11 +36,24 @@
         <td th:text="${followup.followupStartDate}"></td>
         <td th:text="${followup.followupCompanyName}"></td>
         <td th:text="${followup.followupProduct}"></td>
-        <td class="text-end" th:text="${#numbers.formatInteger(followup.followupSumPrice, 3, 'COMMA')}"></td>
-        <td class="text-end" th:text="${#numbers.formatInteger(followup.followupShareCount, 3, 'COMMA')}"></td>
-        <td class="text-end" th:text="${#numbers.formatInteger(followup.followupUnitPrice, 3, 'COMMA')}"></td>
-        <td class="text-end" th:text="${#numbers.formatInteger(followup.followupInvestmentValue, 3, 'COMMA')}"></td>
+
+        <td class="text-end"
+            th:text="${followup.followupSumPrice < 1000 ? followup.followupSumPrice : #numbers.formatInteger(followup.followupSumPrice, 3, 'COMMA')}">
+        </td>
+
+        <td class="text-end"
+            th:text="${followup.followupShareCount < 1000 ? followup.followupShareCount : #numbers.formatInteger(followup.followupShareCount, 3, 'COMMA')}">
+        </td>
+
+        <td class="text-end"
+            th:text="${followup.followupUnitPrice < 1000 ? followup.followupUnitPrice : #numbers.formatInteger(followup.followupUnitPrice, 3, 'COMMA')}">
+        </td>
+
+        <td class="text-end"
+            th:text="${followup.followupInvestmentValue < 1000 ? followup.followupInvestmentValue : #numbers.formatInteger(followup.followupInvestmentValue, 3, 'COMMA')}">
+        </td>
     </tr>
+
     </tbody>
 </table>
 

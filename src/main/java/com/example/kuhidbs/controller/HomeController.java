@@ -3,6 +3,7 @@ package com.example.kuhidbs.controller;
 import com.example.kuhidbs.dto.Fund.*;
 import com.example.kuhidbs.dto.company.kuh투자.RIvtDTO;
 import com.example.kuhidbs.dto.company.감액환입.RShrupDTO;
+import com.example.kuhidbs.dto.company.동반.RComDTO;
 import com.example.kuhidbs.dto.company.무증.RBonusDTO;
 import com.example.kuhidbs.dto.company.팁스.발심사.RRwrDTO;
 import com.example.kuhidbs.dto.company.사후관리.RMngDTO;
@@ -50,6 +51,8 @@ public class HomeController {
     private RecoveryService recoveryService;
     @Autowired
     private AccountService accountService;
+    @Autowired
+    private CombineService combineService;
     @Autowired
     private ShareholderService shareholderService;
     @Autowired
@@ -250,6 +253,13 @@ public class HomeController {
         return "companyAdd/manage"; // manage.html
     }
 
+    // 액면분할 입력 팝업
+    @GetMapping("/companyAdd/stockSplit/{id}")
+    public String stockSplit(@PathVariable("id") String id, Model model) {
+        model.addAttribute("companyId", id);
+        return "companyAdd/stockSplit"; // stockSplit.html
+    }
+
     // 사후관리담당자 입력 팝업
     @GetMapping("/companyAdd/managerChange/{id}")
     public String managerChange(@PathVariable("id") String id, Model model) {
@@ -355,6 +365,16 @@ public class HomeController {
                 .orElseGet(ArrayList::new);
         model.addAttribute("rRwrDTOS", rRwrDTOS);
         return "companyShow/reviewerChangeByCmp";
+    }
+
+    // 기업별 모든 공동투자내역 전체조회 페이지
+    @GetMapping("/companyShow/combineByCmp/{id}")
+    public String companyShowCombineByCmp(@PathVariable("id") String id, Model model) {
+        model.addAttribute("companyId", id);
+        List<RComDTO> rComDTOS = Optional.ofNullable(combineService.getRComByCompanyId(id))
+                .orElseGet(ArrayList::new);
+        model.addAttribute("rComDTOS", rComDTOS);
+        return "companyShow/combineByCmp";
     }
 
     // 투자별 계좌조회 (투자 ID 값 사용)

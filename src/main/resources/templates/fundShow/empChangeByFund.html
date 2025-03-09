@@ -17,6 +17,9 @@
 
 <!-- ✅ 투자기업 고용인력 테이블 -->
 <table class="table table-bordered text-center">
+    <caption class="text-end">
+        (단위: 명)
+    </caption>
     <thead class="table-light">
     <tr>
         <th rowspan="2">투자기업</th>
@@ -37,13 +40,37 @@
     <tr th:each="employment : ${rEmploymentDTOS}">
         <td th:text="${employment.companyNm}"></td>
         <td th:text="${employment.initialInvestmentDate}"></td>
-        <td th:text="${#numbers.formatInteger(employment.initialEmployeeCount, 3, 'COMMA')} + ' 명'"></td>
-        <td th:text="${#numbers.formatInteger(employment.latestEmployeeCount, 3, 'COMMA')} + ' 명'"></td>
+
+        <td class="text-end"
+            th:text="${employment.initialEmployeeCount != null
+                 ? (employment.initialEmployeeCount < 1000
+                    ? employment.initialEmployeeCount
+                    : #numbers.formatInteger(employment.initialEmployeeCount, 3, 'COMMA'))
+                 : '0'}">
+        </td>
+
+        <td class="text-end"
+            th:text="${employment.latestEmployeeCount != null
+                 ? (employment.latestEmployeeCount < 1000
+                    ? employment.latestEmployeeCount
+                    : #numbers.formatInteger(employment.latestEmployeeCount, 3, 'COMMA'))
+                 : '0'}">
+        </td>
+
         <td th:text="${employment.finalRecoveryDate}"></td>
-        <td th:text="${#numbers.formatInteger(employment.finalEmployeeCount, 3, 'COMMA')} + ' 명'"></td>
+
+        <td class="text-end"
+            th:text="${employment.finalEmployeeCount != null
+                 ? (employment.finalEmployeeCount < 1000
+                    ? employment.finalEmployeeCount
+                    : #numbers.formatInteger(employment.finalEmployeeCount, 3, 'COMMA'))
+                 : '0'}">
+        </td>
+
         <td th:text="${employment.financialYear}"></td>
         <td th:text="${employment.financialHalf}"></td>
     </tr>
+
     </tbody>
 </table>
 

@@ -206,15 +206,33 @@
         <td th:text="${investment.investmentDate}"></td>
         <td th:text="${investment.investmentProduct}"></td>
         <td th:text="${investment.fundId}"></td>
-        <td class="text-end" th:text="${#numbers.formatInteger(investment.investmentSumPrice, 3, 'COMMA')}"></td>
-        <td class="text-end" th:text="${#numbers.formatInteger(investment.investmentUnitPrice, 3, 'COMMA')}"></td>
-        <td class="text-end" th:text="${#numbers.formatInteger(investment.shareCount, 3, 'COMMA')}"></td>
-        <td class="text-end" th:text="${investment.equityRate}"></td>
-        <td class="text-end" th:text="${#numbers.formatInteger(investment.totalShares, 3, 'COMMA')}"></td>
-        <td class="text-end" th:text="${#numbers.formatInteger(investment.investmentValue, 3, 'COMMA')}"></td>
+
+        <td class="text-end"
+            th:text="${investment.investmentSumPrice < 1000 ? investment.investmentSumPrice : #numbers.formatInteger(investment.investmentSumPrice, 3, 'COMMA')}">
+        </td>
+
+        <td class="text-end"
+            th:text="${investment.investmentUnitPrice < 1000 ? investment.investmentUnitPrice : #numbers.formatInteger(investment.investmentUnitPrice, 3, 'COMMA')}">
+        </td>
+
+        <td class="text-end"
+            th:text="${investment.shareCount < 1000 ? investment.shareCount : #numbers.formatInteger(investment.shareCount, 3, 'COMMA')}">
+        </td>
+
+        <td class="text-end" th:text="${investment.equityRate}"></td>  <!-- 지분율은 그대로 유지 -->
+
+        <td class="text-end"
+            th:text="${investment.totalShares < 1000 ? investment.totalShares : #numbers.formatInteger(investment.totalShares, 3, 'COMMA')}">
+        </td>
+
+        <td class="text-end"
+            th:text="${investment.investmentValue < 1000 ? investment.investmentValue : #numbers.formatInteger(investment.investmentValue, 3, 'COMMA')}">
+        </td>
+
         <td th:text="${investment.investmentStep}"></td>
         <td th:text="${investment.tangibleInvestment}"></td>
         <td th:text="${investment.investmentEmployee}"></td>
+
     </tr>
     </tr>
     </tbody>

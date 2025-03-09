@@ -68,6 +68,7 @@
             document.getElementById("researchRecognition").value = data.researchRecognition || "";
             document.getElementById("publicTechnologyTransfer").value = data.publicTechnologyTransfer || "";
             document.getElementById("dueDiligence").value = data.dueDiligence || "";
+            document.getElementById("isDaechang").value = data.isDaechang || "";
             document.getElementById("listingStatus").value = data.listingStatus || "";
             document.getElementById("listingDate").value = data.listingDate || "";
 
@@ -228,6 +229,8 @@
                     height = 500;
                 } else if (type === "folByCmp") {
                     height = 500;
+                } else if (type === "combineByCmp") {
+                    height = 500;
                 } else if (type === "shrupByCmp") {
                     height = 500;
                 } else if (type === "recoveryByCmp") {
@@ -268,6 +271,7 @@
     <nav class="sidebar">
         <a href="#" onclick="openViewPopup('ivtByCmp')">📊 KUH 투자 조회</a>
         <a href="#" onclick="openViewPopup('folByCmp')">📈 후속투자 조회</a>
+        <a href="#" onclick="openViewPopup('combineByCmp')">🤝🏻 공동투자 조회</a>
         <a href="#" onclick="openViewPopup('shrupByCmp')">💸 감액환입 조회</a>
         <a href="#" onclick="openViewPopup('recoveryByCmp')">💰 회수내역 조회</a>
         <a href="#" onclick="openViewPopup('bonusByCmp')">🎁 무상증자 조회</a>
@@ -441,16 +445,26 @@
                         <option value="실사보완중">실사보완중</option>
                     </select>
                 </td>
-                <th>상장여부</th>
+                <th>대창창업기업(펀드)</th>
                 <td colspan="2">
-                    <select class="form-control" id="listingStatus" disabled>
+                    <select class="form-control" id="isDaechang" disabled>
                         <option value="">선택하세요</option>
-                        <option value="비상장기업">비상장기업</option>
-                        <option value="상장기업">상장기업</option>
+                        <option value="대창창업기업">대창창업기업</option>
+                        <option value="일반기업">일반기업</option>
                     </select>
                 </td>
-                <th>상장일자</th>
-                <td colspan="3"><input type="date" class="form-control" id="listingDate" readonly></td>
+                <th>상장구분 / 일자</th>
+                <td colspan="2">
+                    <div class="input-inline">
+                        <select class="form-control" id="listingStatus" disabled>
+                            <option value="">선택하세요</option>
+                            <option value="비상장기업">비상장기업</option>
+                            <option value="상장기업">상장기업</option>
+                        </select>
+                        <input type="date" class="form-control" id="listingDate" readonly>
+                    </div>
+
+                </td>
             </tr>
 
 

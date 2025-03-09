@@ -28,9 +28,16 @@
     <!-- ✅ Thymeleaf 반복문을 사용하여 무상증자 내역 출력 -->
     <tr th:each="bonus : ${rBonusDTOS}">
         <td th:text="${bonus.bonusDate}"></td>
-        <td class="text-end" th:text="${#numbers.formatInteger(bonus.changedShareCount, 3, 'COMMA')}"></td>
-        <td class="text-end" th:text="${#numbers.formatInteger(bonus.unitPrice, 3, 'COMMA')}"></td>
+
+        <td class="text-end"
+            th:text="${bonus.changedShareCount < 1000 ? bonus.changedShareCount : #numbers.formatInteger(bonus.changedShareCount, 3, 'COMMA')}">
+        </td>
+
+        <td class="text-end"
+            th:text="${bonus.unitPrice < 1000 ? bonus.unitPrice : #numbers.formatInteger(bonus.unitPrice, 3, 'COMMA')}">
+        </td>
     </tr>
+
     </tbody>
 </table>
 
