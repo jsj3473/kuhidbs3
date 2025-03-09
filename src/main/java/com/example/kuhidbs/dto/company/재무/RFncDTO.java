@@ -2,6 +2,8 @@ package com.example.kuhidbs.dto.company.재무;
 
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -11,12 +13,12 @@ public class RFncDTO {
 
     private Integer financialYear;
     private String financialHalf;
-    private Integer revenue;
-    private Integer operatingProfit;
-    private Integer netIncome;
-    private Integer totalAssets;
-    private Integer totalCapital;
-    private Integer capital;
+    private BigDecimal revenue;
+    private BigDecimal operatingProfit;
+    private BigDecimal netIncome;
+    private BigDecimal totalAssets;
+    private BigDecimal totalCapital;
+    private BigDecimal capital;
     private Integer employeeCount;
-    private Integer totalDebt;
+    private BigDecimal totalDebt;
 }

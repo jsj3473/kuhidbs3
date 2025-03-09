@@ -28,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 @Service
@@ -213,6 +214,29 @@ public class InvestmentService {
         fundAchievementRepository.save(fundAchievement);
         logger.info("[INFO] 투자 목표 달성 데이터 저장 완료 - 펀드 ID: {}", fund.getFundId());
     }
+
+    private void updateFundInvestment(
+            FundAchievement fundAchievement, Company company, String purpose, String investmentType,
+            Long investmentAmount, String criteria, Consumer<Long> setTargetAmount,
+            Long currentTargetAmount, Consumer<Long> setAmount, Consumer<Double> setRatio) {
+
+        if ("투자 잔액".equals(criteria)) {
+            setTargetAmount.accept(currentTargetAmount + investmentAmount);
+            fundAchievementRepository.save(fundAchievement);
+            logger.info("[UPDATE] {} - 투자잔액 기준으로 타겟 금액 갱신: {}", investmentType, currentTargetAmount + investmentAmount);
+        }
+
+        if (checkCompanyCriteria(company, purpose)) {
+
+            // 투자 금액 갱신
+            setAmount.accept(fundAchievement.getMandatoryAmount() + investmentAmount);
+            setRatio.accept(calculateRatio(fundAchievement.getMandatoryAmount(), fundAchievement.getMandatoryTargetAmount()));
+
+            logger.info("[UPDATE] {} - 추가 금액: {} / 총 금액: {} / 비율: {}",
+                    investmentType, investmentAmount, fundAchievement.getMandatoryAmount(), fundAchievement.getMandatoryRatio());
+        }
+    }
+
 
     private Double calculateRatio(Long amount, Long targetAmount) {
         if (targetAmount == null || targetAmount == 0) {

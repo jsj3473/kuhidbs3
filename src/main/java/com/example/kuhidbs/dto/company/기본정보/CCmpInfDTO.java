@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -77,19 +79,19 @@ public class CCmpInfDTO {
 
     private String financialHalf;
 
-    private Integer revenue;
+    private BigDecimal revenue;
 
-    private Integer operatingProfit;
+    private BigDecimal operatingProfit;
 
-    private Integer netIncome;
+    private BigDecimal netIncome;
 
-    private Integer totalAssets;
+    private BigDecimal totalAssets;
 
-    private Integer totalCapital;
+    private BigDecimal totalCapital;
 
-    private Integer totalDebt;
+    private BigDecimal totalDebt;
 
-    private Integer capitalFnc;
+    private BigDecimal capitalFnc;
 
     private Integer employeeCountFnc;
 

@@ -80,6 +80,7 @@ public class FundService {
                 .fund(fund) // 외래키(Fund) 연결
 
                 // 🔥 의무 투자
+                .mandatoryAmount(0L)
                 .mandatoryCriteria(dto.getMandatoryCriteria())
                 .mandatoryCriteriaRatio(dto.getMandatoryCriteriaRatio())
                 .mandatoryTargetAmount(calculateTargetAmount(
@@ -87,6 +88,7 @@ public class FundService {
                         dto.getMandatoryCriteriaRatio()))
 
                 // 🔥 주목적 투자 1
+                .mainInvest1Amount(0L)
                 .mainInvest1Criteria(dto.getMainInvest1Criteria())
                 .mainInvest1CriteriaRatio(dto.getMainInvest1CriteriaRatio())
                 .mainInvest1TargetAmount(calculateTargetAmount(
@@ -94,6 +96,7 @@ public class FundService {
                         dto.getMainInvest1CriteriaRatio()))
 
                 // 🔥 주목적 투자 2
+                .mainInvest2Amount(0L)
                 .mainInvest2Criteria(dto.getMainInvest2Criteria())
                 .mainInvest2CriteriaRatio(dto.getMainInvest2CriteriaRatio())
                 .mainInvest2TargetAmount(calculateTargetAmount(
@@ -101,6 +104,7 @@ public class FundService {
                         dto.getMainInvest2CriteriaRatio()))
 
                 // 🔥 특수목적 투자 1
+                .specialInvest1Amount(0L)
                 .specialInvest1Criteria(dto.getSpecialInvest1Criteria())
                 .specialInvest1CriteriaRatio(dto.getSpecialInvest1CriteriaRatio())
                 .specialInvest1TargetAmount(calculateTargetAmount(
@@ -108,6 +112,7 @@ public class FundService {
                         dto.getSpecialInvest1CriteriaRatio()))
 
                 // 🔥 특수목적 투자 2
+                .specialInvest1Amount(0L)
                 .specialInvest2Criteria(dto.getSpecialInvest2Criteria())
                 .specialInvest2CriteriaRatio(dto.getSpecialInvest2CriteriaRatio())
                 .specialInvest2TargetAmount(calculateTargetAmount(
@@ -115,6 +120,7 @@ public class FundService {
                         dto.getSpecialInvest2CriteriaRatio()))
 
                 // 🔥 특수목적 투자 3
+                .specialInvest1Amount(0L)
                 .specialInvest3Criteria(dto.getSpecialInvest3Criteria())
                 .specialInvest3CriteriaRatio(dto.getSpecialInvest3CriteriaRatio())
                 .specialInvest3TargetAmount(calculateTargetAmount(

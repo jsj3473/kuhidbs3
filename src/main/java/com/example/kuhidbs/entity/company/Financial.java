@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
+import java.math.BigDecimal;
+
 @Entity
 @Table(name = "KUH_FNC_TBL")
 @Data
@@ -31,26 +33,27 @@ public class Financial extends BaseEntity {
     private String financialHalf;
 
     @Column(name = "REVENUE")
-    private Integer revenue;
+    private BigDecimal revenue; // 매출 (소수점 가능)
 
     @Column(name = "OPER_PROFIT")
-    private Integer operatingProfit;
+    private BigDecimal operatingProfit; // 영업이익 (소수점 가능)
 
     @Column(name = "NET_INCOME")
-    private Integer netIncome;
+    private BigDecimal netIncome; // 순이익 (소수점 가능)
 
     @Column(name = "TOT_AST")
-    private Integer totalAssets;
+    private BigDecimal totalAssets; // 총자산 (소수점 가능)
 
     @Column(name = "TOT_CAPITAL")
-    private Integer totalCapital;
+    private BigDecimal totalCapital; // 총자본 (소수점 가능)
 
     @Column(name = "CAPITAL")
-    private Integer capital;
+    private BigDecimal capital; // 자본금 (소수점 가능)
+
+    @Column(name = "DEBT_CAPITAL")
+    private BigDecimal totalDebt; // 총부채 (소수점 가능)
+
 
     @Column(name = "EMP_CNT")
     private Integer employeeCount;
-
-    @Column(name = "DEBT_CAPITAL")
-    private Integer totalDebt;
 }
