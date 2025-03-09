@@ -294,6 +294,12 @@ public class FundService {
                 .priorLossLP(fund.getPriorLossLP())
                 .liquidationStatus(fund.getLiquidationStatus())
                 .liquidationDate(fund.getLiquidationDate())
+                .mandatoryPurpose(fund.getMandatoryPurpose())
+                .mainInvest1Purpose(fund.getMainInvest1Purpose())
+                .mainInvest2Purpose(fund.getMainInvest2Purpose())
+                .specialInvest1Purpose(fund.getSpecialInvest1Purpose())
+                .specialInvest2Purpose(fund.getSpecialInvest2Purpose())
+                .specialInvest3Purpose(fund.getSpecialInvest3Purpose())
                 .build();
     }
 }
