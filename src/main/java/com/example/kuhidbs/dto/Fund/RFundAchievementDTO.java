@@ -1,10 +1,13 @@
 package com.example.kuhidbs.dto.Fund;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class RFundAchievementDTO {
 
     private Long achievementId;

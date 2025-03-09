@@ -68,6 +68,7 @@ System.out.println(CCmpInfDTO);
                 .listingDate(CCmpInfDTO.getListingDate())
                 .listingStatus(CCmpInfDTO.getListingStatus())
                 .companyPostalCode(CCmpInfDTO.getCompanyPostalCode())
+                .isDaechang(CCmpInfDTO.getIsDaechang())
                 .build();
 
         companyRepository.save(company);
@@ -144,6 +145,7 @@ System.out.println(CCmpInfDTO);
                 .listingDate(company.getListingDate())
                 .listingStatus(company.getListingStatus())
                 .companyPostalCode(company.getCompanyPostalCode())
+                .isDaechang(company.getIsDaechang())
 
                 // 최근 2개 재무제표
                 .recentFinancials(recentFinancials)

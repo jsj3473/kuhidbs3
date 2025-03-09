@@ -50,6 +50,7 @@ public class RCmpInfDTO {
     private String researchRecognition;
 
     private String earlyStartupType;
+    private String isDaechang; //대창창업기업
 
     private String kuhSubsidiary; //kuh 자회사
 

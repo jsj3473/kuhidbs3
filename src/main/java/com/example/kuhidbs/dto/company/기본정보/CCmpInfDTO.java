@@ -33,6 +33,8 @@ public class CCmpInfDTO {
 
     private Integer employeeCount;
 
+    private String isDaechang;
+
     private String startupType;
 
     private String regionalCompany;

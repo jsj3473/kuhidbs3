@@ -63,6 +63,9 @@ public class Company extends BaseEntity {
     @Column(name = "RGN_YN", length = 100)
     private String regionalCompany;
 
+    @Column(name = "IS_DAECHANG", length = 100)
+    private String isDaechang;
+
     @Column(name = "KUH_YN", length = 100)
     private String kuhStartup;
 

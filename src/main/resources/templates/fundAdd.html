@@ -238,6 +238,188 @@
                     <th>우선손실충당 LP</th>
                     <td colspan="6"><input type="text" class="form-control" name="priorLossLP"></td>
                 </tr>
+                <tr><th colspan="7">투자조합 투자조건</th></tr>
+
+                <!-- 🔥 의무 투자 -->
+                <tr>
+                    <th>의무 투자 목적</th>
+                    <td>
+                        <select class="form-control" name="mandatoryPurpose">
+                            <option value="">선택하세요</option>
+                            <option value="초기창업">초기창업</option>
+                            <option value="상장하지 않은창업자">상장하지 않은 창업자</option>
+                            <option value="벤처기업">벤처기업</option>
+                            <option value="출자약정액 80%투자">출자약정액 80% 투자</option>
+                            <option value="대학창업">대학창업</option>
+                            <option value="학생창업">학생창업</option>
+                            <option value="지방기업">지방기업</option>
+                        </select>
+                    </td>
+                    <th>의무 투자 기준대상</th>
+                    <td>
+                        <select class="form-control" name="mandatoryCriteria">
+                            <option value="">선택하세요</option>
+                            <option value="투자 잔액">투자 잔액</option>
+                            <option value="출자약정액">출자약정액</option>
+                            <option value="기타">기타</option>
+                        </select>
+                    </td>
+                    <th>의무 투자 기준대상 비율(%)</th>
+                    <td><input type="number" step="0.01" class="form-control" name="mandatoryCriteriaRatio"></td>
+                    <th>의무 투자 금액</th>
+                    <td colspan="2"><input type="text" class="form-control" name="mandatoryTotal"></td>
+                </tr>
+
+                <!-- 🔥 주목적 투자 1 -->
+                <tr>
+                    <th>주목적 투자 1 목적</th>
+                    <td>
+                        <select class="form-control" name="mainInvest1Purpose">
+                            <option value="">선택하세요</option>
+                            <option value="초기창업">초기창업</option>
+                            <option value="상장하지 않은창업자">상장하지 않은 창업자</option>
+                            <option value="벤처기업">벤처기업</option>
+                            <option value="출자약정액 80%투자">출자약정액 80% 투자</option>
+                            <option value="대학창업">대학창업</option>
+                            <option value="학생창업">학생창업</option>
+                            <option value="지방기업">지방기업</option>
+                        </select>
+                    </td>
+                    <th>주목적 투자 1 기준대상</th>
+                    <td>
+                        <select class="form-control" name="mainInvest1Criteria">
+                            <option value="">선택하세요</option>
+                            <option value="투자 잔액">투자 잔액</option>
+                            <option value="출자약정액">출자약정액</option>
+                            <option value="기타">기타</option>
+                        </select>
+                    </td>
+                    <th>주목적 투자 1 기준대상 비율(%)</th>
+                    <td><input type="number" step="0.01" class="form-control" name="mainInvest1CriteriaRatio"></td>
+                    <th>주목적 투자 1 금액</th>
+                    <td><input type="text" class="form-control" name="mainInvest1Total"></td>
+                </tr>
+
+                <!-- 🔥 주목적 투자 2 -->
+                <tr>
+                    <th>주목적 투자 2 목적</th>
+                    <td>
+                        <select class="form-control" name="mainInvest2Purpose">
+                            <option value="">선택하세요</option>
+                            <option value="초기창업">초기창업</option>
+                            <option value="상장하지 않은창업자">상장하지 않은 창업자</option>
+                            <option value="벤처기업">벤처기업</option>
+                            <option value="출자약정액 80%투자">출자약정액 80% 투자</option>
+                            <option value="대학창업">대학창업</option>
+                            <option value="학생창업">학생창업</option>
+                            <option value="지방기업">지방기업</option>
+                        </select>
+                    </td>
+                    <th>주목적 투자 2 기준대상</th>
+                    <td>
+                        <select class="form-control" name="mainInvest2Criteria">
+                            <option value="">선택하세요</option>
+                            <option value="투자 잔액">투자 잔액</option>
+                            <option value="출자약정액">출자약정액</option>
+                            <option value="기타">기타</option>
+                        </select>
+                    </td>
+                    <th>주목적 투자 2 기준대상 비율(%)</th>
+                    <td><input type="number" step="0.01" class="form-control" name="mainInvest2CriteriaRatio"></td>
+                    <th>주목적 투자 2 금액</th>
+                    <td><input type="text" class="form-control" name="mainInvest2Total"></td>
+                </tr>
+
+
+                <!-- 🔥 특수목적 투자 1 -->
+                <tr>
+                    <th>특수목적 투자 1 목적</th>
+                    <td>
+                        <select class="form-control" name="specialInvest1Purpose">
+                            <option value="">선택하세요</option>
+                            <option value="초기창업">초기창업</option>
+                            <option value="상장하지 않은창업자">상장하지 않은 창업자</option>
+                            <option value="벤처기업">벤처기업</option>
+                            <option value="출자약정액 80%투자">출자약정액 80% 투자</option>
+                            <option value="대학창업">대학창업</option>
+                            <option value="학생창업">학생창업</option>
+                            <option value="지방기업">지방기업</option>
+                        </select>
+                    </td>
+                    <th>특수목적 투자 1 기준대상</th>
+                    <td>
+                        <select class="form-control" name="specialInvest1Criteria">
+                            <option value="">선택하세요</option>
+                            <option value="투자 잔액">투자 잔액</option>
+                            <option value="출자약정액">출자약정액</option>
+                            <option value="기타">기타</option>
+                        </select>
+                    </td>
+                    <th>특수목적 투자 1 기준대상 비율(%)</th>
+                    <td><input type="number" step="0.01" class="form-control" name="specialInvest1CriteriaRatio"></td>
+                    <th>특수목적 투자 1 금액</th>
+                    <td><input type="text" class="form-control" name="specialInvest1Total"></td>
+                </tr>
+
+                <!-- 🔥 특수목적 투자 2 -->
+                <tr>
+                    <th>특수목적 투자 2 목적</th>
+                    <td>
+                        <select class="form-control" name="specialInvest2Purpose">
+                            <option value="">선택하세요</option>
+                            <option value="초기창업">초기창업</option>
+                            <option value="상장하지 않은창업자">상장하지 않은 창업자</option>
+                            <option value="벤처기업">벤처기업</option>
+                            <option value="출자약정액 80%투자">출자약정액 80% 투자</option>
+                            <option value="대학창업">대학창업</option>
+                            <option value="학생창업">학생창업</option>
+                            <option value="지방기업">지방기업</option>
+                        </select>
+                    </td>
+                    <th>특수목적 투자 2 기준대상</th>
+                    <td>
+                        <select class="form-control" name="specialInvest2Criteria">
+                            <option value="">선택하세요</option>
+                            <option value="투자 잔액">투자 잔액</option>
+                            <option value="출자약정액">출자약정액</option>
+                            <option value="기타">기타</option>
+                        </select>
+                    </td>
+                    <th>특수목적 투자 2 기준대상 비율(%)</th>
+                    <td><input type="number" step="0.01" class="form-control" name="specialInvest2CriteriaRatio"></td>
+                    <th>특수목적 투자 2 금액</th>
+                    <td><input type="text" class="form-control" name="specialInvest2Total"></td>
+                </tr>
+
+                <!-- 🔥 특수목적 투자 3 -->
+                <tr>
+                    <th>특수목적 투자 3 목적</th>
+                    <td>
+                        <select class="form-control" name="specialInvest3Purpose">
+                            <option value="">선택하세요</option>
+                            <option value="초기창업">초기창업</option>
+                            <option value="상장하지 않은창업자">상장하지 않은 창업자</option>
+                            <option value="벤처기업">벤처기업</option>
+                            <option value="출자약정액 80%투자">출자약정액 80% 투자</option>
+                            <option value="대학창업">대학창업</option>
+                            <option value="학생창업">학생창업</option>
+                            <option value="지방기업">지방기업</option>
+                        </select>
+                    </td>
+                    <th>특수목적 투자 3 기준대상</th>
+                    <td>
+                        <select class="form-control" name="specialInvest3Criteria">
+                            <option value="">선택하세요</option>
+                            <option value="투자 잔액">투자 잔액</option>
+                            <option value="출자약정액">출자약정액</option>
+                            <option value="기타">기타</option>
+                        </select>
+                    </td>
+                    <th>특수목적 투자 3 기준대상 비율(%)</th>
+                    <td><input type="number" step="0.01" class="form-control" name="specialInvest3CriteriaRatio"></td>
+                    <th>특수목적 투자 3 금액</th>
+                    <td><input type="text" class="form-control" name="specialInvest3Total"></td>
+                </tr>
                 </tbody>
             </table>
             <div class="button-container text-end">

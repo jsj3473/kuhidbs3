@@ -120,4 +120,24 @@ public class Fund extends BaseEntity {
     @Column(name = "ALLOC_TOTAL")
     private Integer allocTotal; // 배분총액
 
+    // ✅ 투자 목적 추가
+    @Column(name = "MANDATORY_PURPOSE", length = 100)
+    private String mandatoryPurpose; // 의무 투자 목적 (예: startupType)
+
+    @Column(name = "MAIN_INVEST_1_PURPOSE", length = 100)
+    private String mainInvest1Purpose; // 주목적 투자 1 목적
+
+    @Column(name = "MAIN_INVEST_2_PURPOSE", length = 100)
+    private String mainInvest2Purpose; // 주목적 투자 2 목적
+
+    @Column(name = "SPECIAL_INVEST_1_PURPOSE", length = 100)
+    private String specialInvest1Purpose; // 특수목적 투자 1 목적
+
+    @Column(name = "SPECIAL_INVEST_2_PURPOSE", length = 100)
+    private String specialInvest2Purpose; // 특수목적 투자 2 목적
+
+    @Column(name = "SPECIAL_INVEST_3_PURPOSE", length = 100)
+    private String specialInvest3Purpose; // 특수목적 투자 3 목적
+
+
 }

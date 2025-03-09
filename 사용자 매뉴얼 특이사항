@@ -1,13 +1,27 @@
-고유계정이라는 id를 가진 펀드를 억지로 생성해야한다
-펀드를 생성하기전엔 투자를 생성할수없다
+펀드생성시
 
-조합정보입력 운용인력 전원 플레이스홀더
-회계감사인명 >> 법인
-사후관리입력 엑싯방안 플레이스홀더
+cfunddto 에서 fund어치브먼트에 데이터들 넣어야한다, 계산할 데이터들은 계산해서 넣고
 
-10원에 10주 구매 대창1호, 영진개발
+    // 🔥 회사 속성이 펀드의 기준을 충족하는지 확인
+    private boolean checkCompanyCriteria(Company company, String criteriaType) {
+        if (criteriaType == null) return false;
 
-100원에 100주 구매 대창1호, HIFOR
-100원에 1주 후속투자
+        switch (criteriaType) {
+            case "startupType":
+                return "Y".equals(company.getStartupType());
+            case "regionalCompany":
+                return "Y".equals(company.getRegionalCompany());
+            case "ventureRecognition":
+                return "Y".equals(company.getVentureRecognition());
+            case "researchRecognition":
+                return "Y".equals(company.getResearchRecognition());
+            case "kuhStartup":
+                return "Y".equals(company.getKuhStartup());
+            case "kuhSubsidiary":
+                return "Y".equals(company.getKuhSubsidiary());
+            default:
+                return false;
+        }
+    }
 
-한회사에 여러재원으로 투자한 경우 두번째 투자도 후속투자처럼 처리해야한다
+    여기의 항목들 조사해서 넣기
