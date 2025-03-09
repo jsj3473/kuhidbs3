@@ -10,6 +10,47 @@
     <link rel="stylesheet" th:href="@{/css/popUpNavbar.css}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            function formatNumberInput(input) {
+                input.addEventListener("input", function () {
+                    let value = this.value
+                        .replace(/[^0-9.-]/g, "")  // 숫자, 마이너스(-), 소수점(.)만 허용
+                        .replace(/(?!^)-/g, "")   // 맨 앞이 아닌 곳의 '-' 제거
+                        .replace(/^(-?\d*)(\.\d*)?.*$/, "$1$2"); // 올바른 소수점 표현 유지
+
+                    if (value !== "" && !isNaN(value)) {
+                        let numValue = parseFloat(value).toLocaleString("en-US", {
+                            minimumFractionDigits: value.includes(".") ? 1 : 0,
+                            maximumFractionDigits: 10
+                        });
+
+                        this.value = value.endsWith(".") ? numValue + "." : numValue; // 소수점 유지
+                    }
+                });
+
+                input.addEventListener("blur", function () {
+                    let value = this.value.replace(/,/g, "");
+                    if (value !== "" && !isNaN(value)) {
+                        this.value = parseFloat(value).toLocaleString("en-US", {
+                            minimumFractionDigits: value.includes(".") ? 1 : 0,
+                            maximumFractionDigits: 10
+                        });
+                    }
+                });
+            }
+
+            // 재무 입력 필드에 적용 (금액 관련 필드)
+            const financialFields = document.querySelectorAll(".financial-number");
+            financialFields.forEach(formatNumberInput);
+
+            // 🔥 폼 제출 시 숫자 필드의 콤마 제거 후 전송
+            document.getElementById("financialForm").addEventListener("submit", function (event) {
+                financialFields.forEach(field => {
+                    field.value = field.value.replace(/,/g, ""); // 콤마 제거
+                });
+            });
+        });
+
         function submitFinancialForm(event) {
             event.preventDefault(); // 폼 기본 제출 방지
 
@@ -82,28 +123,29 @@
         </tr>
         <tr>
             <th>매출액(백만 원)</th>
-            <td><input type="number" class="form-control" id="revenue" placeholder=""></td>
+            <td><input type="text" class="form-control financial-number" id="revenue" placeholder=""></td>
             <th>영업이익(백만 원)</th>
-            <td><input type="number" class="form-control" id="operatingProfit" placeholder=""></td>
+            <td><input type="text" class="form-control financial-number" id="operatingProfit" placeholder=""></td>
         </tr>
         <tr>
             <th>당기순이익(백만 원)</th>
-            <td><input type="number" class="form-control" id="netIncome" placeholder=""></td>
+            <td><input type="text" class="form-control financial-number" id="netIncome" placeholder=""></td>
             <th>자산총계(백만 원)</th>
-            <td><input type="number" class="form-control" id="totalAssets" placeholder=""></td>
+            <td><input type="text" class="form-control financial-number" id="totalAssets" placeholder=""></td>
         </tr>
         <tr>
             <th>자본총계(백만 원)</th>
-            <td><input type="number" class="form-control" id="totalCapital" placeholder=""></td>
+            <td><input type="text" class="form-control financial-number" id="totalCapital" placeholder=""></td>
             <th>부채총계(백만 원)</th>
-            <td><input type="number" class="form-control" id="totalDebt" placeholder=""></td>
+            <td><input type="text" class="form-control financial-number" id="totalDebt" placeholder=""></td>
         </tr>
         <tr>
             <th>자본금(백만 원)</th>
-            <td><input type="number" class="form-control" id="capital" placeholder=""></td>
+            <td><input type="text" class="form-control financial-number" id="capital" placeholder=""></td>
             <th>고용인력</th>
-            <td><input type="number" class="form-control" id="employeeCount" placeholder=""></td>
+            <td><input type="text" class="form-control financial-number" id="employeeCount" placeholder=""></td>
         </tr>
+
         </tbody>
     </table>
 

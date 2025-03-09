@@ -170,6 +170,7 @@
             document.getElementById("researchRecognition").value = data.researchRecognition || "";
             document.getElementById("publicTechnologyTransfer").value = data.publicTechnologyTransfer || "";
             document.getElementById("dueDiligence").value = data.dueDiligence || "";
+            document.getElementById("isDaechang").value = data.isDaechang || "";
             document.getElementById("listingStatus").value = data.listingStatus || "";
             document.getElementById("listingDate").value = data.listingDate || "";
 
@@ -298,7 +299,7 @@
                 <th>설립일자</th>
                 <td colspan="2"><input type="date" class="form-control" id="establishmentDate" readonly></td>
                 <th>대표이사</th>
-                <td colspan="3">
+                <td colspan="2">
                     <div class="input-group-inline">
                         <input type="text" class="form-control" id="ceoName" readonly>
                         <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#updateCeoNameModal">수정</button>
@@ -327,7 +328,7 @@
                 <th>법인 등록번호</th>
                 <td colspan="2"><input type="text" class="form-control" id="corporateRegistrationNumber" readonly></td>
                 <th>표준 산업분류</th>
-                <td colspan="3"><input type="text" class="form-control" id="industryCode" readonly></td>
+                <td colspan="2"><input type="text" class="form-control" id="industryCode" readonly></td>
             </tr>
             <tr>
                 <th>자본금</th>
@@ -335,7 +336,7 @@
                 <th>액면가</th>
                 <td colspan="2"><input type="text" class="form-control number-format" id="parValue" readonly></td>
                 <th>임직원 수</th>
-                <td colspan="3"><input type="text" class="form-control number-format" id="employeeCount" readonly></td>
+                <td colspan="2"><input type="text" class="form-control number-format" id="employeeCount" readonly></td>
             </tr>
 
 
@@ -363,7 +364,7 @@
                     </select>
                 </td>
                 <th>창업구분</th>
-                <td colspan="3">
+                <td colspan="2">
                     <select class="form-control" id="startupType" disabled>
                         <option value="">선택하세요</option>
                         <option value="교원창업">교원창업</option>
@@ -391,7 +392,7 @@
                     </select>
                 </td>
                 <th>지방창업구분</th>
-                <td colspan="3">
+                <td colspan="2">
                     <select class="form-control" id="regionalCompany" disabled>
                         <option value="">선택하세요</option>
                         <option value="서울창업">서울창업</option>
@@ -417,7 +418,7 @@
                     </select>
                 </td>
                 <th>공공기술이전</th>
-                <td colspan="3">
+                <td colspan="2">
                     <select class="form-control" id="publicTechnologyTransfer" disabled>
                         <option value="">선택하세요</option>
                         <option value="기술이전기업">기술이전기업</option>
@@ -435,8 +436,16 @@
                         <option value="실사보완중">실사보완중</option>
                     </select>
                 </td>
-                <th>상장여부</th>
+                <th>대창창업기업(펀드)</th>
                 <td colspan="2">
+                    <select class="form-control" id="isDaechang" disabled>
+                        <option value="">선택하세요</option>
+                        <option value="대창창업기업">대창창업기업</option>
+                        <option value="일반기업">일반기업</option>
+                    </select>
+                </td>
+                <th>상장구분</th>
+                <td>
                     <div class="input-group-inline">
                         <select class="form-control" id="listingStatus" disabled>
                             <option value="">선택하세요</option>
@@ -444,15 +453,14 @@
                             <option value="상장기업">상장기업</option>
                         </select>
                         <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#updateListingStatusModal">수정</button>
-                    </div>
-                </td>
-                <th>상장일자</th>
-                <td colspan="3">
-                    <div class="input-group-inline">
-                        <input type="date" class="form-control" id="listingDate" readonly>
+
+                        <input type="date" class="form-control" id="listingDate" readonly style="min-width: 70px;">
+
                         <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#updateListingDateModal">수정</button>
+
                     </div>
                 </td>
+
             </tr>
 
 
