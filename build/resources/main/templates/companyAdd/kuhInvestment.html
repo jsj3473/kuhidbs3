@@ -151,7 +151,6 @@
 
             console.log("🚀 전송할 두번째 JSON 데이터:", JSON.stringify(jsonData, null, 2));
 
-
             fetch("/api/companies/createShareholder", {
                 method: "POST",
                 headers: {
@@ -160,7 +159,6 @@
                 body: JSON.stringify(jsonData) // ✅ JSON 형식으로 변환하여 전송
             })
                 .then(response => {
-
                     if (response.ok) {
                         if (isFirstSave) {
                             alert("저장이 완료되었습니다! 투자 이후 변경 주주구성을 입력해주세요.");
@@ -180,6 +178,7 @@
                 });
         }
 
+
         function updateEquityRate() {
             let totalShares = parseFloat(removeCommas(document.getElementById("totalShareCount").value)) || 1;
             let totalPercentage = 0;
@@ -188,11 +187,12 @@
                 let shares = parseFloat(removeCommas(document.getElementById("shareholderCount" + i).value)) || 0;
                 let rateField = document.getElementById("shareholderRate" + i);
                 let percentage = (shares / totalShares) * 100;
-                rateField.value = percentage.toFixed(2) + "%";
+                rateField.value = formatNumberWithCommas(percentage.toFixed(2)); // ✅ 천단위 콤마 적용
                 totalPercentage += percentage;
             }
 
-            document.getElementById("totalEquityRate").value = totalPercentage.toFixed(2) + "%";
+            // ✅ totalEquityRate에도 천단위 콤마 적용
+            document.getElementById("totalEquityRate").value = formatNumberWithCommas(totalPercentage.toFixed(2));
         }
 
         function updateTotalShares() {
@@ -200,7 +200,7 @@
             for (let i = 1; i <= 8; i++) {
                 sum += parseFloat(removeCommas(document.getElementById("shareholderCount" + i).value)) || 0;
             }
-            document.getElementById("totalShareCount").value = sum;
+            document.getElementById("totalShareCount").value = formatNumberWithCommas(sum);
             updateEquityRate();
         }
     </script>

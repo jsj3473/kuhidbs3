@@ -19,34 +19,55 @@
     </style>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // 숫자 입력 필드 자동 포맷 적용
             function formatNumberInput(input) {
                 input.addEventListener("input", function () {
-                    let value = this.value.replace(/[^0-9]/g, ""); // 숫자 이외 제거
-                    if (value !== "") {
-                        this.value = Number(value).toLocaleString("en-US"); // 3자리마다 콤마 추가
+                    let value = this.value
+                        .replace(/[^0-9.-]/g, "")  // 숫자, 마이너스(-), 소수점(.)만 허용
+                        .replace(/(?!^)-/g, "")   // 맨 앞이 아닌 곳의 '-' 제거
+                        .replace(/^(-?\d*)(\.\d*)?.*$/, "$1$2"); // 올바른 소수점 표현 유지
+
+                    // ✅ 소수점만 입력한 경우 그대로 유지
+                    if (value === "." || value === "-.") {
+                        this.value = value;
+                        return;
+                    }
+
+                    if (value !== "" && !isNaN(value)) {
+                        let numValue = parseFloat(value).toLocaleString("en-US", {
+                            minimumFractionDigits: value.includes(".") ? 0 : 0, // 소수점만 입력 시 자릿수 0 유지
+                            maximumFractionDigits: 10
+                        });
+
+                        // ✅ 소수점 입력 유지
+                        this.value = value.endsWith(".") ? numValue + "." : numValue;
                     }
                 });
 
                 input.addEventListener("blur", function () {
-                    let value = this.value.replace(/[^0-9]/g, "");
-                    this.value = value !== "" ? Number(value).toLocaleString("en-US") : "";
+                    let value = this.value.replace(/,/g, "");
+                    if (value !== "" && !isNaN(value)) {
+                        this.value = parseFloat(value).toLocaleString("en-US", {
+                            minimumFractionDigits: value.includes(".") ? 1 : 0,
+                            maximumFractionDigits: 10
+                        });
+                    }
                 });
             }
 
-            // 숫자 입력 필드 자동 포맷 적용 (자본금, 액면가, 매출액 등)
-            const numberFields = document.querySelectorAll(".number-format");
+            // 🔥 모든 숫자 입력 필드 (`financial-number`, `number-format`)에 적용
+            const numberFields = document.querySelectorAll(".financial-number, .number-format");
             numberFields.forEach(formatNumberInput);
 
             // 🔥 폼 제출 시 숫자 필드의 콤마 제거 후 전송
-            document.getElementById("companyForm").addEventListener("submit", function (event) {
+            document.getElementById("companyForm").addEventListener("submit", function () {
                 numberFields.forEach(field => {
                     field.value = field.value.replace(/,/g, ""); // 콤마 제거
                 });
             });
-
-
         });
+
+
+
     </script>
 
 
@@ -359,9 +380,7 @@
                     <th>임직원수</th>
                 </tr>
                 <tr>
-                    <td>
-                        <input type="text" class="form-control" name="financialYear">
-                    </td>
+                    <td><input type="text" class="form-control" name="financialYear"></td>
                     <td>
                         <select class="form-control mt-1" name="financialHalf">
                             <option value=""></option>
@@ -369,15 +388,16 @@
                             <option value="하반기">하반기</option>
                         </select>
                     </td>
-                    <td><input type="text" class="form-control number-format" name="revenue" placeholder="단위: 백만 원"></td>
-                    <td><input type="text" class="form-control number-format" name="operatingProfit" placeholder="단위: 백만 원"></td>
-                    <td><input type="text" class="form-control number-format" name="netIncome" placeholder="단위: 백만 원"></td>
-                    <td><input type="text" class="form-control number-format" name="totalAssets" placeholder="단위: 백만 원"></td>
-                    <td><input type="text" class="form-control number-format" name="totalDebt" placeholder="단위: 백만 원"></td>
-                    <td><input type="text" class="form-control number-format" name="totalCapital" placeholder="단위: 백만 원"></td>
-                    <td><input type="text" class="form-control number-format" name="capitalFnc" placeholder="단위: 백만 원"></td>
-                    <td><input type="text" class="form-control number-format" name="employeeCountFnc" placeholder=""></td>
+                    <td><input type="text" class="form-control financial-number" name="revenue" placeholder="단위: 백만 원"></td>
+                    <td><input type="text" class="form-control financial-number" name="operatingProfit" placeholder="단위: 백만 원"></td>
+                    <td><input type="text" class="form-control financial-number" name="netIncome" placeholder="단위: 백만 원"></td>
+                    <td><input type="text" class="form-control financial-number" name="totalAssets" placeholder="단위: 백만 원"></td>
+                    <td><input type="text" class="form-control financial-number" name="totalDebt" placeholder="단위: 백만 원"></td>
+                    <td><input type="text" class="form-control financial-number" name="totalCapital" placeholder="단위: 백만 원"></td>
+                    <td><input type="text" class="form-control financial-number" name="capitalFnc" placeholder="단위: 백만 원"></td>
+                    <td><input type="text" class="form-control financial-number" name="employeeCountFnc"></td>
                 </tr>
+
 
 
                 <tr>

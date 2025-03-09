@@ -109,8 +109,8 @@
                 <td><input type="text" class="form-control" value="${financial.financialYear || ""}" readonly></td>
                 <td>
                     <select class="form-control" disabled>
-                        <option value="1" ${financial.financialHalf === 1 ? "selected" : ""}>상반기</option>
-                        <option value="2" ${financial.financialHalf === 2 ? "selected" : ""}>하반기</option>
+                        <option value="1" ${financial.financialHalf === '상반기' ? "selected" : ""}>상반기</option>
+                        <option value="2" ${financial.financialHalf === '하반기' ? "selected" : ""}>하반기</option>
                     </select>
                 </td>
                 <td><input type="text" class="form-control number-format" value="${financial.revenue?.toLocaleString() || ""}" readonly></td>
