@@ -37,15 +37,36 @@
     <!-- ✅ Thymeleaf 반복문을 사용하여 계좌 내역 출력 -->
     <tr th:each="account : ${rAccountDTOS}">
         <td th:text="${account.accountDate}"></td>
-        <td class="text-end" th:text="${#numbers.formatInteger(account.unitPrice, 3, 'COMMA')}"></td>
-        <td class="text-end" th:text="${#numbers.formatInteger(account.heldShareCount, 3, 'COMMA')}"></td>
-        <td class="text-end" th:text="${#numbers.formatInteger(account.totalPrincipal, 3, 'COMMA')}"></td>
+
+        <td class="text-end"
+            th:text="${account.unitPrice < 1000 ? account.unitPrice : #numbers.formatInteger(account.unitPrice, 3, 'COMMA')}">
+        </td>
+
+        <td class="text-end"
+            th:text="${account.heldShareCount < 1000 ? account.heldShareCount : #numbers.formatInteger(account.heldShareCount, 3, 'COMMA')}">
+        </td>
+
+        <td class="text-end"
+            th:text="${account.totalPrincipal < 1000 ? account.totalPrincipal : #numbers.formatInteger(account.totalPrincipal, 3, 'COMMA')}">
+        </td>
+
         <td th:text="${account.functionType}"></td>
-        <td class="text-end" th:text="${account.kuhEquityRate}"></td>
-        <td class="text-end" th:text="${#numbers.formatInteger(account.curUnitPrice, 3, 'COMMA')}"></td>
-        <td class="text-end" th:text="${#numbers.formatInteger(account.postValue, 3, 'COMMA')}"></td>
-        <td class="text-end" th:text="${#numbers.formatInteger(account.totalShareCount, 3, 'COMMA')}"></td>
+
+        <td class="text-end" th:text="${account.kuhEquityRate}"></td>  <!-- 퍼센트 값은 그대로 유지 -->
+
+        <td class="text-end"
+            th:text="${account.curUnitPrice < 1000 ? account.curUnitPrice : #numbers.formatInteger(account.curUnitPrice, 3, 'COMMA')}">
+        </td>
+
+        <td class="text-end"
+            th:text="${account.postValue < 1000 ? account.postValue : #numbers.formatInteger(account.postValue, 3, 'COMMA')}">
+        </td>
+
+        <td class="text-end"
+            th:text="${account.totalShareCount < 1000 ? account.totalShareCount : #numbers.formatInteger(account.totalShareCount, 3, 'COMMA')}">
+        </td>
     </tr>
+
     </tbody>
 </table>
 

@@ -9,6 +9,21 @@
     <link rel="stylesheet" th:href="@{/css/common.css}">
     <link rel="stylesheet" th:href="@{/css/popUpNavbar.css}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            function formatNumber(value) {
+                if (value === "" || value === null || isNaN(value)) return "";
+                let num = parseFloat(value);
+                return num.toLocaleString("en-US", { minimumFractionDigits: 0, maximumFractionDigits: 10 });
+            }
+
+            document.querySelectorAll(".number-format").forEach(cell => {
+                let value = cell.textContent.trim();
+                cell.textContent = formatNumber(value);
+            });
+        });
+
+    </script>
 </head>
 <body class="container mt-4">
 
@@ -32,11 +47,13 @@
     <tr th:each="recovery : ${rstcupDTOS}">
         <td th:text="${recovery.investmentId}"></td>
         <td th:text="${recovery.recoveryDate}"></td>
-        <td class="text-end" th:text="${#numbers.formatInteger(recovery.recoveryCount, 3, 'COMMA')}"></td>
-        <td class="text-end" th:text="${#numbers.formatInteger(recovery.recoveryUnitPrice, 3, 'COMMA')}"></td>
-        <td class="text-end" th:text="${#numbers.formatInteger(recovery.fundReturn, 3, 'COMMA')}"></td>
-        <td class="text-end" th:text="${#numbers.formatInteger(recovery.kuhReturn, 3, 'COMMA')}"></td>
+
+        <td class="text-end number-format" th:text="${recovery.recoveryCount}"></td>
+        <td class="text-end number-format" th:text="${recovery.recoveryUnitPrice}"></td>
+        <td class="text-end number-format" th:text="${recovery.fundReturn}"></td>
+        <td class="text-end number-format" th:text="${recovery.kuhReturn}"></td>
     </tr>
+
     </tbody>
 </table>
 
