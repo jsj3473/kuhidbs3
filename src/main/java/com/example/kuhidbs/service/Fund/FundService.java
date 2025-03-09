@@ -112,7 +112,7 @@ public class FundService {
                         dto.getSpecialInvest1CriteriaRatio()))
 
                 // 🔥 특수목적 투자 2
-                .specialInvest1Amount(0L)
+                .specialInvest2Amount(0L)
                 .specialInvest2Criteria(dto.getSpecialInvest2Criteria())
                 .specialInvest2CriteriaRatio(dto.getSpecialInvest2CriteriaRatio())
                 .specialInvest2TargetAmount(calculateTargetAmount(
@@ -120,7 +120,7 @@ public class FundService {
                         dto.getSpecialInvest2CriteriaRatio()))
 
                 // 🔥 특수목적 투자 3
-                .specialInvest1Amount(0L)
+                .specialInvest3Amount(0L)
                 .specialInvest3Criteria(dto.getSpecialInvest3Criteria())
                 .specialInvest3CriteriaRatio(dto.getSpecialInvest3CriteriaRatio())
                 .specialInvest3TargetAmount(calculateTargetAmount(
@@ -159,8 +159,9 @@ public class FundService {
         if (total == null || ratio == null) {
             return 0L; // 기본값 처리
         }
-        return Math.round(total * ratio);
+        return Math.round((total * ratio) / 100); // 80으로 나누기 추가
     }
+
 
 
 
