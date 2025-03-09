@@ -16,7 +16,93 @@
     <script defer th:src="@{/js/searchModal.js}"></script>
 
     <style></style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("fundUpdateForm");
 
+            // 숫자 입력 필드 자동 포맷 적용 (천단위 콤마, 음수 포함)
+            function formatNumberInput(input) {
+                input.addEventListener("input", function () {
+                    let value = this.value.replace(/[^0-9.-]/g, ""); // 숫자, 마이너스, 점 제외 삭제
+                    if (value !== "") {
+                        this.value = Number(value).toLocaleString("en-US"); // 천 단위 콤마 추가
+                    }
+                });
+
+                input.addEventListener("blur", function () {
+                    let value = this.value.replace(/[^0-9.-]/g, "");
+                    this.value = value !== "" ? Number(value).toLocaleString("en-US") : "";
+                });
+            }
+
+            // 모든 금액 관련 필드에 적용
+            const numberFields = document.querySelectorAll(".number-format");
+            numberFields.forEach(formatNumberInput);
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("fundUpdateForm");
+
+            form.addEventListener("submit", function (event) {
+                event.preventDefault();
+
+                // 콤마 제거 후 데이터 변환
+                const numberFields = document.querySelectorAll(".number-format");
+                numberFields.forEach(field => {
+                    field.value = field.value.replace(/,/g, "");
+                });
+
+                // 폼 데이터 가져오기
+                const formData = new FormData(form);
+                const jsonData = Object.fromEntries(formData.entries());
+
+                // 서버에 PUT 요청 보내기
+                fetch("/api/funds/updateFund", {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(jsonData)
+                })
+                    .then(response => {
+                        if (!response.ok) throw new Error("저장 실패");
+                        return response.json();
+                    })
+                    .then(data => {
+                        alert("펀드 정보가 성공적으로 저장되었습니다!");
+                        location.reload(); // 페이지 새로고침
+                    })
+                    .catch(error => {
+                        alert("저장 중 오류가 발생했습니다. " + error.message);
+                    });
+            });
+        });
+
+    </script>
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+            let numberInputs = document.querySelectorAll(".number-format");
+
+            numberInputs.forEach(input => {
+                input.addEventListener("input", function (event) {
+                    let value = event.target.value.replace(/,/g, ""); // 콤마 제거
+                    if (!isNaN(value) && value !== "") {
+                        event.target.value = formatNumber(value);
+                    }
+                });
+            });
+        });
+
+        /** 천 단위 콤마 추가하는 함수 */
+        function formatNumber(value) {
+            return Number(value).toLocaleString();
+        }
+
+        /** 천 단위 콤마를 제거하는 함수 */
+        function removeComma(value) {
+            return value.replace(/,/g, "");
+        }
+
+    </script>
     <script>
         function fetchFundInfo(fundId) {
             fetch(`/api/funds/info/${fundId}`)
@@ -64,6 +150,15 @@
             document.getElementById("priorLossLP").value = data.priorLossLP || "";
 
             updateFundMembersTable(data.fundMems);
+
+            document.getElementById("mandatoryPurpose").value = data.mandatoryPurpose || "";
+            document.getElementById("mainInvest1Purpose").value = data.mainInvest1Purpose || "";
+            document.getElementById("mainInvest2Purpose").value = data.mainInvest2Purpose || "";
+            document.getElementById("specialInvest1Purpose").value = data.specialInvest1Purpose || "";
+            document.getElementById("specialInvest2Purpose").value = data.specialInvest2Purpose || "";
+            document.getElementById("specialInvest3Purpose").value = data.specialInvest3Purpose || "";
+
+
         }
         function updateFundMembersTable(fundMems) {
             const tableBody = document.getElementById("fundMembersTable");
@@ -171,6 +266,8 @@
                 } else if (type === "IASByfund") {
                     width = 1350;
                     height = 700;
+                } else if (type === "achievementByfund") {
+                    height = 770;
                 } else if (type === "dueDiligenceByFund") {
                     height = 500;
                 } else if (type === "empChangeByFund") {
@@ -203,6 +300,7 @@
         <a href="#" onclick="openPopup('member')">👤 조합원명부 관리</a>
         <a href="#" onclick="openViewPopup('membersByFund')">👤 조합원명부 조회</a>
         <a href="#" onclick="openViewPopup('IASByfund')">💰 투자자산총괄표 조회</a>
+        <a href="#" onclick="openViewPopup('achievementByfund')">🎖️투자비율달성여부 조회</a>
         <!--        <a href="#" onclick="openViewPopup('#')">🪪 투자조합평가결과 조회</a>-->
         <a href="#" onclick="openViewPopup('dueDiligenceByFund')">🔍 투자기업실사 조회</a>
         <a href="#" onclick="openViewPopup('empChangeByFund')">👥 고용인력 이력조회</a>
@@ -220,166 +318,320 @@
     <!-- 📌 메인 콘텐츠 영역 -->
     <div class="content">
         <h2>조합 정보 조회</h2>
-        <!-- 1. 회사 기본 정보 -->
-        <table class="table table-bordered text-center">
-            <thead>
-            <tr><th colspan="8">투자조합 고유정보</th></tr>
-            </thead>
-            <tbody>
-            <tr>
-                <th>조합 고유번호</th>
-                <td colspan="2"><input type="text" class="form-control" name="fundId" id="fundId" readonly></td>
-                <th>청산여부</th>
-                <td>
-                    <select class="form-control" id="liquidationStatus" disabled>
-                        <option value="">선택하세요</option>
-                        <option value="Y">Y</option>
-                        <option value="N">N</option>
-                    </select>
-                </td>
-                <th>청산일자</th>
-                <td colspan="2"><input type="date" class="form-control" id="liquidationDate" readonly></td>
-            </tr>
-            <tr>
-                <th>세부조합명</th>
-                <td colspan="2"><input type="text" class="form-control" id="fundNameDetail" readonly></td>
-                <th>조합명</th>
-                <td><input type="text" class="form-control" id="fundName" readonly></td>
-                <th>결성총액일</th>
-                <td colspan="2"><input type="date" class="form-control" id="establishmentDate" readonly></td>
-            </tr>
-            <tr>
-                <th>존속기간(년)</th>
-                <td colspan="2"><input type="number" class="form-control" id="duration" readonly></td>
-                <th>존속기간 시작일</th>
-                <td><input type="date" class="form-control" id="durationStartDate" readonly></td>
-                <th>존속기간 종료일</th>
-                <td colspan="2"><input type="date" class="form-control" id="durationEndDate" readonly></td>
-            </tr>
-            <tr>
-                <th>투자기간(년)</th>
-                <td colspan="2"><input type="number" class="form-control" id="investmentDuration" readonly></td>
-                <th>투자기간 시작일</th>
-                <td><input type="date" class="form-control" id="investmentStartDate" readonly></td>
-                <th>투자기간 종료일</th>
-                <td colspan="2"><input type="date" class="form-control" id="investmentEndDate" readonly></td>
-            </tr>
-            <tr>
-                <th>약정 총액</th>
-                <td colspan="2"><input type="text" class="form-control" id="committedTotalPrice" readonly></td>
-                <th>1좌당 금액</th>
-                <td colspan="4"><input type="text" class="form-control" id="unitPrice" readonly></td>
-            </tr>
-            <tr>
-                <th>투자기구 유형</th>
-                <td colspan="2">
-                    <select class="form-control" id="fundOrganizationType" disabled>
-                        <option value="">선택하세요</option>
-                        <option value="개인투자조합">개인투자조합</option>
-                        <option value="벤처투자조합">벤처투자조합</option>
-                    </select>
-                </td>
-                <th>납입방법</th>
-                <td colspan="4">
-                    <select class="form-control" id="paymentType" disabled>
-                        <option value="">선택하세요</option>
-                        <option value="수시납">수시납</option>
-                        <option value="일시납">일시납</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <th>대표펀드매니저</th>
-                <td colspan="2"><input type="text" class="form-control" id="leadFundManager" readonly></td>
-                <th>핵심운용인력</th>
-                <td colspan="4"><input type="text" class="form-control" id="coreIvtManager" readonly></td>
-            </tr>
-            <tr>
-                <th>회계감사인명</th>
-                <td colspan="2"><input type="text" class="form-control" id="auditorName" readonly></td>
-                <th>회계감사인 변경일자</th>
-                <td colspan="4"><input type="date" class="form-control" id="auditorDate" readonly></td>
-            </tr>
-            <tr>
-                <th>수탁회사(은행)</th>
-                <td colspan="2"><input type="text" class="form-control" id="trusteeCorporation" readonly></td>
-                <th>사무수탁법인</th>
-                <td colspan="4"><input type="text" class="form-control" id="administrationCorporation" readonly></td>
-            </tr>
 
-            <tr><th colspan="8">투자조합 보수조건</th></tr>
-            <tr>
-                <th>기준수익률(%)</th>
-                <td colspan="2"><input type="number" step="0.01" class="form-control" id="targetReturnRate" readonly></td>
-                <th>성과보수율(%)</th>
-                <td colspan="4"><input type="number" step="0.01" class="form-control" id="performanceFeeRate" readonly></td>
-            </tr>
-            <tr>
-                <th>투자기간 관리보수</th>
-                <td colspan="7"><input type="text" step="0.01" class="form-control" id="managementFeeInvestmentPeriod" readonly></td>
-            </tr>
-            <tr>
-                <th>운영기간 관리보수</th>
-                <td colspan="7"><input type="text" step="0.01" class="form-control" id="managementFeeManagementPeriod" readonly></td>
-            </tr>
-            <tr>
-                <th>인센티브 조건</th>
-                <td colspan="7"><input type="text" class="form-control" id="incentiveCondition" readonly></td>
-            </tr>
-            <tr>
-                <th>우선손실충당 GP</th>
-                <td colspan="7"><input type="text" class="form-control" id="priorLossGP" readonly></td>
-            </tr>
-            <tr>
-                <th>우선손실충당 LP</th>
-                <td colspan="7"><input type="text" class="form-control" id="priorLossLP" readonly></td>
-            </tr>
-            <tr><th colspan="8">투자조합 의무투자조건 - 주목적/특수목적 투자조건</th></tr>
-            <tr>
-                <th>의무투자 1</th>
-                <td colspan="2"><input type="text" class="form-control" id="mandatoryInvestment1" readonly></td>
-                <th>의무투자 2</th>
-                <td colspan="4"><input type="text" class="form-control" id="mandatoryInvestment2" readonly></td>
-            </tr>
-            <tr>
-                <th>주목적투자 1</th>
-                <td colspan="2"><input type="text" class="form-control" id="primaryInvestment1" readonly></td>
-                <th>주목적투자 2</th>
-                <td colspan="4"><input type="text" class="form-control" id="primaryInvestment2" readonly></td>
-            </tr>
-            <tr>
-                <th>특수목적투자 1</th>
-                <td colspan="2"><input type="text" class="form-control" id="specialPurposeInvestment1" readonly></td>
-                <th>특수목적투자 2</th>
-                <td colspan="4"><input type="text" class="form-control" id="specialPurposeInvestment2" readonly></td>
-            </tr>
-            <tr>
-                <th>특수목적투자 3</th>
-                <td colspan="2"><input type="text" class="form-control" id="specialPurposeInvestment3" readonly></td>
-                <th>특수목적투자 기타</th>
-                <td colspan="4"><input type="text" class="form-control" id="specialPurposeInvestment4" readonly></td>
-            </tr>
-            </tbody>
+        <form id="fundUpdateForm">
+            <!-- 1. 회사 기본 정보 -->
+            <table class="table table-bordered text-center">
+                <thead>
+                <tr><th colspan="8">투자조합 고유정보</th></tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th>조합 고유번호</th>
+                    <td colspan="2"><input type="text" class="form-control" name="fundId" id="fundId"></td>
+                    <th>청산여부</th>
+                    <td>
+                        <select class="form-control" name="liquidationStatus" id="liquidationStatus">
+                            <option value="">선택하세요</option>
+                            <option value="Y">Y</option>
+                            <option value="N">N</option>
+                        </select>
+                    </td>
+                    <th>청산일자</th>
+                    <td colspan="2"><input type="date" class="form-control" name="liquidationDate" id="liquidationDate"></td>
+                </tr>
+                <tr>
+                    <th>세부조합명</th>
+                    <td colspan="2"><input type="text" class="form-control" name="fundNameDetail" id="fundNameDetail"></td>
+                    <th>조합명</th>
+                    <td><input type="text" class="form-control" name="fundName" id="fundName"></td>
+                    <th>결성총액일</th>
+                    <td colspan="2"><input type="date" class="form-control" name="establishmentDate" id="establishmentDate"></td>
+                </tr>
+                <tr>
+                    <th>존속기간(년)</th>
+                    <td colspan="2"><input type="number" class="form-control" name="duration" id="duration"></td>
+                    <th>존속기간 시작일</th>
+                    <td><input type="date" class="form-control" name="durationStartDate" id="durationStartDate"></td>
+                    <th>존속기간 종료일</th>
+                    <td colspan="2"><input type="date" class="form-control" name="durationEndDate" id="durationEndDate"></td>
+                </tr>
+                <tr>
+                    <th>투자기간(년)</th>
+                    <td colspan="2"><input type="number" class="form-control" name="investmentDuration" id="investmentDuration"></td>
+                    <th>투자기간 시작일</th>
+                    <td><input type="date" class="form-control" name="investmentStartDate" id="investmentStartDate"></td>
+                    <th>투자기간 종료일</th>
+                    <td colspan="2"><input type="date" class="form-control" name="investmentEndDate" id="investmentEndDate"></td>
+                </tr>
+                <tr>
+                    <th>약정 총액</th>
+                    <td colspan="2"><input type="text" class="form-control number-format" name="committedTotalPrice" id="committedTotalPrice"></td>
+                    <th>1좌당 금액</th>
+                    <td colspan="4"><input type="text" class="form-control number-format" name="unitPrice" id="unitPrice"></td>
+                </tr>
+                <tr>
+                    <th>투자기구 유형</th>
+                    <td colspan="2">
+                        <select class="form-control" name="fundOrganizationType" id="fundOrganizationType">
+                            <option value="">선택하세요</option>
+                            <option value="개인투자조합">개인투자조합</option>
+                            <option value="벤처투자조합">벤처투자조합</option>
+                        </select>
+                    </td>
+                    <th>납입방법</th>
+                    <td colspan="4">
+                        <select class="form-control" name="paymentType" id="paymentType">
+                            <option value="">선택하세요</option>
+                            <option value="수시납">수시납</option>
+                            <option value="일시납">일시납</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>대표펀드매니저</th>
+                    <td colspan="2"><input type="text" class="form-control" name="leadFundManager" id="leadFundManager"></td>
+                    <th>핵심운용인력</th>
+                    <td colspan="4"><input type="text" class="form-control" name="coreIvtManager" id="coreIvtManager"></td>
+                </tr>
+                <tr>
+                    <th>회계감사인명</th>
+                    <td colspan="2"><input type="text" class="form-control" id="auditorName" readonly></td>
+                    <th>회계감사인 변경일자</th>
+                    <td colspan="4"><input type="date" class="form-control" id="auditorDate" readonly></td>
+                </tr>
+                <tr>
+                    <th>수탁회사(은행)</th>
+                    <td colspan="2"><input type="text" class="form-control" name="trusteeCorporation" id="trusteeCorporation"></td>
+                    <th>사무수탁법인</th>
+                    <td colspan="4"><input type="text" class="form-control" name="administrationCorporation" id="administrationCorporation"></td>
+                </tr>
+                </tbody>
 
-            <!-- 투자조합원 명부 -->
-            <thead>
-            <tr><th colspan="8">투자조합 조합원 명부</th></tr>
-            <tr>
-                <th>조합원</th>
-                <th>조합원유형</th>
-                <th>출자약정액</th>
-                <th>연락처</th>
-                <th colspan="2">주소</th>
-                <th>사업자・주민등록번호</th>
-<!--                <th>주민등록번호</th>-->
-            </tr>
-            </thead>
-            <tbody id="fundMembersTable"></tbody>
+                <thead>
+                <tr><th colspan="8">투자조합 보수조건</th></tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th>기준수익률(%)</th>
+                    <td colspan="2"><input type="number" step="0.01" class="form-control" name="targetReturnRate" id="targetReturnRate"></td>
+                    <th>성과보수율(%)</th>
+                    <td colspan="4"><input type="number" step="0.01" class="form-control" name="performanceFeeRate" id="performanceFeeRate"></td>
+                </tr>
+                <tr>
+                    <th>투자기간 관리보수</th>
+                    <td colspan="7"><input type="text" class="form-control" name="managementFeeInvestmentPeriod" id="managementFeeInvestmentPeriod"></td>
+                </tr>
+                <tr>
+                    <th>운영기간 관리보수</th>
+                    <td colspan="7"><input type="text" class="form-control" name="managementFeeManagementPeriod" id="managementFeeManagementPeriod"></td>
+                </tr>
+                <tr>
+                    <th>인센티브 조건</th>
+                    <td colspan="7"><input type="text" class="form-control" name="incentiveCondition" id="incentiveCondition"></td>
+                </tr>
+                <tr>
+                    <th>우선손실충당 GP</th>
+                    <td colspan="7"><input type="text" class="form-control" name="priorLossGP" id="priorLossGP"></td>
+                </tr>
+                <tr>
+                    <th>우선손실충당 LP</th>
+                    <td colspan="7"><input type="text" class="form-control" name="priorLossLP" id="priorLossLP"></td>
+                </tr>
 
 
+                <tr><th colspan="8">투자조합 투자조건</th></tr>
+                </tbody>
+                <!-- 🔥 의무 투자 -->
+                <tr>
+                    <th>의무투자 목적</th>
+                    <td colspan="2">
+                        <select class="form-control" id="mandatoryPurpose" name="mandatoryPurpose">
+                            <option value="">선택하세요</option>
+                            <option value="초기창업">초기창업</option>
+                            <option value="상장하지 않은창업자">상장하지 않은 창업자</option>
+                            <option value="벤처기업">벤처기업</option>
+                            <option value="출자약정액 80%투자">출자약정액 80% 투자</option>
+                            <option value="대학창업">대학창업</option>
+                            <option value="학생창업">학생창업</option>
+                            <option value="지방기업">지방기업</option>
+                        </select>
+                    </td>
+                    <!--                    <th>기준대상</th>-->
+                    <!--                    <td>-->
+                    <!--                        <select class="form-control" id="mandatoryCriteria" name="mandatoryCriteria">-->
+                    <!--                            <option value="">선택하세요</option>-->
+                    <!--                            <option value="투자 잔액">투자 잔액</option>-->
+                    <!--                            <option value="출자약정액">출자약정액</option>-->
+                    <!--                            <option value="기타">기타</option>-->
+                    <!--                        </select>-->
+                    <!--                    </td>-->
+                    <!--                    <th>기준대상 비율(%)</th>-->
+                    <!--                    <td><input type="number" step="0.01" class="form-control" id="mandatoryCriteriaRatio" name="mandatoryCriteriaRatio"></td>-->
+                    <!--                    <th>금액</th>-->
+                    <!--                    <td colspan="4"><input type="text" class="form-control number-format" id="mandatoryTotal" name="mandatoryTotal"></td>-->
+                    <!-- 🔥 주목적 투자 1 -->
+                    <th>주목적투자 1 목적</th>
+                    <td>
+                        <select class="form-control" id="mainInvest1Purpose" name="mainInvest1Purpose">
+                            <option value="">선택하세요</option>
+                            <option value="초기창업">초기창업</option>
+                            <option value="상장하지 않은창업자">상장하지 않은 창업자</option>
+                            <option value="벤처기업">벤처기업</option>
+                            <option value="출자약정액 80%투자">출자약정액 80% 투자</option>
+                            <option value="대학창업">대학창업</option>
+                            <option value="학생창업">학생창업</option>
+                            <option value="지방기업">지방기업</option>
+                        </select>
+                    </td>
+                    <!--                    <th>기준대상</th>-->
+                    <!--                    <td>-->
+                    <!--                        <select class="form-control" id="mainInvest1Criteria" name="mainInvest1Criteria">-->
+                    <!--                            <option value="">선택하세요</option>-->
+                    <!--                            <option value="투자 잔액">투자 잔액</option>-->
+                    <!--                            <option value="출자약정액">출자약정액</option>-->
+                    <!--                            <option value="기타">기타</option>-->
+                    <!--                        </select>-->
+                    <!--                    </td>-->
+                    <!--                    <th>기준대상 비율(%)</th>-->
+                    <!--                    <td><input type="number" step="0.01" class="form-control" id="mainInvest1CriteriaRatio" name="mainInvest1CriteriaRatio"></td>-->
+                    <!--                    <th>금액</th>-->
+                    <!--                    <td><input type="text" class="form-control number-format" id="mainInvest1Total" name="mainInvest1Total"></td>-->
 
-        </table>
+                    <!-- 🔥 주목적 투자 2 -->
+                    <th>주목적투자 2 목적</th>
+                    <td>
+                        <select class="form-control" id="mainInvest2Purpose" name="mainInvest2Purpose">
+                            <option value="">선택하세요</option>
+                            <option value="초기창업">초기창업</option>
+                            <option value="상장하지 않은창업자">상장하지 않은 창업자</option>
+                            <option value="벤처기업">벤처기업</option>
+                            <option value="출자약정액 80%투자">출자약정액 80% 투자</option>
+                            <option value="대학창업">대학창업</option>
+                            <option value="학생창업">학생창업</option>
+                            <option value="지방기업">지방기업</option>
+                        </select>
+                    </td>
+                    <!--                    <th>기준대상</th>-->
+                    <!--                    <td>-->
+                    <!--                        <select class="form-control" id="mainInvest2Criteria" name="mainInvest2Criteria">-->
+                    <!--                            <option value="">선택하세요</option>-->
+                    <!--                            <option value="투자 잔액">투자 잔액</option>-->
+                    <!--                            <option value="출자약정액">출자약정액</option>-->
+                    <!--                            <option value="기타">기타</option>-->
+                    <!--                        </select>-->
+                    <!--                    </td>-->
+                    <!--                    <th>기준대상 비율(%)</th>-->
+                    <!--                    <td><input type="number" step="0.01" class="form-control" id="mainInvest2CriteriaRatio" name="mainInvest2CriteriaRatio"></td>-->
+                    <!--                    <th>금액</th>-->
+                    <!--                    <td><input type="text" class="form-control number-format" id="mainInvest2Total" name="mainInvest2Total"></td>-->
+                </tr>
 
+
+                <!-- 🔥 특수목적 투자 1 -->
+                <tr>
+                    <th>특수목적투자 1 목적</th>
+                    <td colspan="2">
+                        <select class="form-control" id="specialInvest1Purpose" name="specialInvest1Purpose">
+                            <option value="">선택하세요</option>
+                            <option value="초기창업">초기창업</option>
+                            <option value="상장하지 않은창업자">상장하지 않은 창업자</option>
+                            <option value="벤처기업">벤처기업</option>
+                            <option value="출자약정액 80%투자">출자약정액 80% 투자</option>
+                            <option value="대학창업">대학창업</option>
+                            <option value="학생창업">학생창업</option>
+                            <option value="지방기업">지방기업</option>
+                        </select>
+                    </td>
+                    <!--                    <th> 기준대상</th>-->
+                    <!--                    <td>-->
+                    <!--                        <select class="form-control" name="specialInvest1Criteria" name="specialInvest1Criteria">-->
+                    <!--                            <option value="">선택하세요</option>-->
+                    <!--                            <option value="투자 잔액">투자 잔액</option>-->
+                    <!--                            <option value="출자약정액">출자약정액</option>-->
+                    <!--                            <option value="기타">기타</option>-->
+                    <!--                        </select>-->
+                    <!--                    </td>-->
+                    <!--                    <th> 기준대상 비율(%)</th>-->
+                    <!--                    <td><input type="number" step="0.01" class="form-control" id="specialInvest1CriteriaRatio" name="specialInvest1CriteriaRatio"></td>-->
+                    <!--                    <th> 금액</th>-->
+                    <!--                    <td><input type="text" class="form-control number-format" id="specialInvest1Total" name="specialInvest1Total"></td>-->
+                    <!-- 🔥 특수목적 투자 2 -->
+                    <th>특수목적투자 2 목적</th>
+                    <td>
+                        <select class="form-control" id="specialInvest2Purpose" name="specialInvest2Purpose">
+                            <option value="">선택하세요</option>
+                            <option value="초기창업">초기창업</option>
+                            <option value="상장하지 않은창업자">상장하지 않은 창업자</option>
+                            <option value="벤처기업">벤처기업</option>
+                            <option value="출자약정액 80%투자">출자약정액 80% 투자</option>
+                            <option value="대학창업">대학창업</option>
+                            <option value="학생창업">학생창업</option>
+                            <option value="지방기업">지방기업</option>
+                        </select>
+                    </td>
+                    <!--                    <th> 기준대상</th>-->
+                    <!--                    <td>-->
+                    <!--                        <select class="form-control" id="specialInvest2Criteria" name="specialInvest2Criteria">-->
+                    <!--                            <option value="">선택하세요</option>-->
+                    <!--                            <option value="투자 잔액">투자 잔액</option>-->
+                    <!--                            <option value="출자약정액">출자약정액</option>-->
+                    <!--                            <option value="기타">기타</option>-->
+                    <!--                        </select>-->
+                    <!--                    </td>-->
+                    <!--                    <th> 기준대상 비율(%)</th>-->
+                    <!--                    <td><input type="number" step="0.01" class="form-control" id="specialInvest2CriteriaRatio" name="specialInvest2CriteriaRatio"></td>-->
+                    <!--                    <th> 금액</th>-->
+                    <!--                    <td><input type="text" class="form-control number-format" id="specialInvest2Total" name="specialInvest2Total"></td>-->
+                    <!-- 🔥 특수목적 투자 3 -->
+                    <th>특수목적투자 3 목적</th>
+                    <td>
+                        <select class="form-control"  id="specialInvest3Purpose" name="specialInvest3Purpose">
+                            <option value="">선택하세요</option>
+                            <option value="초기창업">초기창업</option>
+                            <option value="상장하지 않은창업자">상장하지 않은 창업자</option>
+                            <option value="벤처기업">벤처기업</option>
+                            <option value="출자약정액 80%투자">출자약정액 80% 투자</option>
+                            <option value="대학창업">대학창업</option>
+                            <option value="학생창업">학생창업</option>
+                            <option value="지방기업">지방기업</option>
+                        </select>
+                    </td>
+                    <!--                    <th> 기준대상</th>-->
+                    <!--                    <td>-->
+                    <!--                        <select class="form-control" name="specialInvest3Criteria">-->
+                    <!--                            <option value="">선택하세요</option>-->
+                    <!--                            <option value="투자 잔액">투자 잔액</option>-->
+                    <!--                            <option value="출자약정액">출자약정액</option>-->
+                    <!--                            <option value="기타">기타</option>-->
+                    <!--                        </select>-->
+                    <!--                    </td>-->
+                    <!--                    <th> 기준대상 비율(%)</th>-->
+                    <!--                    <td><input type="number" step="0.01" class="form-control" name="specialInvest3CriteriaRatio"></td>-->
+                    <!--                    <th> 금액</th>-->
+                    <!--                    <td><input type="text" class="form-control number-format" name="specialInvest3Total"></td>-->
+                </tr>
+                <!-- 투자조합원 명부 -->
+                <thead>
+                <tr><th colspan="8">투자조합 조합원 명부</th></tr>
+                <tr>
+                    <th>조합원</th>
+                    <th>조합원유형</th>
+                    <th>출자약정액</th>
+                    <th>연락처</th>
+                    <th colspan="2">주소</th>
+                    <th>사업자・주민등록번호</th>
+                    <!--                <th>주민등록번호</th>-->
+                </tr>
+                </thead>
+                <tbody id="fundMembersTable"></tbody>
+            </table>
+
+            <!-- 저장 버튼 -->
+            <div class="button-container text-end">
+                <button type="submit" class="btn btn-primary">저장</button>
+            </div>
+        </form>
 
     </div>
 </div>

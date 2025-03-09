@@ -81,6 +81,8 @@ public class HomeController {
     private EmploymentService employmentService;
     @Autowired
     private FundRepository fundRepository;
+    @Autowired
+    private FundAchievementService fundAchievementService;
 
 
 
@@ -464,6 +466,14 @@ public class HomeController {
         return "fundShow/financialsByFund"; // financialsByFund.html
     }
 
+    // 투자비율 달성여부 조회 팝업
+    @GetMapping("/fundShow/achievementByfund/{id}")
+    public String achievementByfund(@PathVariable("id") String id, Model model) {
+        model.addAttribute("fundId", id);
+        RFundAchievementDTO rFundAchievementDTOS = fundAchievementService.getFundAchievement(id);
+        model.addAttribute("rIASDTOS", rFundAchievementDTOS);
+        return "fundShow/achievementByfund"; // achievementByfund.html
+    }
     // 투자자산총괄표 조회 팝업
     @GetMapping("/fundShow/IASByfund/{id}")
     public String IASByfund(@PathVariable("id") String id, Model model) {

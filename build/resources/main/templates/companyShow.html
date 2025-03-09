@@ -17,6 +17,63 @@
 
     <style></style>
     <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("companyUpdateForm");
+
+            // 숫자 입력 필드 자동 포맷 적용 (천단위 콤마, 음수 포함)
+            function formatNumberInput(input) {
+                input.addEventListener("input", function () {
+                    let value = this.value.replace(/[^0-9.-]/g, ""); // 숫자, 마이너스, 점 제외 삭제
+                    if (value !== "") {
+                        this.value = Number(value).toLocaleString("en-US"); // 천 단위 콤마 추가
+                    }
+                });
+
+                input.addEventListener("blur", function () {
+                    let value = this.value.replace(/[^0-9.-]/g, "");
+                    this.value = value !== "" ? Number(value).toLocaleString("en-US") : "";
+                });
+            }
+
+            // 모든 금액 관련 필드에 적용
+            const numberFields = document.querySelectorAll(".number-format");
+            numberFields.forEach(formatNumberInput);
+
+            // 저장 버튼 클릭 시
+            form.addEventListener("submit", function (event) {
+                event.preventDefault();
+
+                // 콤마 제거 후 데이터 변환
+                numberFields.forEach(field => {
+                    field.value = field.value.replace(/,/g, "");
+                });
+
+                const formData = new FormData(form);
+                const jsonData = Object.fromEntries(formData.entries());
+
+                fetch("/api/companies/updateCompany", {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(jsonData)
+                })
+                    .then(response => {
+                        if (!response.ok) throw new Error("저장 실패");
+                        return response.json();
+                    })
+                    .then(data => {
+                        alert("기업 정보가 성공적으로 저장되었습니다!");
+                        // window.scrollTo(0, 0);
+                        location.reload(); // 페이지 새로고침
+                    })
+                    .catch(error => {
+                        alert("저장 중 오류가 발생했습니다. " + error.message);
+                    });
+            });
+        });
+
+    </script>
+    <script>
         let companyId = /*[[${companyId}]]*/ '';
         // console.log("companyId:", companyId);
         document.addEventListener("DOMContentLoaded", function () {
@@ -293,341 +350,333 @@
     <!-- 📌 메인 콘텐츠 영역 -->
     <div class="content">
         <h2>기업 정보 조회</h2>
-        <!-- 1. 회사 기본 정보 -->
-        <table class="table table-bordered text-center">
-            <thead>
-            <tr>
-                <th colspan="10">회사 고유 정보</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <th>회사 고유번호</th>
-                <td colspan="3"><input type="text" class="form-control" id="companyId" readonly></td>
-                <th>투자상태</th>
-                <td colspan="5">
-                    <select class="form-control" id="status" name="status" disabled>
-                        <option value="">선택하세요</option>
-                        <option value="정상투자 A">정상투자 A</option>
-                        <option value="정상투자 B">정상투자 B</option>
-                        <option value="요주의 C">요주의 C</option>
-                        <option value="주의 D">주의 D</option>
-                        <option value="투자종료/주식매각">투자종료/주식매각</option>
-                        <option value="투자종료/회사청산">투자종료/회사청산</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <th>투자회사</th>
-                <td colspan="3"><input type="text" class="form-control" id="companyName" readonly></td>
-                <th>설립일자</th>
-                <td colspan="2"><input type="date" class="form-control" id="establishmentDate" readonly></td>
-                <th>대표이사</th>
-                <td colspan="3"><input type="text" class="form-control" id="ceoName" readonly></td>
-            </tr>
-            <tr>
-                <th>회사주소</th>
-                <td colspan="6"><input type="text" class="form-control" id="companyAddress" readonly></td>
-                <th>우편번호</th>
-                <td colspan="2"><input type="text" class="form-control" id="companyPostalCode" readonly></td>
-            </tr>
-            <tr>
-                <th>사업자 등록번호</th>
-                <td colspan="3"><input type="text" class="form-control" id="businessRegistrationNumber" readonly></td>
-                <th>법인 등록번호</th>
-                <td colspan="2"><input type="text" class="form-control" id="corporateRegistrationNumber" readonly></td>
-                <th>표준 산업분류</th>
-                <td colspan="3"><input type="text" class="form-control" id="industryCode" readonly></td>
-            </tr>
-            <tr>
-                <th>자본금</th>
-                <td colspan="3"><input type="text" class="form-control number-format" id="capital" readonly></td>
-                <th>액면가</th>
-                <td colspan="2"><input type="text" class="form-control number-format" id="parValue" readonly></td>
-                <th>임직원 수</th>
-                <td colspan="3"><input type="text" class="form-control number-format" id="employeeCount" readonly></td>
-            </tr>
 
-
-            <!-- 2. 회사 속성 정보 -->
-
-
-            <tr>
-                <th colspan="10">회사 속성 정보</th>
-            </tr>
-            <tr>
-                <th>KUH 자회사</th>
-                <td colspan="3">
-                    <select class="form-control" id="kuhSubsidiary" disabled>
-                        <option value="">선택하세요</option>
-                        <option value="KUH자회사">KUH자회사</option>
-                        <option value="일반기업">일반기업</option>
-                    </select>
-                </td>
-                <th>고대창업구분</th>
-                <td colspan="2">
-                    <select class="form-control" id="kuhStartup" disabled>
-                        <option value="">선택하세요</option>
-                        <option value="고려대창업">고려대창업</option>
-                        <option value="비고려대창업">비고려대창업</option>
-                    </select>
-                </td>
-                <th>창업구분</th>
-                <td colspan="3">
-                    <select class="form-control" id="startupType" disabled>
-                        <option value="">선택하세요</option>
-                        <option value="교원창업">교원창업</option>
-                        <option value="학생창업">학생창업</option>
-                        <option value="일반창업">일반창업</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <th>초기창업구분</th>
-                <td colspan="3">
-                    <select class="form-control" id="earlyStartupType" disabled>
-                        <option value="">선택하세요</option>
-                        <option value="창업 3년 이내">창업 3년 이내</option>
-                        <option value="창업 7년 이내">창업 7년 이내</option>
-                        <option value="창업 7년 초과">창업 7년 초과</option>
-                    </select>
-                </td>
-                <th>중소기업구분</th>
-                <td colspan="2">
-                    <select class="form-control" id="smeStatus" disabled>
-                        <option value="">선택하세요</option>
-                        <option value="중소기업">중소기업</option>
-                        <option value="대기업">대기업</option>
-                    </select>
-                </td>
-                <th>지방창업구분</th>
-                <td colspan="3">
-                    <select class="form-control" id="regionalCompany" disabled>
-                        <option value="">선택하세요</option>
-                        <option value="서울창업">서울창업</option>
-                        <option value="지방창업">지방창업</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <th>벤처기업구분</th>
-                <td colspan="3">
-                    <select class="form-control" id="ventureRecognition" disabled>
-                        <option value="">선택하세요</option>
-                        <option value="벤처기업">벤처기업</option>
-                        <option value="일반기업">일반기업</option>
-                    </select>
-                </td>
-                <th>연구소기업구분</th>
-                <td colspan="2">
-                    <select class="form-control" id="researchRecognition" disabled>
-                        <option value="">선택하세요</option>
-                        <option value="연구소기업">연구소기업</option>
-                        <option value="일반기업">일반기업</option>
-                    </select>
-                </td>
-                <th>공공기술이전</th>
-                <td colspan="3">
-                    <select class="form-control" id="publicTechnologyTransfer" disabled>
-                        <option value="">선택하세요</option>
-                        <option value="기술이전기업">기술이전기업</option>
-                        <option value="일반기업">일반기업</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <th>투자기업실사</th>
-                <td colspan="3">
-                    <select class="form-control" id="dueDiligence" disabled>
-                        <option value="">선택하세요</option>
-                        <option value="미실사기업">미실사기업</option>
-                        <option value="실사기업">실사기업</option>
-                        <option value="실사보완중">실사보완중</option>
-                    </select>
-                </td>
-                <th>대창창업기업(펀드)</th>
-                <td colspan="2">
-                    <select class="form-control" id="isDaechang" disabled>
-                        <option value="">선택하세요</option>
-                        <option value="대창창업기업">대창창업기업</option>
-                        <option value="일반기업">일반기업</option>
-                    </select>
-                </td>
-                <th>상장구분 / 일자</th>
-                <td colspan="2">
-                    <div class="input-inline">
-                        <select class="form-control" id="listingStatus" disabled>
+        <form id="companyUpdateForm">
+            <!-- 1. 회사 기본 정보 -->
+            <table class="table table-bordered text-center">
+                <thead>
+                <tr>
+                    <th colspan="10">회사 고유 정보</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th>회사 고유번호</th>
+                    <td colspan="3"><input type="text" class="form-control" id="companyId" name="companyId"></td>
+                    <th>투자상태</th>
+                    <td colspan="5">
+                        <select class="form-control" id="status" name="status">
                             <option value="">선택하세요</option>
-                            <option value="비상장기업">비상장기업</option>
-                            <option value="상장기업">상장기업</option>
+                            <option value="정상투자 A">정상투자 A</option>
+                            <option value="정상투자 B">정상투자 B</option>
+                            <option value="요주의 C">요주의 C</option>
+                            <option value="주의 D">주의 D</option>
+                            <option value="투자종료/주식매각">투자종료/주식매각</option>
+                            <option value="투자종료/회사청산">투자종료/회사청산</option>
                         </select>
-                        <input type="date" class="form-control" id="listingDate" readonly>
-                    </div>
+                    </td>
+                </tr>
+                <tr>
+                    <th>투자회사</th>
+                    <td colspan="3"><input type="text" class="form-control" id="companyName" name="companyName"></td>
+                    <th>설립일자</th>
+                    <td colspan="2"><input type="date" class="form-control" id="establishmentDate" name="establishmentDate"></td>
+                    <th>대표이사</th>
+                    <td colspan="3"><input type="text" class="form-control" id="ceoName" name="ceoName"></td>
+                </tr>
+                <tr>
+                    <th>회사주소</th>
+                    <td colspan="6"><input type="text" class="form-control" id="companyAddress" name="companyAddress"></td>
+                    <th>우편번호</th>
+                    <td colspan="2"><input type="text" class="form-control" id="companyPostalCode" name="companyPostalCode"></td>
+                </tr>
+                <tr>
+                    <th>사업자 등록번호</th>
+                    <td colspan="3"><input type="text" class="form-control" id="businessRegistrationNumber" name="businessRegistrationNumber"></td>
+                    <th>법인 등록번호</th>
+                    <td colspan="2"><input type="text" class="form-control" id="corporateRegistrationNumber" name="corporateRegistrationNumber"></td>
+                    <th>표준 산업분류</th>
+                    <td colspan="3"><input type="text" class="form-control" id="industryCode" name="industryCode"></td>
+                </tr>
+                <tr>
+                    <th>자본금</th>
+                    <td colspan="3"><input type="text" class="form-control number-format" id="capital" name="capital"></td>
+                    <th>액면가</th>
+                    <td colspan="2"><input type="text" class="form-control number-format" id="parValue" name="parValue"></td>
+                    <th>임직원 수</th>
+                    <td colspan="3"><input type="text" class="form-control number-format" id="employeeCount" name="employeeCount"></td>
+                </tr>
 
-                </td>
-            </tr>
+                <!-- 2. 회사 속성 정보 -->
+                <tr>
+                    <th colspan="10">회사 속성 정보</th>
+                </tr>
+                <tr>
+                    <th>KUH 자회사</th>
+                    <td colspan="3">
+                        <select class="form-control" id="kuhSubsidiary" name="kuhSubsidiary">
+                            <option value="">선택하세요</option>
+                            <option value="KUH자회사">KUH자회사</option>
+                            <option value="일반기업">일반기업</option>
+                        </select>
+                    </td>
+                    <th>고대창업구분</th>
+                    <td colspan="2">
+                        <select class="form-control" id="kuhStartup" name="kuhStartup">
+                            <option value="">선택하세요</option>
+                            <option value="고려대창업">고려대창업</option>
+                            <option value="비고려대창업">비고려대창업</option>
+                        </select>
+                    </td>
+                    <th>창업구분</th>
+                    <td colspan="3">
+                        <select class="form-control" id="startupType" name="startupType">
+                            <option value="">선택하세요</option>
+                            <option value="교원창업">교원창업</option>
+                            <option value="학생창업">학생창업</option>
+                            <option value="일반창업">일반창업</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>초기창업구분</th>
+                    <td colspan="3">
+                        <select class="form-control" id="earlyStartupType" name="earlyStartupType">
+                            <option value="">선택하세요</option>
+                            <option value="창업 3년 이내">창업 3년 이내</option>
+                            <option value="창업 7년 이내">창업 7년 이내</option>
+                            <option value="창업 7년 초과">창업 7년 초과</option>
+                        </select>
+                    </td>
+                    <th>중소기업구분</th>
+                    <td colspan="2">
+                        <select class="form-control" id="smeStatus" name="smeStatus">
+                            <option value="">선택하세요</option>
+                            <option value="중소기업">중소기업</option>
+                            <option value="대기업">대기업</option>
+                        </select>
+                    </td>
+                    <th>지방창업구분</th>
+                    <td colspan="3">
+                        <select class="form-control" id="regionalCompany" name="regionalCompany">
+                            <option value="">선택하세요</option>
+                            <option value="서울창업">서울창업</option>
+                            <option value="지방창업">지방창업</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>벤처기업구분</th>
+                    <td colspan="3">
+                        <select class="form-control" id="ventureRecognition" name="ventureRecognition">
+                            <option value="">선택하세요</option>
+                            <option value="벤처기업">벤처기업</option>
+                            <option value="일반기업">일반기업</option>
+                        </select>
+                    </td>
+                    <th>연구소기업구분</th>
+                    <td colspan="2">
+                        <select class="form-control" id="researchRecognition" name="researchRecognition">
+                            <option value="">선택하세요</option>
+                            <option value="연구소기업">연구소기업</option>
+                            <option value="일반기업">일반기업</option>
+                        </select>
+                    </td>
+                    <th>공공기술이전</th>
+                    <td colspan="3">
+                        <select class="form-control" id="publicTechnologyTransfer" name="publicTechnologyTransfer">
+                            <option value="">선택하세요</option>
+                            <option value="기술이전기업">기술이전기업</option>
+                            <option value="일반기업">일반기업</option>
+                        </select>
+                    </td>
+                </tr>
+                <tr>
+                    <th>투자기업실사</th>
+                    <td colspan="3">
+                        <select class="form-control" id="dueDiligence" name="dueDiligence">
+                            <option value="">선택하세요</option>
+                            <option value="미실사기업">미실사기업</option>
+                            <option value="실사기업">실사기업</option>
+                            <option value="실사보완중">실사보완중</option>
+                        </select>
+                    </td>
+                    <th>대창창업기업(펀드)</th>
+                    <td colspan="2">
+                        <select class="form-control" id="isDaechang" name="isDaechang">
+                            <option value="">선택하세요</option>
+                            <option value="대창창업기업">대창창업기업</option>
+                            <option value="일반기업">일반기업</option>
+                        </select>
+                    </td>
+                    <th>상장구분 / 일자</th>
+                    <td colspan="2">
+                        <div class="input-inline">
+                            <select class="form-control" id="listingStatus" name="listingStatus">
+                                <option value="">선택하세요</option>
+                                <option value="비상장기업">비상장기업</option>
+                                <option value="상장기업">상장기업</option>
+                            </select>
+                            <input type="date" class="form-control" id="listingDate" name="listingDate">
+                        </div>
+                    </td>
+                </tr>
+
+                <!-- 3. 회사 BIZ 정보 -->
+                <tr>
+                    <th colspan="10">회사 BIZ 정보</th>
+                </tr>
+                <tr>
+                    <th>BIZ SECTOR 구분</th>
+                    <td colspan="9">
+                        <select class="form-control" id="investmentSector" name="investmentSector">
+                            <option value="">선택하세요</option>
+                            <option value="기계/소재/화학">기계/소재/화학</option>
+                            <option value="전기전자정보통신">전기전자정보통신</option>
+                            <option value="바이오/의료">바이오/의료</option>
+                            <option value="에너지/자원">에너지/자원</option>
+                            <option value="융복합">융복합</option>
+                            <option value="기타 SECTOR">기타 SECTOR</option>
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <th>주요 제품내용</th>
+                    <td colspan="9"><input type="text" class="form-control" id="mainProducts" name="mainProducts"></td>
+                </tr>
+                <tr>
+                    <th>투자포인트 1</th>
+                    <td colspan="9"><input type="text" class="form-control" id="investmentPoint1" name="investmentPoint1"></td>
+                </tr>
+                <tr>
+                    <th>투자포인트 2</th>
+                    <td colspan="9"><input type="text" class="form-control" id="investmentPoint2" name="investmentPoint2"></td>
+                </tr>
+                <tr>
+                    <th>투자포인트 3</th>
+                    <td colspan="9"><input type="text" class="form-control" id="investmentPoint3" name="investmentPoint3"></td>
+                </tr>
+                </tbody>
+
+                <!-- 4. 요약 재무제표 -->
+                <thead>
+                <tr>
+                    <th colspan="10">요약 재무제표(최근 2회차)</th>
+                </tr>
+                <tr>
+                    <th>회계연도</th>
+                    <th>기간구분</th>
+                    <th>매출액</th>
+                    <th>영업이익</th>
+                    <th>당기순이익</th>
+                    <th>자산총계</th>
+                    <th>부채총계</th>
+                    <th>자본총계</th>
+                    <th>자본금</th>
+                    <th>임직원수</th>
+                </tr>
+                </thead>
+                <tbody id="financialsTable"></tbody>
+
+                <!-- KUH 투자내역 카드 -->
+                <thead>
+                <tr>
+                    <th colspan="10">KUH 투자내역</th>
+                </tr>
+                <tr>
+                    <th>투자일자</th>
+                    <th colspan="2">투자상품</th>
+                    <th>투자금액</th>
+                    <th>투자단가</th>
+                    <th>주식수량</th>
+                    <th>지분율</th>
+                    <th>발행주식</th>
+                    <th>투자밸류</th>
+                    <th>투자단계</th>
+                </tr>
+                </thead>
+                <tbody id="investmentTable"></tbody>
 
 
-            <!-- 3. 회사 BIZ 정보 -->
-            <tr>
-                <th colspan="10">회사 BIZ 정보</th>
-            </tr>
-            <tr>
-                <th>BIZ SECTOR 구분</th>
-                <td colspan="9">
-                    <select class="form-control" id="investmentSector" disabled>
-                        <option value="">선택하세요</option>
-                        <option value="기계/소재/화학">기계/소재/화학</option>
-                        <option value="전기전자정보통신">전기전자정보통신</option>
-                        <option value="바이오/의료">바이오/의료</option>
-                        <option value="에너지/자원">에너지/자원</option>
-                        <option value="융복합">융복합</option>
-                        <option value="기타 SECTOR">기타 SECTOR</option>
-                    </select>
-                </td>
-            </tr>
-            <tr>
-                <th>주요 제품내용</th>
-                <td colspan="9"><input type="text" class="form-control" id="mainProducts" readonly></td>
-            </tr>
-            <tr>
-                <th>투자포인트 1</th>
-                <td colspan="9"><input type="text" class="form-control" id="investmentPoint1" readonly></td>
-            </tr>
-            <tr>
-                <th>투자포인트 2</th>
-                <td colspan="9"><input type="text" class="form-control" id="investmentPoint2" readonly></td>
-            </tr>
-            <tr>
-                <th>투자포인트 3</th>
-                <td colspan="9"><input type="text" class="form-control" id="investmentPoint3" readonly></td>
-            </tr>
-            </tbody>
-
-            <!-- 4. 요약 재무제표 -->
-            <thead>
-            <tr>
-                <th colspan="10">요약 재무제표(최근 2회차)</th>
-            </tr>
-            <tr>
-                <th>회계연도</th>
-                <th>기간구분</th>
-                <th>매출액</th>
-                <th>영업이익</th>
-                <th>당기순이익</th>
-                <th>자산총계</th>
-                <th>부채총계</th>
-                <th>자본총계</th>
-                <th>자본금</th>
-                <th>임직원수</th>
-            </tr>
-            </thead>
-            <tbody id="financialsTable"></tbody>
-
-            <!-- KUH 투자내역 카드 -->
-            <thead>
-            <tr>
-                <th colspan="10">KUH 투자내역</th>
-            </tr>
-            <tr>
-                <th>투자일자</th>
-                <th colspan="2">투자상품</th>
-                <th>투자금액</th>
-                <th>투자단가</th>
-                <th>주식수량</th>
-                <th>지분율</th>
-                <th>발행주식</th>
-                <th>투자밸류</th>
-                <th>투자단계</th>
-            </tr>
-            </thead>
-            <tbody id="investmentTable"></tbody>
+                <!-- 주주명부 카드 -->
+                <thead>
+                <tr>
+                    <th colspan="10">주주명부</th>
+                </tr>
+                <tr>
+                    <th>주주명 1</th>
+                    <th colspan="2">주주명 2</th>
+                    <th>주주명 3</th>
+                    <th>주주명 4</th>
+                    <th>주주명 5</th>
+                    <th>주주명 6</th>
+                    <th>주주명 7</th>
+                    <th>주주명 8</th>
+                    <th>발행총주식수</th>
+                </tr>
+                </thead>
+                <tbody id="shareholderTable"></tbody>
 
 
-            <!-- 주주명부 카드 -->
-            <thead>
-            <tr>
-                <th colspan="10">주주명부</th>
-            </tr>
-            <tr>
-                <th>주주명 1</th>
-                <th colspan="2">주주명 2</th>
-                <th>주주명 3</th>
-                <th>주주명 4</th>
-                <th>주주명 5</th>
-                <th>주주명 6</th>
-                <th>주주명 7</th>
-                <th>주주명 8</th>
-                <th>발행총주식수</th>
-            </tr>
-            </thead>
-            <tbody id="shareholderTable"></tbody>
+                <!-- 투자 담당자 정보 -->
+                <thead>
+                <tr>
+                    <th colspan="10">투자 담당자 및 기업 실무자 정보</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th>투자발굴자</th>
+                    <td colspan="3"><input type="text" class="form-control" id="manager1" readonly></td>
+                    <th>투자심사자</th>
+                    <td colspan="2"><input type="text" class="form-control" id="manager2" readonly></td>
+                    <th>사후관리담당자</th>
+                    <td colspan="2"><input type="text" class="form-control" id="manager3" readonly></td>
+                </tr>
+                <tr>
+                    <th>실무진 성명/직책</th>
+                    <td colspan="3">
+                        <div class="input-inline">
+                            <input type="text" class="form-control" id="name" readonly>
+                            <input type="text" class="form-control" id="positionType" readonly>
+                        </div>
+                    </td>
+                    <th>전화번호</th>
+                    <td colspan="2"><input type="text" class="form-control" id="phoneNumber" readonly></td>
+                    <th>이메일</th>
+                    <td colspan="2"><input type="email" class="form-control" id="email" readonly></td>
+                </tr>
+                </tbody>
 
+                <!-- 사후관리 정보 -->
+                <thead>
+                <tr>
+                    <th colspan="10">사후관리 정보</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <th>관리 연도</th>
+                    <td colspan="3"><input type="text" class="form-control" id="managementYear" readonly></td>
+                    <th>관리 등급</th>
+                    <td colspan="5"><input type="text" class="form-control" id="evalGrade" readonly></td>
+                </tr>
+                <tr>
+                    <th>사업 진행 현황 1</th>
+                    <td colspan="9"><input type="text" class="form-control" id="businessProgress1" readonly></td>
+                </tr>
+                <tr>
+                    <th>사업 진행 현황 2</th>
+                    <td colspan="9"><input type="text" class="form-control" id="businessProgress2" readonly></td>
+                </tr>
+                </tbody>
+            </table>
 
-            <!-- 투자 담당자 정보 -->
-            <thead>
-            <tr>
-                <th colspan="10">투자 담당자 및 기업 실무자 정보</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <th>투자발굴자</th>
-                <td colspan="3"><input type="text" class="form-control" id="manager1" readonly></td>
-                <th>투자심사자</th>
-                <td colspan="2"><input type="text" class="form-control" id="manager2" readonly></td>
-                <th>사후관리담당자</th>
-                <td colspan="2"><input type="text" class="form-control" id="manager3" readonly></td>
-            </tr>
-            <tr>
-                <th>실무진 성명/직책</th>
-                <td colspan="3">
-                    <div class="input-inline">
-                        <input type="text" class="form-control" id="name" readonly>
-                        <input type="text" class="form-control" id="positionType" readonly>
-                    </div>
-                </td>
-                <th>전화번호</th>
-                <td colspan="2"><input type="text" class="form-control" id="phoneNumber" readonly></td>
-                <th>이메일</th>
-                <td colspan="2"><input type="email" class="form-control" id="email" readonly></td>
-            </tr>
-            </tbody>
-
-            <!-- 사후관리 정보 -->
-            <thead>
-            <tr>
-                <th colspan="10">사후관리 정보</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <th>관리 연도</th>
-                <td colspan="3"><input type="text" class="form-control" id="managementYear" readonly></td>
-                <th>관리 등급</th>
-                <td colspan="5"><input type="text" class="form-control" id="evalGrade" readonly></td>
-            </tr>
-            <tr>
-                <th>사업 진행 현황 1</th>
-                <td colspan="9"><input type="text" class="form-control" id="businessProgress1" readonly></td>
-            </tr>
-            <tr>
-                <th>사업 진행 현황 2</th>
-                <td colspan="9"><input type="text" class="form-control" id="businessProgress2" readonly></td>
-            </tr>
-            </tbody>
-        </table>
-
-
-
-
-
-
-
-
-
-
-
+            <div class="button-container text-end">
+                <button type="submit" class="btn btn-primary">저장</button>
+            </div>
+        </form>
     </div>
 </div>
 

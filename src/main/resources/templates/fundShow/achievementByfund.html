@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>투자비율 달성여부 조회</title>
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+  <script defer th:src="@{/js/bootstrap.bundle.min.js}"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" th:href="@{/css/slimTable.css}">
+  <link rel="stylesheet" th:href="@{/css/common.css}">
+  <link rel="stylesheet" th:href="@{/css/popUpNavbar.css}">
+  <style>
+    th:first-child {
+      width: 10%; /* 텍스트 크기에 맞게 자동 조정 */
+      white-space: nowrap; /* 줄바꿈 방지 */
+    }
+  </style>
+
+</head>
+<body class="container mt-4">
+<div th:replace="fragments/popUpNavbar :: navbar"></div>
+
+<h2 class="mb-4">투자비율 달성여부 조회</h2>
+
+<!-- ✅ 펀드 성과 테이블 -->
+<table class="table table-bordered text-center">
+  <caption class="text-end">
+    (단위: 원, %)
+  </caption>
+  <thead class="table-light">
+  <tr>
+    <th colspan="4">투자누계액 기준</th>
+  </tr>
+  </thead>
+  <tbody>
+  <!--의무투자 -->
+  <tr>
+    <th rowspan="3" class="small-th">의무투자</th>
+    <th>금액</th>
+    <td></td>
+  </tr>
+  <tr>
+    <th>비율</th>
+    <td></td>
+  </tr>
+  <tr>
+    <th>기준</th>
+    <td></td>
+  </tr>
+
+  <tr>
+    <th rowspan="3">주목적투자 1</th>
+    <th>금액</th>
+    <td></td>
+  </tr>
+  <tr>
+    <th>비율</th>
+    <td></td>
+  </tr>
+  <tr>
+    <th>기준</th>
+    <td></td>
+  </tr>
+
+
+
+  <tr>
+    <th rowspan="3">주목적투자 2</th>
+    <th>금액</th>
+    <td></td>
+  </tr>
+  <tr>
+    <th>비율</th>
+    <td></td>
+  </tr>
+  <tr>
+    <th>기준</th>
+    <td></td>
+  </tr>
+
+
+
+  <tr>
+    <th rowspan="3">특수목적투자 1</th>
+    <th>금액</th>
+    <td></td>
+  </tr>
+  <tr>
+    <th>비율</th>
+    <td></td>
+  </tr>
+  <tr>
+    <th>기준</th>
+    <td></td>
+  </tr>
+
+
+
+  <tr>
+    <th rowspan="3">특수목적투자 2</th>
+    <th>금액</th>
+    <td></td>
+  </tr>
+  <tr>
+    <th>비율</th>
+    <td></td>
+  </tr>
+  <tr>
+    <th>기준</th>
+    <td></td>
+  </tr>
+
+
+
+  <tr>
+    <th rowspan="3">특수목적투자 3</th>
+    <th>금액</th>
+    <td></td>
+  </tr>
+  <tr>
+    <th>비율</th>
+    <td></td>
+  </tr>
+  <tr>
+    <th>기준</th>
+    <td></td>
+  </tr>
+
+  </tbody>
+</table>
+
+</body>
+</html>
