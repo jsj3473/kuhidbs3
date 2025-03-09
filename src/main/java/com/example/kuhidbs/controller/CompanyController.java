@@ -263,16 +263,7 @@ public class CompanyController {
         return ResponseEntity.ok("TIPS 정보가 업데이트되었습니다.");
     }
 
-    // 기업 정보 수정 API
-    @PutMapping("/updateCompany")
-    public ResponseEntity<Company> updateCompany(@Valid @RequestBody UCmpInfDTO companyDTO) {
-        logger.info("기업 정보 업데이트 요청: {}", companyDTO);
 
-        Company updatedCompany = companyService.updateCompany(companyDTO);
-
-        logger.info("기업 정보가 성공적으로 업데이트됨: {}", updatedCompany);
-        return ResponseEntity.ok(updatedCompany);
-    }
 
     @PostMapping("/createStockSplit")
     public ResponseEntity<StockSplit> createStockSplit(@Valid @RequestBody CStockSplitDto stockSplitDto) {

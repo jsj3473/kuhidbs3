@@ -29,7 +29,6 @@ public class UFundDTO {
     private String paymentType; // 납입방법
     private String leadFundManager; //대펀
     private String coreIvtManager; //핵운
-    private String auditorName; //회계감사인명
     private String trusteeCorporation; // 업무수탁법인
     private String administrationCorporation; // 사무수탁법인
     private BigDecimal targetReturnRate; // 기준 수익률
@@ -40,12 +39,10 @@ public class UFundDTO {
     private String priorLossGP; // 우선손실충당 GP
     private String priorLossLP; // 우선손실충당 LP
 
-    private String mandatoryInvestment1; // 의무투자
-    private String mandatoryInvestment2;
-    private String primaryInvestment1; // 주목적투자
-    private String primaryInvestment2; // 주목적투자
-    private String specialPurposeInvestment1; // 특수목적투자
-    private String specialPurposeInvestment2; // 특수목적투자
-    private String specialPurposeInvestment3; // 특수목적투자
-    private String specialPurposeInvestment4; // 특수목적투자기타
+    private String mandatoryPurpose; // 의무투자
+    private String mainInvest1Purpose; // 주목적투자
+    private String mainInvest2Purpose; // 주목적투자
+    private String specialInvest1Purpose; // 특수목적투자
+    private String specialInvest2Purpose; // 특수목적투자
+    private String specialInvest3Purpose; // 특수목적투자
 }

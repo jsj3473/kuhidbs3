@@ -164,4 +164,15 @@ public class FundController {
         List<Object[]> fundIds = fundRepository.searchFunds(query);
         return ResponseEntity.ok(fundIds);
     }
+
+    /**
+     * 펀드 정보 수정
+     */
+    @PutMapping("/updateFund")
+    public ResponseEntity<UFundDTO> updateFundInfo(
+            @RequestBody UFundDTO updatedFundInfo) {
+        logger.info("[PUT] 펀드 정보 수정 - fundId: {}", updatedFundInfo.getFundId());
+        UFundDTO updatedInfo = fundService.updateFundInfo(updatedFundInfo);
+        return ResponseEntity.ok(updatedInfo);
+    }
 }

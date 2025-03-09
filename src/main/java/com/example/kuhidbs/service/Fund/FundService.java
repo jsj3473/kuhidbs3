@@ -3,19 +3,15 @@ package com.example.kuhidbs.service.Fund;
 import com.example.kuhidbs.dto.Fund.*;
 import com.example.kuhidbs.entity.Fund.Fund;
 import com.example.kuhidbs.entity.Fund.FundAchievement;
-import com.example.kuhidbs.entity.Fund.FundMem;
 import com.example.kuhidbs.repository.Fund.FundAchievementRepository;
 import com.example.kuhidbs.repository.Fund.FundRepository;
 import com.example.kuhidbs.repository.InvestmentAssetSummaryRepository;
-import com.example.kuhidbs.service.company.InvestmentService;
 import lombok.RequiredArgsConstructor;
-import org.antlr.v4.runtime.misc.LogManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -74,6 +70,96 @@ public class FundService {
 
         return savedFund;
     }
+
+    /**
+     * 펀드 정보 수정
+     */
+    @Transactional
+    public UFundDTO updateFundInfo(UFundDTO updatedFundInfo) {
+        Fund fund = fundRepository.findById(updatedFundInfo.getFundId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 펀드가 존재하지 않습니다: " + updatedFundInfo.getFundId()));
+
+        // 기존 펀드 정보 업데이트
+        fund.setLiquidationStatus(updatedFundInfo.getLiquidationStatus());
+        fund.setLiquidationDate(updatedFundInfo.getLiquidationDate());
+        fund.setFundName(updatedFundInfo.getFundName());
+        fund.setFundNameDetail(updatedFundInfo.getFundNameDetail());
+        fund.setEstablishmentDate(updatedFundInfo.getEstablishmentDate());
+        fund.setDuration(updatedFundInfo.getDuration());
+        fund.setDurationStartDate(updatedFundInfo.getDurationStartDate());
+        fund.setDurationEndDate(updatedFundInfo.getDurationEndDate());
+        fund.setInvestmentDuration(updatedFundInfo.getInvestmentDuration());
+        fund.setInvestmentStartDate(updatedFundInfo.getInvestmentStartDate());
+        fund.setInvestmentEndDate(updatedFundInfo.getInvestmentEndDate());
+        fund.setCommittedTotalPrice(updatedFundInfo.getCommittedTotalPrice());
+        fund.setUnitPrice(updatedFundInfo.getUnitPrice());
+        fund.setFundOrganizationType(updatedFundInfo.getFundOrganizationType());
+        fund.setPaymentType(updatedFundInfo.getPaymentType());
+        fund.setLeadFundManager(updatedFundInfo.getLeadFundManager());
+        fund.setCoreIvtManager(updatedFundInfo.getCoreIvtManager());
+        fund.setTrusteeCorporation(updatedFundInfo.getTrusteeCorporation());
+        fund.setAdministrationCorporation(updatedFundInfo.getAdministrationCorporation());
+        fund.setTargetReturnRate(updatedFundInfo.getTargetReturnRate());
+        fund.setPerformanceFeeRate(updatedFundInfo.getPerformanceFeeRate());
+        fund.setManagementFeeInvestmentPeriod(updatedFundInfo.getManagementFeeInvestmentPeriod());
+        fund.setManagementFeeManagementPeriod(updatedFundInfo.getManagementFeeManagementPeriod());
+        fund.setIncentiveCondition(updatedFundInfo.getIncentiveCondition());
+        fund.setPriorLossGP(updatedFundInfo.getPriorLossGP());
+        fund.setPriorLossLP(updatedFundInfo.getPriorLossLP());
+        fund.setMandatoryPurpose(updatedFundInfo.getMandatoryPurpose());
+        fund.setMainInvest1Purpose(updatedFundInfo.getMainInvest1Purpose());
+        fund.setMainInvest2Purpose(updatedFundInfo.getMainInvest2Purpose());
+        fund.setSpecialInvest1Purpose(updatedFundInfo.getSpecialInvest1Purpose());
+        fund.setSpecialInvest2Purpose(updatedFundInfo.getSpecialInvest2Purpose());
+        fund.setSpecialInvest3Purpose(updatedFundInfo.getSpecialInvest3Purpose());
+
+        fundRepository.save(fund);
+        logger.info("[UPDATE] 펀드 정보 수정 완료 - fundId: {}", updatedFundInfo.getFundId());
+
+        return mapToDTO(fund);
+    }
+
+    /**
+     * Entity → DTO 변환
+     */
+    private UFundDTO mapToDTO(Fund fund) {
+        return UFundDTO.builder()
+                .fundId(fund.getFundId())
+                .liquidationStatus(fund.getLiquidationStatus())
+                .liquidationDate(fund.getLiquidationDate())
+                .fundName(fund.getFundName())
+                .fundNameDetail(fund.getFundNameDetail())
+                .establishmentDate(fund.getEstablishmentDate())
+                .duration(fund.getDuration())
+                .durationStartDate(fund.getDurationStartDate())
+                .durationEndDate(fund.getDurationEndDate())
+                .investmentDuration(fund.getInvestmentDuration())
+                .investmentStartDate(fund.getInvestmentStartDate())
+                .investmentEndDate(fund.getInvestmentEndDate())
+                .committedTotalPrice(fund.getCommittedTotalPrice())
+                .unitPrice(fund.getUnitPrice())
+                .fundOrganizationType(fund.getFundOrganizationType())
+                .paymentType(fund.getPaymentType())
+                .leadFundManager(fund.getLeadFundManager())
+                .coreIvtManager(fund.getCoreIvtManager())
+                .trusteeCorporation(fund.getTrusteeCorporation())
+                .administrationCorporation(fund.getAdministrationCorporation())
+                .targetReturnRate(fund.getTargetReturnRate())
+                .performanceFeeRate(fund.getPerformanceFeeRate())
+                .managementFeeInvestmentPeriod(fund.getManagementFeeInvestmentPeriod())
+                .managementFeeManagementPeriod(fund.getManagementFeeManagementPeriod())
+                .incentiveCondition(fund.getIncentiveCondition())
+                .priorLossGP(fund.getPriorLossGP())
+                .priorLossLP(fund.getPriorLossLP())
+                .mandatoryPurpose(fund.getMandatoryPurpose())
+                .mainInvest1Purpose(fund.getMainInvest1Purpose())
+                .mainInvest2Purpose(fund.getMainInvest2Purpose())
+                .specialInvest1Purpose(fund.getSpecialInvest1Purpose())
+                .specialInvest2Purpose(fund.getSpecialInvest2Purpose())
+                .specialInvest3Purpose(fund.getSpecialInvest3Purpose())
+                .build();
+    }
+
 
     private void createFundAchievement(Fund fund, CFundDTO dto) {
         FundAchievement fundAchievement = FundAchievement.builder()
@@ -211,3 +297,4 @@ public class FundService {
                 .build();
     }
 }
+
