@@ -28,7 +28,7 @@ public class FundAchievementService {
         RFundAchievementDTO dto = new RFundAchievementDTO();
 
         dto.setAchievementId(entity.getAchievementId());
-        dto.setFundId(entity.getFund().getFundId()); // Long → String 변환
+        dto.setFundId(entity.getFund().getFundId());
 
         dto.setMandatoryAmount(entity.getMandatoryAmount());
         dto.setMandatoryRatio(entity.getMandatoryRatio());
