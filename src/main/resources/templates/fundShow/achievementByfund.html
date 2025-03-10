@@ -14,17 +14,13 @@
       width: 10%; /* 텍스트 크기에 맞게 자동 조정 */
       white-space: nowrap; /* 줄바꿈 방지 */
     }
-    /* 금액 및 비율을 포함한 데이터 가운데 정렬 */
-    .text-center-td {
-      text-align: center !important;
-    }
   </style>
 
 </head>
 <body class="container mt-4">
 <div th:replace="fragments/popUpNavbar :: navbar"></div>
 
-<h2 class="mb-4">투자율 달성여부 조회</h2>
+<h2 class="mb-4">투자비율 달성여부 조회</h2>
 
 <!-- ✅ 펀드 성과 테이블 -->
 <table class="table table-bordered text-center">
@@ -83,7 +79,6 @@
   </tr>
 
   <!-- 특수목적 투자 1 -->
-  <!-- 특수목적 투자 1 -->
   <tr>
     <th rowspan="3">특수목적투자 1</th>
     <th>금액</th>
@@ -127,7 +122,6 @@
     <th>기준</th>
     <td th:text="${rFundAchievementDTO.specialInvest3Criteria} + ' * ' + (${rFundAchievementDTO.specialInvest3CriteriaRatio != null ? #numbers.formatDecimal(rFundAchievementDTO.specialInvest3CriteriaRatio, 1, 1, 'POINT') + '%' : ''})"></td>
   </tr>
-
   </tbody>
 
 </table>
