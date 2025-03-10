@@ -471,7 +471,7 @@ public class HomeController {
     public String achievementByfund(@PathVariable("id") String id, Model model) {
         model.addAttribute("fundId", id);
         RFundAchievementDTO rFundAchievementDTO = fundAchievementService.getFundAchievement(id);
-        model.addAttribute("rIASDTO", rFundAchievementDTO);
+        model.addAttribute("rFundAchievementDTO", rFundAchievementDTO);
         return "fundShow/achievementByfund"; // achievementByfund.html
     }
     // 투자자산총괄표 조회 팝업
