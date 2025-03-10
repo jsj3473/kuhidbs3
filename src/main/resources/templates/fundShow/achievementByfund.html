@@ -24,7 +24,7 @@
 <body class="container mt-4">
 <div th:replace="fragments/popUpNavbar :: navbar"></div>
 
-<h2 class="mb-4">투자비율 달성여부 조회</h2>
+<h2 class="mb-4">투자율 달성여부 조회</h2>
 
 <!-- ✅ 펀드 성과 테이블 -->
 <table class="table table-bordered text-center">
@@ -41,7 +41,7 @@
   <tr>
     <th rowspan="3" class="small-th">의무투자</th>
     <th>금액</th>
-    <td class="text-end text-center-td" th:text="${rFundAchievementDTO.mandatoryAmount != null ? #numbers.formatInteger(rFundAchievementDTO.mandatoryAmount, 3, 'COMMA') : ''}"></td>
+    <td class="text-end text-center-td" th:text="${rFundAchievementDTO.mandatoryAmount != null ? (rFundAchievementDTO.mandatoryAmount < 1000 ? rFundAchievementDTO.mandatoryAmount : #numbers.formatInteger(rFundAchievementDTO.mandatoryAmount, 3, 'COMMA')) : ''}"></td>
   </tr>
   <tr>
     <th>비율</th>
@@ -56,7 +56,7 @@
   <tr>
     <th rowspan="3">주목적투자 1</th>
     <th>금액</th>
-    <td class="text-end text-center-td" th:text="${rFundAchievementDTO.mainInvest1Amount != null ? #numbers.formatInteger(rFundAchievementDTO.mainInvest1Amount, 3, 'COMMA') : ''}"></td>
+    <td class="text-end text-center-td" th:text="${rFundAchievementDTO.mainInvest1Amount != null ? (rFundAchievementDTO.mainInvest1Amount < 1000 ? rFundAchievementDTO.mainInvest1Amount : #numbers.formatInteger(rFundAchievementDTO.mainInvest1Amount, 3, 'COMMA')) : ''}"></td>
   </tr>
   <tr>
     <th>비율</th>
@@ -71,7 +71,7 @@
   <tr>
     <th rowspan="3">주목적투자 2</th>
     <th>금액</th>
-    <td class="text-end text-center-td" th:text="${rFundAchievementDTO.mainInvest2Amount != null ? #numbers.formatInteger(rFundAchievementDTO.mainInvest2Amount, 3, 'COMMA') : ''}"></td>
+    <td class="text-end text-center-td" th:text="${rFundAchievementDTO.mainInvest2Amount != null ? (rFundAchievementDTO.mainInvest2Amount < 1000 ? rFundAchievementDTO.mainInvest2Amount : #numbers.formatInteger(rFundAchievementDTO.mainInvest2Amount, 3, 'COMMA')) : ''}"></td>
   </tr>
   <tr>
     <th>비율</th>
@@ -83,10 +83,11 @@
   </tr>
 
   <!-- 특수목적 투자 1 -->
+  <!-- 특수목적 투자 1 -->
   <tr>
     <th rowspan="3">특수목적투자 1</th>
     <th>금액</th>
-    <td class="text-end text-center-td" th:text="${rFundAchievementDTO.specialInvest1Amount != null ? #numbers.formatInteger(rFundAchievementDTO.specialInvest1Amount, 3, 'COMMA') : ''}"></td>
+    <td class="text-end text-center-td" th:text="${rFundAchievementDTO.specialInvest1Amount != null ? (rFundAchievementDTO.specialInvest1Amount < 1000 ? rFundAchievementDTO.specialInvest1Amount : #numbers.formatInteger(rFundAchievementDTO.specialInvest1Amount, 3, 'COMMA')) : ''}"></td>
   </tr>
   <tr>
     <th>비율</th>
@@ -101,7 +102,7 @@
   <tr>
     <th rowspan="3">특수목적투자 2</th>
     <th>금액</th>
-    <td class="text-end text-center-td" th:text="${rFundAchievementDTO.specialInvest2Amount != null ? #numbers.formatInteger(rFundAchievementDTO.specialInvest2Amount, 3, 'COMMA') : ''}"></td>
+    <td class="text-end text-center-td" th:text="${rFundAchievementDTO.specialInvest2Amount != null ? (rFundAchievementDTO.specialInvest2Amount < 1000 ? rFundAchievementDTO.specialInvest2Amount : #numbers.formatInteger(rFundAchievementDTO.specialInvest2Amount, 3, 'COMMA')) : ''}"></td>
   </tr>
   <tr>
     <th>비율</th>
@@ -116,7 +117,7 @@
   <tr>
     <th rowspan="3">특수목적투자 3</th>
     <th>금액</th>
-    <td class="text-end text-center-td" th:text="${rFundAchievementDTO.specialInvest3Amount != null ? #numbers.formatInteger(rFundAchievementDTO.specialInvest3Amount, 3, 'COMMA') : ''}"></td>
+    <td class="text-end text-center-td" th:text="${rFundAchievementDTO.specialInvest3Amount != null ? (rFundAchievementDTO.specialInvest3Amount < 1000 ? rFundAchievementDTO.specialInvest3Amount : #numbers.formatInteger(rFundAchievementDTO.specialInvest3Amount, 3, 'COMMA')) : ''}"></td>
   </tr>
   <tr>
     <th>비율</th>
@@ -126,6 +127,7 @@
     <th>기준</th>
     <td th:text="${rFundAchievementDTO.specialInvest3Criteria} + ' * ' + (${rFundAchievementDTO.specialInvest3CriteriaRatio != null ? #numbers.formatDecimal(rFundAchievementDTO.specialInvest3CriteriaRatio, 1, 1, 'POINT') + '%' : ''})"></td>
   </tr>
+
   </tbody>
 
 </table>
