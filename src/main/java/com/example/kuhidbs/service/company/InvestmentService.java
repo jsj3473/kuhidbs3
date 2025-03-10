@@ -28,9 +28,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @Service
@@ -158,184 +160,117 @@ public class InvestmentService {
     public void updateFundAchievement(Fund fund, Company company, Long investmentAmount) {
         logger.info("[INFO] 투자 목표 달성 업데이트 시작 - 펀드 ID: {}", fund.getFundId());
 
-        // 1️⃣ FundAchievement 데이터 조회 (없으면 null 반환)
-        FundAchievement fundAchievement = fundAchievementRepository.findByFund(fund)
-                .orElse(null);
-
+        FundAchievement fundAchievement = fundAchievementRepository.findByFund(fund).orElse(null);
         if (fundAchievement == null) {
             logger.warn("[WARN] FundAchievement 데이터 없음 - 펀드 ID: {}", fund.getFundId());
-            return; // 🔥 데이터가 없으면 함수 종료 (추가 생성 X)
+            return;
         }
 
+        List<String> criteriaList = Arrays.asList(
+                fundAchievement.getMandatoryCriteria(),
+                fundAchievement.getMainInvest1Criteria(),
+                fundAchievement.getMainInvest2Criteria(),
+                fundAchievement.getSpecialInvest1Criteria(),
+                fundAchievement.getSpecialInvest2Criteria(),
+                fundAchievement.getSpecialInvest3Criteria()
+        );
 
-// 2️⃣ 펀드의 투자 기준과 회사 속성을 비교하여 타겟어마운트
+        List<Long> targetAmounts = Arrays.asList(
+                fundAchievement.getMandatoryTargetAmount(),
+                fundAchievement.getMainInvest1TargetAmount(),
+                fundAchievement.getMainInvest2TargetAmount(),
+                fundAchievement.getSpecialInvest1TargetAmount(),
+                fundAchievement.getSpecialInvest2TargetAmount(),
+                fundAchievement.getSpecialInvest3TargetAmount()
+        );
 
-        if ("투자 잔액".equals(fundAchievement.getMandatoryCriteria())) {
-            BigDecimal targetAmount = BigDecimal.valueOf(fundAchievement.getMandatoryTargetAmount());
-            BigDecimal criteriaRatio = BigDecimal.valueOf(fundAchievement.getMandatoryCriteriaRatio());
-            BigDecimal investment = BigDecimal.valueOf(investmentAmount);
+        List<Double> criteriaRatios = Arrays.asList(
+                fundAchievement.getMandatoryCriteriaRatio(),
+                fundAchievement.getMainInvest1CriteriaRatio(),
+                fundAchievement.getMainInvest2CriteriaRatio(),
+                fundAchievement.getSpecialInvest1CriteriaRatio(),
+                fundAchievement.getSpecialInvest2CriteriaRatio(),
+                fundAchievement.getSpecialInvest3CriteriaRatio()
+        );
 
-            // (기존 타겟 금액) + (투자 금액 * 기준 비율 / 100)
-            BigDecimal updatedTargetAmount = targetAmount.add(
-                    investment.multiply(criteriaRatio).divide(BigDecimal.valueOf(100), RoundingMode.DOWN)
-            );
+        List<Consumer<Long>> setTargetAmountFunctions = Arrays.asList(
+                fundAchievement::setMandatoryTargetAmount,
+                fundAchievement::setMainInvest1TargetAmount,
+                fundAchievement::setMainInvest2TargetAmount,
+                fundAchievement::setSpecialInvest1TargetAmount,
+                fundAchievement::setSpecialInvest2TargetAmount,
+                fundAchievement::setSpecialInvest3TargetAmount
+        );
 
-            fundAchievement.setMandatoryTargetAmount(updatedTargetAmount.longValue());
+        List<Supplier<Long>> getAmountFunctions = Arrays.asList(
+                fundAchievement::getMandatoryAmount,
+                fundAchievement::getMainInvest1Amount,
+                fundAchievement::getMainInvest2Amount,
+                fundAchievement::getSpecialInvest1Amount,
+                fundAchievement::getSpecialInvest2Amount,
+                fundAchievement::getSpecialInvest3Amount
+        );
 
-            logger.info("[UPDATE] 의무 투자 타겟 금액 갱신 - 기준: 투자 잔액 / 새로운 타겟 금액: {}", updatedTargetAmount);
+        List<Consumer<Long>> setAmountFunctions = Arrays.asList(
+                fundAchievement::setMandatoryAmount,
+                fundAchievement::setMainInvest1Amount,
+                fundAchievement::setMainInvest2Amount,
+                fundAchievement::setSpecialInvest1Amount,
+                fundAchievement::setSpecialInvest2Amount,
+                fundAchievement::setSpecialInvest3Amount
+        );
+
+        List<Consumer<Double>> setRatioFunctions = Arrays.asList(
+                fundAchievement::setMandatoryRatio,
+                fundAchievement::setMainInvest1Ratio,
+                fundAchievement::setMainInvest2Ratio,
+                fundAchievement::setSpecialInvest1Ratio,
+                fundAchievement::setSpecialInvest2Ratio,
+                fundAchievement::setSpecialInvest3Ratio
+        );
+
+        List<String> purposeList = Arrays.asList(
+                fund.getMandatoryPurpose(),
+                fund.getMainInvest1Purpose(),
+                fund.getMainInvest2Purpose(),
+                fund.getSpecialInvest1Purpose(),
+                fund.getSpecialInvest2Purpose(),
+                fund.getSpecialInvest3Purpose()
+        );
+
+        for (int i = 0; i < criteriaList.size(); i++) {
+            if ("투자 잔액".equals(criteriaList.get(i))) {
+                BigDecimal targetAmount = BigDecimal.valueOf(targetAmounts.get(i));
+                BigDecimal criteriaRatio = BigDecimal.valueOf(criteriaRatios.get(i));
+                BigDecimal investment = BigDecimal.valueOf(investmentAmount);
+
+                BigDecimal updatedTargetAmount = targetAmount.add(
+                        investment.multiply(criteriaRatio).divide(BigDecimal.valueOf(100), RoundingMode.DOWN)
+                );
+
+                setTargetAmountFunctions.get(i).accept(updatedTargetAmount.longValue());
+                logger.info("[UPDATE] 투자 목표 금액 갱신 - 새로운 타겟 금액: {}", updatedTargetAmount);
+            }
+
+
+            if (checkCompanyCriteria(company, purposeList.get(i))) {
+                Long newTotalAmount = getAmountFunctions.get(i).get() + investmentAmount;
+                setAmountFunctions.get(i).accept(newTotalAmount);
+                Double newRatio = calculateRatio(newTotalAmount, targetAmounts.get(i));
+                setRatioFunctions.get(i).accept(newRatio);
+                logger.info("[UPDATE] 투자 업데이트 - 인덱스: {} / 추가 금액: {} / 총 금액: {} / 비율: {}", i, investmentAmount, newTotalAmount, newRatio);
+            } else {
+                Long newTotalAmount = getAmountFunctions.get(i).get();
+                Double newRatio = calculateRatio(newTotalAmount, targetAmounts.get(i));
+                setRatioFunctions.get(i).accept(newRatio);
+                logger.info("[UPDATE] 투자 업데이트 - 인덱스: {} / 변경 없음 / 총 금액: {} / 비율: {}", i, newTotalAmount, newRatio);
+            }
         }
 
-
-        if ("투자 잔액".equals(fundAchievement.getMainInvest1Criteria())) {
-            BigDecimal targetAmount = BigDecimal.valueOf(fundAchievement.getMainInvest1TargetAmount());
-            BigDecimal criteriaRatio = BigDecimal.valueOf(fundAchievement.getMainInvest1CriteriaRatio());
-            BigDecimal investment = BigDecimal.valueOf(investmentAmount);
-
-            // (기존 타겟 금액) + (투자 금액 * 기준 비율 / 100)
-            BigDecimal updatedTargetAmount = targetAmount.add(
-                    investment.multiply(criteriaRatio).divide(BigDecimal.valueOf(100), RoundingMode.DOWN)
-            );
-
-            fundAchievement.setMainInvest1TargetAmount(updatedTargetAmount.longValue());
-
-            logger.info("[UPDATE] 주목적 투자 1 타겟 금액 갱신 - 기준: 투자 잔액 / 새로운 타겟 금액: {}", updatedTargetAmount);
-        }
-
-        if ("투자 잔액".equals(fundAchievement.getMainInvest2Criteria())) {
-            BigDecimal targetAmount = BigDecimal.valueOf(fundAchievement.getMainInvest2TargetAmount());
-            BigDecimal criteriaRatio = BigDecimal.valueOf(fundAchievement.getMainInvest2CriteriaRatio());
-            BigDecimal investment = BigDecimal.valueOf(investmentAmount);
-
-            // (기존 타겟 금액) + (투자 금액 * 기준 비율 / 100)
-            BigDecimal updatedTargetAmount = targetAmount.add(
-                    investment.multiply(criteriaRatio).divide(BigDecimal.valueOf(100), RoundingMode.DOWN)
-            );
-
-            fundAchievement.setMainInvest2TargetAmount(updatedTargetAmount.longValue());
-
-            logger.info("[UPDATE] 주목적 투자 2 타겟 금액 갱신 - 기준: 투자 잔액 / 새로운 타겟 금액: {}", updatedTargetAmount);
-        }
-
-        if ("투자 잔액".equals(fundAchievement.getSpecialInvest1Criteria())) {
-            BigDecimal targetAmount = BigDecimal.valueOf(fundAchievement.getSpecialInvest1TargetAmount());
-            BigDecimal criteriaRatio = BigDecimal.valueOf(fundAchievement.getSpecialInvest1CriteriaRatio());
-            BigDecimal investment = BigDecimal.valueOf(investmentAmount);
-
-            // (기존 타겟 금액) + (투자 금액 * 기준 비율 / 100)
-            BigDecimal updatedTargetAmount = targetAmount.add(
-                    investment.multiply(criteriaRatio).divide(BigDecimal.valueOf(100), RoundingMode.DOWN)
-            );
-
-            fundAchievement.setSpecialInvest1TargetAmount(updatedTargetAmount.longValue());
-
-            logger.info("[UPDATE] 특수목적 투자 1 타겟 금액 갱신 - 기준: 투자 잔액 / 새로운 타겟 금액: {}", updatedTargetAmount);
-        }
-
-        if ("투자 잔액".equals(fundAchievement.getSpecialInvest2Criteria())) {
-            BigDecimal targetAmount = BigDecimal.valueOf(fundAchievement.getSpecialInvest2TargetAmount());
-            BigDecimal criteriaRatio = BigDecimal.valueOf(fundAchievement.getSpecialInvest2CriteriaRatio());
-            BigDecimal investment = BigDecimal.valueOf(investmentAmount);
-
-            // (기존 타겟 금액) + (투자 금액 * 기준 비율 / 100)
-            BigDecimal updatedTargetAmount = targetAmount.add(
-                    investment.multiply(criteriaRatio).divide(BigDecimal.valueOf(100), RoundingMode.DOWN)
-            );
-
-            fundAchievement.setSpecialInvest2TargetAmount(updatedTargetAmount.longValue());
-
-            logger.info("[UPDATE] 특수목적 투자 2 타겟 금액 갱신 - 기준: 투자 잔액 / 새로운 타겟 금액: {}", updatedTargetAmount);
-        }
-
-        if ("투자 잔액".equals(fundAchievement.getSpecialInvest3Criteria())) {
-            BigDecimal targetAmount = BigDecimal.valueOf(fundAchievement.getSpecialInvest3TargetAmount());
-            BigDecimal criteriaRatio = BigDecimal.valueOf(fundAchievement.getSpecialInvest3CriteriaRatio());
-            BigDecimal investment = BigDecimal.valueOf(investmentAmount);
-
-            // (기존 타겟 금액) + (투자 금액 * 기준 비율 / 100)
-            BigDecimal updatedTargetAmount = targetAmount.add(
-                    investment.multiply(criteriaRatio).divide(BigDecimal.valueOf(100), RoundingMode.DOWN)
-            );
-
-            fundAchievement.setSpecialInvest3TargetAmount(updatedTargetAmount.longValue());
-
-            logger.info("[UPDATE] 특수목적 투자 3 타겟 금액 갱신 - 기준: 투자 잔액 / 새로운 타겟 금액: {}", updatedTargetAmount);
-        }
-
-
-
-        //어마운트,비율 업데이트
-        if (checkCompanyCriteria(company, fund.getMandatoryPurpose())) {
-            Long newTotalAmount = fundAchievement.getMandatoryAmount() + investmentAmount;
-            Double newRatio = calculateRatio(newTotalAmount, fundAchievement.getMandatoryTargetAmount());
-
-            fundAchievement.setMandatoryAmount(newTotalAmount);
-            fundAchievement.setMandatoryRatio(newRatio);
-
-            logger.info("[UPDATE] 의무 투자 업데이트 - 추가 금액: {} / 총 금액: {} / 비율: {}",
-                    investmentAmount, newTotalAmount, newRatio);
-        }
-
-        if (checkCompanyCriteria(company, fund.getMainInvest1Purpose())) {
-            Long newTotalAmount = fundAchievement.getMainInvest1Amount() + investmentAmount;
-            Double newRatio = calculateRatio(newTotalAmount, fundAchievement.getMainInvest1TargetAmount());
-
-            fundAchievement.setMainInvest1Amount(newTotalAmount);
-            fundAchievement.setMainInvest1Ratio(newRatio);
-
-            logger.info("[UPDATE] 주목적 투자 1 업데이트 - 추가 금액: {} / 총 금액: {} / 비율: {}",
-                    investmentAmount, newTotalAmount, newRatio);
-        }
-
-        if (checkCompanyCriteria(company, fund.getMainInvest2Purpose())) {
-            Long newTotalAmount = fundAchievement.getMainInvest2Amount() + investmentAmount;
-            Double newRatio = calculateRatio(newTotalAmount, fundAchievement.getMainInvest2TargetAmount());
-
-            fundAchievement.setMainInvest2Amount(newTotalAmount);
-            fundAchievement.setMainInvest2Ratio(newRatio);
-
-            logger.info("[UPDATE] 주목적 투자 2 업데이트 - 추가 금액: {} / 총 금액: {} / 비율: {}",
-                    investmentAmount, newTotalAmount, newRatio);
-        }
-
-        if (checkCompanyCriteria(company, fund.getSpecialInvest1Purpose())) {
-            Long newTotalAmount = fundAchievement.getSpecialInvest1Amount() + investmentAmount;
-            Double newRatio = calculateRatio(newTotalAmount, fundAchievement.getSpecialInvest1TargetAmount());
-
-            fundAchievement.setSpecialInvest1Amount(newTotalAmount);
-            fundAchievement.setSpecialInvest1Ratio(newRatio);
-
-            logger.info("[UPDATE] 특수목적 투자 1 업데이트 - 추가 금액: {} / 총 금액: {} / 비율: {}",
-                    investmentAmount, newTotalAmount, newRatio);
-        }
-
-        if (checkCompanyCriteria(company, fund.getSpecialInvest2Purpose())) {
-            Long newTotalAmount = fundAchievement.getSpecialInvest2Amount() + investmentAmount;
-            Double newRatio = calculateRatio(newTotalAmount, fundAchievement.getSpecialInvest2TargetAmount());
-
-            fundAchievement.setSpecialInvest2Amount(newTotalAmount);
-            fundAchievement.setSpecialInvest2Ratio(newRatio);
-
-            logger.info("[UPDATE] 특수목적 투자 2 업데이트 - 추가 금액: {} / 총 금액: {} / 비율: {}",
-                    investmentAmount, newTotalAmount, newRatio);
-        }
-
-        if (checkCompanyCriteria(company, fund.getSpecialInvest3Purpose())) {
-            Long newTotalAmount = fundAchievement.getSpecialInvest3Amount() + investmentAmount;
-            Double newRatio = calculateRatio(newTotalAmount, fundAchievement.getSpecialInvest3TargetAmount());
-
-            fundAchievement.setSpecialInvest3Amount(newTotalAmount);
-            fundAchievement.setSpecialInvest3Ratio(newRatio);
-
-            logger.info("[UPDATE] 특수목적 투자 3 업데이트 - 추가 금액: {} / 총 금액: {} / 비율: {}",
-                    investmentAmount, newTotalAmount, newRatio);
-        }
-
-
-
-        // 3️⃣ 업데이트 후 저장
         fundAchievementRepository.save(fundAchievement);
         logger.info("[INFO] 투자 목표 달성 데이터 저장 완료 - 펀드 ID: {}", fund.getFundId());
     }
+
 
 
     private Double calculateRatio(Long amount, Long targetAmount) {
