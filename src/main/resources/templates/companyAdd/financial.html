@@ -18,13 +18,27 @@
                         .replace(/(?!^)-/g, "")   // 맨 앞이 아닌 곳의 '-' 제거
                         .replace(/^(-?\d*)(\.\d*)?.*$/, "$1$2"); // 올바른 소수점 표현 유지
 
-                    if (value !== "" && !isNaN(value)) {
-                        let numValue = parseFloat(value).toLocaleString("en-US", {
+                    // ✅ 소수점이 처음 입력되면 0.으로 변환
+                    if (value.startsWith(".")) {
+                        value = "0" + value;
+                    }
+
+                    // ✅ 소수점이 두 개 이상 입력되는 경우 방지
+                    let decimalParts = value.split(".");
+                    if (decimalParts.length > 2) {
+                        value = decimalParts[0] + "." + decimalParts.slice(1).join("");
+                    }
+
+                    // ✅ 천 단위 콤마 적용 (소수점 고려)
+                    if (value !== "" && !isNaN(value.replace(/,/g, ""))) {
+                        let numValue = parseFloat(value.replace(/,/g, "")).toLocaleString("en-US", {
                             minimumFractionDigits: value.includes(".") ? 1 : 0,
                             maximumFractionDigits: 10
                         });
 
                         this.value = value.endsWith(".") ? numValue + "." : numValue; // 소수점 유지
+                    } else {
+                        this.value = value; // 공백 입력 허용
                     }
                 });
 
@@ -43,58 +57,50 @@
             const financialFields = document.querySelectorAll(".financial-number");
             financialFields.forEach(formatNumberInput);
 
-            // 🔥 폼 제출 시 숫자 필드의 콤마 제거 후 전송
+            // ✅ 폼 제출 시 숫자 필드의 콤마 제거 후 전송
             document.getElementById("financialForm").addEventListener("submit", function (event) {
-                financialFields.forEach(field => {
-                    field.value = field.value.replace(/,/g, ""); // 콤마 제거
-                });
+                event.preventDefault(); // 기본 제출 방지
+
+                let formData = {
+                    companyId: document.getElementById("companyId")?.value.trim() || "",
+                    financialYear: document.getElementById("financialYear")?.value.trim() || "",
+                    financialHalf: document.getElementById("financialHalf")?.value.trim() || "",
+                    revenue: document.getElementById("revenue")?.value.replace(/,/g, "") || "",
+                    operatingProfit: document.getElementById("operatingProfit")?.value.replace(/,/g, "") || "",
+                    netIncome: document.getElementById("netIncome")?.value.replace(/,/g, "") || "",
+                    totalAssets: document.getElementById("totalAssets")?.value.replace(/,/g, "") || "",
+                    totalCapital: document.getElementById("totalCapital")?.value.replace(/,/g, "") || "",
+                    capital: document.getElementById("capital")?.value.replace(/,/g, "") || "",
+                    employeeCount: document.getElementById("employeeCount")?.value.replace(/,/g, "") || "",
+                    totalDebt: document.getElementById("totalDebt")?.value.replace(/,/g, "") || ""
+                };
+
+                console.log(formData);
+
+                fetch("/api/companies/createFinancial", {
+                    method: "POST",
+                    credentials: "include",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(formData)
+                })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error("저장 실패");
+                        }
+                        return response.text();
+                    })
+                    .then(data => {
+                        alert("저장이 완료되었습니다! 화면을 종료합니다.");
+                        window.close(); // 팝업 화면 종료
+                    })
+                    .catch(error => {
+                        alert("오류 발생, 입력 데이터를 확인해주세요. " + error.message);
+                    });
             });
         });
 
-        function submitFinancialForm(event) {
-            event.preventDefault(); // 폼 기본 제출 방지
-
-            let formData = {
-                companyId: document.getElementById("companyId")?.value.trim() || "",
-                financialYear: document.getElementById("financialYear")?.value.trim() || "",
-                financialHalf: document.getElementById("financialHalf")?.value.trim() || "",
-                revenue: document.getElementById("revenue")?.value.trim() || "",
-                operatingProfit: document.getElementById("operatingProfit")?.value.trim() || "",
-                netIncome: document.getElementById("netIncome")?.value.trim() || "",
-                totalAssets: document.getElementById("totalAssets")?.value.trim() || "",
-                totalCapital: document.getElementById("totalCapital")?.value.trim() || "",
-                capital: document.getElementById("capital")?.value.trim() || "",
-                employeeCount: document.getElementById("employeeCount")?.value.trim() || "",
-                totalDebt: document.getElementById("totalDebt")?.value.trim() || ""
-            };
-            console.log(formData);
-
-            fetch("/api/companies/createFinancial", {
-                method: "POST",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(formData)
-            })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("저장 실패");
-                    }
-                    return response.text();
-                })
-                .then(data => {
-                    alert("저장이 완료되었습니다! 화면을 종료합니다.");
-                    window.close(); // 팝업 화면 종료
-                })
-                .catch(error => {
-                    alert("오류발생, 입력데이터를 확인해주세요. " + error.message);
-                });
-        }
-
-        document.addEventListener("DOMContentLoaded", function () {
-            document.getElementById("financialForm").addEventListener("submit", submitFinancialForm);
-        });
     </script>
 </head>
 <body class="container mt-4">
