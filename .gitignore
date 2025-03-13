@@ -1,9 +1,9 @@
 HELP.md
 .gradle
-build/
+#build/
+#build/libs/*.jar
 *.class
 
-build/libs/*.jar
 
 ### STS ###
 .apt_generated
