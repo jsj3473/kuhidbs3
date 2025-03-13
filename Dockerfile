@@ -2,10 +2,10 @@
 FROM openjdk:21-jdk AS builder
 WORKDIR /app
 
-# Gradle 빌드 캐시 저장용 디렉토리 설정
-VOLUME /root/.gradle
+# 기본 패키지 업데이트 및 xargs 설치
+RUN apt-get update && apt-get install -y findutils
 
-# 프로젝트 파일 복사
+# 프로젝트 전체 복사
 COPY . .
 
 # Gradle 실행 파일 권한 부여
