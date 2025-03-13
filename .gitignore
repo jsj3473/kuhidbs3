@@ -1,9 +1,11 @@
 HELP.md
 .gradle
-build/
-build/libs/*.jar
 *.class
 
+### 빌드 폴더 제외 BUT `libs/*.jar`은 포함 ###
+build/
+!build/libs/
+!build/libs/*.jar
 
 ### STS ###
 .apt_generated
@@ -28,13 +30,11 @@ out/
 
 ### NetBeans ###
 /nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
+ /nbbuild/
+ /dist/
+ /nbdist/
+ /.nb-gradle/
 
 ### VS Code ###
 .vscode/
 
-# Ignore Gradle build output directory
-build

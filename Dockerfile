@@ -2,8 +2,14 @@
 FROM openjdk:21-jdk AS builder
 WORKDIR /app
 
-# 프로젝트 전체 복사
+# Gradle 빌드 캐시 저장용 디렉토리 설정
+VOLUME /root/.gradle
+
+# 프로젝트 파일 복사
 COPY . .
+
+# Gradle 실행 파일 권한 부여
+RUN chmod +x ./gradlew
 
 # Gradle 빌드 실행
 RUN ./gradlew build --no-daemon
