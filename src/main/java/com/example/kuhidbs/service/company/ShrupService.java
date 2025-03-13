@@ -110,6 +110,10 @@ public class ShrupService {
             // 7. 투자자산총괄표 갱신
             ias.setReductionAmount(ias.getReductionAmount() + additionalReduction);
             ias.setManagementFeeTarget(shrupDTO.getShareUnitValue() == 0 ? "부" : "여");
+            ias.setRemainingAssetValuation(
+                    shrupDTO.getShareUnitValue() == 0 ? 1000 : (shrupDTO.getShareUnitValue() * latestAccount.getHeldShareCount())
+            );
+
 
             System.out.println("[INFO] 투자자산총괄 데이터 갱신 시작");
             iasService.calculateDerivedFields(ias, null);
