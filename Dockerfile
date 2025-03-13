@@ -2,8 +2,8 @@
 FROM openjdk:21-jdk AS builder
 WORKDIR /app
 
-# 기본 패키지 업데이트 및 xargs 설치
-RUN apt-get update && apt-get install -y findutils
+# xargs를 포함한 findutils 패키지 설치 (Alpine Linux 호환)
+RUN apk add --no-cache findutils
 
 # 프로젝트 전체 복사
 COPY . .
