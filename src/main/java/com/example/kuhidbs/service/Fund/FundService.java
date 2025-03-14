@@ -169,84 +169,56 @@ public class FundService {
                 .mandatoryAmount(0L)
                 .mandatoryCriteria(dto.getMandatoryCriteria())
                 .mandatoryCriteriaRatio(dto.getMandatoryCriteriaRatio())
-                .mandatoryTargetAmount(calculateTargetAmount(
-                        determineTotal(fund, dto.getMandatoryCriteria(), dto.getMandatoryTotal()),
-                        dto.getMandatoryCriteriaRatio()))
+                .mandatoryTargetAmount(determineTotal(fund, dto.getMandatoryCriteria()))
 
                 // 🔥 주목적 투자 1
                 .mainInvest1Amount(0L)
                 .mainInvest1Criteria(dto.getMainInvest1Criteria())
                 .mainInvest1CriteriaRatio(dto.getMainInvest1CriteriaRatio())
-                .mainInvest1TargetAmount(calculateTargetAmount(
-                        determineTotal(fund, dto.getMainInvest1Criteria(), dto.getMainInvest1Total()),
-                        dto.getMainInvest1CriteriaRatio()))
+                .mainInvest1TargetAmount(determineTotal(fund, dto.getMainInvest1Criteria()))
 
                 // 🔥 주목적 투자 2
                 .mainInvest2Amount(0L)
                 .mainInvest2Criteria(dto.getMainInvest2Criteria())
                 .mainInvest2CriteriaRatio(dto.getMainInvest2CriteriaRatio())
-                .mainInvest2TargetAmount(calculateTargetAmount(
-                        determineTotal(fund, dto.getMainInvest2Criteria(), dto.getMainInvest2Total()),
-                        dto.getMainInvest2CriteriaRatio()))
+                .mainInvest2TargetAmount(determineTotal(fund, dto.getMainInvest2Criteria()))
 
                 // 🔥 특수목적 투자 1
                 .specialInvest1Amount(0L)
                 .specialInvest1Criteria(dto.getSpecialInvest1Criteria())
                 .specialInvest1CriteriaRatio(dto.getSpecialInvest1CriteriaRatio())
-                .specialInvest1TargetAmount(calculateTargetAmount(
-                        determineTotal(fund, dto.getSpecialInvest1Criteria(), dto.getSpecialInvest1Total()),
-                        dto.getSpecialInvest1CriteriaRatio()))
+                .specialInvest1TargetAmount(determineTotal(fund, dto.getSpecialInvest1Criteria()))
 
                 // 🔥 특수목적 투자 2
                 .specialInvest2Amount(0L)
                 .specialInvest2Criteria(dto.getSpecialInvest2Criteria())
                 .specialInvest2CriteriaRatio(dto.getSpecialInvest2CriteriaRatio())
-                .specialInvest2TargetAmount(calculateTargetAmount(
-                        determineTotal(fund, dto.getSpecialInvest2Criteria(), dto.getSpecialInvest2Total()),
-                        dto.getSpecialInvest2CriteriaRatio()))
+                .specialInvest2TargetAmount(determineTotal(fund, dto.getSpecialInvest2Criteria()))
 
                 // 🔥 특수목적 투자 3
                 .specialInvest3Amount(0L)
                 .specialInvest3Criteria(dto.getSpecialInvest3Criteria())
                 .specialInvest3CriteriaRatio(dto.getSpecialInvest3CriteriaRatio())
-                .specialInvest3TargetAmount(calculateTargetAmount(
-                        determineTotal(fund, dto.getSpecialInvest3Criteria(), dto.getSpecialInvest3Total()),
-                        dto.getSpecialInvest3CriteriaRatio()))
+                .specialInvest3TargetAmount(determineTotal(fund, dto.getSpecialInvest3Criteria()))
+
                 .build();
 
         fundAchievementRepository.save(fundAchievement);
         logger.info("[INFO] FundAchievement 데이터 생성 완료 - 펀드 ID: {}", fund.getFundId());
     }
 
-    private Long determineTotal(Fund fund, String criteria, Long dtoTotal) {
+    private Long determineTotal(Fund fund, String criteria) {
         if ("출자약정액".equals(criteria)) {
             return fund.getCommittedTotalPrice() != null ? fund.getCommittedTotalPrice() : 0L;
-        } else if ("기타".equals(criteria)) {
-            return dtoTotal != null ? dtoTotal : 0L;
         } else if ("투자잔액".equals(criteria)) {
-            return getTotalInvestmentAmount(fund);
+            return (long) (fund.getCommittedTotalPrice()*0.8);
         }
         return 0L; // 기본값
     }
 
 
-    private Long getTotalInvestmentAmount(Fund fund) {
-        Long totalInvestmentAmount = investmentAssetSummaryRepository
-                .sumInvestmentAmountByFund(fund)
-                .orElse(0L);
-
-        logger.info("[INFO] 투자잔액 계산 - 펀드 ID: {}, 총 투자잔액: {}", fund.getFundId(), totalInvestmentAmount);
-        return totalInvestmentAmount;
-    }
 
 
-
-    private Long calculateTargetAmount(Long total, Double ratio) {
-        if (total == null || ratio == null) {
-            return 0L; // 기본값 처리
-        }
-        return Math.round((total * ratio) / 100); // 80으로 나누기 추가
-    }
 
 
 

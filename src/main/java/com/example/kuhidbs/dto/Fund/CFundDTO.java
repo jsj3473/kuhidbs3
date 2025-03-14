@@ -43,37 +43,31 @@ public class CFundDTO {
 
     // 🔥 의무 투자
     private String mandatoryPurpose; // 의무 투자 목적 (예: startupType)
-    private Long mandatoryTotal; //기준대상이 기타일시 금액을 입력받아야함
     private String mandatoryCriteria; //기준대상
     private Double mandatoryCriteriaRatio; //기준대상에 대한 비율
 
     // 🔥 주목적 투자 1
     private String mainInvest1Purpose; // 주목적 투자 1 목적
-    private Long mainInvest1Total; //기준대상이 기타일시 금액을 입력받아야함
     private String mainInvest1Criteria;
     private Double mainInvest1CriteriaRatio;
 
     // 🔥 주목적 투자 2
     private String mainInvest2Purpose; // 주목적 투자 2 목적
-    private Long mainInvest2Total; //기준대상이 기타일시 금액을 입력받아야함
     private String mainInvest2Criteria;
     private Double mainInvest2CriteriaRatio;
 
     // 🔥 특수목적 투자 1
     private String specialInvest1Purpose; // 특수목적 투자 1 목적
-    private Long specialInvest1Total; //기준대상이 기타일시 금액을 입력받아야함
     private String specialInvest1Criteria;
     private Double specialInvest1CriteriaRatio;
 
     // 🔥 특수목적 투자 2
     private String specialInvest2Purpose; // 특수목적 투자 2 목적
-    private Long specialInvest2Total; //기준대상이 기타일시 금액을 입력받아야함
     private String specialInvest2Criteria;
     private Double specialInvest2CriteriaRatio;
 
     // 🔥 특수목적 투자 3
     private String specialInvest3Purpose; // 특수목적 투자 3 목적
-    private Long specialInvest3Total; //기준대상이 기타일시 금액을 입력받아야함
     private String specialInvest3Criteria;
     private Double specialInvest3CriteriaRatio;
 }

@@ -97,11 +97,6 @@ public class InvestmentService {
             Investment savedInvestment = investmentRepository.save(investment);
             logger.info("투자 데이터 저장 완료: investmentId = {}", savedInvestment.getInvestmentId());
 
-            // 4. FundAchievement 데이터 생성 또는 업데이트
-            logger.info("투자 목표 달성 데이터(FundAchievement) 업데이트 시작");
-            updateFundAchievement(fund, company, dto.getInvestmentSumPrice());
-            logger.info("투자 목표 달성 데이터 업데이트 완료");
-
             // 5. Account 엔티티 생성 및 저장
             logger.info("계좌 데이터 변환 및 저장 시작");
             Account account = toAccountEntity(dto, savedInvestment);
@@ -127,6 +122,11 @@ public class InvestmentService {
             iasService.calculateDerivedFields(assetSummary, null);
             investmentAssetSummaryRepository.save(assetSummary);
             logger.info("투자자산총괄 데이터 저장 완료: assetSummaryId = {}", assetSummary.getInvestmentAssetSummaryId());
+
+            // 4. FundAchievement 데이터 생성 또는 업데이트
+            logger.info("투자 목표 달성 데이터(FundAchievement) 업데이트 시작");
+            updateFundAchievement(fund, company, dto.getInvestmentSumPrice(), assetSummary);
+            logger.info("투자 목표 달성 데이터 업데이트 완료");
 
             // 7. 고용인력 데이터 생성
             logger.info("고용인력 데이터 생성 시작");
@@ -157,7 +157,7 @@ public class InvestmentService {
     }
 
     @Transactional
-    public void updateFundAchievement(Fund fund, Company company, Long investmentAmount) {
+    public void updateFundAchievement(Fund fund, Company company, Long investmentAmount, InvestmentAssetSummary ias) {
         logger.info("[INFO] 투자 목표 달성 업데이트 시작 - 펀드 ID: {}", fund.getFundId());
 
         FundAchievement fundAchievement = fundAchievementRepository.findByFund(fund).orElse(null);
@@ -239,33 +239,40 @@ public class InvestmentService {
         );
 
         for (int i = 0; i < criteriaList.size(); i++) {
-            if ("투자 잔액".equals(criteriaList.get(i))) {
-                BigDecimal targetAmount = BigDecimal.valueOf(targetAmounts.get(i));
-                BigDecimal criteriaRatio = BigDecimal.valueOf(criteriaRatios.get(i));
-                BigDecimal investment = BigDecimal.valueOf(investmentAmount);
+            // 기준이 투자잔액일 경우 투자금이 출자약정액의 80% 이상이면 투자잔액에 투자원금을 삽입
+            if ("투자 잔액".equals(criteriaList.get(i)) && ias.getInvestmentAmount() > fund.getCommittedTotalPrice() * 0.8) {
+                setTargetAmountFunctions.get(i).accept(ias.getInvestmentAmount());
 
-                BigDecimal updatedTargetAmount = targetAmount.add(
-                        investment.multiply(criteriaRatio).divide(BigDecimal.valueOf(100), RoundingMode.DOWN)
-                );
-
-                setTargetAmountFunctions.get(i).accept(updatedTargetAmount.longValue());
-                logger.info("[UPDATE] 투자 목표 금액 갱신 - 새로운 타겟 금액: {}", updatedTargetAmount);
+                // fundAchievement 값이 올바르게 설정되었는지 확인 후 저장
+                fundAchievementRepository.save(fundAchievement);
+                logger.info("[SAVE] fundAchievement 저장 완료");
             }
 
+            // 회사가 펀드의 조건을 만족하는 경우
+            if (purposeList.get(i) != null && checkCompanyCriteria(company, purposeList.get(i))) {
+                Long currentAmount = getAmountFunctions.get(i).get();
+                Long investmentAmountSafe = (investmentAmount != null) ? investmentAmount : 0L;
+                Long newTotalAmount = currentAmount + investmentAmountSafe;
 
-            if (checkCompanyCriteria(company, purposeList.get(i))) {
-                Long newTotalAmount = getAmountFunctions.get(i).get() + investmentAmount;
                 setAmountFunctions.get(i).accept(newTotalAmount);
-                Double newRatio = calculateRatio(newTotalAmount, targetAmounts.get(i));
+
+                // targetAmounts.get(i)가 0이 아닐 경우만 비율 계산
+                Double newRatio = (targetAmounts.get(i) != 0) ? calculateRatio(newTotalAmount, targetAmounts.get(i)) : 0.0;
                 setRatioFunctions.get(i).accept(newRatio);
-                logger.info("[UPDATE] 투자 업데이트 - 인덱스: {} / 추가 금액: {} / 총 금액: {} / 비율: {}", i, investmentAmount, newTotalAmount, newRatio);
+
+                logger.info("[UPDATE] 투자 업데이트 - 인덱스: {} / 추가 금액: {} / 총 금액: {} / 비율: {}",
+                        i, investmentAmountSafe, newTotalAmount, newRatio);
             } else {
-                Long newTotalAmount = getAmountFunctions.get(i).get();
-                Double newRatio = calculateRatio(newTotalAmount, targetAmounts.get(i));
+                // 회사가 조건을 만족하지 않는 경우
+                Long currentAmount = getAmountFunctions.get(i).get();
+                Double newRatio = (targetAmounts.get(i) != 0) ? calculateRatio(currentAmount, targetAmounts.get(i)) : 0.0;
                 setRatioFunctions.get(i).accept(newRatio);
-                logger.info("[UPDATE] 투자 업데이트 - 인덱스: {} / 변경 없음 / 총 금액: {} / 비율: {}", i, newTotalAmount, newRatio);
+
+                logger.info("[UPDATE] 투자 업데이트 - 인덱스: {} / 변경 없음 / 총 금액: {} / 비율: {}",
+                        i, currentAmount, newRatio);
             }
         }
+
 
         fundAchievementRepository.save(fundAchievement);
         logger.info("[INFO] 투자 목표 달성 데이터 저장 완료 - 펀드 ID: {}", fund.getFundId());
