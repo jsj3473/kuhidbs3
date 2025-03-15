@@ -2,10 +2,6 @@ HELP.md
 .gradle
 *.class
 
-### 빌드 폴더 제외 BUT `libs/*.jar`은 포함 ###
-build/
-!build/libs/
-!build/libs/*.jar
 
 ### STS ###
 .apt_generated
