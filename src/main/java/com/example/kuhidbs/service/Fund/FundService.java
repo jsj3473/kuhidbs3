@@ -210,7 +210,7 @@ public class FundService {
     private Long determineTotal(Fund fund, String criteria) {
         if ("출자약정액".equals(criteria)) {
             return fund.getCommittedTotalPrice() != null ? fund.getCommittedTotalPrice() : 0L;
-        } else if ("투자잔액".equals(criteria)) {
+        } else if ("투자 잔액".equals(criteria)) {
             return (long) (fund.getCommittedTotalPrice()*0.8);
         }
         return 0L; // 기본값

@@ -184,14 +184,6 @@ public class InvestmentService {
                 fundAchievement.getSpecialInvest3TargetAmount()
         );
 
-        List<Double> criteriaRatios = Arrays.asList(
-                fundAchievement.getMandatoryCriteriaRatio(),
-                fundAchievement.getMainInvest1CriteriaRatio(),
-                fundAchievement.getMainInvest2CriteriaRatio(),
-                fundAchievement.getSpecialInvest1CriteriaRatio(),
-                fundAchievement.getSpecialInvest2CriteriaRatio(),
-                fundAchievement.getSpecialInvest3CriteriaRatio()
-        );
 
         List<Consumer<Long>> setTargetAmountFunctions = Arrays.asList(
                 fundAchievement::setMandatoryTargetAmount,
@@ -240,13 +232,23 @@ public class InvestmentService {
 
         for (int i = 0; i < criteriaList.size(); i++) {
             // 기준이 투자잔액일 경우 투자금이 출자약정액의 80% 이상이면 투자잔액에 투자원금을 삽입
-            if ("투자 잔액".equals(criteriaList.get(i)) && ias.getInvestmentAmount() > fund.getCommittedTotalPrice() * 0.8) {
-                setTargetAmountFunctions.get(i).accept(ias.getInvestmentAmount());
+            // 투자 금액 합산 값을 가져옴
+            Long totalInvestmentAmount = investmentAssetSummaryRepository
+                    .sumInvestmentAmountByFund(fund)
+                    .orElse(0L); // 값이 없으면 기본값 0 사용
+
+            // 비교 및 저장 로직
+            if ("투자 잔액".equals(criteriaList.get(i)) && totalInvestmentAmount > fund.getCommittedTotalPrice() * 0.8) {
+                setTargetAmountFunctions.get(i).accept(totalInvestmentAmount);
+
+                // 🔹 targetAmounts 리스트 최신화
+                targetAmounts.set(i, totalInvestmentAmount);
 
                 // fundAchievement 값이 올바르게 설정되었는지 확인 후 저장
                 fundAchievementRepository.save(fundAchievement);
-                logger.info("[SAVE] fundAchievement 저장 완료");
+                logger.info("[SAVE] 타겟어마운트 변경됨 fundAchievement 저장 완료");
             }
+
 
             // 회사가 펀드의 조건을 만족하는 경우
             if (purposeList.get(i) != null && checkCompanyCriteria(company, purposeList.get(i))) {
@@ -316,7 +318,7 @@ public class InvestmentService {
             case "출자약정액 80%투자":
                 return true;
             case "대학창업":
-                return "Y".equals(company.getIsDaechang());
+                return "대창창업기업".equals(company.getIsDaechang());
             case "학생창업":
                 return "학생창업".equals(company.getStartupType());
             case "지방기업":
