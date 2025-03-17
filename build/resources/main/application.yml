@@ -28,17 +28,14 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
       ddl-auto: update
-      show-sql: true
-    properties:
-      hibernate.format_sql: true
 
 server:
   port: ${PORT:8080}
 
 logging:
   level:
-    org.hibernate.SQL: DEBUG
-    org.hibernate.type.descriptor.sql: TRACE
+    org.hibernate.SQL: ERROR
+    org.hibernate.type.descriptor.sql: ERROR
 
 ---
 
@@ -64,9 +61,6 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: update
-      show-sql: true
-    properties:
-      hibernate.format_sql: true
 
 server:
   port: 8080
