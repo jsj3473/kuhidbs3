@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>투자기업실사 조회</title>
+  <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+  <script defer th:src="@{/js/bootstrap.bundle.min.js}"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" th:href="@{/css/slimTable.css}">
+  <link rel="stylesheet" th:href="@{/css/common.css}">
+  <link rel="stylesheet" th:href="@{/css/popUpNavbar.css}">
+</head>
+<body class="container mt-4">
+<div th:replace="fragments/popUpNavbar :: navbar"></div>
+
+<h2 class="mb-4">투자기업실사 조회</h2>
+
+<!-- ✅ 투자 내역 테이블 -->
+<table class="table table-bordered text-center">
+  <caption class="text-end">
+    (단위: 원)
+  </caption>
+  <thead class="table-light">
+  <tr>
+    <th rowspan="2">투자기업</th>
+    <th rowspan="2">투자일자</th>
+    <th rowspan="2">투자상품</th>
+    <th rowspan="2">투자금액</th>
+    <th colspan="3">투자금실사</th>
+    <th rowspan="2">문제점발견</th>
+  </tr>
+  <tr>
+    <th>대상</th>
+    <th>실시여부</th>
+    <th>실사(예정)일자</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="dueDiligence : ${rDueDiligenceDTOS}">
+    <td th:text="${dueDiligence.companyNm}"></td>
+    <td th:text="${dueDiligence.investmentDate}"></td>
+    <td th:text="${dueDiligence.investmentProduct}"></td>
+    <td class="text-end" th:text="${#numbers.formatInteger(dueDiligence.investmentSumPrice, 3, 'COMMA')}"></td>
+    <td th:text="${dueDiligence.target}"></td>
+    <td th:text="${dueDiligence.status == 'Y' ? '실시 완료' : '미실시'}"></td>
+    <td th:text="${dueDiligence.inspectionDate}"></td>
+    <td th:text="${dueDiligence.issues}"></td>
+  </tr>
+  </tbody>
+</table>
+
+
+</body>
+</html>

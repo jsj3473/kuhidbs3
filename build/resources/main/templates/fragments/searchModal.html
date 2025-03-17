@@ -1,0 +1,15 @@
+<div th:fragment="searchModal">
+    <!-- 🔍 검색 모달 -->
+    <div class="modal fade" id="searchModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-sm">
+            <div class="modal-content">
+                <div class="modal-body p-2 d-flex align-items-center">
+                    <input type="text" id="companyIdInput" class="form-control me-2" placeholder="검색어를 입력하세요." style="all: unset; border: 1px solid #ced4da; border-radius: 4px; padding: 4px 8px; flex: 1; min-width: 120px;">
+
+                    <button type="button" class="btn btn-primary btn-sm" id="searchButton">검색</button>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

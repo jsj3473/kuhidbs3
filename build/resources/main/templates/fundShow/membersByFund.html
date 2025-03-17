@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>조합원명부 조회</title>
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+    <script defer th:src="@{/js/bootstrap.bundle.min.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/slimTable.css}">
+    <link rel="stylesheet" th:href="@{/css/common.css}">
+    <link rel="stylesheet" th:href="@{/css/popUpNavbar.css}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+</head>
+<body class="container mt-4">
+<div th:replace="fragments/popUpNavbar :: navbar"></div>
+
+<h2 class="mb-4">조합원명부 조회</h2>
+
+<!-- 조합 ID 정보 -->
+<!--<p style="display: none;"><strong>조합 ID:</strong> <span th:text="${fundId}"></span></p>-->
+
+<!-- ✅ 조합원 테이블 -->
+<table class="table table-bordered text-center">
+    <caption class="text-end">
+        (단위: 원, %)
+    </caption>
+    <thead>
+    <tr>
+        <th rowspan="2">조합원명</th>
+        <th colspan="2">출자약정액</th>
+        <th colspan="4">배분액</th>
+        <th rowspan="2">출자잔액</th>
+        <th rowspan="2">조합원유형</th>
+        <!--        <th rowspan="2">배분순위</th>-->
+    </tr>
+    <tr>
+        <th>금액</th>
+        <th>비율</th>
+        <th>원금</th>
+        <th>이익</th>
+        <th>총액</th>
+        <th>비율</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="member : ${rMemtypeDTOS}" th:if="${member.memberName != null and member.memberName != ''}">
+        <td th:text="${member.memberName}"></td>
+        <td class="text-end committedUnitPrice" th:text="${member.committedUnitPrice}"></td>
+        <td class="text-end contributionRate" th:text="${member.contributionRate}"></td>
+
+        <!-- 배분 원금 * 출자비율 -->
+        <td class="text-end allocPrincipal"
+            th:text="${(fund.allocPrincipal != null and fund.allocPrincipal != 0)
+            ? (fund.allocPrincipal * (member.contributionRate ?: 0) / 100) : ''}">
+        </td>
+
+        <!-- 배분 이익 * 출자비율 -->
+        <td class="text-end allocProfit"
+            th:text="${(fund.allocProfit != null and fund.allocProfit != 0)
+            ? (fund.allocProfit * (member.contributionRate ?: 0) / 100) : ''}">
+        </td>
+
+        <!-- 배분 총액 * 출자비율 -->
+        <td class="text-end allocTotal"
+            th:text="${(fund.allocTotal != null and fund.allocTotal != 0)
+            ? (fund.allocTotal * (member.contributionRate ?: 0) / 100) : ''}">
+        </td>
+
+        <!-- 배분 비율 계산 -->
+        <td class="text-end allocRate"
+            th:text="${(fund.allocTotal != null and fund.committedTotalPrice != null and fund.committedTotalPrice != 0 and member.contributionRate != null)
+            ? (fund.allocTotal / fund.committedTotalPrice) * member.contributionRate : ''}">
+        </td>
+
+        <td>-</td>
+        <td th:text="${member.memberType}"></td>
+    </tr>
+    </tbody>
+    <tfoot>
+    <tr>
+        <th>합계</th>
+        <!-- 출자 총액 (합계) -->
+        <td class="text-end" id="totalCommittedUnitPrice">0</td>
+
+        <!-- 출자 비율 총합 -->
+        <td class="text-end" id="totalContributionRate">0.00</td>
+
+        <!-- 배분 원금, 배분 이익, 배분 총액 -->
+        <td class="text-end allocPrincipal" th:text="${fund.allocPrincipal}"></td>
+        <td class="text-end allocProfit" th:text="${fund.allocProfit}"></td>
+        <td class="text-end allocTotal" th:text="${fund.allocTotal}"></td>
+
+        <!-- 배분비율 총계 -->
+        <td class="text-end allocRate"
+            th:text="${(fund.allocTotal != null and fund.committedTotalPrice != null and fund.committedTotalPrice != 0)
+          ? (fund.allocTotal / fund.committedTotalPrice) * 100 : ''}">
+        </td>
+
+        <th colspan="2"></th>
+    </tr>
+    </tfoot>
+
+</table>
+
+</body>
+</html>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // ✅ 모든 숫자 필드에 천 단위 콤마 및 소수점 적용
+        document.querySelectorAll(".text-end").forEach(td => {
+            let value = td.innerText.trim();
+            if (value !== "") {
+                td.innerText = formatNumber(value);
+            }
+        });
+
+        // ✅ 합계 계산 및 푸터 값 적용
+        calculateTotals();
+    });
+
+    // ✅ 천 단위 콤마 및 소수점 적용 함수
+    function formatNumber(value) {
+        value = value.replace(/,/g, ""); // 기존 콤마 제거
+        if (isNaN(value) || value === "") return ""; // 숫자가 아니면 빈 값 반환
+
+        let num = parseFloat(value); // 숫자로 변환
+        let parts = num.toString().split("."); // 소수점 분리
+
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ","); // 천 단위 콤마 추가
+        return parts.join("."); // 정수부 + 소수부 조합 후 반환
+    }
+
+    // ✅ 합계 계산 함수 (푸터 값도 적용)
+    function calculateTotals() {
+        let totalCommittedUnitPrice = 0;
+        let totalContributionRate = 0;
+
+        document.querySelectorAll("tbody tr").forEach(row => {
+            let committedUnitPrice = row.querySelector(".committedUnitPrice")?.innerText.replace(/,/g, "") || "0";
+            let contributionRate = row.querySelector(".contributionRate")?.innerText.replace(/,/g, "") || "0";
+
+            totalCommittedUnitPrice += parseFloat(committedUnitPrice) || 0;
+            totalContributionRate += parseFloat(contributionRate) || 0;
+        });
+
+        // ✅ 푸터 합계도 포맷 적용
+        document.getElementById("totalCommittedUnitPrice").innerText = formatNumber(totalCommittedUnitPrice.toString());
+        document.getElementById("totalContributionRate").innerText = formatNumber(totalContributionRate.toFixed(2));
+
+        // ✅ 푸터 값 (배분 원금, 배분 이익, 배분 총액)
+        document.querySelectorAll(".allocPrincipal, .allocProfit, .allocTotal, .allocRate").forEach(td => {
+            let value = td.innerText.trim();
+            if (value !== "") {
+                td.innerText = formatNumber(value);
+            }
+        });
+    }
+
+
+
+</script>

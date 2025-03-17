@@ -2,7 +2,6 @@ HELP.md
 .gradle
 *.class
 
-
 ### STS ###
 .apt_generated
 .classpath

@@ -1,0 +1,30 @@
+
+table {
+    font-size: 12px;
+    border-spacing: 0px;
+}
+th, td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 1px 3px;
+    white-space: nowrap;
+    line-height: 1;
+}
+th {
+    background-color: #f8f9fa !important;
+    font-weight: normal;
+}
+input.form-control, select.form-control, textarea.form-control {
+    height: 22px;
+    font-size: 12px;
+    padding: 2px 5px;
+}
+.input-inline {
+    display: flex;
+    gap: 5px;
+}
+caption {
+    caption-side: top;
+    font-size: 12px;
+    color: #424242;
+}
