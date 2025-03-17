@@ -69,6 +69,7 @@ public class ShrupService {
                     .company(company)
                     .shareUpdateDate(shrupDTO.getShareUpdateDate())
                     .shareUnitValue(shrupDTO.getShareUnitValue())
+                    .curUnitValue(shrupDTO.getCurUnitValue())
                     .shareUpdateType(shrupDTO.getShareUpdateType())
                     .shareUpdateReason(shrupDTO.getShareUpdateReason())
                     .shareUpdateAction(shrupDTO.getShareUpdateAction())
@@ -129,7 +130,7 @@ public class ShrupService {
                     .totalPrincipal(shrupDTO.getShareUnitValue() * latestAccount.getHeldShareCount()) // 투자 원금 업데이트
                     .functionType(shrupDTO.getShareUpdateType()) // 실행 함수 업데이트(감액 or 환입)
                     .kuhEquityRate(latestAccount.getKuhEquityRate()) // 기존 KUH 지분율 유지
-                    .curUnitPrice(shrupDTO.getShareUnitValue()) // 현재 단가 업데이트
+                    .curUnitPrice(shrupDTO.getCurUnitValue()) // 현재 단가 업데이트
                     .totalShareCount(latestAccount.getTotalShareCount()) // 발행 총 주식 수 유지
                     .postValue(shrupDTO.getShareUnitValue() == 0
                             ? 1000
@@ -165,6 +166,7 @@ public class ShrupService {
                 .map(update -> new RShrupDTO(
                         update.getShareUpdateDate(),
                         update.getShareUnitValue(),
+                        update.getCurUnitValue(),
                         update.getShareUpdateType(),
                         update.getShareUpdateReason(),
                         update.getShareUpdateAction()
