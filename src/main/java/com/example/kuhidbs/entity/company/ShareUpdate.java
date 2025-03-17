@@ -32,7 +32,10 @@ public class ShareUpdate extends BaseEntity {
     private String shareUpdateDate; // 변동 일자
 
     @Column(name = "SHR_UNIT_VAL", nullable = false)
-    private Long shareUnitValue; // 주당 가치
+    private Long shareUnitValue; // kuh 주당 가치
+
+    @Column(name = "CUR_UNIT_VAL", nullable = false)
+    private Long curUnitValue; // 현재 주당 가치
 
     @Column(name = "SHRUP_TP", length = 2, nullable = false)
     private String shareUpdateType; // 감액/복원
