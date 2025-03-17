@@ -1,8 +1,0 @@
-[phases.setup]
-nixPkgs = ["openjdk", "gradle"]
-
-[phases.build]
-cmds = ["./gradlew clean build -x test"]
-
-[phases.start]
-cmds = ["java -jar build/libs/*.jar"]
