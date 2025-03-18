@@ -1,4 +1,4 @@
-package com.example.kuhidbs.dto.company.tips.발심사;
+package com.example.kuhidbs.dto.company.reviewer;
 
 import lombok.*;
 

@@ -7,7 +7,7 @@ import com.example.kuhidbs.dto.company.shrup.CShrupDTO;
 import com.example.kuhidbs.dto.company.cmpinf.*;
 import com.example.kuhidbs.dto.company.combine.*;
 import com.example.kuhidbs.dto.company.bonus.CBonusDTO;
-import com.example.kuhidbs.dto.company.tips.발심사.CRwrDTO;
+import com.example.kuhidbs.dto.company.reviewer.CRwrDTO;
 import com.example.kuhidbs.dto.company.mng.*;
 import com.example.kuhidbs.dto.company.fnc.*;
 import com.example.kuhidbs.dto.company.shareholder.*;

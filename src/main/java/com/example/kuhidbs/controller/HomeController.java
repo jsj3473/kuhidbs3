@@ -5,7 +5,7 @@ import com.example.kuhidbs.dto.company.kuhINV.RIvtDTO;
 import com.example.kuhidbs.dto.company.shrup.RShrupDTO;
 import com.example.kuhidbs.dto.company.combine.RComDTO;
 import com.example.kuhidbs.dto.company.bonus.RBonusDTO;
-import com.example.kuhidbs.dto.company.tips.발심사.RRwrDTO;
+import com.example.kuhidbs.dto.company.reviewer.RRwrDTO;
 import com.example.kuhidbs.dto.company.mng.RMngDTO;
 import com.example.kuhidbs.dto.company.history.RAccountDTO;
 import com.example.kuhidbs.dto.company.fnc.RFncDTO;

@@ -1,8 +1,8 @@
 package com.example.kuhidbs.service.company;
 
 import com.example.kuhidbs.dto.company.cmpinf.CCmpInfDTO;
-import com.example.kuhidbs.dto.company.tips.발심사.CRwrDTO;
-import com.example.kuhidbs.dto.company.tips.발심사.RRwrDTO;
+import com.example.kuhidbs.dto.company.reviewer.CRwrDTO;
+import com.example.kuhidbs.dto.company.reviewer.RRwrDTO;
 import com.example.kuhidbs.entity.company.Company;
 import com.example.kuhidbs.entity.company.Reviewer;
 import com.example.kuhidbs.repository.company.CompanyRepository;
