@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Main-Class: com.example.kuhidbs.KuhidbsApplication
+Main-Class: org.springframework.boot.loader.launch.JarLauncher
 Start-Class: com.example.kuhidbs.KuhidbsApplication
 Spring-Boot-Version: 3.4.1
 Spring-Boot-Classes: BOOT-INF/classes/
