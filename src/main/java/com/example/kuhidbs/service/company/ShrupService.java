@@ -1,8 +1,7 @@
 package com.example.kuhidbs.service.company;
 
-import com.example.kuhidbs.dto.company.감액환입.CShrupDTO;
-import com.example.kuhidbs.dto.company.감액환입.RShrupDTO;
-import com.example.kuhidbs.entity.CompanyAccount;
+import com.example.kuhidbs.dto.company.shrup.CShrupDTO;
+import com.example.kuhidbs.dto.company.shrup.RShrupDTO;
 import com.example.kuhidbs.entity.InvestmentAssetSummary;
 import com.example.kuhidbs.entity.company.Account;
 import com.example.kuhidbs.entity.company.Company;
@@ -20,10 +19,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service

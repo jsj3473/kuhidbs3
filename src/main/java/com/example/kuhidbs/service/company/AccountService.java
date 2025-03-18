@@ -1,6 +1,6 @@
 package com.example.kuhidbs.service.company;
 
-import com.example.kuhidbs.dto.company.역사.RAccountDTO;
+import com.example.kuhidbs.dto.company.history.RAccountDTO;
 import com.example.kuhidbs.entity.company.Account;
 import com.example.kuhidbs.repository.company.AccountRepository;
 import lombok.RequiredArgsConstructor;

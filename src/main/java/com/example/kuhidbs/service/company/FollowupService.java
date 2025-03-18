@@ -1,9 +1,7 @@
 package com.example.kuhidbs.service.company;
 
-import com.example.kuhidbs.dto.company.kuh투자.CIvtDTO;
-import com.example.kuhidbs.dto.company.후속투자.CFolDTO;
-import com.example.kuhidbs.dto.company.후속투자.RFolDTO;
-import com.example.kuhidbs.entity.CompanyAccount;
+import com.example.kuhidbs.dto.company.followup.CFolDTO;
+import com.example.kuhidbs.dto.company.followup.RFolDTO;
 import com.example.kuhidbs.entity.InvestmentAssetSummary;
 import com.example.kuhidbs.entity.company.Account;
 import com.example.kuhidbs.entity.company.Company;
@@ -23,7 +21,6 @@ import com.example.kuhidbs.service.Fund.IASService;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 @Slf4j // Lombok을 사용한 로그 (자동으로 Logger 생성)
 @Service

@@ -1,8 +1,7 @@
 package com.example.kuhidbs.service.company;
 
-import com.example.kuhidbs.dto.company.kuh투자.CIvtDTO;
-import com.example.kuhidbs.dto.company.kuh투자.RIvtDTO;
-import com.example.kuhidbs.entity.CompanyAccount;
+import com.example.kuhidbs.dto.company.kuhINV.CIvtDTO;
+import com.example.kuhidbs.dto.company.kuhINV.RIvtDTO;
 import com.example.kuhidbs.entity.Fund.Employment;
 import com.example.kuhidbs.entity.Fund.Fund;
 import com.example.kuhidbs.entity.Fund.FundAchievement;
@@ -10,7 +9,6 @@ import com.example.kuhidbs.entity.InvestmentAssetSummary;
 import com.example.kuhidbs.entity.company.Account;
 import com.example.kuhidbs.entity.company.Company;
 import com.example.kuhidbs.entity.company.Investment;
-import com.example.kuhidbs.repository.CompanyAccountRepository;
 import com.example.kuhidbs.repository.Fund.EmploymentRepository;
 import com.example.kuhidbs.repository.Fund.FundAchievementRepository;
 import com.example.kuhidbs.repository.Fund.FundRepository;

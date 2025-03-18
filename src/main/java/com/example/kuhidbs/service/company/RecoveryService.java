@@ -1,7 +1,7 @@
 package com.example.kuhidbs.service.company;
 
-import com.example.kuhidbs.dto.company.회수.CStcupDTO;
-import com.example.kuhidbs.dto.company.회수.RstcupDTO;
+import com.example.kuhidbs.dto.company.recovery.CStcupDTO;
+import com.example.kuhidbs.dto.company.recovery.RstcupDTO;
 import com.example.kuhidbs.entity.Fund.Employment;
 import com.example.kuhidbs.entity.InvestmentAssetSummary;
 import com.example.kuhidbs.entity.company.Account;
@@ -14,7 +14,6 @@ import com.example.kuhidbs.repository.InvestmentAssetSummaryRepository;
 import com.example.kuhidbs.repository.company.*;
 import com.example.kuhidbs.service.Fund.IASService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

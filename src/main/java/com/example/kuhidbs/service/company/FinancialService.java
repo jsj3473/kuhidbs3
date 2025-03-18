@@ -1,8 +1,8 @@
 package com.example.kuhidbs.service.company;
 
-import com.example.kuhidbs.dto.company.기본정보.CCmpInfDTO;
-import com.example.kuhidbs.dto.company.재무.CFncDTO;
-import com.example.kuhidbs.dto.company.재무.RFncDTO;
+import com.example.kuhidbs.dto.company.cmpinf.CCmpInfDTO;
+import com.example.kuhidbs.dto.company.fnc.CFncDTO;
+import com.example.kuhidbs.dto.company.fnc.RFncDTO;
 import com.example.kuhidbs.entity.Fund.Employment;
 import com.example.kuhidbs.entity.company.Company;
 import com.example.kuhidbs.entity.company.Financial;

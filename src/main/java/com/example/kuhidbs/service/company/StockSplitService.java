@@ -1,8 +1,6 @@
 package com.example.kuhidbs.service.company;
 
-import com.example.kuhidbs.dto.company.액분.CStockSplitDto;
-import com.example.kuhidbs.dto.company.후속투자.CFolDTO;
-import com.example.kuhidbs.entity.InvestmentAssetSummary;
+import com.example.kuhidbs.dto.company.stocksplit.CStockSplitDto;
 import com.example.kuhidbs.entity.company.Account;
 import com.example.kuhidbs.entity.company.Company;
 import com.example.kuhidbs.entity.company.Investment;
@@ -13,7 +11,6 @@ import com.example.kuhidbs.repository.company.StockSplitRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

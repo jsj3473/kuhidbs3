@@ -1,8 +1,8 @@
 package com.example.kuhidbs.service.company;
 
-import com.example.kuhidbs.dto.company.팁스.CTIPSDTO;
-import com.example.kuhidbs.dto.company.팁스.RTIPSDTO;
-import com.example.kuhidbs.dto.company.팁스.UTIPSDTO;
+import com.example.kuhidbs.dto.company.tips.CTIPSDTO;
+import com.example.kuhidbs.dto.company.tips.RTIPSDTO;
+import com.example.kuhidbs.dto.company.tips.UTIPSDTO;
 import com.example.kuhidbs.entity.company.Company;
 import com.example.kuhidbs.entity.TIPS;
 import com.example.kuhidbs.repository.company.CompanyRepository;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor

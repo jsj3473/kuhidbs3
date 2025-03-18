@@ -1,7 +1,7 @@
 package com.example.kuhidbs.service.company;
 
-import com.example.kuhidbs.dto.company.동반.CComDTO;
-import com.example.kuhidbs.dto.company.동반.RComDTO;
+import com.example.kuhidbs.dto.company.combine.CComDTO;
+import com.example.kuhidbs.dto.company.combine.RComDTO;
 import com.example.kuhidbs.entity.company.Combine;
 import com.example.kuhidbs.entity.company.Company;
 import com.example.kuhidbs.entity.company.Investment;

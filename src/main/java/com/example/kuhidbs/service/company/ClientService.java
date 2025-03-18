@@ -1,6 +1,6 @@
 package com.example.kuhidbs.service.company;
 
-import com.example.kuhidbs.dto.company.기본정보.CCmpInfDTO;
+import com.example.kuhidbs.dto.company.cmpinf.CCmpInfDTO;
 import com.example.kuhidbs.entity.company.Client;
 import com.example.kuhidbs.entity.company.Company;
 import com.example.kuhidbs.repository.company.ClientRepository;

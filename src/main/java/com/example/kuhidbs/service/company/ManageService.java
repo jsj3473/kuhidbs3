@@ -1,7 +1,7 @@
 package com.example.kuhidbs.service.company;
 
-import com.example.kuhidbs.dto.company.사후관리.CMngDTO;
-import com.example.kuhidbs.dto.company.사후관리.RMngDTO;
+import com.example.kuhidbs.dto.company.mng.CMngDTO;
+import com.example.kuhidbs.dto.company.mng.RMngDTO;
 import com.example.kuhidbs.entity.company.Company;
 import com.example.kuhidbs.entity.company.Manage;
 import com.example.kuhidbs.repository.company.CompanyRepository;

@@ -1,7 +1,7 @@
 package com.example.kuhidbs.service.company;
 
-import com.example.kuhidbs.dto.company.주주명부.CShrDTO;
-import com.example.kuhidbs.dto.company.주주명부.RShrDTO;
+import com.example.kuhidbs.dto.company.shareholder.CShrDTO;
+import com.example.kuhidbs.dto.company.shareholder.RShrDTO;
 import com.example.kuhidbs.entity.CompanyAccount;
 import com.example.kuhidbs.entity.company.Company;
 import com.example.kuhidbs.entity.company.Shareholder;

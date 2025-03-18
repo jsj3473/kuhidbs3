@@ -1,14 +1,14 @@
 package com.example.kuhidbs.service.company;
 
-import com.example.kuhidbs.dto.company.kuh투자.RIvtDTO;
-import com.example.kuhidbs.dto.company.기본정보.CCmpInfDTO;
-import com.example.kuhidbs.dto.company.기본정보.RCmpInf2DTO;
-import com.example.kuhidbs.dto.company.기본정보.RCmpInfDTO;
-import com.example.kuhidbs.dto.company.기본정보.UCmpInfDTO;
-import com.example.kuhidbs.dto.company.사후관리.RMngDTO;
-import com.example.kuhidbs.dto.company.재무.RFncDTO;
-import com.example.kuhidbs.dto.company.주주명부.RShrDTO;
-import com.example.kuhidbs.dto.company.투자상태.RStatusDTO;
+import com.example.kuhidbs.dto.company.kuhINV.RIvtDTO;
+import com.example.kuhidbs.dto.company.cmpinf.CCmpInfDTO;
+import com.example.kuhidbs.dto.company.cmpinf.RCmpInf2DTO;
+import com.example.kuhidbs.dto.company.cmpinf.RCmpInfDTO;
+import com.example.kuhidbs.dto.company.cmpinf.UCmpInfDTO;
+import com.example.kuhidbs.dto.company.mng.RMngDTO;
+import com.example.kuhidbs.dto.company.fnc.RFncDTO;
+import com.example.kuhidbs.dto.company.shareholder.RShrDTO;
+import com.example.kuhidbs.dto.company.invStatus.RStatusDTO;
 import com.example.kuhidbs.entity.company.Company;
 import com.example.kuhidbs.entity.company.Client;
 import com.example.kuhidbs.repository.company.ClientRepository;

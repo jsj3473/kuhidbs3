@@ -1,7 +1,7 @@
 package com.example.kuhidbs.service.company;
 
-import com.example.kuhidbs.dto.company.무증.CBonusDTO;
-import com.example.kuhidbs.dto.company.무증.RBonusDTO;
+import com.example.kuhidbs.dto.company.bonus.CBonusDTO;
+import com.example.kuhidbs.dto.company.bonus.RBonusDTO;
 import com.example.kuhidbs.entity.company.Account;
 import com.example.kuhidbs.entity.company.Bonus;
 import com.example.kuhidbs.entity.company.Company;
@@ -14,8 +14,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.List;
 import java.util.stream.Collectors;
 
