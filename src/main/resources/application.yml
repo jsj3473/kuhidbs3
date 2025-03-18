@@ -19,9 +19,9 @@ spring:
       on-profile: default
 
   datasource:
-    url: jdbc:postgresql://${PGHOST}:${PGPORT}/${PGDATABASE}
-    username: ${PGUSER}
-    password: ${PGPASSWORD}
+    url: jdbc:postgresql://postgres.railway.internal:5432/railway
+    username: postgres
+    password: ZWYkRjCUMzmtwxNQRBMOOnYuKArtNVEO
     driver-class-name: org.postgresql.Driver
 
   jpa:
