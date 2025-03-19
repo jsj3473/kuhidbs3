@@ -49,4 +49,5 @@ public class RFundDTO {
 
 
     private List<RFundMemDTO> fundMems; //조합원 명부들
+    private RFundAchievementDTO fundAchievement;
 }

@@ -217,12 +217,6 @@ public class FundService {
     }
 
 
-
-
-
-
-
-
     public List<RFundNameDTO> getAllFundIdAndName() {
         List<Object[]> results = fundRepository.findAllFundIdAndName();
 
@@ -230,9 +224,6 @@ public class FundService {
                 .map(row -> new RFundNameDTO((String) row[0], (String) row[1]))
                 .collect(Collectors.toList());
     }
-
-
-
 
     public RFundDTO getFundById(String fundId) {
         Fund fund = fundRepository.findById(fundId)

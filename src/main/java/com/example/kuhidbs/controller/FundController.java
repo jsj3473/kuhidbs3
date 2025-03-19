@@ -30,6 +30,7 @@ public class FundController {
     private final FundMemService fundMemService;
     private final IASService iasService;
     private final DueDiligenceService dueDiligenceService;
+    private final FundAchievementService fundAchievementService;
     private final EmploymentService employmentService;
     private final FundRepository fundRepository;
     private final AuditRepository auditRepository;
@@ -145,6 +146,8 @@ public class FundController {
     public ResponseEntity<RFundDTO> getFundById(@PathVariable String fundId) {
         RFundDTO fundDTO = fundService.getFundById(fundId);
         List<RFundMemDTO> fundMems = fundMemService.getActiveFundMembersByFundId(fundId);
+        RFundAchievementDTO rFundAchievementDTO = fundAchievementService.getFundAchievement(fundId);
+        fundDTO.setFundAchievement(rFundAchievementDTO);
         fundDTO.setFundMems(fundMems);
         fundDTO.setAuditorName(auditRepository.findLatestAuditNameByFundId(fundId));
         return ResponseEntity.ok(fundDTO);
@@ -173,6 +176,7 @@ public class FundController {
             @RequestBody UFundDTO updatedFundInfo) {
         logger.info("[PUT] 펀드 정보 수정 - fundId: {}", updatedFundInfo.getFundId());
         UFundDTO updatedInfo = fundService.updateFundInfo(updatedFundInfo);
+        fundAchievementService.updateInfo(updatedFundInfo);
         return ResponseEntity.ok(updatedInfo);
     }
 }

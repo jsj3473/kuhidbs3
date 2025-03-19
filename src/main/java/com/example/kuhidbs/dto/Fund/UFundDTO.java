@@ -45,4 +45,17 @@ public class UFundDTO {
     private String specialInvest1Purpose; // 특수목적투자
     private String specialInvest2Purpose; // 특수목적투자
     private String specialInvest3Purpose; // 특수목적투자
+
+    private String mandatoryCriteria; //기준대상 (출자약정액, 투자금액, 기타)
+    private Double mandatoryCriteriaRatio; //기준대상의 비율
+    private String mainInvest1Criteria;
+    private Double mainInvest1CriteriaRatio;
+    private String mainInvest2Criteria;
+    private Double mainInvest2CriteriaRatio;
+    private String specialInvest1Criteria;
+    private Double specialInvest1CriteriaRatio;
+    private String specialInvest2Criteria;
+    private Double specialInvest2CriteriaRatio;
+    private String specialInvest3Criteria;
+    private Double specialInvest3CriteriaRatio;
 }

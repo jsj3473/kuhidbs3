@@ -309,10 +309,8 @@ public class InvestmentService {
         switch (criteriaType) {
             case "초기창업":
                 return "창업 3년 이내".equals(company.getEarlyStartupType());
-            case "상장하지 않은창업자":
-                return "비상장기업".equals(company.getListingStatus());
-            case "벤처기업":
-                return "벤처기업".equals(company.getVentureRecognition());
+            case "상장되지 않은 창업자 또는 벤처기업":
+                return "비상장기업".equals(company.getListingStatus()) || "벤처기업".equals(company.getVentureRecognition());
             case "출자약정액 80%투자":
                 return true;
             case "대학창업":
@@ -321,6 +319,13 @@ public class InvestmentService {
                 return "학생창업".equals(company.getStartupType());
             case "지방기업":
                 return "지방창업".equals(company.getRegionalCompany());
+            case "공공기술사업화 중소,벤처기업":
+                return"기술이전기업".equals(company.getPublicTechnologyTransfer());
+            case "고려대 창업기업":
+                return "고려대창업".equals(company.getKuhStartup());
+            case "공공연구기관 기술활용 사업화기업":
+                return "기술이전기업".equals(company.getPublicTechnologyTransfer()) && "Y".equals(company.getPubTechCommercial());
+
             default:
                 return false;
         }
