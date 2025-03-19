@@ -293,11 +293,18 @@
                     </td>
                     <th>공공기술이전</th>
                     <td colspan="3">
-                        <select class="form-control" name="publicTechnologyTransfer">
-                            <option value="">선택하세요</option>
-                            <option value="기술이전기업">기술이전기업</option>
-                            <option value="일반기업">일반기업</option>
-                        </select>
+                        <div class="input-inline">
+                            <select class="form-control" name="publicTechnologyTransfer">
+                                <option value="">선택하세요</option>
+                                <option value="기술이전기업">기술이전기업</option>
+                                <option value="일반기업">일반기업</option>
+                            </select>
+                            <select style="width: 180%" class="form-control" name="pubTechCommercial">
+                                <option value="">선택하세요</option>
+                                <option value="Y">공공연구기관 기술활용 사업화기업</option>
+                                <option value="N">해당되지 않음</option>
+                            </select>
+                        </div>
                     </td>
                 </tr>
                 <tr>
@@ -326,9 +333,9 @@
                                 <option value="비상장기업">비상장기업</option>
                                 <option value="상장기업">상장기업</option>
                             </select>
-    <!--                    </td>-->
-    <!--                    <th>상장일자</th>-->
-    <!--                    <td colspan="3">-->
+                            <!--                    </td>-->
+                            <!--                    <th>상장일자</th>-->
+                            <!--                    <td colspan="3">-->
                             <input type="date" class="form-control" name="listingDate">
                         </div>
 
