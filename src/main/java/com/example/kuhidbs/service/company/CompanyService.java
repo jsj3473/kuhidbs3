@@ -67,6 +67,7 @@ public class CompanyService {
                 .investmentPoint2(CCmpInfDTO.getInvestmentPoint2())
                 .investmentPoint3(CCmpInfDTO.getInvestmentPoint3())
                 .publicTechnologyTransfer(CCmpInfDTO.getPublicTechnologyTransfer())
+                .pubTechCommercial(CCmpInfDTO.getPubTechCommercial())
                 .smeStatus(CCmpInfDTO.getSmeStatus())
                 .listingDate(CCmpInfDTO.getListingDate())
                 .listingStatus(CCmpInfDTO.getListingStatus())
@@ -108,6 +109,7 @@ public class CompanyService {
         company.setInvestmentPoint2(updatedCompanyInfo.getInvestmentPoint2());
         company.setInvestmentPoint3(updatedCompanyInfo.getInvestmentPoint3());
         company.setPublicTechnologyTransfer(updatedCompanyInfo.getPublicTechnologyTransfer());
+        company.setPubTechCommercial(updatedCompanyInfo.getPubTechCommercial());
         company.setSmeStatus(updatedCompanyInfo.getSmeStatus());
         company.setListingDate(updatedCompanyInfo.getListingDate());
         company.setListingStatus(updatedCompanyInfo.getListingStatus());
@@ -184,6 +186,7 @@ public class CompanyService {
                 .investmentPoint2(company.getInvestmentPoint2())
                 .investmentPoint3(company.getInvestmentPoint3())
                 .publicTechnologyTransfer(company.getPublicTechnologyTransfer())
+                .pubTechCommercial(company.getPubTechCommercial())
                 .smeStatus(company.getSmeStatus())
                 .listingDate(company.getListingDate())
                 .listingStatus(company.getListingStatus())
@@ -267,6 +270,7 @@ public class CompanyService {
                 .investmentPoint2(company.getInvestmentPoint2())
                 .investmentPoint3(company.getInvestmentPoint3())
                 .publicTechnologyTransfer(company.getPublicTechnologyTransfer())
+                .pubTechCommercial(company.getPubTechCommercial())
                 .smeStatus(company.getSmeStatus())
                 .listingStatus(company.getListingStatus())
                 .listingDate(company.getListingDate())
@@ -393,6 +397,7 @@ public class CompanyService {
                 .investmentPoint2(company.getInvestmentPoint2())
                 .investmentPoint3(company.getInvestmentPoint3())
                 .publicTechnologyTransfer(company.getPublicTechnologyTransfer())
+                .pubTechCommercial(company.getPubTechCommercial())
                 .smeStatus(company.getSmeStatus())
                 .listingDate(company.getListingDate())
                 .listingStatus(company.getListingStatus())

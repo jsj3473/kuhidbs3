@@ -65,6 +65,8 @@ public class CCmpInfDTO {
 
     private String publicTechnologyTransfer;
 
+    private String pubTechCommercial; //공공연구기관 기술활용 사업화 기업
+
     private String smeStatus;
 
     private String listingDate;

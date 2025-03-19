@@ -55,6 +55,8 @@ public class RCmpInf2DTO {
 
     private String publicTechnologyTransfer; //공공기술이전
 
+    private String pubTechCommercial; //공공연구기관 기술활용 사업화 기업
+
     private String dueDiligence; //투자기업실사
 
     private String listingStatus; //상장여부

@@ -102,6 +102,9 @@ public class Company extends BaseEntity {
     @Column(name = "PUB_TEC", length = 100)
     private String publicTechnologyTransfer;
 
+    @Column(name = "PUB_TEC_COMMERCIAL", length = 100)
+    private String pubTechCommercial;
+
     @Column(name = "SME_YN", length = 100)
     private String smeStatus;
 

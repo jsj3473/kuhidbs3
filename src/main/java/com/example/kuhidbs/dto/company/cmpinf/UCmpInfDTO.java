@@ -60,6 +60,7 @@ public class UCmpInfDTO {
     private String investmentPoint3;
 
     private String publicTechnologyTransfer;
+    private String pubTechCommercial; //공공연구기관 기술활용 사업화 기업
 
     private String smeStatus; //중소기업여부
 
