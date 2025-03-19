@@ -52,6 +52,20 @@
         <td th:text="${investment.evaluationMethod}"></td>
     </tr>
     </tbody>
+    <tfoot>
+    <tr class="table-light fw-bold">
+        <td colspan="4">합계</td>
+        <td class="text-end" th:text="${#numbers.formatInteger(totalInvestmentAmount, 3, 'COMMA')}"></td>
+        <td class="text-end" th:text="${#numbers.formatInteger(totalReductionAmount, 3, 'COMMA')}"></td>
+        <td class="text-end" th:text="${#numbers.formatInteger(totalRecoveredPrincipal, 3, 'COMMA')}"></td>
+        <td class="text-end" th:text="${#numbers.formatInteger(totalRecoveredProfit, 3, 'COMMA')}"></td>
+        <td class="text-end" th:text="${#numbers.formatInteger(totalInvestmentBalance, 3, 'COMMA')}"></td>
+        <td class="text-end" th:text="${#numbers.formatInteger(totalRemainingAssetValuation, 3, 'COMMA')}"></td>
+        <td class="text-end" th:text="${#numbers.formatDecimal(totalMultiple, 1, 2, 'POINT')}"></td>
+        <td></td> <!-- 평가방법은 합계 제외 -->
+    </tr>
+    </tfoot>
+
 </table>
 
 </body>

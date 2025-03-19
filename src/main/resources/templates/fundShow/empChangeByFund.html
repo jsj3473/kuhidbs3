@@ -70,8 +70,48 @@
         <td th:text="${employment.financialYear}"></td>
         <td th:text="${employment.financialHalf}"></td>
     </tr>
-
     </tbody>
+    <tfoot>
+    <!-- ✅ 합계 행 추가 -->
+    <tr class="table-light fw-bold">
+        <td colspan="2">합계</td>
+
+        <!-- 최초인력수 합계 -->
+        <td class="text-end"
+            th:text="${#aggregates.sum(rEmploymentDTOS.![initialEmployeeCount]) != null
+                 and #aggregates.sum(rEmploymentDTOS.![initialEmployeeCount]) != 0
+                 ? (#aggregates.sum(rEmploymentDTOS.![initialEmployeeCount]) < 1000
+                    ? #aggregates.sum(rEmploymentDTOS.![initialEmployeeCount])
+                    : #numbers.formatInteger(#aggregates.sum(rEmploymentDTOS.![initialEmployeeCount]), 3, 'COMMA'))
+                 : ''}">
+        </td>
+
+        <!-- 기준인력수 합계 -->
+        <td class="text-end"
+            th:text="${#aggregates.sum(rEmploymentDTOS.![latestEmployeeCount]) != null
+                 and #aggregates.sum(rEmploymentDTOS.![latestEmployeeCount]) != 0
+                 ? (#aggregates.sum(rEmploymentDTOS.![latestEmployeeCount]) < 1000
+                    ? #aggregates.sum(rEmploymentDTOS.![latestEmployeeCount])
+                    : #numbers.formatInteger(#aggregates.sum(rEmploymentDTOS.![latestEmployeeCount]), 3, 'COMMA'))
+                 : ''}">
+        </td>
+
+        <td></td> <!-- 최종회수일자는 합계 없음 -->
+
+        <!-- 회수시점인력수 합계 -->
+        <td class="text-end"
+            th:text="${#aggregates.sum(rEmploymentDTOS.![finalEmployeeCount]) != null
+                 and #aggregates.sum(rEmploymentDTOS.![finalEmployeeCount]) != 0
+                 ? (#aggregates.sum(rEmploymentDTOS.![finalEmployeeCount]) < 1000
+                    ? #aggregates.sum(rEmploymentDTOS.![finalEmployeeCount])
+                    : #numbers.formatInteger(#aggregates.sum(rEmploymentDTOS.![finalEmployeeCount]), 3, 'COMMA'))
+                 : ''}">
+        </td>
+
+        <td></td> <!-- 기준 년도는 합계 없음 -->
+        <td></td> <!-- 기준 반기도 합계 없음 -->
+    </tr>
+    </tfoot>
 </table>
 
 </body>

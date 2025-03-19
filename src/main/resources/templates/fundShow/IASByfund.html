@@ -52,6 +52,57 @@
         <td th:text="${investment.evaluationMethod}"></td>
     </tr>
     </tbody>
+    <tfoot>
+    <tr class="table-light fw-bold">
+        <td colspan="4">합계</td>
+
+        <!-- 투자원금 합계 -->
+        <td class="text-end"
+            th:text="${#aggregates.sum(rIASDTOS.![investmentAmount]) != null and #aggregates.sum(rIASDTOS.![investmentAmount]) != 0
+                     ? #numbers.formatInteger(#aggregates.sum(rIASDTOS.![investmentAmount]), 3, 'COMMA') : ''}">
+        </td>
+
+        <!-- 감액 합계 -->
+        <td class="text-end"
+            th:text="${#aggregates.sum(rIASDTOS.![reductionAmount]) != null and #aggregates.sum(rIASDTOS.![reductionAmount]) != 0
+                     ? #numbers.formatInteger(#aggregates.sum(rIASDTOS.![reductionAmount]), 3, 'COMMA') : ''}">
+        </td>
+
+        <!-- 회수원금 합계 -->
+        <td class="text-end"
+            th:text="${#aggregates.sum(rIASDTOS.![recoveredPrincipal]) != null and #aggregates.sum(rIASDTOS.![recoveredPrincipal]) != 0
+                     ? #numbers.formatInteger(#aggregates.sum(rIASDTOS.![recoveredPrincipal]), 3, 'COMMA') : ''}">
+        </td>
+
+        <!-- 회수수익 합계 -->
+        <td class="text-end"
+            th:text="${#aggregates.sum(rIASDTOS.![recoveredProfit]) != null and #aggregates.sum(rIASDTOS.![recoveredProfit]) != 0
+                     ? #numbers.formatInteger(#aggregates.sum(rIASDTOS.![recoveredProfit]), 3, 'COMMA') : ''}">
+        </td>
+
+        <!-- 투자잔액 합계 -->
+        <td class="text-end"
+            th:text="${#aggregates.sum(rIASDTOS.![investmentBalance]) != null and #aggregates.sum(rIASDTOS.![investmentBalance]) != 0
+                     ? #numbers.formatInteger(#aggregates.sum(rIASDTOS.![investmentBalance]), 3, 'COMMA') : ''}">
+        </td>
+
+        <!-- 잔여자산평가금액 합계 -->
+        <td class="text-end"
+            th:text="${#aggregates.sum(rIASDTOS.![remainingAssetValuation]) != null and #aggregates.sum(rIASDTOS.![remainingAssetValuation]) != 0
+                     ? #numbers.formatInteger(#aggregates.sum(rIASDTOS.![remainingAssetValuation]), 3, 'COMMA') : ''}">
+        </td>
+
+        <!-- Multiple 합계 (소수점 2자리 적용) -->
+        <td class="text-end"
+            th:text="${#aggregates.sum(rIASDTOS.![multiple]) != null and #aggregates.sum(rIASDTOS.![multiple]) != 0
+                     ? #numbers.formatDecimal(#aggregates.sum(rIASDTOS.![multiple]), 1, 2, 'POINT') : ''}">
+        </td>
+
+        <td></td> <!-- 평가방법은 합계 제외 -->
+    </tr>
+    </tfoot>
+
+
 </table>
 
 </body>
