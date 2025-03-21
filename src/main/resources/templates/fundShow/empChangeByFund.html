@@ -71,47 +71,52 @@
         <td th:text="${employment.financialHalf}"></td>
     </tr>
     </tbody>
-    <tfoot>
-    <!-- ✅ 합계 행 추가 -->
-    <tr class="table-light fw-bold">
+    <tfoot th:if="${rEmploymentDTOS != null and !rEmploymentDTOS.isEmpty()}">
+    <tr class="table-light fw-bold"
+        th:with="
+            validInitial=${rEmploymentDTOS.?[initialEmployeeCount != null]},
+            validLatest=${rEmploymentDTOS.?[latestEmployeeCount != null]},
+            validFinal=${rEmploymentDTOS.?[finalEmployeeCount != null]}
+        ">
         <td colspan="2">합계</td>
 
-        <!-- 최초인력수 합계 -->
+        <!-- 최초인력수 -->
         <td class="text-end"
-            th:text="${#aggregates.sum(rEmploymentDTOS.![initialEmployeeCount]) != null
-                 and #aggregates.sum(rEmploymentDTOS.![initialEmployeeCount]) != 0
-                 ? (#aggregates.sum(rEmploymentDTOS.![initialEmployeeCount]) < 1000
-                    ? #aggregates.sum(rEmploymentDTOS.![initialEmployeeCount])
-                    : #numbers.formatInteger(#aggregates.sum(rEmploymentDTOS.![initialEmployeeCount]), 3, 'COMMA'))
-                 : ''}">
+            th:text="${#aggregates.sum(validInitial.![initialEmployeeCount]) != null
+                     and #aggregates.sum(validInitial.![initialEmployeeCount]) != 0
+                     ? (#aggregates.sum(validInitial.![initialEmployeeCount]) < 1000
+                        ? #aggregates.sum(validInitial.![initialEmployeeCount])
+                        : #numbers.formatInteger(#aggregates.sum(validInitial.![initialEmployeeCount]), 3, 'COMMA'))
+                     : ''}">
         </td>
 
-        <!-- 기준인력수 합계 -->
+        <!-- 기준인력수 -->
         <td class="text-end"
-            th:text="${#aggregates.sum(rEmploymentDTOS.![latestEmployeeCount]) != null
-                 and #aggregates.sum(rEmploymentDTOS.![latestEmployeeCount]) != 0
-                 ? (#aggregates.sum(rEmploymentDTOS.![latestEmployeeCount]) < 1000
-                    ? #aggregates.sum(rEmploymentDTOS.![latestEmployeeCount])
-                    : #numbers.formatInteger(#aggregates.sum(rEmploymentDTOS.![latestEmployeeCount]), 3, 'COMMA'))
-                 : ''}">
+            th:text="${#aggregates.sum(validLatest.![latestEmployeeCount]) != null
+                     and #aggregates.sum(validLatest.![latestEmployeeCount]) != 0
+                     ? (#aggregates.sum(validLatest.![latestEmployeeCount]) < 1000
+                        ? #aggregates.sum(validLatest.![latestEmployeeCount])
+                        : #numbers.formatInteger(#aggregates.sum(validLatest.![latestEmployeeCount]), 3, 'COMMA'))
+                     : ''}">
         </td>
 
-        <td></td> <!-- 최종회수일자는 합계 없음 -->
+        <td></td>
 
-        <!-- 회수시점인력수 합계 -->
+        <!-- 회수시점인력수 -->
         <td class="text-end"
-            th:text="${#aggregates.sum(rEmploymentDTOS.![finalEmployeeCount]) != null
-                 and #aggregates.sum(rEmploymentDTOS.![finalEmployeeCount]) != 0
-                 ? (#aggregates.sum(rEmploymentDTOS.![finalEmployeeCount]) < 1000
-                    ? #aggregates.sum(rEmploymentDTOS.![finalEmployeeCount])
-                    : #numbers.formatInteger(#aggregates.sum(rEmploymentDTOS.![finalEmployeeCount]), 3, 'COMMA'))
-                 : ''}">
+            th:text="${#aggregates.sum(validFinal.![finalEmployeeCount]) != null
+                     and #aggregates.sum(validFinal.![finalEmployeeCount]) != 0
+                     ? (#aggregates.sum(validFinal.![finalEmployeeCount]) < 1000
+                        ? #aggregates.sum(validFinal.![finalEmployeeCount])
+                        : #numbers.formatInteger(#aggregates.sum(validFinal.![finalEmployeeCount]), 3, 'COMMA'))
+                     : ''}">
         </td>
 
-        <td></td> <!-- 기준 년도는 합계 없음 -->
-        <td></td> <!-- 기준 반기도 합계 없음 -->
+        <td></td>
+        <td></td>
     </tr>
     </tfoot>
+
 </table>
 
 </body>

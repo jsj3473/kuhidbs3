@@ -150,6 +150,7 @@
             // document.getElementById("priorLossLP").value = data.priorLossLP || "";
 
             updateFundMembersTable(data.fundMems);
+            updateFundAchievementInfo(data.fundAchievement);
 
             document.getElementById("mandatoryPurpose").value = data.mandatoryPurpose || "";
             document.getElementById("mainInvest1Purpose").value = data.mainInvest1Purpose || "";
@@ -182,6 +183,33 @@
             });
         }
 
+        function updateFundAchievementInfo(fundAchievement) {
+            if (!fundAchievement) return;
+
+            document.getElementById("mandatoryPurpose").value = fundAchievement.mandatoryPurpose || "";
+            document.getElementById("mandatoryCriteria").value = fundAchievement.mandatoryCriteria || "";
+            document.getElementById("mandatoryCriteriaRatio").value = fundAchievement.mandatoryCriteriaRatio ?? "";
+
+            document.getElementById("mainInvest1Purpose").value = fundAchievement.mainInvest1Purpose || "";
+            document.getElementById("mainInvest1Criteria").value = fundAchievement.mainInvest1Criteria || "";
+            document.getElementById("mainInvest1CriteriaRatio").value = fundAchievement.mainInvest1CriteriaRatio ?? "";
+
+            document.getElementById("mainInvest2Purpose").value = fundAchievement.mainInvest2Purpose || "";
+            document.getElementById("mainInvest2Criteria").value = fundAchievement.mainInvest2Criteria || "";
+            document.getElementById("mainInvest2CriteriaRatio").value = fundAchievement.mainInvest2CriteriaRatio ?? "";
+
+            document.getElementById("specialInvest1Purpose").value = fundAchievement.specialInvest1Purpose || "";
+            document.getElementById("specialInvest1Criteria").value = fundAchievement.specialInvest1Criteria || "";
+            document.getElementById("specialInvest1CriteriaRatio").value = fundAchievement.specialInvest1CriteriaRatio ?? "";
+
+            document.getElementById("specialInvest2Purpose").value = fundAchievement.specialInvest2Purpose || "";
+            document.getElementById("specialInvest2Criteria").value = fundAchievement.specialInvest2Criteria || "";
+            document.getElementById("specialInvest2CriteriaRatio").value = fundAchievement.specialInvest2CriteriaRatio ?? "";
+
+            document.getElementById("specialInvest3Purpose").value = fundAchievement.specialInvest3Purpose || "";
+            document.getElementById("specialInvest3Criteria").value = fundAchievement.specialInvest3Criteria || "";
+            document.getElementById("specialInvest3CriteriaRatio").value = fundAchievement.specialInvest3CriteriaRatio ?? "";
+        }
 
         function formatNumber(value) {
             if (!value) return "";
@@ -323,7 +351,7 @@
             <!-- 1. 회사 기본 정보 -->
             <table class="table table-bordered text-center">
                 <thead>
-                <tr><th colspan="8">투자조합 고유정보</th></tr>
+                <tr><th colspan="7">투자조합 고유정보</th></tr>
                 </thead>
                 <tbody>
                 <tr>
@@ -338,7 +366,7 @@
                         </select>
                     </td>
                     <th>청산일자</th>
-                    <td colspan="2"><input type="date" class="form-control" name="liquidationDate" id="liquidationDate"></td>
+                    <td><input type="date" class="form-control" name="liquidationDate" id="liquidationDate"></td>
                 </tr>
                 <tr>
                     <th>조합명</th>
@@ -354,7 +382,7 @@
                     <th>존속기간 시작일</th>
                     <td><input type="date" class="form-control" name="durationStartDate" id="durationStartDate"></td>
                     <th>존속기간 종료일</th>
-                    <td colspan="2"><input type="date" class="form-control" name="durationEndDate" id="durationEndDate"></td>
+                    <td><input type="date" class="form-control" name="durationEndDate" id="durationEndDate"></td>
                 </tr>
                 <tr>
                     <th>투자기간(년)</th>
@@ -362,13 +390,13 @@
                     <th>투자기간 시작일</th>
                     <td><input type="date" class="form-control" name="investmentStartDate" id="investmentStartDate"></td>
                     <th>투자기간 종료일</th>
-                    <td colspan="2"><input type="date" class="form-control" name="investmentEndDate" id="investmentEndDate"></td>
+                    <td><input type="date" class="form-control" name="investmentEndDate" id="investmentEndDate"></td>
                 </tr>
                 <tr>
                     <th>약정 총액</th>
                     <td colspan="2"><input type="text" class="form-control number-format" name="committedTotalPrice" id="committedTotalPrice"></td>
                     <th>1좌당 금액</th>
-                    <td colspan="4"><input type="text" class="form-control number-format" name="unitPrice" id="unitPrice"></td>
+                    <td colspan="3"><input type="text" class="form-control number-format" name="unitPrice" id="unitPrice"></td>
                 </tr>
                 <tr>
                     <th>투자기구 유형</th>
@@ -380,7 +408,7 @@
                         </select>
                     </td>
                     <th>납입방법</th>
-                    <td colspan="4">
+                    <td colspan="3">
                         <select class="form-control" name="paymentType" id="paymentType">
                             <option value="">선택하세요</option>
                             <option value="수시납">수시납</option>
@@ -392,31 +420,31 @@
                     <th>대표펀드매니저</th>
                     <td colspan="2"><input type="text" class="form-control" name="leadFundManager" id="leadFundManager"></td>
                     <th>핵심운용인력</th>
-                    <td colspan="4"><input type="text" class="form-control" name="coreIvtManager" id="coreIvtManager"></td>
+                    <td colspan="3"><input type="text" class="form-control" name="coreIvtManager" id="coreIvtManager"></td>
                 </tr>
                 <tr>
                     <th>회계감사인명</th>
                     <td colspan="2"><input type="text" class="form-control" id="auditorName" readonly></td>
                     <th>회계감사인 변경일자</th>
-                    <td colspan="4"><input type="date" class="form-control" id="auditorDate" readonly></td>
+                    <td colspan="3"><input type="date" class="form-control" id="auditorDate" readonly></td>
                 </tr>
                 <tr>
                     <th>수탁회사(은행)</th>
                     <td colspan="2"><input type="text" class="form-control" name="trusteeCorporation" id="trusteeCorporation"></td>
                     <th>사무수탁법인</th>
-                    <td colspan="4"><input type="text" class="form-control" name="administrationCorporation" id="administrationCorporation"></td>
+                    <td colspan="3"><input type="text" class="form-control" name="administrationCorporation" id="administrationCorporation"></td>
                 </tr>
                 </tbody>
 
                 <thead>
-                <tr><th colspan="8">투자조합 보수조건</th></tr>
+                <tr><th colspan="7">투자조합 보수조건</th></tr>
                 </thead>
                 <tbody>
                 <tr>
                     <th>기준수익률(%)</th>
                     <td colspan="2"><input type="number" step="0.01" class="form-control" name="targetReturnRate" id="targetReturnRate"></td>
                     <th>성과보수율(%)</th>
-                    <td colspan="4"><input type="number" step="0.01" class="form-control" name="performanceFeeRate" id="performanceFeeRate"></td>
+                    <td colspan="3"><input type="number" step="0.01" class="form-control" name="performanceFeeRate" id="performanceFeeRate"></td>
                 </tr>
                 <tr>
                     <th>투자기간 관리보수</th>
@@ -440,7 +468,7 @@
                 <!--                </tr>-->
 
 
-                <tr><th colspan="8">투자조합 투자조건</th></tr>
+                <tr><th colspan="7">투자조합 투자조건</th></tr>
                 </tbody>
                 <!-- 🔥 의무 투자 -->
                 <tr>
@@ -459,22 +487,24 @@
                             <option value="공공연구기관 기술활용 사업화기업">공공연구기관 기술활용 사업화기업</option>
                         </select>
                     </td>
-                    <!--                    <th>기준대상</th>-->
-                    <!--                    <td>-->
-                    <!--                        <select class="form-control" id="mandatoryCriteria" name="mandatoryCriteria">-->
-                    <!--                            <option value="">선택하세요</option>-->
-                    <!--                            <option value="투자 잔액">투자 잔액</option>-->
-                    <!--                            <option value="출자약정액">출자약정액</option>-->
-                    <!--                            <option value="기타">기타</option>-->
-                    <!--                        </select>-->
-                    <!--                    </td>-->
-                    <!--                    <th>기준대상 비율(%)</th>-->
-                    <!--                    <td><input type="number" step="0.01" class="form-control" id="mandatoryCriteriaRatio" name="mandatoryCriteriaRatio"></td>-->
+                        <th>기준대상</th>
+                        <td>
+                            <select class="form-control" id="mandatoryCriteria" name="mandatoryCriteria">
+                                <option value="">선택하세요</option>
+                                <option value="투자 잔액">투자 잔액</option>
+                                <option value="출자약정액">출자약정액</option>
+                                <option value="기타">기타</option>
+                            </select>
+                        </td>
+                        <th>기준대상 비율(%)</th>
+                        <td><input type="number" step="0.01" class="form-control" id="mandatoryCriteriaRatio" name="mandatoryCriteriaRatio"></td>
                     <!--                    <th>금액</th>-->
-                    <!--                    <td colspan="4"><input type="text" class="form-control number-format" id="mandatoryTotal" name="mandatoryTotal"></td>-->
+                    <!--                    <td colspan="3"><input type="text" class="form-control number-format" id="mandatoryTotal" name="mandatoryTotal"></td>-->
+                    </tr>
+                    <tr>
                     <!-- 🔥 주목적 투자 1 -->
                     <th>주목적투자 1 목적</th>
-                    <td>
+                    <td colspan="2">
                         <select class="form-control" id="mainInvest1Purpose" name="mainInvest1Purpose">
                             <option value="">선택하세요</option>
                             <option value="초기창업">초기창업</option>
@@ -488,23 +518,23 @@
                             <option value="공공연구기관 기술활용 사업화기업">공공연구기관 기술활용 사업화기업</option>
                         </select>
                     </td>
-                    <!--                    <th>기준대상</th>-->
-                    <!--                    <td>-->
-                    <!--                        <select class="form-control" id="mainInvest1Criteria" name="mainInvest1Criteria">-->
-                    <!--                            <option value="">선택하세요</option>-->
-                    <!--                            <option value="투자 잔액">투자 잔액</option>-->
-                    <!--                            <option value="출자약정액">출자약정액</option>-->
-                    <!--                            <option value="기타">기타</option>-->
-                    <!--                        </select>-->
-                    <!--                    </td>-->
-                    <!--                    <th>기준대상 비율(%)</th>-->
-                    <!--                    <td><input type="number" step="0.01" class="form-control" id="mainInvest1CriteriaRatio" name="mainInvest1CriteriaRatio"></td>-->
+                    <th>기준대상</th>
+                    <td>
+                        <select class="form-control" id="mainInvest1Criteria" name="mainInvest1Criteria">
+                            <option value="">선택하세요</option>
+                            <option value="투자 잔액">투자 잔액</option>
+                            <option value="출자약정액">출자약정액</option>
+                        </select>
+                    </td>
+                    <th>기준대상 비율(%)</th>
+                    <td><input type="number" step="0.01" class="form-control" id="mainInvest1CriteriaRatio" name="mainInvest1CriteriaRatio"></td>
                     <!--                    <th>금액</th>-->
                     <!--                    <td><input type="text" class="form-control number-format" id="mainInvest1Total" name="mainInvest1Total"></td>-->
-
+                    </tr>
+                    <tr>
                     <!-- 🔥 주목적 투자 2 -->
                     <th>주목적투자 2 목적</th>
-                    <td>
+                    <td colspan="2">
                         <select class="form-control" id="mainInvest2Purpose" name="mainInvest2Purpose">
                             <option value="">선택하세요</option>
                             <option value="초기창업">초기창업</option>
@@ -518,17 +548,16 @@
                             <option value="공공연구기관 기술활용 사업화기업">공공연구기관 기술활용 사업화기업</option>
                         </select>
                     </td>
-                    <!--                    <th>기준대상</th>-->
-                    <!--                    <td>-->
-                    <!--                        <select class="form-control" id="mainInvest2Criteria" name="mainInvest2Criteria">-->
-                    <!--                            <option value="">선택하세요</option>-->
-                    <!--                            <option value="투자 잔액">투자 잔액</option>-->
-                    <!--                            <option value="출자약정액">출자약정액</option>-->
-                    <!--                            <option value="기타">기타</option>-->
-                    <!--                        </select>-->
-                    <!--                    </td>-->
-                    <!--                    <th>기준대상 비율(%)</th>-->
-                    <!--                    <td><input type="number" step="0.01" class="form-control" id="mainInvest2CriteriaRatio" name="mainInvest2CriteriaRatio"></td>-->
+                    <th>기준대상</th>
+                    <td>
+                        <select class="form-control" id="mainInvest2Criteria" name="mainInvest2Criteria">
+                            <option value="">선택하세요</option>
+                            <option value="투자 잔액">투자 잔액</option>
+                            <option value="출자약정액">출자약정액</option>
+                        </select>
+                    </td>
+                    <th>기준대상 비율(%)</th>
+                    <td><input type="number" step="0.01" class="form-control" id="mainInvest2CriteriaRatio" name="mainInvest2CriteriaRatio"></td>
                     <!--                    <th>금액</th>-->
                     <!--                    <td><input type="text" class="form-control number-format" id="mainInvest2Total" name="mainInvest2Total"></td>-->
                 </tr>
@@ -551,22 +580,23 @@
                             <option value="공공연구기관 기술활용 사업화기업">공공연구기관 기술활용 사업화기업</option>
                         </select>
                     </td>
-                    <!--                    <th> 기준대상</th>-->
-                    <!--                    <td>-->
-                    <!--                        <select class="form-control" name="specialInvest1Criteria" name="specialInvest1Criteria">-->
-                    <!--                            <option value="">선택하세요</option>-->
-                    <!--                            <option value="투자 잔액">투자 잔액</option>-->
-                    <!--                            <option value="출자약정액">출자약정액</option>-->
-                    <!--                            <option value="기타">기타</option>-->
-                    <!--                        </select>-->
-                    <!--                    </td>-->
-                    <!--                    <th> 기준대상 비율(%)</th>-->
-                    <!--                    <td><input type="number" step="0.01" class="form-control" id="specialInvest1CriteriaRatio" name="specialInvest1CriteriaRatio"></td>-->
+                    <th>기준대상</th>
+                    <td>
+                        <select class="form-control" id="specialInvest1Criteria" name="specialInvest1Criteria">
+                            <option value="">선택하세요</option>
+                            <option value="투자 잔액">투자 잔액</option>
+                            <option value="출자약정액">출자약정액</option>
+                        </select>
+                    </td>
+                    <th> 기준대상 비율(%)</th>
+                    <td><input type="number" step="0.01" class="form-control" id="specialInvest1CriteriaRatio" name="specialInvest1CriteriaRatio"></td>
                     <!--                    <th> 금액</th>-->
                     <!--                    <td><input type="text" class="form-control number-format" id="specialInvest1Total" name="specialInvest1Total"></td>-->
+                    </tr>
+                    <tr>
                     <!-- 🔥 특수목적 투자 2 -->
                     <th>특수목적투자 2 목적</th>
-                    <td>
+                    <td colspan="2">
                         <select class="form-control" id="specialInvest2Purpose" name="specialInvest2Purpose">
                             <option value="">선택하세요</option>
                             <option value="초기창업">초기창업</option>
@@ -580,22 +610,23 @@
                             <option value="공공연구기관 기술활용 사업화기업">공공연구기관 기술활용 사업화기업</option>
                         </select>
                     </td>
-                    <!--                    <th> 기준대상</th>-->
-                    <!--                    <td>-->
-                    <!--                        <select class="form-control" id="specialInvest2Criteria" name="specialInvest2Criteria">-->
-                    <!--                            <option value="">선택하세요</option>-->
-                    <!--                            <option value="투자 잔액">투자 잔액</option>-->
-                    <!--                            <option value="출자약정액">출자약정액</option>-->
-                    <!--                            <option value="기타">기타</option>-->
-                    <!--                        </select>-->
-                    <!--                    </td>-->
-                    <!--                    <th> 기준대상 비율(%)</th>-->
-                    <!--                    <td><input type="number" step="0.01" class="form-control" id="specialInvest2CriteriaRatio" name="specialInvest2CriteriaRatio"></td>-->
+                    <th>기준대상</th>
+                    <td>
+                        <select class="form-control" id="specialInvest2Criteria" name="specialInvest2Criteria">
+                            <option value="">선택하세요</option>
+                            <option value="투자 잔액">투자 잔액</option>
+                            <option value="출자약정액">출자약정액</option>
+                        </select>
+                    </td>
+                    <th>기준대상 비율(%)</th>
+                    <td><input type="number" step="0.01" class="form-control" id="specialInvest2CriteriaRatio" name="specialInvest2CriteriaRatio"></td>
                     <!--                    <th> 금액</th>-->
                     <!--                    <td><input type="text" class="form-control number-format" id="specialInvest2Total" name="specialInvest2Total"></td>-->
+                    </tr>
+                    <tr>
                     <!-- 🔥 특수목적 투자 3 -->
                     <th>특수목적투자 3 목적</th>
-                    <td>
+                    <td colspan="2">
                         <select class="form-control"  id="specialInvest3Purpose" name="specialInvest3Purpose">
                             <option value="">선택하세요</option>
                             <option value="초기창업">초기창업</option>
@@ -609,23 +640,22 @@
                             <option value="공공연구기관 기술활용 사업화기업">공공연구기관 기술활용 사업화기업</option>
                         </select>
                     </td>
-                    <!--                    <th> 기준대상</th>-->
-                    <!--                    <td>-->
-                    <!--                        <select class="form-control" name="specialInvest3Criteria">-->
-                    <!--                            <option value="">선택하세요</option>-->
-                    <!--                            <option value="투자 잔액">투자 잔액</option>-->
-                    <!--                            <option value="출자약정액">출자약정액</option>-->
-                    <!--                            <option value="기타">기타</option>-->
-                    <!--                        </select>-->
-                    <!--                    </td>-->
-                    <!--                    <th> 기준대상 비율(%)</th>-->
-                    <!--                    <td><input type="number" step="0.01" class="form-control" name="specialInvest3CriteriaRatio"></td>-->
+                    <th>기준대상</th>
+                    <td>
+                        <select class="form-control" name="specialInvest3Criteria">
+                            <option value="">선택하세요</option>
+                            <option value="투자 잔액">투자 잔액</option>
+                            <option value="출자약정액">출자약정액</option>
+                        </select>
+                    </td>
+                    <th>기준대상 비율(%)</th>
+                    <td><input type="number" step="0.01" class="form-control" name="specialInvest3CriteriaRatio"></td>
                     <!--                    <th> 금액</th>-->
                     <!--                    <td><input type="text" class="form-control number-format" name="specialInvest3Total"></td>-->
                 </tr>
                 <!-- 투자조합원 명부 -->
                 <thead>
-                <tr><th colspan="8">투자조합 조합원 명부</th></tr>
+                <tr><th colspan="7">투자조합 조합원 명부</th></tr>
                 <tr>
                     <th>조합원</th>
                     <th>조합원유형</th>

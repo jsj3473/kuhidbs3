@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
-  <title>투자비율 달성여부 조회</title>
+  <title>투자율 달성여부 조회</title>
   <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
   <script defer th:src="@{/js/bootstrap.bundle.min.js}"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
@@ -24,7 +24,7 @@
 <body class="container mt-4">
 <div th:replace="fragments/popUpNavbar :: navbar"></div>
 
-<h2 class="mb-4">투자비율 달성여부 조회</h2>
+<h2 class="mb-4">투자율 달성여부 조회</h2>
 
 <!-- ✅ 펀드 성과 테이블 -->
 <table class="table table-bordered text-center">
@@ -38,94 +38,104 @@
   </thead>
   <tbody>
   <!-- 의무투자 -->
-  <tr>
-    <th rowspan="3" class="small-th">의무투자</th>
-    <th>금액</th>
-    <td class="text-center-td" th:text="${rFundAchievementDTO.mandatoryAmount != null ? (rFundAchievementDTO.mandatoryAmount < 1000 ? rFundAchievementDTO.mandatoryAmount : #numbers.formatInteger(rFundAchievementDTO.mandatoryAmount, 3, 'COMMA')) : ''}"></td>
-  </tr>
-  <tr>
-    <th>비율</th>
-    <td class="text-center-td" th:text="${rFundAchievementDTO.mandatoryRatio != null ? #numbers.formatDecimal(rFundAchievementDTO.mandatoryRatio, 1, 1, 'POINT') + '%' : ''}"></td>
-  </tr>
-  <tr>
-    <th>기준</th>
-    <td th:text="${rFundAchievementDTO.mandatoryCriteria} + ' * ' + (${rFundAchievementDTO.mandatoryCriteriaRatio != null ? #numbers.formatDecimal(rFundAchievementDTO.mandatoryCriteriaRatio, 1, 1, 'POINT') + '%' : ''})"></td>
-  </tr>
 
-  <!-- 주목적 투자 1 -->
-  <tr>
-    <th rowspan="3">주목적투자 1</th>
-    <th>금액</th>
-    <td class="text-center-td" th:text="${rFundAchievementDTO.mainInvest1Amount != null ? (rFundAchievementDTO.mainInvest1Amount < 1000 ? rFundAchievementDTO.mainInvest1Amount : #numbers.formatInteger(rFundAchievementDTO.mainInvest1Amount, 3, 'COMMA')) : ''}"></td>
-  </tr>
-  <tr>
-    <th>비율</th>
-    <td class="text-center-td" th:text="${rFundAchievementDTO.mainInvest1Ratio != null ? #numbers.formatDecimal(rFundAchievementDTO.mainInvest1Ratio, 1, 1, 'POINT') + '%' : ''}"></td>
-  </tr>
-  <tr>
-    <th>기준</th>
-    <td th:text="${rFundAchievementDTO.mainInvest1Criteria} + ' * ' + (${rFundAchievementDTO.mainInvest1CriteriaRatio != null ? #numbers.formatDecimal(rFundAchievementDTO.mainInvest1CriteriaRatio, 1, 1, 'POINT') + '%' : ''})"></td>
-  </tr>
+  <th:block th:if="${rFundAchievementDTO.mandatoryCriteria != ''}">
+    <tr>
+      <th rowspan="3" class="small-th">의무투자</th>
+      <th>금액</th>
+      <td class="text-center-td" th:text="${rFundAchievementDTO.mandatoryAmount != null ? (rFundAchievementDTO.mandatoryAmount < 1000 ? rFundAchievementDTO.mandatoryAmount : #numbers.formatInteger(rFundAchievementDTO.mandatoryAmount, 3, 'COMMA')) : ''}"></td>
+    </tr>
+    <tr>
+      <th>비율</th>
+      <td class="text-center-td" th:text="${rFundAchievementDTO.mandatoryRatio != null ? #numbers.formatDecimal(rFundAchievementDTO.mandatoryRatio, 1, 1, 'POINT') + '%' : ''}"></td>
+    </tr>
+    <tr>
+      <th>기준</th>
+      <td th:text="${rFundAchievementDTO.mandatoryCriteria} + '의 ' + (${rFundAchievementDTO.mandatoryCriteriaRatio != null ? #numbers.formatDecimal(rFundAchievementDTO.mandatoryCriteriaRatio, 1, 1, 'POINT') + '%, ' : ''}) + ${rFundAchievementDTO.mandatoryTargetAmount != null ? (rFundAchievementDTO.mandatoryTargetAmount < 1000 ? rFundAchievementDTO.mandatoryTargetAmount : #numbers.formatInteger(rFundAchievementDTO.mandatoryTargetAmount, 3, 'COMMA')) + '원': ''} "></td>
+    </tr>
+  </th:block>
 
-  <!-- 주목적 투자 2 -->
-  <tr>
-    <th rowspan="3">주목적투자 2</th>
-    <th>금액</th>
-    <td class="text-center-td" th:text="${rFundAchievementDTO.mainInvest2Amount != null ? (rFundAchievementDTO.mainInvest2Amount < 1000 ? rFundAchievementDTO.mainInvest2Amount : #numbers.formatInteger(rFundAchievementDTO.mainInvest2Amount, 3, 'COMMA')) : ''}"></td>
-  </tr>
-  <tr>
-    <th>비율</th>
-    <td class="text-center-td" th:text="${rFundAchievementDTO.mainInvest2Ratio != null ? #numbers.formatDecimal(rFundAchievementDTO.mainInvest2Ratio, 1, 1, 'POINT') + '%' : ''}"></td>
-  </tr>
-  <tr>
-    <th>기준</th>
-    <td th:text="${rFundAchievementDTO.mainInvest2Criteria} + ' * ' + (${rFundAchievementDTO.mainInvest2CriteriaRatio != null ? #numbers.formatDecimal(rFundAchievementDTO.mainInvest2CriteriaRatio, 1, 1, 'POINT') + '%' : ''})"></td>
-  </tr>
+    <!-- 주목적 투자 1 -->
+  <th:block th:if="${rFundAchievementDTO.mainInvest1Criteria != ''}">
+    <tr>
+      <th rowspan="3">주목적투자 1</th>
+      <th>금액</th>
+      <td class="text-center-td" th:text="${rFundAchievementDTO.mainInvest1Amount != null ? (rFundAchievementDTO.mainInvest1Amount < 1000 ? rFundAchievementDTO.mainInvest1Amount : #numbers.formatInteger(rFundAchievementDTO.mainInvest1Amount, 3, 'COMMA')) : ''}"></td>
+    </tr>
+    <tr>
+      <th>비율</th>
+      <td class="text-center-td" th:text="${rFundAchievementDTO.mainInvest1Ratio != null ? #numbers.formatDecimal(rFundAchievementDTO.mainInvest1Ratio, 1, 1, 'POINT') + '%' : ''}"></td>
+    </tr>
+    <tr>
+      <th>기준</th>
+      <td th:text="${rFundAchievementDTO.mainInvest1Criteria} + '의 ' + (${rFundAchievementDTO.mainInvest1CriteriaRatio != null ? #numbers.formatDecimal(rFundAchievementDTO.mainInvest1CriteriaRatio, 1, 1, 'POINT') + '%, ' : ''}) + ${rFundAchievementDTO.mainInvest1TargetAmount != null ? (rFundAchievementDTO.mainInvest1TargetAmount < 1000 ? rFundAchievementDTO.mainInvest1TargetAmount : #numbers.formatInteger(rFundAchievementDTO.mainInvest1TargetAmount, 3, 'COMMA')) + '원': ''} "></td>
+    </tr>
+  </th:block>
 
-  <!-- 특수목적 투자 1 -->
-  <tr>
-    <th rowspan="3">특수목적투자 1</th>
-    <th>금액</th>
-    <td class="text-center-td" th:text="${rFundAchievementDTO.specialInvest1Amount != null ? (rFundAchievementDTO.specialInvest1Amount < 1000 ? rFundAchievementDTO.specialInvest1Amount : #numbers.formatInteger(rFundAchievementDTO.specialInvest1Amount, 3, 'COMMA')) : ''}"></td>
-  </tr>
-  <tr>
-    <th>비율</th>
-    <td class="text-center-td" th:text="${rFundAchievementDTO.specialInvest1Ratio != null ? #numbers.formatDecimal(rFundAchievementDTO.specialInvest1Ratio, 1, 1, 'POINT') + '%' : ''}"></td>
-  </tr>
-  <tr>
-    <th>기준</th>
-    <td th:text="${rFundAchievementDTO.specialInvest1Criteria} + ' * ' + (${rFundAchievementDTO.specialInvest1CriteriaRatio != null ? #numbers.formatDecimal(rFundAchievementDTO.specialInvest1CriteriaRatio, 1, 1, 'POINT') + '%' : ''})"></td>
-  </tr>
-
-  <!-- 특수목적 투자 2 -->
-  <tr>
-    <th rowspan="3">특수목적투자 2</th>
-    <th>금액</th>
-    <td class="text-center-td" th:text="${rFundAchievementDTO.specialInvest2Amount != null ? (rFundAchievementDTO.specialInvest2Amount < 1000 ? rFundAchievementDTO.specialInvest2Amount : #numbers.formatInteger(rFundAchievementDTO.specialInvest2Amount, 3, 'COMMA')) : ''}"></td>
-  </tr>
-  <tr>
-    <th>비율</th>
-    <td class="text-center-td" th:text="${rFundAchievementDTO.specialInvest2Ratio != null ? #numbers.formatDecimal(rFundAchievementDTO.specialInvest2Ratio, 1, 1, 'POINT') + '%' : ''}"></td>
-  </tr>
-  <tr>
-    <th>기준</th>
-    <td th:text="${rFundAchievementDTO.specialInvest2Criteria} + ' * ' + (${rFundAchievementDTO.specialInvest2CriteriaRatio != null ? #numbers.formatDecimal(rFundAchievementDTO.specialInvest2CriteriaRatio, 1, 1, 'POINT') + '%' : ''})"></td>
-  </tr>
-
-  <!-- 특수목적 투자 3 -->
-  <tr>
-    <th rowspan="3">특수목적투자 3</th>
-    <th>금액</th>
-    <td class="text-center-td" th:text="${rFundAchievementDTO.specialInvest3Amount != null ? (rFundAchievementDTO.specialInvest3Amount < 1000 ? rFundAchievementDTO.specialInvest3Amount : #numbers.formatInteger(rFundAchievementDTO.specialInvest3Amount, 3, 'COMMA')) : ''}"></td>
-  </tr>
-  <tr>
-    <th>비율</th>
-    <td class="text-center-td" th:text="${rFundAchievementDTO.specialInvest3Ratio != null ? #numbers.formatDecimal(rFundAchievementDTO.specialInvest3Ratio, 1, 1, 'POINT') + '%' : ''}"></td>
-  </tr>
-  <tr>
-    <th>기준</th>
-    <td th:text="${rFundAchievementDTO.specialInvest3Criteria} + ' * ' + (${rFundAchievementDTO.specialInvest3CriteriaRatio != null ? #numbers.formatDecimal(rFundAchievementDTO.specialInvest3CriteriaRatio, 1, 1, 'POINT') + '%' : ''})"></td>
-  </tr>
+    <!-- 주목적 투자 2 -->
+  <th:block th:if="${rFundAchievementDTO.mainInvest2Criteria != ''}">
+    <tr>
+      <th rowspan="3">주목적투자 2</th>
+      <th>금액</th>
+      <td class="text-center-td" th:text="${rFundAchievementDTO.mainInvest2Amount != null ? (rFundAchievementDTO.mainInvest2Amount < 1000 ? rFundAchievementDTO.mainInvest2Amount : #numbers.formatInteger(rFundAchievementDTO.mainInvest2Amount, 3, 'COMMA')) : ''}"></td>
+    </tr>
+    <tr>
+      <th>비율</th>
+      <td class="text-center-td" th:text="${rFundAchievementDTO.mainInvest2Ratio != null ? #numbers.formatDecimal(rFundAchievementDTO.mainInvest2Ratio, 1, 1, 'POINT') + '%' : ''}"></td>
+    </tr>
+    <tr>
+      <th>기준</th>
+      <td th:text="${rFundAchievementDTO.mainInvest2Criteria} + '의 ' + (${rFundAchievementDTO.mainInvest2CriteriaRatio != null ? #numbers.formatDecimal(rFundAchievementDTO.mainInvest2CriteriaRatio, 1, 1, 'POINT') + '%, ' : ''}) + ${rFundAchievementDTO.mainInvest2TargetAmount != null ? (rFundAchievementDTO.mainInvest2TargetAmount < 1000 ? rFundAchievementDTO.mainInvest2TargetAmount : #numbers.formatInteger(rFundAchievementDTO.mainInvest2TargetAmount, 3, 'COMMA')) + '원': ''} "></td>
+    </tr>
+  </th:block>
+    <!-- 특수목적 투자 1 -->
+  <th:block th:if="${rFundAchievementDTO.specialInvest1Criteria != ''}">
+    <tr>
+      <th rowspan="3">특수목적투자 1</th>
+      <th>금액</th>
+      <td class="text-center-td" th:text="${rFundAchievementDTO.specialInvest1Amount != null ? (rFundAchievementDTO.specialInvest1Amount < 1000 ? rFundAchievementDTO.specialInvest1Amount : #numbers.formatInteger(rFundAchievementDTO.specialInvest1Amount, 3, 'COMMA')) : ''}"></td>
+    </tr>
+    <tr>
+      <th>비율</th>
+      <td class="text-center-td" th:text="${rFundAchievementDTO.specialInvest1Ratio != null ? #numbers.formatDecimal(rFundAchievementDTO.specialInvest1Ratio, 1, 1, 'POINT') + '%' : ''}"></td>
+    </tr>
+    <tr>
+      <th>기준</th>
+      <td th:text="${rFundAchievementDTO.specialInvest1Criteria} + '의 ' + (${rFundAchievementDTO.specialInvest1CriteriaRatio != null ? #numbers.formatDecimal(rFundAchievementDTO.specialInvest1CriteriaRatio, 1, 1, 'POINT') + '%, ' : ''}) + ${rFundAchievementDTO.specialInvest1TargetAmount != null ? (rFundAchievementDTO.specialInvest1TargetAmount < 1000 ? rFundAchievementDTO.specialInvest1TargetAmount : #numbers.formatInteger(rFundAchievementDTO.specialInvest1TargetAmount, 3, 'COMMA')) + '원': ''} "></td>
+    </tr>
+  </th:block>
+    <!-- 특수목적 투자 2 -->
+  <th:block th:if="${rFundAchievementDTO.specialInvest2Criteria != ''}">
+    <tr>
+      <th rowspan="3">특수목적투자 2</th>
+      <th>금액</th>
+      <td class="text-center-td" th:text="${rFundAchievementDTO.specialInvest2Amount != null ? (rFundAchievementDTO.specialInvest2Amount < 1000 ? rFundAchievementDTO.specialInvest2Amount : #numbers.formatInteger(rFundAchievementDTO.specialInvest2Amount, 3, 'COMMA')) : ''}"></td>
+    </tr>
+    <tr>
+      <th>비율</th>
+      <td class="text-center-td" th:text="${rFundAchievementDTO.specialInvest2Ratio != null ? #numbers.formatDecimal(rFundAchievementDTO.specialInvest2Ratio, 1, 1, 'POINT') + '%' : ''}"></td>
+    </tr>
+    <tr>
+      <th>기준</th>
+      <td th:text="${rFundAchievementDTO.specialInvest2Criteria} + '의 ' + (${rFundAchievementDTO.specialInvest2CriteriaRatio != null ? #numbers.formatDecimal(rFundAchievementDTO.specialInvest2CriteriaRatio, 1, 1, 'POINT') + '%, ' : ''}) + ${rFundAchievementDTO.specialInvest2TargetAmount != null ? (rFundAchievementDTO.specialInvest2TargetAmount < 1000 ? rFundAchievementDTO.specialInvest2TargetAmount : #numbers.formatInteger(rFundAchievementDTO.specialInvest2TargetAmount, 3, 'COMMA')) + '원': ''} "></td>
+    </tr>
+  </th:block>
+    <!-- 특수목적 투자 3 -->
+  <th:block th:if="${rFundAchievementDTO.specialInvest3Criteria != ''}">
+    <tr>
+      <th rowspan="3">특수목적투자 3</th>
+      <th>금액</th>
+      <td class="text-center-td" th:text="${rFundAchievementDTO.specialInvest3Amount != null ? (rFundAchievementDTO.specialInvest3Amount < 1000 ? rFundAchievementDTO.specialInvest3Amount : #numbers.formatInteger(rFundAchievementDTO.specialInvest3Amount, 3, 'COMMA')) : ''}"></td>
+    </tr>
+    <tr>
+      <th>비율</th>
+      <td class="text-center-td" th:text="${rFundAchievementDTO.specialInvest3Ratio != null ? #numbers.formatDecimal(rFundAchievementDTO.specialInvest3Ratio, 1, 1, 'POINT') + '%' : ''}"></td>
+    </tr>
+    <tr>
+      <th>기준</th>
+      <td th:text="${rFundAchievementDTO.specialInvest3Criteria} + '의 ' + (${rFundAchievementDTO.specialInvest3CriteriaRatio != null ? #numbers.formatDecimal(rFundAchievementDTO.specialInvest3CriteriaRatio, 1, 1, 'POINT') + '%, ' : ''}) + ${rFundAchievementDTO.specialInvest3TargetAmount != null ? (rFundAchievementDTO.specialInvest3TargetAmount < 1000 ? rFundAchievementDTO.specialInvest3TargetAmount : #numbers.formatInteger(rFundAchievementDTO.specialInvest3TargetAmount, 3, 'COMMA')) + '원': ''} "></td>
+    </tr>
+  </th:block>
   </tbody>
 
 </table>

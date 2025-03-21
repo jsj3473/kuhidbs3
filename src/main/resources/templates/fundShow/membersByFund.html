@@ -144,6 +144,8 @@
             totalContributionRate += parseFloat(contributionRate) || 0;
         });
 
+        totalContributionRate = totalContributionRate >= 99.9 ? 100 : totalContributionRate.toFixed(2);
+
         // ✅ 푸터 합계도 포맷 적용
         document.getElementById("totalCommittedUnitPrice").innerText = formatNumber(totalCommittedUnitPrice.toString());
         document.getElementById("totalContributionRate").innerText = formatNumber(totalContributionRate.toFixed(2));
