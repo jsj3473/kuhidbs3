@@ -118,7 +118,6 @@ public class ShareholderService {
         if (companyAccountOptional.isPresent()) {
             // ✅ 기존 CompanyAccount 업데이트
             CompanyAccount companyAccount = companyAccountOptional.get();
-            companyAccount.setTotalSharesIssued(totalShares);
             companyAccount.setKuhOwnershipPercentage(kuhOwnershipPercentage);
             companyAccountRepository.save(companyAccount);
         } else {
