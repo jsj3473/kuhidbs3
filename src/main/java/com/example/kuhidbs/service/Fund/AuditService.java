@@ -60,6 +60,7 @@ public class AuditService {
 
         return audits.stream()
                 .map(audit -> RAuditDTO.builder()
+                        .auditId(audit.getAuditId())
                         .fncYear(audit.getFncYear())
                         .changeDate(audit.getChangeDate())
                         .auditorName(audit.getAuditorName())

@@ -17,7 +17,7 @@ public class Audit extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 자동 증가 설정
     @Column(name = "AUDIT_ID", nullable = false)
-    private Long auditId; // 조합재무제표 고유번호 (PK, Auto Increment)
+    private Long auditId; // 회계감사인 고유번호 (PK, Auto Increment)
 
     @ManyToOne
     @JoinColumn(name = "FUND_ID", nullable = false)
