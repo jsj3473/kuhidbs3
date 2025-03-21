@@ -18,4 +18,7 @@ public interface AuditRepository extends JpaRepository<Audit, Long> {
 
     @Query("SELECT a.auditorName FROM Audit a WHERE a.fund.fundId = :fundId ORDER BY a.createdAt DESC LIMIT 1")
     String findLatestAuditNameByFundId(@Param("fundId") String fundId);
+
+    @Query("SELECT a.fncYear FROM Audit a WHERE a.fund.fundId = :fundId ORDER BY a.createdAt DESC LIMIT 1")
+    String findLatestFncYearByFundId(@Param("fundId") String fundId);
 }

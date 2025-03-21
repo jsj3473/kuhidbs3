@@ -150,6 +150,7 @@ public class FundController {
         fundDTO.setFundAchievement(rFundAchievementDTO);
         fundDTO.setFundMems(fundMems);
         fundDTO.setAuditorName(auditRepository.findLatestAuditNameByFundId(fundId));
+        fundDTO.setChangeDate(auditRepository.findLatestFncYearByFundId(fundId));
         return ResponseEntity.ok(fundDTO);
     }
 
