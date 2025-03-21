@@ -130,6 +130,9 @@ public class Fund extends BaseEntity {
     @Column(name = "MAIN_INVEST_2_PURPOSE", length = 100)
     private String mainInvest2Purpose; // 주목적 투자 2 목적
 
+    @Column(name = "MAIN_INVEST_3_PURPOSE", length = 100)
+    private String mainInvest3Purpose; // 주목적 투자 3 목적
+
     @Column(name = "SPECIAL_INVEST_1_PURPOSE", length = 100)
     private String specialInvest1Purpose; // 특수목적 투자 1 목적
 

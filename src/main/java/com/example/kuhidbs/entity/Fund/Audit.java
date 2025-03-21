@@ -29,9 +29,9 @@ public class Audit extends BaseEntity {
     @Column(name = "CHNG_DT")
     private String changeDate; // 변경일자 (변경일자)
 
-    @Column(name = "AUDIT_NM", length = 8)
+    @Column(name = "AUDIT_NM", length = 800)
     private String auditorName; // 회계감사인명
 
-    @Column(name = "CHNG_RESN", length = 200)
+    @Column(name = "CHNG_RESN", length = 2000)
     private String changeReason; // 변경사유
 }

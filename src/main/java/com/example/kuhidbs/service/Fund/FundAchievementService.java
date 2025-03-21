@@ -65,6 +65,12 @@ public class FundAchievementService {
         dto.setMainInvest2CriteriaRatio(entity.getMainInvest2CriteriaRatio());
         dto.setMainInvest2TargetAmount(entity.getMainInvest2TargetAmount());
 
+        dto.setMainInvest3Amount(entity.getMainInvest3Amount());
+        dto.setMainInvest3Ratio(entity.getMainInvest3Ratio());
+        dto.setMainInvest3Criteria(entity.getMainInvest3Criteria());
+        dto.setMainInvest3CriteriaRatio(entity.getMainInvest3CriteriaRatio());
+        dto.setMainInvest3TargetAmount(entity.getMainInvest3TargetAmount());
+
         dto.setSpecialInvest1Amount(entity.getSpecialInvest1Amount());
         dto.setSpecialInvest1Ratio(entity.getSpecialInvest1Ratio());
         dto.setSpecialInvest1Criteria(entity.getSpecialInvest1Criteria());
@@ -102,6 +108,9 @@ public class FundAchievementService {
 
         achievement.setMainInvest2Criteria(updatedFundInfo.getMainInvest2Criteria());
         achievement.setMainInvest2CriteriaRatio(updatedFundInfo.getMainInvest2CriteriaRatio());
+
+        achievement.setMainInvest3Criteria(updatedFundInfo.getMainInvest3Criteria());
+        achievement.setMainInvest3CriteriaRatio(updatedFundInfo.getMainInvest3CriteriaRatio());
 
         achievement.setSpecialInvest1Criteria(updatedFundInfo.getSpecialInvest1Criteria());
         achievement.setSpecialInvest1CriteriaRatio(updatedFundInfo.getSpecialInvest1CriteriaRatio());

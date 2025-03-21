@@ -42,6 +42,7 @@ public class UFundDTO {
     private String mandatoryPurpose; // 의무투자
     private String mainInvest1Purpose; // 주목적투자
     private String mainInvest2Purpose; // 주목적투자
+    private String mainInvest3Purpose;
     private String specialInvest1Purpose; // 특수목적투자
     private String specialInvest2Purpose; // 특수목적투자
     private String specialInvest3Purpose; // 특수목적투자
@@ -52,6 +53,8 @@ public class UFundDTO {
     private Double mainInvest1CriteriaRatio;
     private String mainInvest2Criteria;
     private Double mainInvest2CriteriaRatio;
+    private String mainInvest3Criteria;
+    private Double mainInvest3CriteriaRatio;
     private String specialInvest1Criteria;
     private Double specialInvest1CriteriaRatio;
     private String specialInvest2Criteria;

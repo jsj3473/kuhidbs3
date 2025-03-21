@@ -17,6 +17,7 @@ public class RFundAchievementDTO {
     private String mandatoryPurpose; // 의무 투자 목적 (예: 초기창업기업)
     private String mainInvest1Purpose; // 주목적 투자 1 목적
     private String mainInvest2Purpose; // 주목적 투자 2 목적
+    private String mainInvest3Purpose; // 주목적 투자 3 목적
     private String specialInvest1Purpose; // 특수목적 투자 1 목적
     private String specialInvest2Purpose; // 특수목적 투자 2 목적
     private String specialInvest3Purpose; // 특수목적 투자 3 목적
@@ -42,6 +43,13 @@ public class RFundAchievementDTO {
     private String mainInvest2Criteria;
     private Double mainInvest2CriteriaRatio;
     private Long mainInvest2TargetAmount;
+
+    // 🔥 주목적 투자 3
+    private Long mainInvest3Amount;
+    private Double mainInvest3Ratio;
+    private String mainInvest3Criteria;
+    private Double mainInvest3CriteriaRatio;
+    private Long mainInvest3TargetAmount;
 
     // 🔥 특수목적 투자 1
     private Long specialInvest1Amount;

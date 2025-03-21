@@ -28,7 +28,7 @@ public class DueDiligence extends BaseEntity {
     @JoinColumn(name = "fund_id", nullable = false)
     private Fund fund;
 
-    @Column(name = "target",length = 255) //실사대상
+    @Column(name = "target", length = 2550) //실사대상
     private String target;
 
     @Column(name = "status", length = 50) //실시여부
@@ -37,6 +37,6 @@ public class DueDiligence extends BaseEntity {
     @Column(name = "inspection_date", nullable = true, length = 50) //실사일자
     private String inspectionDate;
 
-    @Column(name = "issues", nullable = true, length = 255)  //문제점발견
+    @Column(name = "issues", nullable = true, length = 2550)  //문제점발견
     private String issues;
 }

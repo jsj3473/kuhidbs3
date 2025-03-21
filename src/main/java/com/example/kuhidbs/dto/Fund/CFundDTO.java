@@ -56,6 +56,11 @@ public class CFundDTO {
     private String mainInvest2Criteria;
     private Double mainInvest2CriteriaRatio;
 
+    // 🔥 주목적 투자 3
+    private String mainInvest3Purpose; // 주목적 투자 3 목적
+    private String mainInvest3Criteria;
+    private Double mainInvest3CriteriaRatio;
+
     // 🔥 특수목적 투자 1
     private String specialInvest1Purpose; // 특수목적 투자 1 목적
     private String specialInvest1Criteria;

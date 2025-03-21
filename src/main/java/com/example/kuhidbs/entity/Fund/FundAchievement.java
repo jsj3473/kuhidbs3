@@ -70,6 +70,22 @@ public class FundAchievement extends BaseEntity {
     @Column(name = "MAIN_INVEST_2_TARGET_AMOUNT")
     private Long mainInvest2TargetAmount = 0L; // 🔥 주목적 투자 2 기준 대상 금액
 
+    // 🔥 주목적 투자 3
+    @Column(name = "MAIN_INVEST_3_AMOUNT")
+    private Long mainInvest3Amount = 0L;
+
+    @Column(name = "MAIN_INVEST_3_RATIO")
+    private Double mainInvest3Ratio = 0.0;
+
+    @Column(name = "MAIN_INVEST_3_CRITERIA")
+    private String mainInvest3Criteria;
+
+    @Column(name = "MAIN_INVEST_3_CRITERIA_RATIO")
+    private Double mainInvest3CriteriaRatio = 0.0;
+
+    @Column(name = "MAIN_INVEST_3_TARGET_AMOUNT")
+    private Long mainInvest3TargetAmount = 0L; // 🔥 주목적 투자 2 기준 대상 금액
+
     // 🔥 특수목적 투자 1
     @Column(name = "SPECIAL_INVEST_1_AMOUNT")
     private Long specialInvest1Amount = 0L;

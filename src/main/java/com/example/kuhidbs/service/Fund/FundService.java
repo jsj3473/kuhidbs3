@@ -57,6 +57,7 @@ public class FundService {
                 .mandatoryPurpose(dto.getMandatoryPurpose()) //의무투자
                 .mainInvest1Purpose(dto.getMainInvest1Purpose()) //주목적1
                 .mainInvest2Purpose(dto.getMainInvest2Purpose()) //주목적2
+                .mainInvest3Purpose(dto.getMainInvest3Purpose()) //주목적3
                 .specialInvest1Purpose(dto.getSpecialInvest1Purpose()) //특수목적1
                 .specialInvest2Purpose(dto.getSpecialInvest2Purpose()) //특수목적2
                 .specialInvest3Purpose(dto.getSpecialInvest3Purpose()) //특수목적3
@@ -109,6 +110,7 @@ public class FundService {
         fund.setMandatoryPurpose(updatedFundInfo.getMandatoryPurpose());
         fund.setMainInvest1Purpose(updatedFundInfo.getMainInvest1Purpose());
         fund.setMainInvest2Purpose(updatedFundInfo.getMainInvest2Purpose());
+        fund.setMainInvest3Purpose(updatedFundInfo.getMainInvest3Purpose());
         fund.setSpecialInvest1Purpose(updatedFundInfo.getSpecialInvest1Purpose());
         fund.setSpecialInvest2Purpose(updatedFundInfo.getSpecialInvest2Purpose());
         fund.setSpecialInvest3Purpose(updatedFundInfo.getSpecialInvest3Purpose());
@@ -154,6 +156,7 @@ public class FundService {
                 .mandatoryPurpose(fund.getMandatoryPurpose())
                 .mainInvest1Purpose(fund.getMainInvest1Purpose())
                 .mainInvest2Purpose(fund.getMainInvest2Purpose())
+                .mainInvest3Purpose(fund.getMainInvest3Purpose())
                 .specialInvest1Purpose(fund.getSpecialInvest1Purpose())
                 .specialInvest2Purpose(fund.getSpecialInvest2Purpose())
                 .specialInvest3Purpose(fund.getSpecialInvest3Purpose())
@@ -182,6 +185,12 @@ public class FundService {
                 .mainInvest2Criteria(dto.getMainInvest2Criteria())
                 .mainInvest2CriteriaRatio(dto.getMainInvest2CriteriaRatio())
                 .mainInvest2TargetAmount(determineTotal(fund, dto.getMainInvest2Criteria()))
+
+                // 🔥 주목적 투자 3
+                .mainInvest3Amount(0L)
+                .mainInvest3Criteria(dto.getMainInvest3Criteria())
+                .mainInvest3CriteriaRatio(dto.getMainInvest3CriteriaRatio())
+                .mainInvest3TargetAmount(determineTotal(fund, dto.getMainInvest3Criteria()))
 
                 // 🔥 특수목적 투자 1
                 .specialInvest1Amount(0L)
@@ -260,6 +269,7 @@ public class FundService {
                 .mandatoryPurpose(fund.getMandatoryPurpose())
                 .mainInvest1Purpose(fund.getMainInvest1Purpose())
                 .mainInvest2Purpose(fund.getMainInvest2Purpose())
+                .mainInvest3Purpose(fund.getMainInvest3Purpose())
                 .specialInvest1Purpose(fund.getSpecialInvest1Purpose())
                 .specialInvest2Purpose(fund.getSpecialInvest2Purpose())
                 .specialInvest3Purpose(fund.getSpecialInvest3Purpose())
