@@ -174,7 +174,7 @@ public class FundController {
             @RequestBody UFundDTO updatedFundInfo) {
         logger.info("[PUT] 펀드 정보 수정 - fundId: {}", updatedFundInfo.getFundId());
         UFundDTO updatedInfo = fundService.updateFundInfo(updatedFundInfo);
-        fundAchievementService.updateInfo(updatedFundInfo);
+        fundService.updateFundAchievement(updatedFundInfo);
         return ResponseEntity.ok(updatedInfo);
     }
 }

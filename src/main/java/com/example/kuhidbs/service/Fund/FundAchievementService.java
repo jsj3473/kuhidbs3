@@ -91,39 +91,4 @@ public class FundAchievementService {
 
         return dto;
     }
-
-    @Transactional
-    public void updateInfo(UFundDTO updatedFundInfo) {
-        Fund fund = fundRepository.findById(updatedFundInfo.getFundId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 펀드가 존재하지 않습니다: " + updatedFundInfo.getFundId()));
-
-        FundAchievement achievement = fundAchievementRepository.findByFund(fund)
-                .orElseThrow(() -> new IllegalArgumentException("해당 펀드 Achievement 정보가 존재하지 않습니다: " + fund.getFundId()));
-
-        achievement.setMandatoryCriteria(updatedFundInfo.getMandatoryCriteria());
-        achievement.setMandatoryCriteriaRatio(updatedFundInfo.getMandatoryCriteriaRatio());
-
-        achievement.setMainInvest1Criteria(updatedFundInfo.getMainInvest1Criteria());
-        achievement.setMainInvest1CriteriaRatio(updatedFundInfo.getMainInvest1CriteriaRatio());
-
-        achievement.setMainInvest2Criteria(updatedFundInfo.getMainInvest2Criteria());
-        achievement.setMainInvest2CriteriaRatio(updatedFundInfo.getMainInvest2CriteriaRatio());
-
-        achievement.setMainInvest3Criteria(updatedFundInfo.getMainInvest3Criteria());
-        achievement.setMainInvest3CriteriaRatio(updatedFundInfo.getMainInvest3CriteriaRatio());
-
-        achievement.setSpecialInvest1Criteria(updatedFundInfo.getSpecialInvest1Criteria());
-        achievement.setSpecialInvest1CriteriaRatio(updatedFundInfo.getSpecialInvest1CriteriaRatio());
-
-        achievement.setSpecialInvest2Criteria(updatedFundInfo.getSpecialInvest2Criteria());
-        achievement.setSpecialInvest2CriteriaRatio(updatedFundInfo.getSpecialInvest2CriteriaRatio());
-
-        achievement.setSpecialInvest3Criteria(updatedFundInfo.getSpecialInvest3Criteria());
-        achievement.setSpecialInvest3CriteriaRatio(updatedFundInfo.getSpecialInvest3CriteriaRatio());
-
-        fundAchievementRepository.save(achievement);
-
-        // 로깅
-        LoggerFactory.getLogger(this.getClass()).info("[UPDATE] 펀드 Achievement 정보 수정 완료 - fundId: {}", fund.getFundId());
-    }
 }

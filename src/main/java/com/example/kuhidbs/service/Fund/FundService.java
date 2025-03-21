@@ -76,7 +76,7 @@ public class FundService {
      * 펀드 정보 수정
      */
     @Transactional
-    public UFundDTO updateFundInfo(UFundDTO updatedFundInfo) {
+    public   UFundDTO updateFundInfo(UFundDTO updatedFundInfo) {
         Fund fund = fundRepository.findById(updatedFundInfo.getFundId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 펀드가 존재하지 않습니다: " + updatedFundInfo.getFundId()));
 
@@ -274,6 +274,53 @@ public class FundService {
                 .specialInvest2Purpose(fund.getSpecialInvest2Purpose())
                 .specialInvest3Purpose(fund.getSpecialInvest3Purpose())
                 .build();
+    }
+
+    public void updateFundAchievement(UFundDTO dto) {
+        Fund fund = fundRepository.findById(dto.getFundId())
+                .orElseThrow(() -> new RuntimeException("Fund not found with ID: " + dto.getFundId()));
+        FundAchievement fundAchievement = FundAchievement.builder()
+                .fund(fund) // 외래키(Fund) 연결
+
+                // 🔥 의무 투자
+                .mandatoryCriteria(dto.getMandatoryCriteria())
+                .mandatoryCriteriaRatio(dto.getMandatoryCriteriaRatio())
+                .mandatoryTargetAmount(determineTotal(fund, dto.getMandatoryCriteria()))
+
+                // 🔥 주목적 투자 1
+                .mainInvest1Criteria(dto.getMainInvest1Criteria())
+                .mainInvest1CriteriaRatio(dto.getMainInvest1CriteriaRatio())
+                .mainInvest1TargetAmount(determineTotal(fund, dto.getMainInvest1Criteria()))
+
+                // 🔥 주목적 투자 2
+                .mainInvest2Criteria(dto.getMainInvest2Criteria())
+                .mainInvest2CriteriaRatio(dto.getMainInvest2CriteriaRatio())
+                .mainInvest2TargetAmount(determineTotal(fund, dto.getMainInvest2Criteria()))
+
+                // 🔥 주목적 투자 3
+                .mainInvest3Criteria(dto.getMainInvest3Criteria())
+                .mainInvest3CriteriaRatio(dto.getMainInvest3CriteriaRatio())
+                .mainInvest3TargetAmount(determineTotal(fund, dto.getMainInvest3Criteria()))
+
+                // 🔥 특수목적 투자 1
+                .specialInvest1Criteria(dto.getSpecialInvest1Criteria())
+                .specialInvest1CriteriaRatio(dto.getSpecialInvest1CriteriaRatio())
+                .specialInvest1TargetAmount(determineTotal(fund, dto.getSpecialInvest1Criteria()))
+
+                // 🔥 특수목적 투자 2
+                .specialInvest2Criteria(dto.getSpecialInvest2Criteria())
+                .specialInvest2CriteriaRatio(dto.getSpecialInvest2CriteriaRatio())
+                .specialInvest2TargetAmount(determineTotal(fund, dto.getSpecialInvest2Criteria()))
+
+                // 🔥 특수목적 투자 3
+                .specialInvest3Criteria(dto.getSpecialInvest3Criteria())
+                .specialInvest3CriteriaRatio(dto.getSpecialInvest3CriteriaRatio())
+                .specialInvest3TargetAmount(determineTotal(fund, dto.getSpecialInvest3Criteria()))
+
+                .build();
+
+        fundAchievementRepository.save(fundAchievement);
+        logger.info("[INFO] FundAchievement 데이터 수정 완료 - 펀드 ID: {}", fund.getFundId());
     }
 }
 
