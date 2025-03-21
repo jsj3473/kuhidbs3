@@ -3,14 +3,11 @@ package com.example.kuhidbs.controller;
 import com.example.kuhidbs.dto.Fund.*;
 import com.example.kuhidbs.entity.Fund.*;
 import com.example.kuhidbs.repository.Fund.AuditRepository;
-import com.example.kuhidbs.repository.Fund.FundFinancialRepository;
 import com.example.kuhidbs.repository.Fund.FundRepository;
 import com.example.kuhidbs.service.Fund.*;
-import com.example.kuhidbs.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -150,7 +147,7 @@ public class FundController {
         fundDTO.setFundAchievement(rFundAchievementDTO);
         fundDTO.setFundMems(fundMems);
         fundDTO.setAuditorName(auditRepository.findLatestAuditNameByFundId(fundId));
-        fundDTO.setChangeDate(auditRepository.findLatestFncYearByFundId(fundId));
+        fundDTO.setChangeDate(auditRepository.findLatestChangeDateByFundId(fundId));
         return ResponseEntity.ok(fundDTO);
     }
 
