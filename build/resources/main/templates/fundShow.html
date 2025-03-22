@@ -137,7 +137,7 @@
             document.getElementById("leadFundManager").value = data.leadFundManager || "";
             document.getElementById("coreIvtManager").value = data.coreIvtManager || "";
             document.getElementById("auditorName").value = data.auditorName || "";
-            document.getElementById("auditorDate").value = data.auditorDate || "";
+            document.getElementById("changeDate").value = data.changeDate || "";
             document.getElementById("trusteeCorporation").value = data.trusteeCorporation || "";
             document.getElementById("administrationCorporation").value = data.administrationCorporation || "";
             document.getElementById("targetReturnRate").value = data.targetReturnRate;
@@ -151,14 +151,28 @@
 
             updateFundMembersTable(data.fundMems);
             updateFundAchievementInfo(data.fundAchievement);
+            //
+            // document.getElementById("mandatoryPurpose").value = data.mandatoryPurpose || "";
+            // document.getElementById("mainInvest1Purpose").value = data.mainInvest1Purpose || "";
+            // document.getElementById("mainInvest2Purpose").value = data.mainInvest2Purpose || "";
+            // document.getElementById("mainInvest3Purpose").value = data.mainInvest3Purpose || "";
+            // document.getElementById("specialInvest1Purpose").value = data.specialInvest1Purpose || "";
+            // document.getElementById("specialInvest2Purpose").value = data.specialInvest2Purpose || "";
+            // document.getElementById("specialInvest3Purpose").value = data.specialInvest3Purpose || "";
 
-            document.getElementById("mandatoryPurpose").value = data.mandatoryPurpose || "";
-            document.getElementById("mainInvest1Purpose").value = data.mainInvest1Purpose || "";
-            document.getElementById("mainInvest2Purpose").value = data.mainInvest2Purpose || "";
-            document.getElementById("specialInvest1Purpose").value = data.specialInvest1Purpose || "";
-            document.getElementById("specialInvest2Purpose").value = data.specialInvest2Purpose || "";
-            document.getElementById("specialInvest3Purpose").value = data.specialInvest3Purpose || "";
+            const setValueIfExists = (id, value) => {
+                const el = document.getElementById(id);
+                if (el) el.value = value || "";
+            };
 
+            // 안전하게 값 바인딩
+            setValueIfExists("mandatoryPurpose", data.mandatoryPurpose);
+            setValueIfExists("mainInvest1Purpose", data.mainInvest1Purpose);
+            setValueIfExists("mainInvest2Purpose", data.mainInvest2Purpose);
+            setValueIfExists("mainInvest3Purpose", data.mainInvest3Purpose);
+            setValueIfExists("specialInvest1Purpose", data.specialInvest1Purpose);
+            setValueIfExists("specialInvest2Purpose", data.specialInvest2Purpose);
+            setValueIfExists("specialInvest3Purpose", data.specialInvest3Purpose);
 
         }
         function updateFundMembersTable(fundMems) {
@@ -173,7 +187,7 @@
                     const row = `<tr>
                 <td>${member.memberName || ""}</td>
                 <td>${member.memberType || ""}</td>
-                <td>${formattedPrice}</td>
+                <td class="text-end">${formattedPrice}</td>
                 <td>${member.contact || ""}</td>
                 <td colspan="2">${member.address || ""}</td>
                 <td>${member.regNo || ""}</td>
@@ -186,29 +200,98 @@
         function updateFundAchievementInfo(fundAchievement) {
             if (!fundAchievement) return;
 
-            document.getElementById("mandatoryPurpose").value = fundAchievement.mandatoryPurpose || "";
-            document.getElementById("mandatoryCriteria").value = fundAchievement.mandatoryCriteria || "";
-            document.getElementById("mandatoryCriteriaRatio").value = fundAchievement.mandatoryCriteriaRatio ?? "";
+            // 🔹 의무 투자
+            const mandatoryPurpose = document.getElementById("mandatoryPurpose");
+            if (mandatoryPurpose) mandatoryPurpose.value = fundAchievement.mandatoryPurpose || "";
 
-            document.getElementById("mainInvest1Purpose").value = fundAchievement.mainInvest1Purpose || "";
-            document.getElementById("mainInvest1Criteria").value = fundAchievement.mainInvest1Criteria || "";
-            document.getElementById("mainInvest1CriteriaRatio").value = fundAchievement.mainInvest1CriteriaRatio ?? "";
+            const mandatoryCriteria = document.getElementById("mandatoryCriteria");
+            if (mandatoryCriteria) mandatoryCriteria.value = fundAchievement.mandatoryCriteria || "";
 
-            document.getElementById("mainInvest2Purpose").value = fundAchievement.mainInvest2Purpose || "";
-            document.getElementById("mainInvest2Criteria").value = fundAchievement.mainInvest2Criteria || "";
-            document.getElementById("mainInvest2CriteriaRatio").value = fundAchievement.mainInvest2CriteriaRatio ?? "";
+            const mandatoryCriteriaRatio = document.getElementById("mandatoryCriteriaRatio");
+            if (mandatoryCriteriaRatio) mandatoryCriteriaRatio.value = fundAchievement.mandatoryCriteriaRatio ?? "";
 
-            document.getElementById("specialInvest1Purpose").value = fundAchievement.specialInvest1Purpose || "";
-            document.getElementById("specialInvest1Criteria").value = fundAchievement.specialInvest1Criteria || "";
-            document.getElementById("specialInvest1CriteriaRatio").value = fundAchievement.specialInvest1CriteriaRatio ?? "";
+            // 🔹 주목적 투자 1
+            const mainInvest1Purpose = document.getElementById("mainInvest1Purpose");
+            if (mainInvest1Purpose) mainInvest1Purpose.value = fundAchievement.mainInvest1Purpose || "";
 
-            document.getElementById("specialInvest2Purpose").value = fundAchievement.specialInvest2Purpose || "";
-            document.getElementById("specialInvest2Criteria").value = fundAchievement.specialInvest2Criteria || "";
-            document.getElementById("specialInvest2CriteriaRatio").value = fundAchievement.specialInvest2CriteriaRatio ?? "";
+            const mainInvest1Criteria = document.getElementById("mainInvest1Criteria");
+            if (mainInvest1Criteria) mainInvest1Criteria.value = fundAchievement.mainInvest1Criteria || "";
 
-            document.getElementById("specialInvest3Purpose").value = fundAchievement.specialInvest3Purpose || "";
-            document.getElementById("specialInvest3Criteria").value = fundAchievement.specialInvest3Criteria || "";
-            document.getElementById("specialInvest3CriteriaRatio").value = fundAchievement.specialInvest3CriteriaRatio ?? "";
+            const mainInvest1CriteriaRatio = document.getElementById("mainInvest1CriteriaRatio");
+            if (mainInvest1CriteriaRatio) mainInvest1CriteriaRatio.value = fundAchievement.mainInvest1CriteriaRatio ?? "";
+
+            // 🔹 주목적 투자 2
+            const mainInvest2Purpose = document.getElementById("mainInvest2Purpose");
+            if (mainInvest2Purpose) mainInvest2Purpose.value = fundAchievement.mainInvest2Purpose || "";
+
+            const mainInvest2Criteria = document.getElementById("mainInvest2Criteria");
+            if (mainInvest2Criteria) mainInvest2Criteria.value = fundAchievement.mainInvest2Criteria || "";
+
+            const mainInvest2CriteriaRatio = document.getElementById("mainInvest2CriteriaRatio");
+            if (mainInvest2CriteriaRatio) mainInvest2CriteriaRatio.value = fundAchievement.mainInvest2CriteriaRatio ?? "";
+
+            // 🔹 주목적 투자 3
+            const mainInvest3Purpose = document.getElementById("mainInvest3Purpose");
+            if (mainInvest3Purpose) mainInvest3Purpose.value = fundAchievement.mainInvest3Purpose || "";
+
+            const mainInvest3Criteria = document.getElementById("mainInvest3Criteria");
+            if (mainInvest3Criteria) mainInvest3Criteria.value = fundAchievement.mainInvest3Criteria || "";
+
+            const mainInvest3CriteriaRatio = document.getElementById("mainInvest3CriteriaRatio");
+            if (mainInvest3CriteriaRatio) mainInvest3CriteriaRatio.value = fundAchievement.mainInvest3CriteriaRatio ?? "";
+
+            // 🔹 특수목적 투자 1
+            const specialInvest1Purpose = document.getElementById("specialInvest1Purpose");
+            if (specialInvest1Purpose) specialInvest1Purpose.value = fundAchievement.specialInvest1Purpose || "";
+
+            const specialInvest1Criteria = document.getElementById("specialInvest1Criteria");
+            if (specialInvest1Criteria) specialInvest1Criteria.value = fundAchievement.specialInvest1Criteria || "";
+
+            const specialInvest1CriteriaRatio = document.getElementById("specialInvest1CriteriaRatio");
+            if (specialInvest1CriteriaRatio) specialInvest1CriteriaRatio.value = fundAchievement.specialInvest1CriteriaRatio ?? "";
+
+            // 🔹 특수목적 투자 2
+            const specialInvest2Purpose = document.getElementById("specialInvest2Purpose");
+            if (specialInvest2Purpose) specialInvest2Purpose.value = fundAchievement.specialInvest2Purpose || "";
+
+            const specialInvest2Criteria = document.getElementById("specialInvest2Criteria");
+            if (specialInvest2Criteria) specialInvest2Criteria.value = fundAchievement.specialInvest2Criteria || "";
+
+            const specialInvest2CriteriaRatio = document.getElementById("specialInvest2CriteriaRatio");
+            if (specialInvest2CriteriaRatio) specialInvest2CriteriaRatio.value = fundAchievement.specialInvest2CriteriaRatio ?? "";
+
+            // 🔹 특수목적 투자 3
+            const specialInvest3Purpose = document.getElementById("specialInvest3Purpose");
+            if (specialInvest3Purpose) specialInvest3Purpose.value = fundAchievement.specialInvest3Purpose || "";
+
+            const specialInvest3Criteria = document.getElementById("specialInvest3Criteria");
+            if (specialInvest3Criteria) specialInvest3Criteria.value = fundAchievement.specialInvest3Criteria || "";
+
+            const specialInvest3CriteriaRatio = document.getElementById("specialInvest3CriteriaRatio");
+            if (specialInvest3CriteriaRatio) specialInvest3CriteriaRatio.value = fundAchievement.specialInvest3CriteriaRatio ?? "";
+
+            // 🔹 투자 조건 줄 숨김 처리
+            hideRowIfEmpty("mandatoryPurpose", "mandatoryCriteria", "mandatoryCriteriaRatio", "mandatoryRow");
+            hideRowIfEmpty("mainInvest1Purpose", "mainInvest1Criteria", "mainInvest1CriteriaRatio", "mainInvest1Row");
+            hideRowIfEmpty("mainInvest2Purpose", "mainInvest2Criteria", "mainInvest2CriteriaRatio", "mainInvest2Row");
+            hideRowIfEmpty("mainInvest3Purpose", "mainInvest3Criteria", "mainInvest3CriteriaRatio", "mainInvest3Row");
+            hideRowIfEmpty("specialInvest1Purpose", "specialInvest1Criteria", "specialInvest1CriteriaRatio", "specialInvest1Row");
+            hideRowIfEmpty("specialInvest2Purpose", "specialInvest2Criteria", "specialInvest2CriteriaRatio", "specialInvest2Row");
+            hideRowIfEmpty("specialInvest3Purpose", "specialInvest3Criteria", "specialInvest3CriteriaRatio", "specialInvest3Row");
+
+        }
+        function hideRowIfEmpty(purposeId, criteriaId, ratioId, rowSelector) {
+            const purpose = document.getElementById(purposeId)?.value?.trim();
+            const criteria = document.getElementById(criteriaId)?.value?.trim();
+            const ratio = document.getElementById(ratioId)?.value?.trim();
+
+            const row = document.getElementById(rowSelector);
+            if (row) {
+                const isEmpty = (!purpose || purpose === "") &&
+                    (!criteria || criteria === "") &&
+                    (!ratio || isNaN(parseFloat(ratio)));
+                row.style.display = isEmpty ? "none" : "";
+            }
         }
 
         function formatNumber(value) {
@@ -426,7 +509,7 @@
                     <th>회계감사인명</th>
                     <td colspan="2"><input type="text" class="form-control" id="auditorName" readonly></td>
                     <th>회계감사인 변경일자</th>
-                    <td colspan="3"><input type="date" class="form-control" id="auditorDate" readonly></td>
+                    <td colspan="3"><input type="date" class="form-control" id="changeDate" readonly></td>
                 </tr>
                 <tr>
                     <th>수탁회사(은행)</th>
@@ -448,15 +531,15 @@
                 </tr>
                 <tr>
                     <th>투자기간 관리보수</th>
-                    <td colspan="7"><input type="text" class="form-control" name="managementFeeInvestmentPeriod" id="managementFeeInvestmentPeriod"></td>
+                    <td colspan="6"><input type="text" class="form-control" name="managementFeeInvestmentPeriod" id="managementFeeInvestmentPeriod"></td>
                 </tr>
                 <tr>
                     <th>운영기간 관리보수</th>
-                    <td colspan="7"><input type="text" class="form-control" name="managementFeeManagementPeriod" id="managementFeeManagementPeriod"></td>
+                    <td colspan="6"><input type="text" class="form-control" name="managementFeeManagementPeriod" id="managementFeeManagementPeriod"></td>
                 </tr>
                 <tr>
                     <th>인센티브 조건</th>
-                    <td colspan="7"><input type="text" class="form-control" name="incentiveCondition" id="incentiveCondition"></td>
+                    <td colspan="6"><input type="text" class="form-control" name="incentiveCondition" id="incentiveCondition"></td>
                 </tr>
                 <!--                <tr>-->
                 <!--                    <th>우선손실충당 GP</th>-->
@@ -471,7 +554,7 @@
                 <tr><th colspan="7">투자조합 투자조건</th></tr>
                 </tbody>
                 <!-- 🔥 의무 투자 -->
-                <tr>
+                <tr id="mandatoryRow" th:if="${mandatoryPurpose != '' or mandatoryCriteria != '' or mandatoryCriteriaRatio != null}">
                     <th>의무투자 목적</th>
                     <td colspan="2">
                         <select class="form-control" id="mandatoryPurpose" name="mandatoryPurpose">
@@ -500,10 +583,11 @@
                         <td><input type="number" step="0.01" class="form-control" id="mandatoryCriteriaRatio" name="mandatoryCriteriaRatio"></td>
                     <!--                    <th>금액</th>-->
                     <!--                    <td colspan="3"><input type="text" class="form-control number-format" id="mandatoryTotal" name="mandatoryTotal"></td>-->
-                    </tr>
-                    <tr>
-                    <!-- 🔥 주목적 투자 1 -->
-                    <th>주목적투자 1 목적</th>
+                </tr>
+
+                <!-- 🔥 주목적 투자 1 -->
+                <tr id="mainInvest1Row" th:if="${mainInvest1Purpose != '' or mainInvest1Criteria != '' or mainInvest1CriteriaRatio != null}">
+                    <th>주목적투자 1</th>
                     <td colspan="2">
                         <select class="form-control" id="mainInvest1Purpose" name="mainInvest1Purpose">
                             <option value="">선택하세요</option>
@@ -530,10 +614,12 @@
                     <td><input type="number" step="0.01" class="form-control" id="mainInvest1CriteriaRatio" name="mainInvest1CriteriaRatio"></td>
                     <!--                    <th>금액</th>-->
                     <!--                    <td><input type="text" class="form-control number-format" id="mainInvest1Total" name="mainInvest1Total"></td>-->
-                    </tr>
-                    <tr>
-                    <!-- 🔥 주목적 투자 2 -->
-                    <th>주목적투자 2 목적</th>
+                </tr>
+
+
+                <!-- 🔥 주목적 투자 2 -->
+                <tr id="mainInvest2Row" th:if="${mainInvest2Purpose != '' or mainInvest2Criteria != '' or mainInvest2CriteriaRatio != null}">
+                    <th>주목적투자 2</th>
                     <td colspan="2">
                         <select class="form-control" id="mainInvest2Purpose" name="mainInvest2Purpose">
                             <option value="">선택하세요</option>
@@ -562,10 +648,41 @@
                     <!--                    <td><input type="text" class="form-control number-format" id="mainInvest2Total" name="mainInvest2Total"></td>-->
                 </tr>
 
+                <!-- 🔥 주목적 투자 3 -->
+                <tr id="mainInvest3Row" th:if="${mainInvest3Purpose != '' or mainInvest3Criteria != '' or mainInvest3CriteriaRatio != null}">
+                    <th>주목적투자 3</th>
+                    <td colspan="2">
+                        <select class="form-control" id="mainInvest3Purpose" name="mainInvest3Purpose">
+                            <option value="">선택하세요</option>
+                            <option value="초기창업">초기창업</option>
+                            <option value="상장되지 않은 창업자 또는 벤처기업">상장되지 않은 창업자 또는 벤처기업</option>
+                            <option value="출자약정액 80%투자">출자약정액 80% 투자</option>
+                            <option value="대학창업">대학창업</option>
+                            <option value="학생창업">학생창업</option>
+                            <option value="지방기업">지방기업</option>
+                            <option value="공공기술사업화 중소,벤처기업">공공기술사업화 중소,벤처기업</option>
+                            <option value="고려대 창업기업">고려대 창업기업</option>
+                            <option value="공공연구기관 기술활용 사업화기업">공공연구기관 기술활용 사업화기업</option>
+                        </select>
+                    </td>
+                    <th>기준대상</th>
+                    <td>
+                        <select class="form-control" id="mainInvest3Criteria" name="mainInvest3Criteria">
+                            <option value="">선택하세요</option>
+                            <option value="투자 잔액">투자 잔액</option>
+                            <option value="출자약정액">출자약정액</option>
+                        </select>
+                    </td>
+                    <th>기준대상 비율(%)</th>
+                    <td><input type="number" step="0.01" class="form-control" id="mainInvest3CriteriaRatio" name="mainInvest3CriteriaRatio"></td>
+                    <!--                    <th>금액</th>-->
+                    <!--                    <td><input type="text" class="form-control number-format" id="mainInvest3Total" name="mainInvest3Total"></td>-->
+                </tr>
+
 
                 <!-- 🔥 특수목적 투자 1 -->
-                <tr>
-                    <th>특수목적투자 1 목적</th>
+                <tr id="specialInvest1Row" th:if="${specialInvest1Purpose != '' or specialInvest1Criteria != '' or specialInvest1CriteriaRatio != null}">
+                    <th>특수목적투자 1</th>
                     <td colspan="2">
                         <select class="form-control" id="specialInvest1Purpose" name="specialInvest1Purpose">
                             <option value="">선택하세요</option>
@@ -592,10 +709,11 @@
                     <td><input type="number" step="0.01" class="form-control" id="specialInvest1CriteriaRatio" name="specialInvest1CriteriaRatio"></td>
                     <!--                    <th> 금액</th>-->
                     <!--                    <td><input type="text" class="form-control number-format" id="specialInvest1Total" name="specialInvest1Total"></td>-->
-                    </tr>
-                    <tr>
+                </tr>
+
                     <!-- 🔥 특수목적 투자 2 -->
-                    <th>특수목적투자 2 목적</th>
+                <tr id="specialInvest2Row" th:if="${specialInvest2Purpose != '' or specialInvest2Criteria != '' or specialInvest2CriteriaRatio != null}">
+                    <th>특수목적투자 2</th>
                     <td colspan="2">
                         <select class="form-control" id="specialInvest2Purpose" name="specialInvest2Purpose">
                             <option value="">선택하세요</option>
@@ -622,12 +740,13 @@
                     <td><input type="number" step="0.01" class="form-control" id="specialInvest2CriteriaRatio" name="specialInvest2CriteriaRatio"></td>
                     <!--                    <th> 금액</th>-->
                     <!--                    <td><input type="text" class="form-control number-format" id="specialInvest2Total" name="specialInvest2Total"></td>-->
-                    </tr>
-                    <tr>
-                    <!-- 🔥 특수목적 투자 3 -->
-                    <th>특수목적투자 3 목적</th>
+                </tr>
+
+                <!-- 🔥 특수목적 투자 3 -->
+                <tr id="specialInvest3Row" th:if="${specialInvest3Purpose != '' or specialInvest3Criteria != '' or specialInvest3CriteriaRatio != null}">
+                    <th>특수목적투자 3</th>
                     <td colspan="2">
-                        <select class="form-control"  id="specialInvest3Purpose" name="specialInvest3Purpose">
+                        <select class="form-control" id="specialInvest3Purpose" name="specialInvest3Purpose">
                             <option value="">선택하세요</option>
                             <option value="초기창업">초기창업</option>
                             <option value="상장되지 않은 창업자 또는 벤처기업">상장되지 않은 창업자 또는 벤처기업</option>
@@ -642,17 +761,18 @@
                     </td>
                     <th>기준대상</th>
                     <td>
-                        <select class="form-control" name="specialInvest3Criteria">
+                        <select class="form-control" id="specialInvest3Criteria" name="specialInvest3Criteria">
                             <option value="">선택하세요</option>
                             <option value="투자 잔액">투자 잔액</option>
                             <option value="출자약정액">출자약정액</option>
                         </select>
                     </td>
                     <th>기준대상 비율(%)</th>
-                    <td><input type="number" step="0.01" class="form-control" name="specialInvest3CriteriaRatio"></td>
+                    <td><input type="number" step="0.01" class="form-control" id="specialInvest3CriteriaRatio" name="specialInvest3CriteriaRatio"></td>
                     <!--                    <th> 금액</th>-->
-                    <!--                    <td><input type="text" class="form-control number-format" name="specialInvest3Total"></td>-->
+                    <!--                    <td><input type="text" class="form-control number-format" id="specialInvest2Total" name="specialInvest2Total"></td>-->
                 </tr>
+
                 <!-- 투자조합원 명부 -->
                 <thead>
                 <tr><th colspan="7">투자조합 조합원 명부</th></tr>

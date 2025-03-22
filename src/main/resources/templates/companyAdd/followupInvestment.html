@@ -240,6 +240,9 @@
 <script>
 
     function submitData() {
+        const getInt = id => parseInt(document.getElementById(id).value.replace(/,/g, ""), 10) || null;
+        const getFloat = id => parseFloat(document.getElementById(id).value.replace(/,/g, "")) || null;
+
         const data = {
             companyId: '[[${companyId}]]',
             shareholderName1: document.getElementById("shareholderName1").value,
@@ -251,25 +254,25 @@
             shareholderName7: document.getElementById("shareholderName7").value,
             shareholderName8: document.getElementById("shareholderName8").value,
 
-            shareholderCount1: Number(document.getElementById("shareholderCount1").value),
-            shareholderCount2: Number(document.getElementById("shareholderCount2").value),
-            shareholderCount3: Number(document.getElementById("shareholderCount3").value),
-            shareholderCount4: Number(document.getElementById("shareholderCount4").value),
-            shareholderCount5: Number(document.getElementById("shareholderCount5").value),
-            shareholderCount6: Number(document.getElementById("shareholderCount6").value),
-            shareholderCount7: Number(document.getElementById("shareholderCount7").value),
-            shareholderCount8: Number(document.getElementById("shareholderCount8").value),
+            shareholderCount1: getInt("shareholderCount1"),
+            shareholderCount2: getInt("shareholderCount2"),
+            shareholderCount3: getInt("shareholderCount3"),
+            shareholderCount4: getInt("shareholderCount4"),
+            shareholderCount5: getInt("shareholderCount5"),
+            shareholderCount6: getInt("shareholderCount6"),
+            shareholderCount7: getInt("shareholderCount7"),
+            shareholderCount8: getInt("shareholderCount8"),
 
-            shareholderRate1: parseFloat(document.getElementById("shareholderRate1").value),
-            shareholderRate2: parseFloat(document.getElementById("shareholderRate2").value),
-            shareholderRate3: parseFloat(document.getElementById("shareholderRate3").value),
-            shareholderRate4: parseFloat(document.getElementById("shareholderRate4").value),
-            shareholderRate5: parseFloat(document.getElementById("shareholderRate5").value),
-            shareholderRate6: parseFloat(document.getElementById("shareholderRate6").value),
-            shareholderRate7: parseFloat(document.getElementById("shareholderRate7").value),
-            shareholderRate8: parseFloat(document.getElementById("shareholderRate8").value),
+            shareholderRate1: getFloat("shareholderRate1"),
+            shareholderRate2: getFloat("shareholderRate2"),
+            shareholderRate3: getFloat("shareholderRate3"),
+            shareholderRate4: getFloat("shareholderRate4"),
+            shareholderRate5: getFloat("shareholderRate5"),
+            shareholderRate6: getFloat("shareholderRate6"),
+            shareholderRate7: getFloat("shareholderRate7"),
+            shareholderRate8: getFloat("shareholderRate8"),
 
-            totalShareCount: Number(document.getElementById("totalShareCount").value)
+            totalShareCount: getInt("totalShareCount")
         };
 
         fetch("/api/companies/createShareholder", {
@@ -293,6 +296,7 @@
                 alert("저장 중 오류 발생: " + error.message + ", 값을 확인해주세요.");
             });
     }
+
 </script>
 </body>
 </html>

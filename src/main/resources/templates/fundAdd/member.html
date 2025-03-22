@@ -178,7 +178,14 @@
             event.preventDefault();
 
             let members = [];
+            let hasKUHoldings = false; // 고려대기술지주 존재 여부
+
             rows.forEach(row => {
+                const name = row.querySelector("input[name='memberName']")?.value.trim() || "";
+                if (name.includes("고려대기술지주")) {
+                    hasKUHoldings = true;
+                }
+
                 let member = {
                     fundId: row.querySelector("input[name='fundId']")?.value.trim() || "",
                     memberName: row.querySelector("input[name='memberName']")?.value.trim() || "",
@@ -192,6 +199,12 @@
                 };
                 members.push(member);
             });
+
+            // 유효성 검사: 고려대기술지주 포함 여부
+            if (!hasKUHoldings) {
+                const proceed = confirm("조합원명 중에 '고려대기술지주'가 없습니다. 저장하시겠습니까?");
+                if (!proceed) return; // 사용자가 취소하면 저장 안 함
+            }
 
             fetch("/api/funds/createFundMem", {
                 method: "POST",
