@@ -1,5 +1,6 @@
 package com.example.kuhidbs.service.Fund;
 
+import ch.qos.logback.classic.Logger;
 import com.example.kuhidbs.dto.Fund.RIASDTO;
 import com.example.kuhidbs.entity.Fund.Fund;
 import com.example.kuhidbs.entity.InvestmentAssetSummary;
@@ -8,6 +9,7 @@ import com.example.kuhidbs.repository.Fund.FundRepository;
 import com.example.kuhidbs.repository.InvestmentAssetSummaryRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +19,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class IASService {
+    private static final Logger logger = (Logger) LoggerFactory.getLogger(IASService.class);
 
     private final InvestmentAssetSummaryRepository investmentAssetSummaryRepository;
     private final FundRepository fundRepository;
@@ -58,10 +61,17 @@ public class IASService {
         Long investmentBalance = summary.getInvestmentAmount() - summary.getReductionAmount() - summary.getRecoveredPrincipal();
         // 투자잔액 계산
         summary.setInvestmentBalance(investmentBalance);
-        if (lateAccount != null) {
+        if (lateAccount != null && lateAccount.getUnitPrice() != null && lateAccount.getUnitPrice() != 0) {
             Long janyeo = investmentBalance * lateAccount.getCurUnitPrice() / lateAccount.getUnitPrice();
             summary.setRemainingAssetValuation(janyeo);
+        } else {
+            // 예외 처리 로직 (예: 자산 평가액을 0으로 설정하거나 로그를 남김)
+            summary.setRemainingAssetValuation(0L);
+            // 또는 로그 추가
+            logger.warn("자산 평가액 계산 중 lateAccount의 unitPrice가 null이거나 0입니다. investmentBalance={}, lateAccount={}",
+                    investmentBalance, lateAccount);
         }
+
         // 멀티플 계산
         if (summary.getInvestmentAmount() != 0) {
             double multiple = (double) (summary.getRecoveredPrincipal() + summary.getRecoveredProfit() + summary.getRemainingAssetValuation()) / summary.getInvestmentAmount();
