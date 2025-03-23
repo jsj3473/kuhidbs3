@@ -40,7 +40,6 @@ public class CompanyService {
 
     public void saveCompany(CCmpInfDTO CCmpInfDTO) {
 
-        System.out.println(CCmpInfDTO);
         Company company = Company.builder()
                 .companyId(CCmpInfDTO.getCompanyId())
                 .companyName(CCmpInfDTO.getCompanyName())
@@ -76,6 +75,7 @@ public class CompanyService {
                 .build();
 
         companyRepository.save(company);
+        logger.info("✅  Company saved successfully: [{}] - {}", company.getCompanyId(), company.getCompanyName());
     }
     @Transactional
     public UCmpInfDTO updateCompanyInfo(UCmpInfDTO updatedCompanyInfo) {
@@ -115,7 +115,7 @@ public class CompanyService {
         company.setListingStatus(updatedCompanyInfo.getListingStatus());
 
         companyRepository.save(company);
-        logger.info("[UPDATE] 회사 정보 수정 완료 - companyId: {}", updatedCompanyInfo.getCompanyId());
+        logger.info("[UPDATE]  Company information updated successfully - companyId: {}", updatedCompanyInfo.getCompanyId());
 
         return mapToDTO(company);
     }

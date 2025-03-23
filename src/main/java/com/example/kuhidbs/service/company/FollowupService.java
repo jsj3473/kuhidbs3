@@ -1,5 +1,6 @@
 package com.example.kuhidbs.service.company;
 
+import ch.qos.logback.classic.Logger;
 import com.example.kuhidbs.dto.company.followup.CFolDTO;
 import com.example.kuhidbs.dto.company.followup.RFolDTO;
 import com.example.kuhidbs.entity.InvestmentAssetSummary;
@@ -13,6 +14,7 @@ import com.example.kuhidbs.repository.company.AccountRepository;
 import com.example.kuhidbs.repository.company.CompanyRepository;
 import com.example.kuhidbs.repository.company.FollowupRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,13 +28,13 @@ import java.util.stream.Collectors;
 @Service
 public class FollowupService {
 
+    private static final Logger logger = (Logger) LoggerFactory.getLogger(FollowupService.class);
+
     @Autowired
     private FollowupRepository followupRepository;
 
     @Autowired
     private CompanyRepository companyRepository;
-    @Autowired
-    private CompanyAccountRepository companyAccountRepository;
     @Autowired
     private AccountRepository accountRepository;
     @Autowired
@@ -60,53 +62,51 @@ public class FollowupService {
     }
     @Transactional
     public Followup saveFollowup(CFolDTO followupDto) {
-        log.info("📌 saveFollowup 시작 - followupDto: {}", followupDto);
+        logger.info("Start saveFollowup - DTO: {}", followupDto);
 
         Company company = companyRepository.findById(followupDto.getCompanyId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 companyId가 존재하지 않습니다: " + followupDto.getCompanyId()));
+                .orElseThrow(() -> new IllegalArgumentException("Company not found: " + followupDto.getCompanyId()));
 
-        log.info("✔ Company 조회 성공 - companyId: {}", followupDto.getCompanyId());
+        logger.info("Company found - companyId: {}", followupDto.getCompanyId());
 
         List<Investment> investments = company.getInvestments();
         Long postValue = 0L;
 
         for (Investment investment : investments) {
-            log.debug("🔍 처리 중인 Investment - investmentId: {}", investment.getInvestmentId());
+            logger.debug("Processing investment - investmentId: {}", investment.getInvestmentId());
 
             // 가장 최신의 계좌를 가져온다
             Account account = accountRepository.findTop1ByInvestmentInvestmentIdOrderByAccountIdDesc(investment.getInvestmentId());
-            log.debug("📊 최신 Account 조회 - accountId: {}, totalShareCount: {}", account.getAccountId(), account.getTotalShareCount());
+            logger.debug("Latest account found - accountId: {}, totalShareCount: {}", account.getAccountId(), account.getTotalShareCount());
 
             Long curTotalShareCount = account.getTotalShareCount() + followupDto.getFollowupShareCount();
-            log.debug("🔢 새로운 totalShareCount 계산: {}", curTotalShareCount);
+            logger.debug("New totalShareCount calculated: {}", curTotalShareCount);
 
             Account newAccount = toAccountEntity(followupDto, investment, account, curTotalShareCount);
             accountRepository.save(newAccount);
-
-            log.info("✅ 새로운 Account 저장 - {}", newAccount);
-
+            logger.info("New account saved - accountId: {}", newAccount.getAccountId());
 
             postValue = newAccount.getPostValue();
 
             Account account2 = accountRepository.findTop1ByInvestmentInvestmentIdOrderByAccountIdDesc(investment.getInvestmentId());
+            logger.info("Fetched latest account for summary - accountId: {}", account2.getAccountId());
 
-            log.info("✅ 삽입할 Account 조회 - {}", account2);
             InvestmentAssetSummary ias = investmentAssetSummaryRepository.findByInvestment_InvestmentId(investment.getInvestmentId());
-            log.debug("📈 InvestmentAssetSummary 조회 완료 - investmentId: {}", investment.getInvestmentId());
+            logger.debug("Investment asset summary found - investmentId: {}", investment.getInvestmentId());
 
             iasService.calculateDerivedFields(ias, account2);
-            log.info("📊 Derived Fields 계산 완료 - investmentId: {}", investment.getInvestmentId());
+            logger.info("Derived fields updated - investmentId: {}", investment.getInvestmentId());
         }
 
-        // ✅ Followup 엔티티 변환 및 저장
         Followup followup = toEntity(followupDto, postValue);
-        log.info("📌 Followup 엔티티 변환 완료 - postValue: {}", postValue);
+        logger.info("Followup entity created - postValue: {}", postValue);
 
         Followup savedFollowup = followupRepository.save(followup);
-        log.info("✅ Followup 저장 완료 - followupId: {}", savedFollowup.getFollowupId());
+        logger.info("Followup saved - followupId: {}", savedFollowup.getFollowupId());
 
         return savedFollowup;
     }
+
 
     //postvalue 가져오는 메소드
     @Transactional(readOnly = true)

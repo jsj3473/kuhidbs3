@@ -71,38 +71,47 @@ public class InvestmentService {
     @Transactional
     public Investment saveInvestment(CIvtDTO dto) {
         try {
+            logger.info("==========================================");
+            logger.info("==========================================");
+            logger.info("==========================================");
+            logger.info("==========================================");
+            logger.info("==========================================");
+            logger.info("==========================================");
+            logger.info("==========================================");
+            logger.info("==========================================");
+            logger.info("Starting saveInvestment process...");
             // 1. Company 객체 조회
-            logger.info("회사 조회 시작: companyId = {}", dto.getCompanyId());
+            logger.info("Looking up company: companyId = {}", dto.getCompanyId());
             Company company = companyRepository.findById(dto.getCompanyId())
                     .orElseThrow(() -> {
-                        logger.error("유효하지 않은 회사 ID: {}", dto.getCompanyId());
+                        logger.error("Invalid company ID: {}", dto.getCompanyId());
                         return new IllegalArgumentException("Invalid company ID: " + dto.getCompanyId());
                     });
-            logger.info("회사 조회 성공: {}", company.getCompanyName());
+            logger.info("Company found: {}", company.getCompanyName());
 
             // 2. Fund 객체 조회
-            logger.info("펀드 조회 시작: fundId = {}", dto.getFundId());
+            logger.info("Looking up fund: fundId = {}", dto.getFundId());
             Fund fund = fundRepository.findById(dto.getFundId())
                     .orElseThrow(() -> {
-                        logger.error("유효하지 않은 펀드 ID: {}", dto.getFundId());
+                        logger.error("Invalid fund ID: {}", dto.getFundId());
                         return new IllegalArgumentException("Invalid fund ID: " + dto.getFundId());
                     });
-            logger.info("펀드 조회 성공: {}", fund.getFundName());
+            logger.info("Fund found: {}", fund.getFundName());
 
             // 3. DTO를 Investment 엔티티로 변환 및 저장
-            logger.info("투자 데이터 변환 및 저장 시작");
+            logger.info("Converting and saving investment data...");
             Investment investment = toEntity(dto, company, fund);
             Investment savedInvestment = investmentRepository.save(investment);
-            logger.info("투자 데이터 저장 완료: investmentId = {}", savedInvestment.getInvestmentId());
+            logger.info("Investment saved: investmentId = {}", savedInvestment.getInvestmentId());
 
             // 5. Account 엔티티 생성 및 저장
-            logger.info("계좌 데이터 변환 및 저장 시작");
+            logger.info("Creating and saving account data...");
             Account account = toAccountEntity(dto, savedInvestment);
             accountRepository.save(account);
-            logger.info("계좌 데이터 저장 완료: accountId = {}", account.getAccountId());
+            logger.info("Account saved: accountId = {}", account.getAccountId());
 
             // 6. 투자자산총괄데이터(InvestmentAssetSummary) 생성
-            logger.info("투자자산총괄 데이터 생성 시작");
+            logger.info("Creating investment asset summary...");
             InvestmentAssetSummary assetSummary = InvestmentAssetSummary.builder()
                     .fund(fund)
                     .investment(savedInvestment)
@@ -116,18 +125,18 @@ public class InvestmentService {
                     .build();
 
             // 파생 필드 계산 및 저장
-            logger.info("투자자산총괄 데이터 파생 필드 계산 시작");
+            logger.info("Calculating derived fields for asset summary...");
             iasService.calculateDerivedFields(assetSummary, null);
             investmentAssetSummaryRepository.save(assetSummary);
-            logger.info("투자자산총괄 데이터 저장 완료: assetSummaryId = {}", assetSummary.getInvestmentAssetSummaryId());
+            logger.info("Asset summary saved: assetSummaryId = {}", assetSummary.getInvestmentAssetSummaryId());
 
             // 4. FundAchievement 데이터 생성 또는 업데이트
-            logger.info("투자 목표 달성 데이터(FundAchievement) 업데이트 시작");
+            logger.info("Updating fund achievement data...");
             updateFundAchievement(fund, company, dto.getInvestmentSumPrice(), assetSummary);
-            logger.info("투자 목표 달성 데이터 업데이트 완료");
+            logger.info("Fund achievement update complete.");
 
             // 7. 고용인력 데이터 생성
-            logger.info("고용인력 데이터 생성 시작");
+            logger.info("Creating employment data...");
             Employment employment = Employment.builder()
                     .investment(savedInvestment)
                     .companyNm(company.getCompanyName())
@@ -138,29 +147,30 @@ public class InvestmentService {
                     .finalEmployeeCount(null)
                     .build();
             employmentRepository.save(employment);
-            logger.info("고용인력 데이터 저장 완료: employmentId = {}", employment.getId());
+            logger.info("Employment saved: employmentId = {}", employment.getId());
 
             return savedInvestment;
 
         } catch (IllegalArgumentException e) {
-            logger.error("입력 데이터 오류 발생: {}", e.getMessage());
+            logger.error("Invalid input data: {}", e.getMessage());
             throw e;
         } catch (DataAccessException e) {
-            logger.error("데이터베이스 접근 중 오류 발생: {}", e.getMessage());
+            logger.error("Database access error: {}", e.getMessage());
             throw new RuntimeException("Database error occurred", e);
         } catch (Exception e) {
-            logger.error("알 수 없는 오류 발생: {}", e.getMessage());
+            logger.error("Unexpected error: {}", e.getMessage());
             throw new RuntimeException("Unexpected error occurred", e);
         }
     }
 
+
     @Transactional
     public void updateFundAchievement(Fund fund, Company company, Long investmentAmount, InvestmentAssetSummary ias) {
-        logger.info("[INFO] 투자 목표 달성 업데이트 시작 - 펀드 ID: {}", fund.getFundId());
+        logger.info("[INFO] Starting update of fund achievement – Fund ID: {}", fund.getFundId());
 
         FundAchievement fundAchievement = fundAchievementRepository.findByFund(fund).orElse(null);
         if (fundAchievement == null) {
-            logger.warn("[WARN] FundAchievement 데이터 없음 - 펀드 ID: {}", fund.getFundId());
+            logger.warn("[WARN] No FundAchievement data found – Fund ID: {}", fund.getFundId());
             return;
         }
 
@@ -168,6 +178,7 @@ public class InvestmentService {
                 fundAchievement.getMandatoryCriteria(),
                 fundAchievement.getMainInvest1Criteria(),
                 fundAchievement.getMainInvest2Criteria(),
+                fundAchievement.getMainInvest3Criteria(),
                 fundAchievement.getSpecialInvest1Criteria(),
                 fundAchievement.getSpecialInvest2Criteria(),
                 fundAchievement.getSpecialInvest3Criteria()
@@ -177,6 +188,7 @@ public class InvestmentService {
                 fundAchievement.getMandatoryTargetAmount(),
                 fundAchievement.getMainInvest1TargetAmount(),
                 fundAchievement.getMainInvest2TargetAmount(),
+                fundAchievement.getMainInvest3TargetAmount(),
                 fundAchievement.getSpecialInvest1TargetAmount(),
                 fundAchievement.getSpecialInvest2TargetAmount(),
                 fundAchievement.getSpecialInvest3TargetAmount()
@@ -187,6 +199,7 @@ public class InvestmentService {
                 fundAchievement::setMandatoryTargetAmount,
                 fundAchievement::setMainInvest1TargetAmount,
                 fundAchievement::setMainInvest2TargetAmount,
+                fundAchievement::setMainInvest3TargetAmount,
                 fundAchievement::setSpecialInvest1TargetAmount,
                 fundAchievement::setSpecialInvest2TargetAmount,
                 fundAchievement::setSpecialInvest3TargetAmount
@@ -196,6 +209,7 @@ public class InvestmentService {
                 fundAchievement::getMandatoryAmount,
                 fundAchievement::getMainInvest1Amount,
                 fundAchievement::getMainInvest2Amount,
+                fundAchievement::getMainInvest3Amount,
                 fundAchievement::getSpecialInvest1Amount,
                 fundAchievement::getSpecialInvest2Amount,
                 fundAchievement::getSpecialInvest3Amount
@@ -205,6 +219,7 @@ public class InvestmentService {
                 fundAchievement::setMandatoryAmount,
                 fundAchievement::setMainInvest1Amount,
                 fundAchievement::setMainInvest2Amount,
+                fundAchievement::setMainInvest3Amount,
                 fundAchievement::setSpecialInvest1Amount,
                 fundAchievement::setSpecialInvest2Amount,
                 fundAchievement::setSpecialInvest3Amount
@@ -214,6 +229,7 @@ public class InvestmentService {
                 fundAchievement::setMandatoryRatio,
                 fundAchievement::setMainInvest1Ratio,
                 fundAchievement::setMainInvest2Ratio,
+                fundAchievement::setMainInvest3Ratio,
                 fundAchievement::setSpecialInvest1Ratio,
                 fundAchievement::setSpecialInvest2Ratio,
                 fundAchievement::setSpecialInvest3Ratio
@@ -223,6 +239,7 @@ public class InvestmentService {
                 fund.getMandatoryPurpose(),
                 fund.getMainInvest1Purpose(),
                 fund.getMainInvest2Purpose(),
+                fund.getMainInvest3Purpose(),
                 fund.getSpecialInvest1Purpose(),
                 fund.getSpecialInvest2Purpose(),
                 fund.getSpecialInvest3Purpose()
@@ -244,7 +261,7 @@ public class InvestmentService {
 
                 // fundAchievement 값이 올바르게 설정되었는지 확인 후 저장
                 fundAchievementRepository.save(fundAchievement);
-                logger.info("[SAVE] 타겟어마운트 변경됨 fundAchievement 저장 완료");
+                logger.info("[SAVE] Fund achievement saved: Investment amount exceeded 80% of committed capital, target amount has been updated.");
             }
 
 
@@ -260,7 +277,7 @@ public class InvestmentService {
                 Double newRatio = (targetAmounts.get(i) != 0) ? calculateRatio(newTotalAmount, targetAmounts.get(i)) : 0.0;
                 setRatioFunctions.get(i).accept(newRatio);
 
-                logger.info("[UPDATE] 투자 업데이트 - 인덱스: {} / 추가 금액: {} / 총 금액: {} / 비율: {}",
+                logger.info("[UPDATE] Investment updated – Index: {} / Additional Amount: {} / Total Amount: {} / Ratio: {}",
                         i, investmentAmountSafe, newTotalAmount, newRatio);
             } else {
                 // 회사가 조건을 만족하지 않는 경우
@@ -268,14 +285,14 @@ public class InvestmentService {
                 Double newRatio = (targetAmounts.get(i) != 0) ? calculateRatio(currentAmount, targetAmounts.get(i)) : 0.0;
                 setRatioFunctions.get(i).accept(newRatio);
 
-                logger.info("[UPDATE] 투자 업데이트 - 인덱스: {} / 변경 없음 / 총 금액: {} / 비율: {}",
+                logger.info("[UPDATE] Investment updated – Index: {} / Additional Amount: x / Total Amount: {} / Ratio: {}",
                         i, currentAmount, newRatio);
             }
         }
 
 
         fundAchievementRepository.save(fundAchievement);
-        logger.info("[INFO] 투자 목표 달성 데이터 저장 완료 - 펀드 ID: {}", fund.getFundId());
+        logger.info("[INFO] Fund achievement data saved successfully – Fund ID: {}", fund.getFundId());
     }
 
 
