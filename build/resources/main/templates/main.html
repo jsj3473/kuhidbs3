@@ -14,7 +14,9 @@
     <link rel="stylesheet" th:href="@{/css/navbar.css}">
     <script th:src="@{/js/common.js}"></script>
     <script defer th:src="@{/js/searchModal.js}"></script>
-
+    <script th:inline="javascript">
+        window.backendUrl = [[${backendUrl}]];
+    </script>
     <style>
         .main-image {
             width: 90%; /* 부모 div에 맞게 자동 조정 */

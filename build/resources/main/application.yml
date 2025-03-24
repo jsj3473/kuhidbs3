@@ -1,14 +1,12 @@
 spring:
   application:
     name: KUHIDBS
-
   thymeleaf:
     prefix: classpath:/templates/
     suffix: .html
     enabled: true
-
   profiles:
-    active: ${SPRING_PROFILES_ACTIVE:local} # 기본값: default (PostgreSQL 사용)
+    active: ${SPRING_PROFILES_ACTIVE:local} # 기본값 local
 
 ---
 
@@ -32,6 +30,10 @@ spring:
 server:
   port: ${PORT:8080}
 
+custom:
+  backend:
+    url: https://kuhidbs-production.up.railway.app  # ✅ spring 밖에 있어야 함
+
 logging:
   level:
     org.hibernate.SQL: ERROR
@@ -46,11 +48,10 @@ spring:
       on-profile: local
 
   datasource:
-    url: jdbc:h2:file:~/test  # 사용자 홈 폴더에 저장
+    url: jdbc:h2:file:~/test
     driver-class-name: org.h2.Driver
     username: sa
     password:
-
 
   h2:
     console:
@@ -60,10 +61,14 @@ spring:
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
 
 server:
   port: 8080
+
+custom:
+  backend:
+    url: http://localhost:8080  # ✅ spring 밖에 있어야 함
 
 logging:
   level:
