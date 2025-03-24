@@ -32,7 +32,7 @@ server:
 
 custom:
   backend:
-    url: https://kuhidbs-production.up.railway.app  # ✅ spring 밖에 있어야 함
+    url: https://kuhidbs3-production.up.railway.app  # ✅ spring 밖에 있어야 함
 
 logging:
   level:
