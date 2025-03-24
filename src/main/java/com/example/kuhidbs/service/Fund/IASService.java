@@ -66,7 +66,7 @@ public class IASService {
             summary.setRemainingAssetValuation(janyeo);
         } else {
             // 예외 처리 로직 (예: 자산 평가액을 0으로 설정하거나 로그를 남김)
-            summary.setRemainingAssetValuation(0L);
+            summary.setRemainingAssetValuation(1000L);
             // 또는 로그 추가
             logger.warn("자산 평가액 계산 중 lateAccount의 unitPrice가 null이거나 0입니다. investmentBalance={}, lateAccount={}",
                     investmentBalance, lateAccount);

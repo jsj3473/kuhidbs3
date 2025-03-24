@@ -22,6 +22,7 @@ import com.example.kuhidbs.service.UserService;
 import com.example.kuhidbs.service.company.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -85,11 +86,14 @@ public class HomeController {
     private FundAchievementService fundAchievementService;
 
 
+    @Value("${custom.backend.url}")
+    private String backendUrl;
 
     //공통 데이터 설정
     @ModelAttribute
     public void addCommonAttributes(Model model, HttpSession session) {
         User loggedInUser = (User) session.getAttribute("loggedInUser");
+        model.addAttribute("backendUrl", backendUrl);
         if (loggedInUser != null) {
             model.addAttribute("empId", loggedInUser.getId());
             model.addAttribute("empName", loggedInUser.getName());

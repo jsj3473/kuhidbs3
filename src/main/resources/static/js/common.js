@@ -3,7 +3,7 @@ function confirmLogout() {
     const confirmResult = confirm("로그아웃하시겠습니까?");
     if (confirmResult) {
         // 서버의 /logout 경로로 이동
-        window.location.href = "http://localhost:8080/api/users/logout";
+        window.location.href = backendUrl + "/api/users/logout";
     }
 }
 
