@@ -1,7 +1,5 @@
-package com.example.kuhidbs.dto.Fund;
+package com.example.kuhidbs.dto.Fund.FundMem;
 
-import com.example.kuhidbs.entity.Fund.Fund;
-import com.example.kuhidbs.entity.Fund.FundMem;
 import lombok.*;
 
 import java.math.BigDecimal;

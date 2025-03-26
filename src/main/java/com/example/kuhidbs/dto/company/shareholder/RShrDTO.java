@@ -2,6 +2,7 @@ package com.example.kuhidbs.dto.company.shareholder;
 
 import lombok.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -41,6 +42,11 @@ public class RShrDTO {
     private String shareholderName8; // 주주명칭8
     private Long shareholderCount8; // 주식수8
     private BigDecimal shareholderRate8; // 지분율8
+
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private String createdBy;  // 생성한 사람 (사번)
+    private String updatedBy;  // 수정한 사람 (사번)
 
     // 총 발행 주식 수
     private Long totalShareCount;

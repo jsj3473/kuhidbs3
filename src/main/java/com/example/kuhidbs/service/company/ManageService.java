@@ -73,6 +73,10 @@ public class ManageService {
                 .exitPlan1(manage.getExitPlan1())
                 .exitPlan2(manage.getExitPlan2())
                 .exitEstimation(manage.getExitEstimation())
+                .createdAt(manage.getCreatedAt())
+                .updatedAt(manage.getUpdatedAt())
+                .createdBy(manage.getCreatedBy())
+                .updatedBy(manage.getUpdatedBy())
                 .build()).orElse(null);
     }
 
@@ -96,6 +100,10 @@ public class ManageService {
                         .exitPlan1(manage.getExitPlan1())
                         .exitPlan2(manage.getExitPlan2())
                         .exitEstimation(manage.getExitEstimation())
+                        .createdAt(manage.getCreatedAt())
+                        .updatedAt(manage.getUpdatedAt())
+                        .createdBy(manage.getCreatedBy())
+                        .updatedBy(manage.getUpdatedBy())
                         .build())
                 .collect(Collectors.toList());
     }

@@ -130,6 +130,10 @@ public class FollowupService {
                         .followupShareCount(followup.getFollowupShareCount())
                         .followupUnitPrice(followup.getFollowupUnitPrice())
                         .followupInvestmentValue(followup.getFollowupInvestmentValue())
+                        .createdAt(followup.getCreatedAt())
+                        .updatedAt(followup.getUpdatedAt())
+                        .createdBy(followup.getCreatedBy())
+                        .updatedBy(followup.getUpdatedBy())
                         .build())
                 .collect(Collectors.toList());
     }

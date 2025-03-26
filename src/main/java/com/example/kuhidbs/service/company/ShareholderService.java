@@ -161,6 +161,10 @@ public class ShareholderService {
                 .shareholderCount8(shareholder.getShareholderCount8())
                 .shareholderRate8(shareholder.getShareholderRate8())
                 .totalShareCount(shareholder.getTotalShareCount())
+                .createdAt(shareholder.getCreatedAt())
+                .updatedAt(shareholder.getUpdatedAt())
+                .createdBy(shareholder.getCreatedBy())
+                .updatedBy(shareholder.getUpdatedBy())
                 .build()).orElse(null);
     }
 }

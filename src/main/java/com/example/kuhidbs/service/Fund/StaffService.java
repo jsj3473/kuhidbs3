@@ -1,7 +1,7 @@
 package com.example.kuhidbs.service.Fund;
 
-import com.example.kuhidbs.dto.Fund.CStaffDTO;
-import com.example.kuhidbs.dto.Fund.RStaffDTO;
+import com.example.kuhidbs.dto.Fund.staff.CStaffDTO;
+import com.example.kuhidbs.dto.Fund.staff.RStaffDTO;
 import com.example.kuhidbs.entity.Fund.*;
 import com.example.kuhidbs.repository.Fund.FundRepository;
 import com.example.kuhidbs.repository.Fund.StaffRepository;
@@ -45,6 +45,10 @@ public class StaffService {
                 .currentStaff(staff.getCurrentStaff())
                 .resignDate(staff.getResignDate())
                 .reasonAndSanction(staff.getReasonAndSanction())
+                .createdAt(staff.getCreatedAt())
+                .updatedAt(staff.getUpdatedAt())
+                .createdBy(staff.getCreatedBy())
+                .updatedBy(staff.getUpdatedBy())
                 .build()
         ).collect(Collectors.toList());
     }

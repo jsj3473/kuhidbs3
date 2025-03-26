@@ -1,7 +1,7 @@
 package com.example.kuhidbs.service.Fund;
 
-import com.example.kuhidbs.dto.Fund.CFundFinancialDTO;
-import com.example.kuhidbs.dto.Fund.RFundFinancialDTO;
+import com.example.kuhidbs.dto.Fund.fundFinans.CFundFinancialDTO;
+import com.example.kuhidbs.dto.Fund.fundFinans.RFundFinancialDTO;
 import com.example.kuhidbs.entity.Fund.Fund;
 import com.example.kuhidbs.entity.Fund.FundFinancial;
 import com.example.kuhidbs.repository.Fund.FundFinancialRepository;
@@ -78,7 +78,11 @@ public class FundFinancialService {
                         fundFinancial.getPerformanceFee(),
                         fundFinancial.getCustodyManagementFee(),
                         fundFinancial.getAuditFee(),
-                        fundFinancial.getMiscExpense()
+                        fundFinancial.getMiscExpense(),
+                        fundFinancial.getCreatedAt(),
+                        fundFinancial.getUpdatedAt(),
+                        fundFinancial.getCreatedBy(),
+                        fundFinancial.getUpdatedBy()
                 ))
                 .collect(Collectors.toList());
     }

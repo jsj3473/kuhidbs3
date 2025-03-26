@@ -2,6 +2,8 @@ package com.example.kuhidbs.dto.company.mng;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -24,4 +26,9 @@ public class RMngDTO {
     private String exitPlan1;
     private String exitPlan2;
     private String exitEstimation;
+
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private String createdBy;  // 생성한 사람 (사번)
+    private String updatedBy;  // 수정한 사람 (사번)
 }

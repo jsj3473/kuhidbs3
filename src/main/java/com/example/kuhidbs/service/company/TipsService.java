@@ -70,6 +70,10 @@ public class TipsService {
                 .tipsComment(tips.getTipsComment())
                 .tipsManagementEndDate(tips.getTipsManagementEndDate())
                 .followTips(tips.getFollowTips())
+                .createdAt(tips.getCreatedAt())
+                .updatedAt(tips.getUpdatedAt())
+                .createdBy(tips.getCreatedBy())
+                .updatedBy(tips.getUpdatedBy())
                 .build();
     }
 

@@ -1,7 +1,10 @@
-package com.example.kuhidbs.dto.Fund;
+package com.example.kuhidbs.dto.Fund.fundInfo;
 
+import com.example.kuhidbs.dto.Fund.RFundAchievementDTO;
+import com.example.kuhidbs.dto.Fund.FundMem.RFundMemDTO;
 import lombok.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -52,4 +55,9 @@ public class RFundDTO {
 
     private List<RFundMemDTO> fundMems; //조합원 명부들
     private RFundAchievementDTO fundAchievement;
+
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private String createdBy;  // 생성한 사람 (사번)
+    private String updatedBy;  // 수정한 사람 (사번)
 }

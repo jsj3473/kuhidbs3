@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -27,6 +28,11 @@ public class RIvtDTO {
     private String investmentEmployee; // 투자 담당자
     private String managementFeeTarget; //관리보수대상 여부
     private String evaluationMethod; //평가방법
+
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private String createdBy;  // 생성한 사람 (사번)
+    private String updatedBy;  // 수정한 사람 (사번)
 }
 
 

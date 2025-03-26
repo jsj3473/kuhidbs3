@@ -1,4 +1,5 @@
-package com.example.kuhidbs.dto.Fund;
+package com.example.kuhidbs.dto.Fund.dueDili;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.NoArgsConstructor;
@@ -8,12 +9,8 @@ import lombok.AllArgsConstructor;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RDueDiligenceDTO {
-
-    private String companyNm; //투자기업
-    private String investmentDate; // 투자 일자
-    private String investmentProduct; // 투자 상품
-    private Long investmentSumPrice; // 투자 금액
+public class CDueDiligenceDTO {
+    private Long investmentId;
     private String target; //실사대상
     private String status; //실시여부
     private String inspectionDate;     //실사일자

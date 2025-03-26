@@ -1,6 +1,19 @@
 package com.example.kuhidbs.controller;
 
 import com.example.kuhidbs.dto.Fund.*;
+import com.example.kuhidbs.dto.Fund.FundMem.CFundMemDTO;
+import com.example.kuhidbs.dto.Fund.FundMem.RFundMemDTO;
+import com.example.kuhidbs.dto.Fund.audit.CAuditDTO;
+import com.example.kuhidbs.dto.Fund.audit.RAuditDTO;
+import com.example.kuhidbs.dto.Fund.dueDili.CDueDiligenceDTO;
+import com.example.kuhidbs.dto.Fund.dueDili.RDueDiligenceDTO;
+import com.example.kuhidbs.dto.Fund.fundFinans.CFundFinancialDTO;
+import com.example.kuhidbs.dto.Fund.fundFinans.RFundFinancialDTO;
+import com.example.kuhidbs.dto.Fund.fundInfo.CFundDTO;
+import com.example.kuhidbs.dto.Fund.fundInfo.RFundDTO;
+import com.example.kuhidbs.dto.Fund.fundInfo.UFundDTO;
+import com.example.kuhidbs.dto.Fund.staff.CStaffDTO;
+import com.example.kuhidbs.dto.Fund.staff.RStaffDTO;
 import com.example.kuhidbs.entity.Fund.*;
 import com.example.kuhidbs.repository.Fund.AuditRepository;
 import com.example.kuhidbs.repository.Fund.FundRepository;

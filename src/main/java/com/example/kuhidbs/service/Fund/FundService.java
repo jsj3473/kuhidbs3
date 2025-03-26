@@ -1,6 +1,9 @@
 package com.example.kuhidbs.service.Fund;
 
 import com.example.kuhidbs.dto.Fund.*;
+import com.example.kuhidbs.dto.Fund.fundInfo.CFundDTO;
+import com.example.kuhidbs.dto.Fund.fundInfo.RFundDTO;
+import com.example.kuhidbs.dto.Fund.fundInfo.UFundDTO;
 import com.example.kuhidbs.entity.Fund.Fund;
 import com.example.kuhidbs.entity.Fund.FundAchievement;
 import com.example.kuhidbs.repository.Fund.FundAchievementRepository;
@@ -76,7 +79,7 @@ public class FundService {
      * 펀드 정보 수정
      */
     @Transactional
-    public   UFundDTO updateFundInfo(UFundDTO updatedFundInfo) {
+    public UFundDTO updateFundInfo(UFundDTO updatedFundInfo) {
         Fund fund = fundRepository.findById(updatedFundInfo.getFundId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 펀드가 존재하지 않습니다: " + updatedFundInfo.getFundId()));
 
@@ -273,6 +276,10 @@ public class FundService {
                 .specialInvest1Purpose(fund.getSpecialInvest1Purpose())
                 .specialInvest2Purpose(fund.getSpecialInvest2Purpose())
                 .specialInvest3Purpose(fund.getSpecialInvest3Purpose())
+                .createdAt(fund.getCreatedAt())
+                .updatedAt(fund.getUpdatedAt())
+                .createdBy(fund.getCreatedBy())
+                .updatedBy(fund.getUpdatedBy())
                 .build();
     }
 

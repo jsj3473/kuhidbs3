@@ -6,6 +6,7 @@ import com.example.kuhidbs.dto.company.fnc.RFncDTO;
 import com.example.kuhidbs.dto.company.invStatus.RStatusDTO;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -105,4 +106,10 @@ public class RCmpInfDTO {
 
     //투자상태
     private RStatusDTO currentStatusDTO;
+
+    //회사데이터 기준
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private String createdBy;  // 생성한 사람 (사번)
+    private String updatedBy;  // 수정한 사람 (사번)
 }

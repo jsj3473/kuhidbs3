@@ -2,6 +2,7 @@ package com.example.kuhidbs.dto.company.cmpinf;
 import com.example.kuhidbs.dto.company.fnc.RFncDTO;
 import lombok.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -88,4 +89,10 @@ public class RCmpInf2DTO {
     private String phoneNumber;
     private String email;
     private String name;
+
+    //회사데이터 기준
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private String createdBy;  // 생성한 사람 (사번)
+    private String updatedBy;  // 수정한 사람 (사번)
 }

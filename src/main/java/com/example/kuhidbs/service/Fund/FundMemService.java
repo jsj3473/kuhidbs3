@@ -1,8 +1,8 @@
 package com.example.kuhidbs.service.Fund;
 
 
-import com.example.kuhidbs.dto.Fund.CFundMemDTO;
-import com.example.kuhidbs.dto.Fund.RFundMemDTO;
+import com.example.kuhidbs.dto.Fund.FundMem.CFundMemDTO;
+import com.example.kuhidbs.dto.Fund.FundMem.RFundMemDTO;
 import com.example.kuhidbs.dto.Fund.RMemtypeDTO;
 import com.example.kuhidbs.entity.Fund.Fund;
 import com.example.kuhidbs.entity.Fund.FundMem;

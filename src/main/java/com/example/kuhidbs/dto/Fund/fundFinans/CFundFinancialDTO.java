@@ -1,4 +1,4 @@
-package com.example.kuhidbs.dto.Fund;
+package com.example.kuhidbs.dto.Fund.fundFinans;
 
 import lombok.*;
 import java.math.BigDecimal;

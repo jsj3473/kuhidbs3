@@ -1,7 +1,8 @@
-package com.example.kuhidbs.dto.Fund;
+package com.example.kuhidbs.dto.Fund.fundFinans;
 
 import lombok.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -34,4 +35,9 @@ public class RFundFinancialDTO {
     private BigDecimal custodyManagementFee; // 수탁관리보수 (소수점 1자리)
     private BigDecimal auditFee; // 회계감사수수료 (소수점 1자리)
     private BigDecimal miscExpense; // 기타 비용 (소수점 1자리)
+
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private String createdBy;  // 생성한 사람 (사번)
+    private String updatedBy;  // 수정한 사람 (사번)
 }

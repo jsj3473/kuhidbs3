@@ -1,8 +1,8 @@
 package com.example.kuhidbs.service.Fund;
 
-import com.example.kuhidbs.dto.Fund.CAuditDTO;
-import com.example.kuhidbs.dto.Fund.CFundDTO;
-import com.example.kuhidbs.dto.Fund.RAuditDTO;
+import com.example.kuhidbs.dto.Fund.audit.CAuditDTO;
+import com.example.kuhidbs.dto.Fund.fundInfo.CFundDTO;
+import com.example.kuhidbs.dto.Fund.audit.RAuditDTO;
 import com.example.kuhidbs.entity.Fund.*;
 import com.example.kuhidbs.repository.Fund.AuditRepository;
 import com.example.kuhidbs.repository.Fund.FundRepository;
@@ -65,6 +65,10 @@ public class AuditService {
                         .changeDate(audit.getChangeDate())
                         .auditorName(audit.getAuditorName())
                         .changeReason(audit.getChangeReason())
+                        .createdAt(audit.getCreatedAt())
+                        .updatedAt(audit.getUpdatedAt())
+                        .createdBy(audit.getCreatedBy())
+                        .updatedBy(audit.getUpdatedBy())
                         .build())
                 .collect(Collectors.toList());
     }

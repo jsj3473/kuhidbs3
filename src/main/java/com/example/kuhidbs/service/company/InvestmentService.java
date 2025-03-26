@@ -370,6 +370,10 @@ public class InvestmentService {
                 .investmentStep(investment.getInvestmentStep())
                 .managementFeeTarget(investment.getManagementFeeTarget())
                 .evaluationMethod(investment.getEvaluationMethod())
+                .createdAt(investment.getCreatedAt())
+                .updatedAt(investment.getUpdatedAt())
+                .createdBy(investment.getCreatedBy())
+                .updatedBy(investment.getUpdatedBy())
                 .build()).orElse(null);
 
     }
@@ -395,6 +399,10 @@ public class InvestmentService {
                         .investmentStep(investment.getInvestmentStep())
                         .managementFeeTarget(investment.getManagementFeeTarget())
                         .evaluationMethod(investment.getEvaluationMethod())
+                        .createdAt(investment.getCreatedAt())
+                        .updatedAt(investment.getUpdatedAt())
+                        .createdBy(investment.getCreatedBy())
+                        .updatedBy(investment.getUpdatedBy())
                         .build())
                 .collect(Collectors.toList());
     }

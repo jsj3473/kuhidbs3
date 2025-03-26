@@ -1,9 +1,8 @@
 package com.example.kuhidbs.service.Fund;
 
-import com.example.kuhidbs.dto.Fund.CDueDiligenceDTO;
-import com.example.kuhidbs.dto.Fund.RDueDiligenceDTO;
+import com.example.kuhidbs.dto.Fund.dueDili.CDueDiligenceDTO;
+import com.example.kuhidbs.dto.Fund.dueDili.RDueDiligenceDTO;
 import com.example.kuhidbs.entity.Fund.DueDiligence;
-import com.example.kuhidbs.entity.company.Company;
 import com.example.kuhidbs.entity.company.Investment;
 import com.example.kuhidbs.repository.Fund.DueDiligenceRepository;
 import com.example.kuhidbs.repository.company.CompanyRepository;
@@ -55,7 +54,11 @@ public class DueDiligenceService {
                     dueDiligence.getTarget(),
                     dueDiligence.getStatus(),
                     dueDiligence.getInspectionDate(),
-                    dueDiligence.getIssues()
+                    dueDiligence.getIssues(),
+                    dueDiligence.getCreatedAt(),
+                    dueDiligence.getUpdatedAt(),
+                    dueDiligence.getCreatedBy(),
+                    dueDiligence.getUpdatedBy()
             );
         }).collect(Collectors.toList());
     }

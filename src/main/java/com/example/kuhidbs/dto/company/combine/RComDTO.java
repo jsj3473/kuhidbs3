@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -22,4 +23,9 @@ public class RComDTO {
     private String comment; // 비고 (COM_CMT)
     private String investmentStep; // 투자 단계 (INV_STEP)
     private Long shareCount; // 주식 수량 (SHR_CNT)
+
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private String createdBy;  // 생성한 사람 (사번)
+    private String updatedBy;  // 수정한 사람 (사번)
 }

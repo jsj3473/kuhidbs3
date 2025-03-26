@@ -77,11 +77,14 @@ public class StatusService {
         Status latestStatus = statusRepository.findTopByCompany_CompanyIdOrderByStatusIdDesc(companyId)
                 .orElse(null); // 데이터가 없으면 null 반환
 
-        if (latestStatus == null) {
-            // 데이터가 없는 경우, 기본값을 가진 DTO 반환
-            return new RStatusDTO(companyId, "N/A", "No investment status available");
-        }
 
-        return new RStatusDTO(latestStatus.getCompany().getCompanyId(), latestStatus.getStatus(), latestStatus.getAdditionalInfo());
+        return new RStatusDTO(
+                latestStatus.getCompany().getCompanyId(),
+                latestStatus.getStatus(),
+                latestStatus.getAdditionalInfo(),
+                latestStatus.getCreatedAt(),
+                latestStatus.getUpdatedAt(),
+                latestStatus.getCreatedBy(),
+                latestStatus.getUpdatedBy());
     }
 }

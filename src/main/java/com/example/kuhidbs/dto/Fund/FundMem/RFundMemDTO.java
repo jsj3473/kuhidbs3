@@ -1,10 +1,9 @@
-package com.example.kuhidbs.dto.Fund;
+package com.example.kuhidbs.dto.Fund.FundMem;
 
-import com.example.kuhidbs.entity.Fund.Fund;
-import com.example.kuhidbs.entity.Fund.FundMem;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Data
 @Getter
@@ -21,5 +20,10 @@ public class RFundMemDTO {
     private String address;  // 주소
     private Long committedUnitPrice;  // 출자금액
     private BigDecimal contributionRate;  // 출자비율
+
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private String createdBy;  // 생성한 사람 (사번)
+    private String updatedBy;  // 수정한 사람 (사번)
 }
 

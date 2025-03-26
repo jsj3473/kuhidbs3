@@ -192,6 +192,10 @@ public class CompanyService {
                 .listingStatus(company.getListingStatus())
                 .companyPostalCode(company.getCompanyPostalCode())
                 .isDaechang(company.getIsDaechang())
+                .createdAt(company.getCreatedAt())
+                .updatedAt(company.getUpdatedAt())
+                .createdBy(company.getCreatedBy())
+                .updatedBy(company.getUpdatedBy())
 
                 // 최근 2개 재무제표
                 .recentFinancials(recentFinancials)
@@ -276,6 +280,10 @@ public class CompanyService {
                 .listingDate(company.getListingDate())
                 .companyPostalCode(company.getCompanyPostalCode())
                 .isDaechang(company.getIsDaechang())
+                .createdAt(company.getCreatedAt())
+                .updatedAt(company.getUpdatedAt())
+                .createdBy(company.getCreatedBy())
+                .updatedBy(company.getUpdatedBy())
 
                 // 최근 2개 재무제표
                 .recentFinancials(recentFinancials)

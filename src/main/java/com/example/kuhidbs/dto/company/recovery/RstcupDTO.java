@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -17,4 +19,9 @@ public class RstcupDTO {
     private Long recoveryUnitPrice; // 매각 단가 (STCUP_UNIT_PRICE)
     private Long fundReturn; // 펀드 수익 (STCUP_FUND_RTN)
     private Long kuhReturn; // KUH 수익 (STCUP_KUH_RTN)
+
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private String createdBy;  // 생성한 사람 (사번)
+    private String updatedBy;  // 수정한 사람 (사번)
 }

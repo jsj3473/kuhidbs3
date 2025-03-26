@@ -160,6 +160,10 @@ public class FinancialService {
                         .capital(financial.getCapital())
                         .employeeCount(financial.getEmployeeCount())
                         .totalDebt(financial.getTotalDebt())
+                        .createdAt(financial.getCreatedAt())
+                        .updatedAt(financial.getUpdatedAt())
+                        .createdBy(financial.getCreatedBy())
+                        .updatedBy(financial.getUpdatedBy())
                         .build())
                 .collect(Collectors.toList());
     }
@@ -181,6 +185,10 @@ public class FinancialService {
                         .capital(financial.getCapital())
                         .employeeCount(financial.getEmployeeCount())
                         .totalDebt(financial.getTotalDebt())
+                        .createdAt(financial.getCreatedAt())
+                        .updatedAt(financial.getUpdatedAt())
+                        .createdBy(financial.getCreatedBy())
+                        .updatedBy(financial.getUpdatedBy())
                         .build())
                 .collect(Collectors.toList());
     }

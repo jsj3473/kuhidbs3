@@ -176,8 +176,14 @@ public class RecoveryService {
                         recovery.getRecoveryCount(),
                         recovery.getRecoveryUnitPrice(),
                         recovery.getFundReturn(),
-                        recovery.getKuhReturn()
+                        recovery.getKuhReturn(),
+                        recovery.getCreatedAt(),
+                        recovery.getUpdatedAt(),
+                        recovery.getCreatedBy(),
+                        recovery.getUpdatedBy()
                 ))
+
+                
                 .collect(Collectors.toList());
     }
 }

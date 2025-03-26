@@ -179,7 +179,11 @@ public class ShrupService {
                         update.getCurUnitValue(),
                         update.getShareUpdateType(),
                         update.getShareUpdateReason(),
-                        update.getShareUpdateAction()
+                        update.getShareUpdateAction(),
+                        update.getCreatedAt(),
+                        update.getUpdatedAt(),
+                        update.getCreatedBy(),
+                        update.getUpdatedBy()
                 ))
                 .collect(Collectors.toList());
     }

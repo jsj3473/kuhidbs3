@@ -2,6 +2,8 @@ package com.example.kuhidbs.dto.company.tips;
 
 import lombok.*;
 
+import java.time.LocalDateTime;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -20,4 +22,9 @@ public class RTIPSDTO {
     private String tipsComment; // 입력내용
     private String tipsManagementEndDate; // 사후기간 종료일
     private String followTips; // 사후성공여부
+
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
+    private String createdBy;  // 생성한 사람 (사번)
+    private String updatedBy;  // 수정한 사람 (사번)
 }

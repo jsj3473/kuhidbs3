@@ -1,6 +1,11 @@
 package com.example.kuhidbs.controller;
 
 import com.example.kuhidbs.dto.Fund.*;
+import com.example.kuhidbs.dto.Fund.FundMem.RFundMemDTO;
+import com.example.kuhidbs.dto.Fund.audit.RAuditDTO;
+import com.example.kuhidbs.dto.Fund.dueDili.RDueDiligenceDTO;
+import com.example.kuhidbs.dto.Fund.fundFinans.RFundFinancialDTO;
+import com.example.kuhidbs.dto.Fund.staff.RStaffDTO;
 import com.example.kuhidbs.dto.company.kuhINV.RIvtDTO;
 import com.example.kuhidbs.dto.company.shrup.RShrupDTO;
 import com.example.kuhidbs.dto.company.combine.RComDTO;

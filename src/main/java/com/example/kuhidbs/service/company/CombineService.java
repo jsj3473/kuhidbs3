@@ -67,7 +67,11 @@ public class CombineService {
                 entity.getEquityRate(),
                 entity.getComment(),
                 entity.getInvestmentStep(),
-                entity.getShareCount()
+                entity.getShareCount(),
+                entity.getCreatedAt(),
+                entity.getUpdatedAt(),
+                entity.getCreatedBy(),
+                entity.getUpdatedBy()
         );
     }
 }

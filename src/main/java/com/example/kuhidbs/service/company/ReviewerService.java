@@ -93,7 +93,11 @@ public class ReviewerService {
                 .map(reviewer -> new RRwrDTO(
                         reviewer.getManagerType(),
                         reviewer.getManager(),
-                        reviewer.getChangeReason()
+                        reviewer.getChangeReason(),
+                        reviewer.getCreatedAt(),
+                        reviewer.getUpdatedAt(),
+                        reviewer.getCreatedBy(),
+                        reviewer.getUpdatedBy()
                 ))
                 .collect(Collectors.toList());
     }

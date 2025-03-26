@@ -1,15 +1,11 @@
 package com.example.kuhidbs.service.Fund;
 
 import com.example.kuhidbs.dto.Fund.RFundAchievementDTO;
-import com.example.kuhidbs.dto.Fund.UFundDTO;
 import com.example.kuhidbs.entity.Fund.Fund;
 import com.example.kuhidbs.entity.Fund.FundAchievement;
 import com.example.kuhidbs.repository.Fund.FundAchievementRepository;
 import com.example.kuhidbs.repository.Fund.FundRepository;
-import jakarta.transaction.Transactional;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import java.util.Optional;
 
 @Service
 public class FundAchievementService {

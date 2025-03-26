@@ -78,7 +78,11 @@ public class BonusService {
                 .map(bonus -> new RBonusDTO(
                         bonus.getBonusDate(),
                         bonus.getChangedShareCount(),
-                        bonus.getUnitPrice()
+                        bonus.getUnitPrice(),
+                        bonus.getCreatedAt(),
+                        bonus.getUpdatedAt(),
+                        bonus.getCreatedBy(),
+                        bonus.getUpdatedBy()
                 ))
                 .collect(Collectors.toList());
     }
