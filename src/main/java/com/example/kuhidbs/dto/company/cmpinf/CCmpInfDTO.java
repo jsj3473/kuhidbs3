@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @Data
 @NoArgsConstructor
@@ -111,4 +112,5 @@ public class CCmpInfDTO {
     private String phoneNumber;
     private String email;
     private String name;
+
 }

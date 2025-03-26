@@ -11,8 +11,10 @@ import java.util.List;
 @Repository
 public interface EmploymentRepository extends JpaRepository<Employment, Long> {
 
-    @Query("SELECT e FROM Employment e WHERE e.investment.fund.fundId = :fundId")
+    //내림차순 정렬
+    @Query("SELECT e FROM Employment e WHERE e.investment.fund.fundId = :fundId ORDER BY e.financialYear DESC")
     List<Employment> findByFundId(@Param("fundId") String fundId);
+
 
     Employment findByInvestment(Investment investment);
 }
