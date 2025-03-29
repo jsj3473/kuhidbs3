@@ -29,6 +29,9 @@ spring:
 
 server:
   port: ${PORT:8080}
+  servlet:
+    session:
+      timeout: 12h
 
 custom:
   backend:
